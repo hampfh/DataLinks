@@ -1,0 +1,25 @@
+.Master {
+	position: absolute;
+	margin: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #78909C;
+	
+}
+
+.Title {
+	text-align: center;
+	font-size: 3rem;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	color: #ECEFF1;
+	letter-spacing: 0.25rem;
+	text-transform: uppercase;
+}
+
+.SubjectContainer {
+	margin: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}

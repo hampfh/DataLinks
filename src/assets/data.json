@@ -1,0 +1,36 @@
+{
+	"subjects": [
+		{
+			"title": "DD1390",
+			"description": "PROSAM - Programsammanhängande kurs",
+			"subjectSite": "https://www.kth.se/social/course/DD1390/subgroup/ht-2020-prosam20/event/379824/",
+			"meetingLink": "https://kth-se.zoom.us/j/62531193754",
+			"color": "#91349B",
+			"active": []
+		},
+		{
+			"title": "SF1671",
+			"description": "Matematik, baskurs, med diskret matematik",
+			"subjectSite": "https://www.kth.se/social/course/DD1390/subgroup/ht-2020-prosam20/event/379824/",
+			"meetingLink": "https://kth-se.zoom.us/j/61248741329",
+			"color": "#3C4F36",
+			"active": []
+		},
+		{
+			"title": "DA1600",
+			"description": "Ingenjörsmässigt skrivande",
+			"subjectSite": "https://www.kth.se/social/course/DA1600/subgroup/ht-2020-iskriv18/event/380159/",
+			"meetingLink": "https://kth-se.zoom.us/j/61897974329",
+			"color": "#177B63",
+			"active": []
+		},
+		{
+			"title": "DA1337",
+			"description": "Programming",
+			"subjectSite": "https://canvas.kth.se/courses/21128",
+			"meetingLink": "https://kth-se.zoom.us/j/63526541898 ",
+			"color": "#3C4F36",
+			"active": []
+		}
+	]
+}

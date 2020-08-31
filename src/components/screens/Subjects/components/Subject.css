@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+.Subject {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+
+	
+	width: 100%;
+	max-width: 15rem;
+	margin: 1rem;
+	border-radius: 1rem;
+	transition-duration: 0.15s;
+	transition-property: all;
+	transition-timing-function: ease-in;
+
+	user-select: none;
+	-webkit-tap-highlight-color:transparent;
+    -moz-tap-highlight-color:transparent;
+	-o-tap-highlight-color:transparent;
+	
+	-webkit-box-shadow: 0px 0px 35px -5px rgba(0,0,0,1);
+	-moz-box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
+	box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
+}
+
+@media(min-width: 40rem) {
+	.Subject {
+		width: 50%;
+	}
+}
+
+.Header {
+	color: white;
+	text-align: center;
+	user-select: none;
+	width: min-content;
+
+	margin: auto;
+	margin-top: 0.9rem;
+	padding: 0.5rem 4rem;
+}
+.Header:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.Description {
+	margin: 0 0.75rem;
+	color: white;
+	font-size: 0.8rem;
+}
+
+.LinkContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.Button {
+	color: white;
+	text-decoration: none;
+	padding: 0.5rem 1rem;
+	background-color: #aaa;
+	border-radius: 1rem;
+	margin-top: 0.25rem;
+	margin-bottom: 0.25rem;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	font-size: 0.75rem;
+
+	transition-property: background-color;
+	transition-duration: 0.25s;
+
+	-webkit-box-shadow: 0px 0px 35px -5px rgba(0,0,0,1);
+	-moz-box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
+	box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
+}
+
+.Button:hover {
+	background-color: #777;
+}
