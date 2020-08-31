@@ -1,0 +1,70 @@
+{
+    "subjects": [
+        {
+            "title": "DD1390",
+            "description": "PROSAM - Programsammanhängande kurs",
+            "color": "#91349B",
+            "active": [],
+            "links": [
+                {
+                    "displayName": "Subject site",
+                    "value": "https://www.kth.se/social/course/DD1390/subgroup/ht-2020-prosam20/event/379824/"
+                },
+                {
+                    "displayName": "Meeting link",
+                    "value": "https://kth-se.zoom.us/j/62531193754"
+                }
+            ]
+        },
+        {
+            "title": "SF1671",
+            "description": "Matematik, baskurs, med diskret matematik",
+            "color": "#3C4F36",
+            "active": [],
+            "links": [
+                {
+                    "displayName": "Subject site",
+                    "value": "https://www.kth.se/social/course/DD1390/subgroup/ht-2020-prosam20/event/379824/"
+                },
+                {
+                    "displayName": "Meeting link",
+                    "value": "https://kth-se.zoom.us/j/61248741329"
+                }
+            ]
+        },
+        {
+            "title": "DA1600",
+            "description": "Ingenjörsmässigt skrivande",
+            "color": "#177B63",
+            "active": [],
+            "links": [
+                {
+                    "displayName": "Subject site",
+                    "value": "https://www.kth.se/social/course/DA1600/subgroup/ht-2020-iskriv18/event/380159/"
+                },
+                {
+                    "displayName": "Meeting link",
+                    "value": "https://kth-se.zoom.us/j/61897974329"
+                }
+            ]
+        },
+        {
+            "title": "DD1337",
+            "description": "Programming",
+            "subjectSite": "https://canvas.kth.se/courses/21128",
+            "meetingLink": "https://kth-se.zoom.us/j/63526541898",
+            "color": "#3C4F36",
+            "active": [],
+            "links": [
+                {
+                    "displayName": "Subject site",
+                    "value": "https://canvas.kth.se/courses/21128"
+                },
+                {
+                    "displayName": "Meeting link",
+                    "value": "https://kth-se.zoom.us/j/63526541898"
+                }
+            ]
+        }
+    ]
+}
