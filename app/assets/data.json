@@ -14,7 +14,7 @@
 					"displayName": "Meeting link",
 					"value": "https://kth-se.zoom.us/j/62531193754"
 				}
-			],
+			]
 			
 		},
 		{
@@ -46,12 +46,16 @@
 				{
 					"displayName": "Meeting link",
 					"value": "https://kth-se.zoom.us/j/61897974329"
+				},
+				{
+					"displayName": "Group A Zoom",
+					"value": "https://kth-se.zoom.us/j/67330592966"
 				}
 			]
 		},
 		{
 			"title": "DD1337",
-			"description": "Programming",
+			"description": "Programmering",
 			"subjectSite": "https://canvas.kth.se/courses/21128",
 			"meetingLink": "https://kth-se.zoom.us/j/63526541898",
 			"color": "#3C4F36",
