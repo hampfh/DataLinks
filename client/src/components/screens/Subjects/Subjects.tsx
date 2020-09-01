@@ -51,16 +51,23 @@ export class Subjects extends Component<{}, StateForComponent> {
 	}
 }
 
-export interface Link {
+export interface ContentObject {
 	displayName: string,
-	value: string
+	link?: string,
+	text?: string,
+	color: string
+}
+
+export interface Group {
+	group: string,
+	objects: Array<ContentObject>
 }
 
 export interface SubjectData {
 	title: string,
 	description: string,
 	color: string,
-	links: Array<Link>
+	objects: Array<ContentObject | Group>
 }
 
 interface StateForComponent {

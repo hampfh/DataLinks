@@ -11,6 +11,7 @@
 
 	
 	width: 100%;
+	height: min-content;
 	max-width: 15rem;
 	margin: 1rem;
 	border-radius: 1rem;
@@ -40,8 +41,7 @@
 	user-select: none;
 	width: min-content;
 
-	margin: auto;
-	margin-top: 0.9rem;
+	margin: 0.9rem auto;
 	padding: 0.5rem 4rem;
 }
 .Header:hover {
@@ -49,10 +49,18 @@
 	text-decoration: underline;
 }
 
+.expandable {
+	transition-duration: 1s;
+	transition-property: all;
+	transition-timing-function: ease-in;
+}
+
 .Description {
-	margin: 0 0.75rem;
+	margin: 1rem 0.75rem;
+	margin-top: 0;
 	color: white;
 	font-size: 0.8rem;
+	text-align: center;
 }
 
 .LinkContainer {
@@ -74,8 +82,9 @@
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
 	font-size: 0.75rem;
+	max-width: 12rem;
 
-	transition-property: background-color;
+	transition-property: all;
 	transition-duration: 0.25s;
 
 	-webkit-box-shadow: 0px 0px 35px -5px rgba(0,0,0,1);
@@ -84,5 +93,36 @@
 }
 
 .Button:hover {
-	background-color: #777;
+	filter: brightness(0.9);
+}
+
+.subTitle {
+	color: white;
+	text-align: center;
+}
+
+.nestedLinkContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	word-wrap: break-word;
+}
+
+.textObjectContainer {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.textObjectTitle, 
+.textObject {
+	margin: 0;
+	color: white;
+	text-align: center;
+	max-width: 12rem;
+}
+.textObjectTitle {
+	margin-bottom: 0.5rem;
+}
+.textObject {
+	font-size: 0.8rem;
 }
