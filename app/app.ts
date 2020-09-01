@@ -3,6 +3,7 @@ import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
 import data from "./assets/data.json"
+import fs from "fs"
 
 const app = express()
 
@@ -24,9 +25,14 @@ app.use(function (req, res, next) {
 })
 
 app.get("/data", (req: Request, res: Response) => {
-	res.json({
-		data
+	const stream = fs.createReadStream("./app/assets/data.json")
+	stream.on("data", (data) => {
+		let chunk = data.toString()
+		res.json({
+			data: JSON.parse(chunk)
+		})
 	})
+	
 })
 
 // Serve to react
