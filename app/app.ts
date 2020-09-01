@@ -2,7 +2,7 @@ import logger from "morgan"
 import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
-import data from "./assets/data.json"
+import oldData from "./assets/data.json"
 import fs from "fs"
 
 const app = express()
@@ -25,14 +25,19 @@ app.use(function (req, res, next) {
 })
 
 app.get("/data", (req: Request, res: Response) => {
-	const stream = fs.createReadStream("./app/assets/data.json")
-	stream.on("data", (data) => {
-		let chunk = data.toString()
-		res.json({
-			data: JSON.parse(chunk)
+	try {
+		const stream = fs.createReadStream("./app/assets/data.json")
+		stream.on("data", (data) => {
+			let chunk = data.toString()
+			res.json({
+				data: JSON.parse(chunk)
+			})
 		})
-	})
-	
+	} catch (err) {
+		res.json({
+			data: oldData
+		})
+	}
 })
 
 // Serve to react

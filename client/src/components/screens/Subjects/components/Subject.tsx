@@ -9,7 +9,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		super(props)
 
 		this.state = {
-			collapsState: 0,
+			collapsState: localStorage.getItem(this.props.subject.title) == null ? 0 : 2,
 			subject: props.subject
 		}
 	}
@@ -24,11 +24,17 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				const newState = { ...this.state }
 				newState.collapsState = 2
 				this.setState(newState)
+				
+				if (this.state.subject !== undefined) 
+					localStorage.setItem(this.state.subject?.title, "1")
 			}, 200)
 		} else if (this.state.collapsState === 2) {
 			const newState = { ...this.state }
 			newState.collapsState = 0
 			this.setState(newState)
+
+			if (this.state.subject !== undefined)
+				localStorage.removeItem(this.state.subject?.title)
 		}
 	}
 
