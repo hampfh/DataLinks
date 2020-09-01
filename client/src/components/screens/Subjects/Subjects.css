@@ -4,7 +4,8 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: #78909C;
-	
+	overflow-y: auto;
+	scrollbar-width: thin;
 }
 
 .Title {
