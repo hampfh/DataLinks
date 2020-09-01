@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
 })
 
 app.get("/data", (req: Request, res: Response) => {
+
 	try {
 		const stream = fs.createReadStream("./app/assets/data.json")
 		stream.on("data", (data) => {
