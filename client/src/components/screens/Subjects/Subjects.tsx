@@ -34,7 +34,7 @@ export class Subjects extends Component<{}, StateForComponent> {
 		return (
 			<section className="Master">
 				<div>
-					<h1 className="Title">Subjects</h1>
+					<h1 className="Title">Data's todo</h1>
 				</div>
 				<div className="SubjectContainer">
 					{

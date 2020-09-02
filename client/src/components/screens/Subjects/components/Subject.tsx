@@ -50,9 +50,15 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		}
 		else if (object.text !== undefined) {
 			return <div key={uuid()} className="textObjectContainer">
-				<h5 className="textObjectTitle">{object.displayName}</h5>
-				<p className="textObject">{object.text}</p>
+				{object.displayName === undefined ? null : 
+					<h5 className="textObjectTitle">{object.displayName}</h5>
+				}
+				{object.text === undefined ? null : 
+					<p className="textObject">{object.text}</p>
+				}
 			</div>
+		} else {
+			return null
 		}
 	}
 
@@ -72,7 +78,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 							{this.state.subject.objects.map((object) => {
 								if ((object as Group).group !== undefined) {
 									return (
-										<section key={uuid()}>
+										<section className="groupContainer" key={uuid()}>
 											<h4 className="subTitle">{(object as Group).group}</h4>
 											<div className="nestedLinkContainer">
 												{(object as Group).objects.map((object) => {

@@ -19,7 +19,6 @@
 					"text": "Empty. Yeay nothing to do..."
 				}
 			]
-			
 		},
 		{
 			"title": "SF1671",
@@ -34,11 +33,11 @@
 				{
 					"displayName": "Meeting link",
 					"link": "https://kth-se.zoom.us/j/61248741329"
-				}, 
+				},
 				{
 					"displayName": "Current task",
 					"text": "Prepare seminare exercises 1-4"
-				}, 
+				},
 				{
 					"displayName": "Seminare questions",
 					"link": "https://canvas.kth.se/courses/20289/files/3184406/download?wrap=1"
@@ -97,6 +96,18 @@
 					]
 				},
 				{
+					"group": "Frågestund",
+					"objects": [
+						{
+							"text": "Active on odd weeks on Thursday 13:00-15:00"
+						},
+						{
+							"displayName": "Zoom",
+							"link": "https://kth-se.zoom.us/j/66417782244"
+						}
+					]
+				},
+				{
 					"displayName": "Current task",
 					"text": "Write a text between 400-800 words, the text should contain exactly 3 academic sources"
 				}
@@ -119,6 +130,10 @@
 				{
 					"displayName": "KTH Github",
 					"link": "https://gits-15.sys.kth.se/"
+				},
+				{
+					"displayName": "Laborationer Zoom",
+					"link": "https://kth-se.zoom.us/j/65425209509"
 				},
 				{
 					"displayName": "Current task",
