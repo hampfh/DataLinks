@@ -1,0 +1,9 @@
+ /* The animation code */
+@keyframes ToggleSubjectRise {
+  	from {
+		max-height: 4rem;
+	}
+  	to {
+		max-height: 100rem;
+	}
+}
