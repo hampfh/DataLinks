@@ -45,11 +45,11 @@
 					"objects": [
 						{
 							"displayName": "Group 1",
-							"text": "Consists of all students with surname starting with letter A-J, active in 13:15-14:00"
+							"text": "Consists of all students with surname starting with letter A-J, active 13:15-14:00"
 						},
 						{
 							"displayName": "Group 2",
-							"text": "Consists of all students with surname starting with letter K-Ö, active in 14:15-15:00"
+							"text": "Consists of all students with surname starting with letter K-Ö, active 14:15-15:00"
 						}
 					]
 				},
@@ -137,6 +137,17 @@
 						{
 							"displayName": "Gather sources",
 							"text": "Write a text between 400-800 words, the text should contain exactly 3 academic sources"
+						},
+						{
+							"displayName": "Preparation before \"Övning 2\"",
+							"text": "Watch the video about \"referatmarkörer\""
+						},
+						{
+							"text": "Read the text about \"Prokrastinering\""
+						},
+						{
+							"displayName": "Watch video",
+							"link": "https://canvas.kth.se/courses/18673/pages/att-forbereda-infor-ovning-2?module_item_id=247414#"
 						}
 					]
 				}
