@@ -71,7 +71,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				<h4 className="Header" onClick={this._onSubjectClick}>{this.state.subject.title}</h4>
 				{this.state.collapsState === 0 ? null :
 					<section className="expandable" style={{
-						maxHeight: this.state.collapsState > 0 ? "500px" : "0"
+						maxHeight: this.state.collapsState > 0 ? "none" : "0"
 					}}>
 						<p className="Description">{this.state.subject.description}</p>
 						<div className="LinkContainer">

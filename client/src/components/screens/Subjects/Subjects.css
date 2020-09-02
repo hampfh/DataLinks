@@ -1,8 +1,10 @@
+body {
+	background-color: #78909C;
+}
+
 .Master {
-	position: fixed;
 	margin: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
 	background-color: #78909C;
 	overflow-y: auto;
 	scrollbar-width: thin;
@@ -19,7 +21,6 @@
 }
 
 .SubjectContainer {
-	margin: 1rem;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
