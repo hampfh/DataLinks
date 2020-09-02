@@ -10,7 +10,10 @@ export class Subjects extends Component<{}, StateForComponent> {
 		super(props)
 
 		this.state = {
-			data: []
+			data: {
+				title: "",
+				subjects: []
+			}
 		}
 	}
 
@@ -23,22 +26,23 @@ export class Subjects extends Component<{}, StateForComponent> {
 			}
 		})) as HttpReturnType & {
 			data: {
+				title: string,
 				subjects: Array<SubjectData>
 			}
 		}
 
-		this.setState({ data: response.data.subjects })
+		this.setState({ data: response.data })
 	}
 
 	render() {
 		return (
 			<section className="Master">
 				<div>
-					<h1 className="Title">Data's todo</h1>
+					<h1 className="Title">{this.state.data.title}</h1>
 				</div>
 				<div className="SubjectContainer">
 					{
-						this.state.data.map((subject) =>
+						this.state.data.subjects.map((subject) =>
 							<SubjectComponent
 								key={uuid()}
 								subject={subject}
@@ -71,7 +75,10 @@ export interface SubjectData {
 }
 
 interface StateForComponent {
-	data: Array<SubjectData>
+	data: {
+		title: string,
+		subjects: Array<SubjectData>
+	}
 }
 
 export default Subjects
