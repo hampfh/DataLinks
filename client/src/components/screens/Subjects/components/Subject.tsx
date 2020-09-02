@@ -40,12 +40,12 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 
 	_renderObject(object: ContentObject, collapseState: number) {
 		if (object.link !== undefined) {
-			return <a key={uuid()} href={(object as ContentObject).link} className="Button" style={
+			return <a key={uuid()} href={object.link} className="Button" style={
 				{
 					backgroundColor: collapseState === 0 ? "transparent" : object.color ?? "auto",
 					color: collapseState === 0 ? "transparent" : "auto"
 				}}>
-				{(object as ContentObject).displayName}
+				{object.displayName}
 			</a>
 		}
 		else if (object.text !== undefined) {

@@ -1,4 +1,5 @@
 {
+	"title": "Data's links",
 	"subjects": [
 		{
 			"title": "DD1390",
@@ -15,8 +16,13 @@
 					"link": "https://kth-se.zoom.us/j/62531193754"
 				},
 				{
-					"displayName": "Current task",
-					"text": "Empty. Yeay nothing to do..."
+					"group": "Current tasks",
+					"objects": [
+						{
+							"displayName": "Nothing...",
+							"text": "You're freeeee......."
+						}
+					]
 				}
 			]
 		},
@@ -35,12 +41,30 @@
 					"link": "https://kth-se.zoom.us/j/61248741329"
 				},
 				{
-					"displayName": "Current task",
-					"text": "Prepare seminare exercises 1-4"
+					"group": "Seminare 1",
+					"objects": [
+						{
+							"displayName": "Group 1",
+							"text": "Consists of all students with surname starting with letter A-J, active in 13:15-14:00"
+						},
+						{
+							"displayName": "Group 2",
+							"text": "Consists of all students with surname starting with letter K-Ö, active in 14:15-15:00"
+						}
+					]
 				},
 				{
-					"displayName": "Seminare questions",
-					"link": "https://canvas.kth.se/courses/20289/files/3184406/download?wrap=1"
+					"group": "Current tasks",
+					"objects": [
+						{
+							"displayName": "Seminare 1",
+							"text": "Prepare seminare exercises 1-4"
+						},
+						{
+							"displayName": "Seminare questions",
+							"link": "https://canvas.kth.se/courses/20289/files/3184406/download?wrap=1"
+						}
+					]
 				}
 			]
 		},
@@ -108,8 +132,13 @@
 					]
 				},
 				{
-					"displayName": "Current task",
-					"text": "Write a text between 400-800 words, the text should contain exactly 3 academic sources"
+					"group": "Current tasks",
+					"objects": [
+						{
+							"displayName": "Gather sources",
+							"text": "Write a text between 400-800 words, the text should contain exactly 3 academic sources"
+						}
+					]
 				}
 			]
 		},
@@ -136,12 +165,17 @@
 					"link": "https://kth-se.zoom.us/j/65425209509"
 				},
 				{
-					"displayName": "Current task",
-					"text": "Do the introduction assignment, containing ssh-key-, git-, and latex setup"
-				},
-				{
-					"displayName": "Current task",
-					"text": "Do assignment 1, available in github"
+					"group": "Current tasks",
+					"objects": [
+						{
+							"displayName": "First assignment",
+							"text": "Do the introduction assignment, containing ssh-key-, git-, and latex setup"
+						},
+						{
+							"displayName": "Assignment 1",
+							"text": "Do assignment 1, available in github, answer the questions in the README.md file"
+						}
+					]
 				}
 			]
 		}
