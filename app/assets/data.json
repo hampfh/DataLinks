@@ -38,39 +38,34 @@
 			"active": [],
 			"objects": [
 				{
-					"displayName": "Subject site",
-					"link": "https://canvas.kth.se/courses/20289"
-				},
-				{
-					"displayName": "Meeting link",
-					"link": "https://kth-se.zoom.us/j/61248741329"
-				},
-				{
-					"group": "Seminare 1",
 					"objects": [
 						{
-							"displayName": "Group 1",
-							"text": "Consists of all students with surname starting with letter A-J, active 13:15-14:00"
+							"displayName": "Subject site",
+							"link": "https://canvas.kth.se/courses/20289"
 						},
 						{
-							"displayName": "Group 2",
-							"text": "Consists of all students with surname starting with letter K-Ö, active 14:15-15:00"
+							"displayName": "Meeting link",
+							"link": "https://kth-se.zoom.us/j/61248741329"
 						}
 					]
 				},
 				{
 					"group": "Current tasks",
 					"column": true,
-					"objects": [
+					"split": false,
+					"objects": [	
 						{
-							"displayName": "Seminare 1",
-							"text": "Prepare seminare exercises 1-4"
+							"displayName": "Calculus recommended",
+							"text": "C3.5: 1,3,5,7,9,11,13,15,17"
 						},
 						{
-							"displayName": "Seminare questions",
-							"link": "https://canvas.kth.se/courses/20289/files/3184406/download?wrap=1"
+							"text": "C3.6: 2,7"
+						},
+						{
+							"displayName": "Compendium, extra tasks",
+							"link": "https://canvas.kth.se/courses/20289/files/3072368/download?wrap=1"
 						}
-					]
+					]	
 				}
 			]
 		},

@@ -18,6 +18,19 @@ export class Subjects extends Component<{}, StateForComponent> {
 		}
 	}
 
+	clearOld() {
+		if ((localStorage.getItem("currentVersion") != null && parseInt(localStorage.getItem("currentVersion") as string) < 1)
+			|| localStorage.getItem("currentVersion") == null) {
+			const version = parseInt(localStorage.getItem("currentVersion") as string)
+
+			// Clear localstorage if neccessary
+			if (version < 1)
+				localStorage.clear()
+		}
+
+		localStorage.setItem("currentVersion", "1")
+	}
+
 	async componentDidMount() {
 		const response = (await Http({
 			url: "/data",
@@ -35,6 +48,8 @@ export class Subjects extends Component<{}, StateForComponent> {
 		const newState = { ...this.state }
 		newState.data = response.data
 		this.setState(newState)
+
+		this.clearOld()
 	}
 
 	hideAll = () => {
