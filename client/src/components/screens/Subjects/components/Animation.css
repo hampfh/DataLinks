@@ -1,9 +1,22 @@
+@import url("../../../root.css");
+ 
  /* The animation code */
-@keyframes ToggleSubjectRise {
+@keyframes Expand {
   	from {
-		max-height: 4rem;
+		transform: scale(0.95);
+		opacity: 1;
 	}
   	to {
-		max-height: 100rem;
+		transform: scale(10);
+		opacity: 0.25;
+	}
+}
+
+@keyframes Fade {
+	from {
+		background-color: transparent;
+	}
+	to {
+		background-color: var(--primary);
 	}
 }

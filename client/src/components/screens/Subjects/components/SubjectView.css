@@ -1,0 +1,116 @@
+@import url("../../../root.css");
+@import url("./Animation.css");
+
+.SubjectWrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	min-height: 100vh;
+	background-color: var(--primary);
+
+	animation-name: Fade;
+	animation-duration: 0.25s;
+}
+.Scrollable {
+	margin: 0 auto;
+	overflow-y: auto;
+	max-width: 50rem;
+	height: 100vh;
+}
+
+.HeaderSubjectView {
+	color: var(--primary-background);
+	text-align: center;
+	font-size: 2rem;
+	text-transform: uppercase;
+	font-weight: 900;
+}
+
+.logoutIcon {
+	cursor: pointer;
+	position: relative;
+	top: 1rem;
+	left: 1rem;
+	width: 1.5rem;
+	transition-property: transform left;
+	transition-duration: 0.1s;
+}
+
+@media(min-width: 40rem) {
+	.logoutIcon {
+		left: 10rem;
+	}
+}
+
+.logoutIcon:hover {
+	transform: scale(1.05);
+}
+.logoutIcon:active {
+	transform: scale(0.95);
+}
+
+.GroupContainer:not(.Nested) {
+	align-self: flex-start;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	flex-direction: row;
+	justify-content: center;
+	margin: 1rem;
+	min-width: 15rem;
+
+	border-top-style: solid;
+	border-top-color: white;
+	border-top-width: 2px;
+	padding-top: 1rem;
+}
+
+.NoBorder {
+	width: 100%;
+	padding-top: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+}
+
+.GroupItemContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.Nested {
+	margin: 0;
+}
+
+.Column {
+	display: grid !important;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.textObjectContainer {
+	text-align: center;
+	max-width: 20rem;
+	margin-bottom: 2rem;
+}
+
+.Column > .textObjectContainer {
+	margin-bottom: 0.5rem;
+}
+
+@media(min-width: 40rem) {
+	.textObjectContainer {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+	.textObject {
+		text-align: left;
+	}
+}
+
+.ButtonWrapper {
+	width: fit-content;
+	margin: 0.6rem 0.25rem;
+	justify-self: center;
+}

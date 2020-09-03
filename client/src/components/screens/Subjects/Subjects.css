@@ -1,11 +1,14 @@
+@import url("../../root.css");
+
 body {
-	background-color: #78909C;
+	background-color: var(--primary-background);
+	overflow-x: hidden;
 }
 
 .Master {
 	margin: 0;
 	width: 100%;
-	background-color: #78909C;
+	background-color: var(--primary-background);
 	overflow-y: hidden;
 	scrollbar-width: thin;
 }
@@ -15,7 +18,7 @@ body {
 	font-size: 3rem;
 	margin-top: 1rem;
 	margin-bottom: 0.5rem;
-	color: #ECEFF1;
+	color: var(--primary);
 	letter-spacing: 0.25rem;
 	text-transform: uppercase;
 }

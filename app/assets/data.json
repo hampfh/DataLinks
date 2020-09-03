@@ -8,12 +8,17 @@
 			"active": [],
 			"objects": [
 				{
-					"displayName": "Subject site",
-					"link": "https://canvas.kth.se/courses/21131"
-				},
-				{
-					"displayName": "Meeting link",
-					"link": "https://kth-se.zoom.us/j/62531193754"
+					"split": false,
+					"objects": [
+						{
+							"displayName": "Subject site",
+							"link": "https://canvas.kth.se/courses/21131"
+						},
+						{
+							"displayName": "Meeting link",
+							"link": "https://kth-se.zoom.us/j/62531193754"
+						}
+					]
 				},
 				{
 					"group": "Current tasks",
@@ -55,6 +60,7 @@
 				},
 				{
 					"group": "Current tasks",
+					"column": true,
 					"objects": [
 						{
 							"displayName": "Seminare 1",
@@ -121,6 +127,7 @@
 				},
 				{
 					"group": "Frågestund",
+					"column": true,
 					"objects": [
 						{
 							"text": "Active on odd weeks on Thursday 13:00-15:00"
@@ -139,15 +146,21 @@
 							"text": "Write a text between 400-800 words, the text should contain exactly 3 academic sources"
 						},
 						{
-							"displayName": "Preparation before \"Övning 2\"",
-							"text": "Watch the video about \"referatmarkörer\""
-						},
-						{
-							"text": "Read the text about \"Prokrastinering\""
-						},
-						{
-							"displayName": "Watch video",
-							"link": "https://canvas.kth.se/courses/18673/pages/att-forbereda-infor-ovning-2?module_item_id=247414#"
+							"group": "",
+							"column": true,
+							"objects": [
+								{
+									"displayName": "Preparation before \"Övning 2\"",
+									"text": "Watch the video about \"referatmarkörer\""
+								},
+								{
+									"text": "Read the text about \"Prokrastinering\""
+								},
+								{
+									"displayName": "Watch video",
+									"link": "https://canvas.kth.se/courses/18673/pages/att-forbereda-infor-ovning-2?module_item_id=247414#"
+								}
+							]
 						}
 					]
 				}

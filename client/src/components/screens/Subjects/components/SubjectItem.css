@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url("./Animation.css");
+@import url("../../../root.css");
 
 * {
 	font-family: 'Roboto', sans-serif;
@@ -11,9 +11,9 @@
 
 	width: 100%;
 	height: min-content;
-	max-width: 15rem;
+	max-width: 6rem;
 	max-height: 120rem;
-	margin: 1rem;
+	margin: 1rem 2rem;
 	border-radius: 1rem;
 	transition-duration: 0.15s;
 	transition-property: all;
@@ -23,14 +23,29 @@
 	-webkit-tap-highlight-color:transparent;
     -moz-tap-highlight-color:transparent;
 	-o-tap-highlight-color:transparent;
-	
-	-webkit-box-shadow: 0px 0px 35px -5px rgba(0,0,0,1);
-	-moz-box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
-	box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
-	box-sizing: border-box;
 
 	/* This animation will play whenever an element is loaded for the first time*/
 	animation-name: ToggleSubjectRise;
+	animation-duration: 0.75s;
+}
+
+.collapsed {
+	cursor: pointer;
+	transition-property: transform;
+	transition-duration: 0.15s;
+}
+
+.collapsed:hover {
+	transform: scale(1.05);
+}
+
+.collapsed:active {
+	transition-duration: 0.1s;
+	transform: scale(0.95);
+}
+
+.expanding {
+	animation-name: Expand;
 	animation-duration: 0.75s;
 }
 
@@ -41,13 +56,13 @@
 }
 
 .Header {
-	color: white;
+	color: var(--primary);
 	text-align: center;
 	user-select: none;
 	width: min-content;
 
 	margin: 0.9rem auto;
-	padding: 0.5rem 4rem;
+	padding: 0.5rem 0rem;
 }
 .Header:hover {
 	cursor: pointer;
@@ -69,7 +84,9 @@
 }
 
 .LinkContainer {
+	margin: 0 auto;
 	display: flex;
+	flex: 1 1 0px;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -77,15 +94,13 @@
 }
 
 .Button {
+	height: fit-content;
+	width: fit-content;
 	color: white;
 	text-decoration: none;
 	padding: 0.5rem 1rem;
-	background-color: #aaa;
+	background-color: var(--complementary);
 	border-radius: 1rem;
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
 	font-size: 0.75rem;
 	max-width: 12rem;
 
@@ -108,18 +123,6 @@
 	padding-bottom: 0.5rem;
 }
 
-.nestedLinkContainer {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	word-wrap: break-word;
-}
-
-.textObjectContainer {
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
-}
-
 .groupContainer {
 	width: 80%;
 	border-top-style: solid;
@@ -139,7 +142,6 @@
 	margin: 0;
 	color: white;
 	text-align: center;
-	max-width: 12rem;
 }
 .textObjectTitle {
 	margin-bottom: 0.5rem;
