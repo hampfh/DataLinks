@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 :root {
 	--primary: #ff007b;
-	--primary-background: #e3f2fd;
 	--complementary: #ff80bd;
+}
+
+@media (prefers-color-scheme: light) {
+  	:root {
+		--primary-background: #e3f2fd;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+  	:root {
+    	--primary-background: #330019;
+	}
 }

@@ -11,7 +11,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		super(props)
 
 		this.state = {
-			collapsState: localStorage.getItem(this.props.subject.title) == null ? 0 : 3,
+			collapsState: 0,
 			subject: props.subject
 		}
 	}

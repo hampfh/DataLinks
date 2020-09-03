@@ -19,16 +19,13 @@ export class Subjects extends Component<{}, StateForComponent> {
 	}
 
 	clearOld() {
-		if ((localStorage.getItem("currentVersion") != null && parseInt(localStorage.getItem("currentVersion") as string) < 1)
+		if ((localStorage.getItem("currentVersion") != null && parseInt(localStorage.getItem("currentVersion") as string) < 3)
 			|| localStorage.getItem("currentVersion") == null) {
-			const version = parseInt(localStorage.getItem("currentVersion") as string)
-
 			// Clear localstorage if neccessary
-			if (version < 1)
-				localStorage.clear()
+			localStorage.clear()
 		}
 
-		localStorage.setItem("currentVersion", "1")
+		localStorage.setItem("currentVersion", "3")
 	}
 
 	async componentDidMount() {
