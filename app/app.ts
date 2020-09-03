@@ -2,7 +2,7 @@ import logger from "morgan"
 import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
-import oldData from "./assets/data.json"
+import initialFile from "./assets/data.json"
 import fs from "fs"
 
 const app = express()
@@ -24,21 +24,23 @@ app.use(function (req, res, next) {
 	next()
 })
 
-app.get("/data", (req: Request, res: Response) => {
+// Only update information every 10th second
+let currentFile = initialFile
+setInterval(() => {
+	fs.readFile("./app/assets/data.json", "utf8", (err, data) => {
+		let chunk = data.toString()
+		try {
+			currentFile = JSON.parse(chunk)
+		} catch(err) {
+			console.log(err)
+		}
+	})
+}, 10000)
 
-	try {
-		const stream = fs.createReadStream("./app/assets/data.json")
-		stream.on("data", (data) => {
-			let chunk = data.toString()
-			res.json({
-				data: JSON.parse(chunk)
-			})
-		})
-	} catch (err) {
-		res.json({
-			data: oldData
-		})
-	}
+app.get("/data", (req: Request, res: Response) => {
+	res.json({
+		data: currentFile
+	})
 })
 
 // Serve to react
