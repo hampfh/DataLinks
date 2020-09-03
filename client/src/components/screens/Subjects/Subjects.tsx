@@ -41,12 +41,14 @@ export class Subjects extends Component<{}, StateForComponent> {
 		const newState = { ...this.state }
 		newState.elementsHidden = true
 		this.setState(newState)
+		document.body.style.backgroundColor = "#ff007b"
 	}
 
 	showAll = () => {
 		const newState = { ...this.state }
 		newState.elementsHidden = false
 		this.setState(newState)
+		document.body.style.backgroundColor = "#e3f2fd"
 	}
 
 	render() {
@@ -68,8 +70,11 @@ export class Subjects extends Component<{}, StateForComponent> {
 						)
 					}
 				</div>
-				Icons made by <a href="https://www.flaticon.com/authors/chanut" title="Chanut">Chanut</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-				Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+				<div className="CreditsWrapper">
+					<p className={"Credits"}>Site by <b>Hampus H</b></p>
+					<p className={"Credits"}>Icons made by <a href="https://www.flaticon.com/authors/chanut" title="Chanut">Chanut</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
+					<p className={"Credits"}>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
+				</div>
 			</section>
 		)
 	}

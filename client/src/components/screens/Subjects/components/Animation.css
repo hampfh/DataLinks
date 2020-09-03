@@ -20,3 +20,12 @@
 		background-color: var(--primary);
 	}
 }
+
+@keyframes FadeOut {
+	from {
+		color: #ccc;
+	}
+	to {
+		color: transparent;
+	}
+}

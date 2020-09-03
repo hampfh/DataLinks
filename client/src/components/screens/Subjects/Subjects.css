@@ -28,3 +28,36 @@ body {
 	flex-wrap: wrap;
 	justify-content: center;
 }
+
+@media(min-width: 40rem) {
+	.Title {
+		margin-top: 4rem;
+	}
+	.SubjectContainer {
+		align-items: center;
+	}
+}
+
+.CreditsWrapper {
+	position: absolute;
+	min-width: 20rem;
+	bottom: 2rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: grid;
+	justify-items: center;
+	margin: 0 0.5rem;
+}
+
+.Credits {
+	text-align: center;
+	justify-self: center;
+	font-style: italic;
+	margin: 0.5rem 0;
+	color: transparent;
+	animation-name: FadeOut;
+	animation-duration: 4s;
+}
+.Credits a{
+	color: inherit;
+}
