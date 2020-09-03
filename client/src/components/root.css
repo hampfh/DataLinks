@@ -12,6 +12,11 @@
 
 @media (prefers-color-scheme: dark) {
   	:root {
-    	--primary-background: #330019;
+		--primary-background: #330019;
+		background-color: var(--primary-background);
+	}
+	body {
+		--primary-background: #330019;
+		background-color: var(--primary-background);
 	}
 }
