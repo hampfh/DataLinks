@@ -56,7 +56,7 @@ body {
 	margin: 0.5rem 0;
 	color: transparent;
 	animation-name: FadeOut;
-	animation-duration: 4s;
+	animation-duration: 1s;
 }
 .Credits a{
 	color: inherit;

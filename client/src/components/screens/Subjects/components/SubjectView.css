@@ -20,7 +20,7 @@
 }
 
 .HeaderSubjectView {
-	color: var(--primary-background);
+	color: white;
 	text-align: center;
 	font-size: 2rem;
 	text-transform: uppercase;
