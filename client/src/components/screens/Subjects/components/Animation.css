@@ -14,7 +14,7 @@
 
 @keyframes FadeOut {
 	from {
-		color: #ccc;
+		color: transparent;
 	}
 	to {
 		color: transparent;
