@@ -1,83 +1,31 @@
 import React, { Component } from 'react'
 import SubjectComponent from "./components/SubjectItem"
-import { v4 as uuid } from "uuid"
-import Http, { HttpReturnType } from "../../../functions/HttpRequest"
 import "./Subjects.css"
+import { StateForComponent as PropsForComponent } from "../../../App"
 
-export class Subjects extends Component<{}, StateForComponent> {
+export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
-	constructor(props: {}) {
+	constructor(props: PropsForComponent) {
 		super(props)
 
 		this.state = {
-			data: {
-				title: "",
-				subjects: []
-			},
 			elementsHidden: false
 		}
-	}
-
-	clearOld() {
-		if ((localStorage.getItem("currentVersion") != null && parseInt(localStorage.getItem("currentVersion") as string) < 3)
-			|| localStorage.getItem("currentVersion") == null) {
-			// Clear localstorage if neccessary
-			localStorage.clear()
-		}
-
-		localStorage.setItem("currentVersion", "3")
-	}
-
-	async componentDidMount() {
-		const response = (await Http({
-			url: "/data",
-			method: "GET",
-			body: {
-
-			}
-		})) as HttpReturnType & {
-			data: {
-				title: string,
-				subjects: Array<SubjectData>
-			}
-		}
-
-		const newState = { ...this.state }
-		newState.data = response.data
-		this.setState(newState)
-
-		this.clearOld()
-	}
-
-	hideAll = () => {
-		const newState = { ...this.state }
-		newState.elementsHidden = true
-		this.setState(newState)
-		document.body.style.backgroundColor = "#ff007b"
-	}
-
-	showAll = () => {
-		const newState = { ...this.state }
-		newState.elementsHidden = false
-		this.setState(newState)
-		document.body.style.backgroundColor = "#e3f2fd"
 	}
 
 	render() {
 		return (
 			<section className="Master">
 				<div>
-					<h1 className="Title">{this.state.data.title}</h1>
+					<h1 className="Title">{this.props.data.title}</h1>
 				</div>
 				<div className="SubjectContainer">
 					{
-						this.state.data.subjects.map((subject) =>
+						this.props.data.subjects.map((subject) =>
 							<SubjectComponent
 								key={subject.title}
 								subject={subject}
 								elementsHidden={this.state.elementsHidden}
-								hideAll={this.hideAll}
-								showAll={this.showAll}
 							/>
 						)
 					}
@@ -114,10 +62,6 @@ export interface SubjectData {
 }
 
 interface StateForComponent {
-	data: {
-		title: string,
-		subjects: Array<SubjectData>
-	},
 	elementsHidden: boolean
 }
 

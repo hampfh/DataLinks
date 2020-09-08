@@ -12,15 +12,6 @@
 	}
 }
 
-@keyframes Fade {
-	from {
-		background-color: transparent;
-	}
-	to {
-		background-color: var(--primary);
-	}
-}
-
 @keyframes FadeOut {
 	from {
 		color: #ccc;

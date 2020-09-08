@@ -46,7 +46,7 @@
 
 .expanding {
 	animation-name: Expand;
-	animation-duration: 0.75s;
+	animation-duration: 0.45s;
 }
 
 @media(min-width: 40rem) {

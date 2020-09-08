@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
 import "./SubjectView.css"
-import { Group, ContentObject, SubjectData } from '../Subjects'
+import { Group, ContentObject, SubjectData } from '../Subjects/Subjects'
 import { v4 as uuid } from "uuid"
-import logoutIcon from "../../../../assets/icons/close.svg"
+import logoutIcon from "../../../assets/icons/close.svg"
+import { Redirect } from "react-router-dom"
 
-export default class Subject extends Component<PropsForComponent> {
+export default class Subject extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
 		super(props)
+
+		this.state = {
+			shouldExitView: false
+		}
 	}
 
 	_renderObject(object: ContentObject | Group, depth?: number) {
 		if ((object as Group).group !== undefined || (object as Group).objects !== undefined) {
 			const group: Group = object as Group
 			return (
-				<div key={uuid()} className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split == false ? " NoBorder" : "" }`}>
+				<div key={uuid()} className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false ? " NoBorder" : "" }`}>
 					{group.group === undefined ? null :
 						<h4 className="textObjectTitle">{group.group}</h4>
 					}
@@ -49,20 +54,32 @@ export default class Subject extends Component<PropsForComponent> {
 			return null
 	}
 
+	_clickExitView = () => {
+		const newState = { ...this.state }
+		newState.shouldExitView = true
+		this.setState(newState)
+	}
+
 	render() {
 		return (
-			<div className="SubjectWrapper">
-				<div className="Scrollable">
-					<img className="logoutIcon" onClick={this.props.close} src={logoutIcon} />
-					<h2 className="HeaderSubjectView">{this.props.subject.title}</h2>
-					<p className="Description">{this.props.subject.description}</p>
-					<div className="LinkContainer">
-						{this.props.subject.objects.map((object) => {
-							return this._renderObject(object)
-						})}
+			<section className="Master">
+				{this.state.shouldExitView ?
+					<Redirect to="/" /> :
+					<div className="SubjectWrapper">
+						<div className="Scrollable">
+							<img className="logoutIcon" onClick={this._clickExitView} alt="Exit view" src={logoutIcon} />
+							<h2 className="HeaderSubjectView">{this.props.subject.title}</h2>
+							<p className="Description">{this.props.subject.description}</p>
+							<div className="LinkContainer">
+								{this.props.subject.objects.map((object) => {
+									return this._renderObject(object)
+								})}
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
+
+				}
+			</section>
 		)
 	}
 }
@@ -70,4 +87,8 @@ export default class Subject extends Component<PropsForComponent> {
 export interface PropsForComponent {
 	close: () => void,
 	subject: SubjectData
+}
+
+export interface StateForComponent {
+	shouldExitView: boolean
 }

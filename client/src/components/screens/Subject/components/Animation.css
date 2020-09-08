@@ -1,0 +1,10 @@
+@import url("../../../root.css");
+ 
+@keyframes Fade {
+	from {
+		background-color: transparent;
+	}
+	to {
+		background-color: var(--primary);
+	}
+}

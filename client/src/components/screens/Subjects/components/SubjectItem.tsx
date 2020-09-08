@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import "./SubjectItem.css"
 import "./Animation.css"
-import { SubjectData, ContentObject } from '../Subjects'
-import { v4 as uuid } from "uuid"
-import SubjectView from "./SubjectView"
+import { SubjectData } from '../Subjects'
+import { Redirect } from 'react-router-dom'
 
 export class Subject extends Component<PropsForComponent, StateForComponent> {
 
@@ -11,15 +10,13 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		super(props)
 
 		this.state = {
-			collapsState: 0,
-			subject: props.subject
+			collapsState: 0
 		}
 	}
 
 	_onClick = () => {
 		// Extend the subject container
 		if (this.state.collapsState === 0) {
-			this.props.hideAll()
 			const newState = { ...this.state }
 			newState.collapsState = 2
 			this.setState(newState)
@@ -28,15 +25,8 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				const newState = { ...this.state }
 				newState.collapsState = 3
 				this.setState(newState)
-			}, 200)
+			}, 100)
 		}
-	}
-
-	resetCollapse = () => {
-		this.props.showAll()
-		const newState = { ...this.state }
-		newState.collapsState = 0
-		this.setState(newState)
 	}
 
 	getSubjectIcon(subject: string): string {
@@ -54,20 +44,17 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	render() {
-		if (this.state.subject === undefined)
-			return null
 		return (
 			<>
 				{(this.state.collapsState !== 3 && !!!this.props.elementsHidden) || this.state.collapsState === 2 ? 
 					<div className={`Subject`} onClick={this._onClick}>
-						<img className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} src={this.getSubjectIcon(this.props.subject.title)} />
-						<h4 className="Header">{this.state.subject.title}</h4>
+						<img alt="Subject icon" className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} src={this.getSubjectIcon(this.props.subject.title)} />
+						<h4 className="Header">{this.props.subject.title}</h4>
 					</div>
 					: null
 				}
-				{this.state.collapsState >= 2 ? 
-					<SubjectView subject={this.props.subject} close={this.resetCollapse} />
-					: null
+				{this.state.collapsState === 3 ? 
+					<Redirect to={`/course/${this.props.subject.title}`} /> : null
 				}
 			</>
 		)
@@ -75,15 +62,12 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 }
 
 export interface StateForComponent {
-	collapsState: number,
-	subject: SubjectData | undefined
+	collapsState: number
 }
 
 export interface PropsForComponent {
 	subject: SubjectData,
-	elementsHidden: boolean,
-	showAll: () => void,
-	hideAll: () => void
+	elementsHidden: boolean
 }
 
 export default Subject
