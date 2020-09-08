@@ -29,8 +29,8 @@ export default class Subject extends Component<PropsForComponent> {
 		const contentObject: ContentObject = object as ContentObject
 		if (contentObject.link !== undefined) {
 			return (
-				<div className="ButtonWrapper">
-					<a key={uuid()} href={contentObject.link} className="Button">
+				<div key={uuid()} className="ButtonWrapper">
+					<a href={contentObject.link} className="Button">
 						{contentObject.displayName}
 					</a>
 				</div>
