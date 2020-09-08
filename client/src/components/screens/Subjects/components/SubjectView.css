@@ -90,6 +90,7 @@
 }
 
 .textObjectContainer {
+	justify-self: center;
 	text-align: center;
 	max-width: 20rem;
 	margin-bottom: 2rem;
@@ -104,13 +105,16 @@
 		margin-left: 1rem;
 		margin-right: 1rem;
 	}
-	.textObject {
-		text-align: left;
-	}
 }
 
 .ButtonWrapper {
 	width: fit-content;
 	margin: 0.6rem 0.25rem;
 	justify-self: center;
+}
+
+@media (min-width: 40rem) {
+	.ButtonWrapper {
+		margin: 0.3rem 0.25rem;
+	}
 }

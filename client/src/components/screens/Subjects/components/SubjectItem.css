@@ -94,7 +94,8 @@
 }
 
 .Button {
-	height: fit-content;
+	display: inline-block;
+	height: max-content;
 	width: fit-content;
 	color: white;
 	text-decoration: none;
