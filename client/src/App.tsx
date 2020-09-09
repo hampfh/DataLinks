@@ -1,7 +1,7 @@
 import React from 'react';
 import Subjects from "./components/screens/Subjects/Subjects"
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { Component } from 'react';
 import { SubjectData } from "./components/screens/Subjects/Subjects"
 import Http, { HttpReturnType } from "./functions/HttpRequest"
@@ -44,11 +44,14 @@ class App extends Component<{}, StateForComponent> {
 			<Router>
 				<Switch>
 					<Route exact path="/">
+						<Redirect to="/D20"/>
+					</Route>
+					<Route exact path="/D20">
 						<Subjects data={this.state.data} />
 					</Route>
 					{this.state.data.subjects.map((subject) => {
 						return (
-							<Route key={uuid()} exact path={`/course/${subject.title}`}>
+							<Route key={uuid()} exact path={`/D20/course/${subject.title}`}>
 								<SubjectView
 									subject={subject}
 									close={() => { }}
