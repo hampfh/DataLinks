@@ -101,6 +101,7 @@
 			"active": [],
 			"objects": [
 				{
+					"split": false,
 					"objects": [
 						{
 							"displayName": "Subject site",
@@ -109,6 +110,19 @@
 						{
 							"displayName": "Meeting link",
 							"link": "https://kth-se.zoom.us/j/61248741329"
+						}
+					]
+				},
+				{
+					"group": "Seminare 2",
+					"column": true,
+					"objects": [
+						{
+							"displayName": "Seminare questions",
+							"link": "https://canvas.kth.se/courses/20289/files/3227781/download?wrap=1"
+						},
+						{
+							"text": "Do date: 15:15 15/9"
 						}
 					]
 				},
@@ -166,7 +180,7 @@
 						},
 						{
 							"displayName": "Zoom D",
-							"link": "https://kth-se.zoom.us/j/66890362360"
+							"link": "https://kth-se.zoom.us/j/69257851332"
 						},
 						{
 							"displayName": "Zoom E",
@@ -178,7 +192,7 @@
 						},
 						{
 							"displayName": "Zoom G",
-							"link": "https://kth-se.zoom.us/j/67291433114"
+							"link": "https://kth-se.zoom.us/j/61981883724"
 						},
 						{
 							"displayName": "Zoom H",
