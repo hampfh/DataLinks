@@ -14,6 +14,7 @@
 	max-width: 6rem;
 	max-height: 120rem;
 	margin: 1rem 2rem;
+	margin-bottom: 0;
 	border-radius: 1rem;
 	transition-duration: 0.15s;
 	transition-property: all;

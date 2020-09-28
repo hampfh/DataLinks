@@ -47,8 +47,15 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		return (
 			<>
 				{(this.state.collapsState !== 3 && !!!this.props.elementsHidden) || this.state.collapsState === 2 ? 
-					<div className={`Subject`} onClick={this._onClick}>
-						<img alt="Subject icon" className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} src={this.getSubjectIcon(this.props.subject.title)} />
+					<div className={`Subject`} 
+						onClick={this._onClick} 
+						onMouseLeave={this.props.hideSneakPeak}
+					>
+						<img alt="Subject icon" 
+							onMouseEnter={() => this.props.showSneakPeak(this.props.subject)}
+							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
+							src={this.getSubjectIcon(this.props.subject.title)} 
+						/>
 						<h4 className="Header">{this.props.subject.title}</h4>
 					</div>
 					: null
@@ -67,7 +74,9 @@ export interface StateForComponent {
 
 export interface PropsForComponent {
 	subject: SubjectData,
-	elementsHidden: boolean
+	elementsHidden: boolean,
+	showSneakPeak: (subject: SubjectData) => void,
+	hideSneakPeak: () => void
 }
 
 export default Subject

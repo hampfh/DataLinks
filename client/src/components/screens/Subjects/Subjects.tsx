@@ -2,15 +2,46 @@ import React, { Component } from 'react'
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import { StateForComponent as PropsForComponent } from "../../../App"
+import SubjectSneakPeak from "../Subjects/components/SneakPeak"
+import { Group, ContentObject } from "../../templates/RenderData"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
+	interval?: NodeJS.Timeout
 	constructor(props: PropsForComponent) {
 		super(props)
 
 		this.state = {
-			elementsHidden: false
+			elementsHidden: false,
+			sneakPeak: undefined,
+			selectScore: 0
 		}
+	}
+
+	_showSneakPeak = (subject: SubjectData) => {
+		if (this.interval != null)
+			clearTimeout(this.interval);
+
+		if (this.state.selectScore <= 0) {
+			let newState = { ...this.state }
+			newState.sneakPeak = subject
+			newState.selectScore++;
+			this.setState(newState)
+		}
+	}
+
+	_hideSneakPeak = () => {
+		let newState = { ...this.state }
+		newState.selectScore--;
+		this.setState(newState)
+
+		this.interval = setTimeout(() => {
+			if (this.state.selectScore <= 0) {
+				let newState = { ...this.state }
+				newState.sneakPeak = undefined
+				this.setState(newState)
+			}
+		}, 10)
 	}
 
 	render() {
@@ -26,32 +57,24 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 								key={subject.title}
 								subject={subject}
 								elementsHidden={this.state.elementsHidden}
+								showSneakPeak={this._showSneakPeak}
+								hideSneakPeak={this._hideSneakPeak}
 							/>
 						)
 					}
 				</div>
-				<div className="CreditsWrapper">
-					<p className={"Credits"}>Site by <b>Hampus H</b></p>
-					<p className={"Credits"}>Icons made by <a href="https://www.flaticon.com/authors/chanut" title="Chanut">Chanut</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
-					<p className={"Credits"}>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></p>
+				<div className="SneakPeakContainer">
+					{this.state.sneakPeak == null ? null :
+						<SubjectSneakPeak 
+							subject={this.state.sneakPeak}
+							showSneakPeak={this._showSneakPeak}
+							hideSneakPeak={this._hideSneakPeak}
+						/>
+					}
 				</div>
 			</section>
 		)
 	}
-}
-
-export interface ContentObject {
-	displayName: string,
-	link?: string,
-	text?: string,
-	color: string
-}
-
-export interface Group {
-	group: string,
-	objects: Array<ContentObject>,
-	column?: boolean,
-	split?: boolean
 }
 
 export interface SubjectData {
@@ -62,7 +85,9 @@ export interface SubjectData {
 }
 
 interface StateForComponent {
-	elementsHidden: boolean
+	elementsHidden: boolean,
+	selectScore: number,
+	sneakPeak?: SubjectData
 }
 
 export default Subjects
