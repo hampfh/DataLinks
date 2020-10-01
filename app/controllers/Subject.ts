@@ -1,8 +1,11 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createSubject } from "./schemas"
-import SubjectModel from "../models/subjects.model"
+import { createSubject, findElementWithId } from "./schemas"
+import SubjectModel, { ISubject } from "../models/subjects.model"
 import GroupModel from "../models/group.model"
+import { Subject } from "."
+import { Document } from "mongoose"
+import GroupController from "./Group"
 
 export default class SubjectController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -17,7 +20,8 @@ export default class SubjectController extends CrudController {
 		// Create root content group
 		const newGroup = new GroupModel({
 			split: req.body.split,
-			column: req.body.column
+			column: req.body.column,
+			depth: 1
 		})
 		await newGroup.save()
 
@@ -68,6 +72,24 @@ export default class SubjectController extends CrudController {
 		throw new Error("Not implemented")
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-		throw new Error("Not implemented")
+		const { error } = findElementWithId.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		const subject = await SubjectModel.findOne({
+			_id: req.body.id
+		}) as Document & ISubject
+
+		await GroupController.recursiveDelete(subject.group._id.toString())
+
+		await SubjectModel.deleteOne({
+			_id: req.body.id
+		})
+
+		res.json({
+			message: "Successfully deleted subject"
+		})
 	}
 }

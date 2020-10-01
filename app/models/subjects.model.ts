@@ -1,7 +1,15 @@
 import Mongoose from "mongoose"
-import { GroupSchema } from "./group.model"
+import { GroupSchema, IGroup } from "./group.model"
 import database from "./index.model"
 const Schema = database.Schema
+
+export interface ISubject {
+	name: string,
+	code: string,
+	description: string,
+	color: string,
+	group: IGroup
+}
 
 export const SubjectSchema = new Schema({
 	name: {

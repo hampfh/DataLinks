@@ -12,10 +12,21 @@ export default class GroupController extends CrudController {
 			return
 		}
 
+		const parent = await GroupModel.findOne({
+			_id: req.body.parentGroup
+		}) as Document & IGroup
+		if (parent == null) {
+			res.status(500).json({
+				message: "Internal error"
+			})
+			return
+		}
+
 		// Create group
 		const newGroup = new GroupModel({
 			split: req.body.split,
-			column: req.body.column
+			column: req.body.column,
+			depth: parent.depth + 1
 		})
 
 		// Assign group to parent
@@ -77,16 +88,23 @@ export default class GroupController extends CrudController {
 
 	// Recursivly deletes all groups
 	public static async recursiveDelete(id: string): Promise<number> {
+		if (id.length <= 0)
+			return 0
+
 		const group = await GroupModel.findOne({
 			_id: id
 		}) as Document & IGroup
 
+		if (group == null)
+			return 0
+
 		let deletions = []
 		let deleteCount = 1
 
-		for (let i = 0; i < group.content.length; i++) {
-			if (group.content[i].group !== undefined) 
-				deletions.push(this.recursiveDelete(group.content[i]._id))
+		if (group.content != null) {
+			for (let i = 0; i < group.content.length; i++) {
+				deletions.push(this.recursiveDelete(group.content[i].group?._id ?? ""))
+			}
 		}
 
 		deleteCount += deletions.length
