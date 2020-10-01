@@ -51,6 +51,10 @@ export const TextSchema = new Schema({
 
 export const ContentSchema = new Schema({
 	_id: Schema.Types.ObjectId,
+	placement: {
+		type: Number,
+		required: true
+	},
 	link: LinkSchema,
 	text: TextSchema,
 	group: {

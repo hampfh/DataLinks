@@ -36,6 +36,7 @@ export default class GroupController extends CrudController {
 			$push: {
 				content: {
 					_id: new Mongoose.Types.ObjectId(),
+					placement: req.body.placement ?? 0,
 					group: newGroup._id
 				}
 			}

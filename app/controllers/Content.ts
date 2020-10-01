@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createGroup, createLink, createText, findElementWithId, findGroupChildElementId } from "./schemas"
+import { createGroup, createLink, createText, findElementWithId, findGroupChildElementId, updateText, updateLink } from "./schemas"
 import GroupModel, { IContent, IGroup } from "../models/group.model"
 import Mongoose from "mongoose"
 
@@ -25,6 +25,7 @@ export default class ContentController extends CrudController {
 
 		const appendObject = {
 			_id: new Mongoose.Types.ObjectId(),
+			placement: req.body.placement ?? 0,
 			link: {
 				displayText: req.body.displayText,
 				link: req.body.link
@@ -55,6 +56,7 @@ export default class ContentController extends CrudController {
 
 		const appendObject = {
 			_id: new Mongoose.Types.ObjectId(),
+			placement: req.body.placement ?? 0,
 			text: {
 				title: req.body.title,
 				text: req.body.text
@@ -100,6 +102,79 @@ export default class ContentController extends CrudController {
 			res.status(200).json(target)
 		next()
 	}
+
+	public async updateLink(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateLink.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		try {
+			await GroupModel.updateOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				$set: {
+					"content.$.link": {
+						displayText: req.body.displayText,
+						link: req.body.link
+					}
+				}
+			})
+		} catch (error) {
+			console.warn(error)
+			res.json({
+				message: "Internal error"
+			})
+			return
+		}
+
+		res.json({
+			message: "Successfully updated field",
+			link: {
+				displayText: req.body.displayText,
+				link: req.body.link
+			}
+		})
+	}
+
+	public async updateText(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateText.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+		
+		try {
+			await GroupModel.updateOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				$set: {
+					"content.$.text": {
+						title: req.body.title,
+						text: req.body.text
+					}
+				}
+			})
+		} catch (error) {
+			console.warn(error)
+			res.json({
+				message: "Internal error"
+			})
+			return
+		}
+
+		res.json({
+			message: "Successfully updated field",
+			text: {
+				title: req.body.title,
+				text: req.body.text
+			}
+		})
+	}
+
 	public async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		throw new Error("Not implemented")
 	}
@@ -115,9 +190,11 @@ export default class ContentController extends CrudController {
 				_id: req.body.parentGroupId
 			}, {
 				$pull: {
-					_id: req.body.id
+					content: {
+						_id: req.body.id
+					}
 				}
-			}) as Mongoose.Document & IGroup
+			}).exec()
 		} catch (error) {
 			res.status(500).json({
 				message: "Could not delete specified item"
