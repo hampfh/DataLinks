@@ -2,8 +2,9 @@ import express from "express"
 import { CrudController } from "./CrudController"
 import { createSubject } from "./schemas"
 import SubjectModel from "../models/subjects.model"
+import GroupModel from "../models/group.model"
 
-export default class GuestController extends CrudController {
+export default class SubjectController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createSubject.validate(req.body)
 		if (error) {
@@ -13,11 +14,19 @@ export default class GuestController extends CrudController {
 
 		// TODO make sure there isn't one already
 
+		// Create root content group
+		const newGroup = new GroupModel({
+			split: req.body.split,
+			column: req.body.column
+		})
+		await newGroup.save()
+
 		const newSubject = new SubjectModel({
 			name: req.body.name,
 			code: req.body.code,
 			description: req.body.description,
-			color: req.body.color
+			color: req.body.color,
+			group: newGroup._id
 		})
 		await newSubject.save().catch(() => {
 			res.status(500).json({
@@ -26,16 +35,34 @@ export default class GuestController extends CrudController {
 		})
 		if (!!!res.headersSent)
 			res.status(201).json(newSubject)
+		next()
 	}
-	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+	public async read(req: express.Request, res: express.Response): Promise<void> {
 
-		const response = await SubjectModel.find()
+		// Max depth is 5
+		const response = await SubjectModel.find().populate("group").populate({
+			path: "group",
+			populate: {
+				path: "content.group",
+				populate: {
+					path: "content.group",
+					populate: {
+						path: "content.group",
+						populate: {
+							path: "content.group",
+							populate: {
+								path: "content.group",
+							}
+						}
+					}
+				}
+			}
+		})
 		
 		if (response == null)
 			res.status(200).json([])
 		else
 			res.status(200).json(response)
-		next()
 	}
 	public async update(): Promise<void> {
 		throw new Error("Not implemented")

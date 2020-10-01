@@ -1,3 +1,4 @@
+import Mongoose from "mongoose"
 import { GroupSchema } from "./group.model"
 import database from "./index.model"
 const Schema = database.Schema
@@ -19,7 +20,10 @@ export const SubjectSchema = new Schema({
 		type: String,
 		required: true
 	},
-	content: [GroupSchema]
+	group: {
+		type: Mongoose.Types.ObjectId,
+		ref: "group"
+	}
 })
 
 export default database.model("subject", SubjectSchema)
