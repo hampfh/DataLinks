@@ -60,22 +60,26 @@ export default class RenderData extends Component<PropsForComponent> {
 }
 
 export interface ILink {
+	_id: string,
 	displayText: string,
 	link: string
 }
 
 export interface IText {
+	_id: string,
 	title: string,
 	text: string
 }
 
 export interface ContentObject {
+	_id: string,
 	link?: ILink,
 	text?: IText,
 	group?: Group
 }
 
 export interface Group {
+	_id: string,
 	group: string,
 	placement: number,
 	content: Array<ContentObject>,

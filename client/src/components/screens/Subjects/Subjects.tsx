@@ -78,6 +78,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 }
 
 export interface SubjectData {
+	_id: string,
 	name: string,
 	code: string,
 	description: string,
