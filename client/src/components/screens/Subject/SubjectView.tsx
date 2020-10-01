@@ -29,11 +29,11 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 					<div className="SubjectWrapper">
 						<div className="Scrollable">
 							<img className="logoutIcon" onClick={this._clickExitView} alt="Exit view" src={logoutIcon} />
-							<h2 className="HeaderSubjectView">{this.props.subject.title}</h2>
+							<h2 className="HeaderSubjectView">{this.props.subject.name}</h2>
 							<p className="Description">{this.props.subject.description}</p>
 							<div className="LinkContainer">
 								<RenderData 
-									objects={this.props.subject.objects}
+									group={this.props.subject.group}
 								/>
 							</div>
 						</div>

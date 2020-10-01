@@ -13,33 +13,30 @@ class App extends Component<{}, StateForComponent> {
 	constructor(props: {}) {
 		super(props)
 		this.state = {
-			data: {
-				title: "",
-				subjects: []
-			}
+			subjects: []
 		}
 	}
 
 	async componentDidMount() {
 		const response = (await Http({
-			url: "/data",
+			url: "/api/v1/subject",
 			method: "GET",
 			body: {
 
 			}
 		})) as HttpReturnType & {
-			data: {
-				title: string,
-				subjects: Array<SubjectData>
-			}
+			result: Array<SubjectData>
 		}
 
 		const newState = { ...this.state }
-		newState.data = response.data
+		newState.subjects = response.result
 		this.setState(newState)
+		console.log(response.result)
 	}
 	
 	render() {
+		if (this.state.subjects === undefined)
+			return null
 		return (
 			<Router>
 				<Switch>
@@ -47,11 +44,11 @@ class App extends Component<{}, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Subjects data={this.state.data} />
+						<Subjects subjects={this.state.subjects} />
 					</Route>
-					{this.state.data.subjects.map((subject) => {
+					{this.state.subjects.map((subject) => {
 						return (
-							<Route key={uuid()} exact path={`/D20/course/${subject.title}`}>
+							<Route key={uuid()} exact path={`/D20/course/${subject.name}`}>
 								<SubjectView
 									subject={subject}
 									close={() => { }}
@@ -66,10 +63,7 @@ class App extends Component<{}, StateForComponent> {
 }
 
 export interface StateForComponent {
-	data: {
-		title: string,
-		subjects: Array<SubjectData>
-	}
+	subjects: SubjectData[]
 }
 
 export default App;

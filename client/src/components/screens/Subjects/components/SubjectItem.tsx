@@ -54,14 +54,14 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 						<img alt="Subject icon" 
 							onMouseEnter={() => this.props.showSneakPeak(this.props.subject)}
 							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
-							src={this.getSubjectIcon(this.props.subject.title)} 
+							src={this.getSubjectIcon(this.props.subject.code)} 
 						/>
-						<h4 className="Header">{this.props.subject.title}</h4>
+						<h4 className="Header">{this.props.subject.name}</h4>
 					</div>
 					: null
 				}
 				{this.state.collapsState === 3 ? 
-					<Redirect to={`/D20/course/${this.props.subject.title}`} /> : null
+					<Redirect to={`/D20/course/${this.props.subject.name}`} /> : null
 				}
 			</>
 		)

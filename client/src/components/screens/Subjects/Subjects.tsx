@@ -3,7 +3,7 @@ import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import { StateForComponent as PropsForComponent } from "../../../App"
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
-import { Group, ContentObject } from "../../templates/RenderData"
+import { Group } from "../../templates/RenderData"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
@@ -48,13 +48,13 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 		return (
 			<section className="Master">
 				<div>
-					<h1 className="Title">{this.props.data.title}</h1>
+					<h1 className="Title">D20 links</h1>
 				</div>
 				<div className="SubjectContainer">
 					{
-						this.props.data.subjects.map((subject) =>
+						this.props.subjects.map((subject) =>
 							<SubjectComponent
-								key={subject.title}
+								key={subject.code}
 								subject={subject}
 								elementsHidden={this.state.elementsHidden}
 								showSneakPeak={this._showSneakPeak}
@@ -78,10 +78,11 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 }
 
 export interface SubjectData {
-	title: string,
+	name: string,
+	code: string,
 	description: string,
 	color: string,
-	objects: Array<ContentObject | Group>
+	group: Group
 }
 
 interface StateForComponent {

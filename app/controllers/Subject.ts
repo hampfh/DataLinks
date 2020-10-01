@@ -66,7 +66,9 @@ export default class SubjectController extends CrudController {
 		if (response == null)
 			res.status(200).json([])
 		else
-			res.status(200).json(response)
+			res.status(200).json({
+				result: response
+			})
 	}
 	public async update(): Promise<void> {
 		throw new Error("Not implemented")

@@ -14,7 +14,7 @@ export default class SneakPeak extends Component<PropsForComponent> {
 			>
 				<div className="ContentContainer">
 					<RenderData 
-						objects={this.props.subject.objects}
+						group={this.props.subject.group}
 					/>
 				</div>
 			</div>
