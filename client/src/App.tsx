@@ -13,7 +13,8 @@ class App extends Component<{}, StateForComponent> {
 	constructor(props: {}) {
 		super(props)
 		this.state = {
-			subjects: []
+			subjects: [],
+			editMode: false
 		}
 	}
 
@@ -31,7 +32,12 @@ class App extends Component<{}, StateForComponent> {
 		const newState = { ...this.state }
 		newState.subjects = response.result
 		this.setState(newState)
-		console.log(response.result)
+	}
+
+	_setEditMode = (mode: boolean) => {
+		const newState = { ...this.state }
+		newState.editMode = mode
+		this.setState(newState)
 	}
 	
 	render() {
@@ -44,12 +50,13 @@ class App extends Component<{}, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Subjects subjects={this.state.subjects} />
+						<Subjects subjects={this.state.subjects} editMode={this.state.editMode} setEditMode={this._setEditMode} />
 					</Route>
 					{this.state.subjects.map((subject) => {
 						return (
 							<Route key={uuid()} exact path={`/D20/course/${subject.name}`}>
 								<SubjectView
+									editMode={this.state.editMode}
 									subject={subject}
 									close={() => { }}
 								/>
@@ -63,7 +70,8 @@ class App extends Component<{}, StateForComponent> {
 }
 
 export interface StateForComponent {
-	subjects: SubjectData[]
+	subjects: SubjectData[],
+	editMode: boolean
 }
 
 export default App;

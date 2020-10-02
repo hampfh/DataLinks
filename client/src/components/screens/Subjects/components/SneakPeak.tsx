@@ -14,6 +14,7 @@ export default class SneakPeak extends Component<PropsForComponent> {
 			>
 				<div className="ContentContainer">
 					<RenderData 
+						editMode={this.props.editMode}
 						group={this.props.subject.group}
 					/>
 				</div>
@@ -25,5 +26,6 @@ export default class SneakPeak extends Component<PropsForComponent> {
 export interface PropsForComponent {
 	showSneakPeak: (subject: SubjectData) => void,
 	hideSneakPeak: () => void,
-	subject: SubjectData
+	subject: SubjectData,
+	editMode: boolean
 }

@@ -33,6 +33,7 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 							<p className="Description">{this.props.subject.description}</p>
 							<div className="LinkContainer">
 								<RenderData 
+									editMode={this.props.editMode}
 									group={this.props.subject.group}
 								/>
 							</div>
@@ -47,7 +48,8 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 
 export interface PropsForComponent {
 	close: () => void,
-	subject: SubjectData
+	subject: SubjectData,
+	editMode: boolean
 }
 
 export interface StateForComponent {

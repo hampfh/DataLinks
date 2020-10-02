@@ -88,5 +88,6 @@ export interface Group {
 }
 
 interface PropsForComponent {
+	editMode: boolean,
 	group: Group
 }
