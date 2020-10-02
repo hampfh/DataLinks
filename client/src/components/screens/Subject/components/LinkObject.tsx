@@ -15,7 +15,6 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 	}
 
 	_updateLink = async (event: React.ChangeEvent<HTMLInputElement>, type: "DisplayText" | "Link") => {
-		console.log(event.target.value)
 		let newState = { ...this.state }
 		if (type === "DisplayText") {
 			newState.displayText = event.target.value
@@ -53,7 +52,6 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 					window.location.reload()
 			}
 			this.props.updateSubjects()
-			console.log("Updated")
 			this.timer = undefined
 		}, 1000)
 	}

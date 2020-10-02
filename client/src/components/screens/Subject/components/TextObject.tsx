@@ -15,7 +15,6 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 	}
 
 	_updateText = async (event: React.ChangeEvent<HTMLInputElement>, type: "Title" | "Text") => {
-		console.log(event.target.value)
 		let newState = { ...this.state }
 		if (type === "Title") {
 			newState.title = event.target.value
@@ -55,7 +54,6 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 
 			this.props.updateSubjects()
 
-			console.log("Updated")
 			this.timer = undefined
 		}, 1000)
 	}
