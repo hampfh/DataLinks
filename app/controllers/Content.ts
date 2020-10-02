@@ -50,6 +50,7 @@ export default class ContentController extends CrudController {
 	public async createText(req: express.Request, res: express.Response, next: express.NextFunction) {
 		const { error } = createText.validate(req.body)
 		if (error) {
+			console.log(error.message)
 			super.fail(res, error.message, 400, next)
 			return
 		}

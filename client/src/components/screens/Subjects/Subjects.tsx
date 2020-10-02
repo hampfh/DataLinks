@@ -3,6 +3,7 @@ import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import { Group } from "../../templates/RenderData"
+import { AddedElement, ContentType } from '../../../App'
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
@@ -74,7 +75,9 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 							hideSneakPeak={this._hideSneakPeak}
 							updateSubjects={this.props.updateSubjects}
 							deleted={this.props.deleted}
+							added={this.props.added}
 							addDeleted={this.props.addDeleted}
+							addContent={this.props.addContent}
 						/>
 					}
 				</div>
@@ -98,7 +101,9 @@ interface PropsForComponent {
 	setEditMode: (mode: boolean) => void,
 	updateSubjects: () => void,
 	deleted: string[],
-	addDeleted: (id: string) => void
+	added: AddedElement[],
+	addDeleted: (id: string) => void,
+	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
 }
 
 interface StateForComponent {

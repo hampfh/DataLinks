@@ -75,11 +75,11 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 	}
 
 	render() {
-		if (!!!this.props.editMode) {
+		if (!!!this.props.editMode || this.props.id.toString().length === 0) {
 			return (
 				<div className="ButtonWrapper">
-					<a href={this.state.displayText} className="Button">
-						{this.state.link}
+					<a href={this.state.link} className="Button">
+						{this.state.displayText}
 					</a>
 				</div>
 			)

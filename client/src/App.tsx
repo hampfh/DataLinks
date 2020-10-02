@@ -8,6 +8,15 @@ import Http, { HttpReturnType } from "./functions/HttpRequest"
 import SubjectView from "./components/screens/Subject/SubjectView"
 import { v4 as uuid } from "uuid"
 
+export interface AddedElement {
+	parentId: string,
+	fieldOne: string,
+	fieldTwo: string,
+	type: ContentType
+}
+
+export type ContentType = "Text" | "Link"
+
 class App extends Component<{}, StateForComponent> {
 
 	constructor(props: {}) {
@@ -15,12 +24,24 @@ class App extends Component<{}, StateForComponent> {
 		this.state = {
 			subjects: [],
 			editMode: false,
-			deleted: []
+			deleted: [],
+			added: []
 		}
 	}
 
 	componentDidMount() {
 		this._updateSubjects()
+	}
+
+	_addContent = (parentId: string, fieldOne: string, fieldTwo: string, type: ContentType) => {
+		let newState = { ...this.state }
+		newState.added.push({
+			parentId,
+			fieldOne,
+			fieldTwo,
+			type
+		})
+		this.setState(newState)
 	}
 
 	_addDeletedContent = (id: string) => {
@@ -67,7 +88,9 @@ class App extends Component<{}, StateForComponent> {
 							setEditMode={this._setEditMode} 
 							updateSubjects={this._updateSubjects}
 							deleted={this.state.deleted}
+							added={this.state.added}
 							addDeleted={this._addDeletedContent}
+							addContent={this._addContent}
 						/>
 					</Route>
 					{this.state.subjects.map((subject) => {
@@ -79,7 +102,9 @@ class App extends Component<{}, StateForComponent> {
 									subject={subject}
 									close={() => { }}
 									deleted={this.state.deleted}
+									added={this.state.added}
 									addDeleted={this._addDeletedContent}
+									addContent={this._addContent}
 								/>
 							</Route>
 						)
@@ -93,7 +118,8 @@ class App extends Component<{}, StateForComponent> {
 export interface StateForComponent {
 	subjects: SubjectData[],
 	editMode: boolean,
-	deleted: string[]
+	deleted: string[],
+	added: AddedElement[]
 }
 
 export default App;

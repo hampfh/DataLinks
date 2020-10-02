@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { AddedElement, ContentType } from '../../../../App'
 import RenderData from '../../../templates/RenderData'
 import { SubjectData } from '../Subjects'
 
@@ -18,7 +19,9 @@ export default class SneakPeak extends Component<PropsForComponent> {
 						editMode={this.props.editMode}
 						group={this.props.subject.group}
 						deleted={this.props.deleted}
+						added={this.props.added}
 						addDeleted={this.props.addDeleted}
+						addContent={this.props.addContent}
 					/>
 				</div>
 			</div>
@@ -27,11 +30,13 @@ export default class SneakPeak extends Component<PropsForComponent> {
 }
 
 export interface PropsForComponent {
+	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
 	addDeleted: (id: string) => void,
 	showSneakPeak: (subject: SubjectData) => void,
 	hideSneakPeak: () => void,
 	updateSubjects: () => void,
 	subject: SubjectData,
 	editMode: boolean,
-	deleted: string[]
+	deleted: string[],
+	added: AddedElement[]
 }

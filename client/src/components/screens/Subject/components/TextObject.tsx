@@ -92,16 +92,18 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 			return (
 				<div className="ButtonWrapper">
 					<label htmlFor="title">Title</label>
-					<input
+					<input disabled={this.props.id.toString().length === 0}
 						name="title" value={this.state.title ?? ""}
 						onChange={(event) => this._updateText(event, "Title")}
 					/>
 					<label htmlFor="text">Text</label>
-					<input
+					<input disabled={this.props.id.toString().length === 0}
 						name="text" value={this.state.text ?? ""}
 						onChange={(event) => this._updateText(event, "Text")}
 					/>
-					<button onClick={this._delete}>Delete</button>
+					{this.props.id.toString().length === 0 ? null :
+						<button onClick={this._delete}>Delete</button>
+					}
 				</div>
 			)
 		}
