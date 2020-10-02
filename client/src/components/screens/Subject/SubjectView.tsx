@@ -36,6 +36,8 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 									updateSubjects={this.props.updateSubjects}
 									editMode={this.props.editMode}
 									group={this.props.subject.group}
+									deleted={this.props.deleted}
+									addDeleted={this.props.addDeleted}
 								/>
 							</div>
 						</div>
@@ -48,10 +50,12 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 }
 
 export interface PropsForComponent {
+	addDeleted: (id: string) => void
 	updateSubjects: () => void,
 	close: () => void,
 	subject: SubjectData,
-	editMode: boolean
+	editMode: boolean,
+	deleted: string[]
 }
 
 export interface StateForComponent {

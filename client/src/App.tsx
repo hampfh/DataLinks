@@ -14,12 +14,19 @@ class App extends Component<{}, StateForComponent> {
 		super(props)
 		this.state = {
 			subjects: [],
-			editMode: false
+			editMode: false,
+			deleted: []
 		}
 	}
 
 	componentDidMount() {
 		this._updateSubjects()
+	}
+
+	_addDeletedContent = (id: string) => {
+		let newState = { ...this.state }
+		newState.deleted.push(id)
+		this.setState(newState)
 	}
 
 	_setEditMode = (mode: boolean) => {
@@ -59,6 +66,8 @@ class App extends Component<{}, StateForComponent> {
 							editMode={this.state.editMode} 
 							setEditMode={this._setEditMode} 
 							updateSubjects={this._updateSubjects}
+							deleted={this.state.deleted}
+							addDeleted={this._addDeletedContent}
 						/>
 					</Route>
 					{this.state.subjects.map((subject) => {
@@ -69,6 +78,8 @@ class App extends Component<{}, StateForComponent> {
 									editMode={this.state.editMode}
 									subject={subject}
 									close={() => { }}
+									deleted={this.state.deleted}
+									addDeleted={this._addDeletedContent}
 								/>
 							</Route>
 						)
@@ -81,7 +92,8 @@ class App extends Component<{}, StateForComponent> {
 
 export interface StateForComponent {
 	subjects: SubjectData[],
-	editMode: boolean
+	editMode: boolean,
+	deleted: string[]
 }
 
 export default App;

@@ -17,6 +17,8 @@ export default class SneakPeak extends Component<PropsForComponent> {
 						updateSubjects={this.props.updateSubjects}
 						editMode={this.props.editMode}
 						group={this.props.subject.group}
+						deleted={this.props.deleted}
+						addDeleted={this.props.addDeleted}
 					/>
 				</div>
 			</div>
@@ -25,9 +27,11 @@ export default class SneakPeak extends Component<PropsForComponent> {
 }
 
 export interface PropsForComponent {
+	addDeleted: (id: string) => void,
 	showSneakPeak: (subject: SubjectData) => void,
 	hideSneakPeak: () => void,
 	updateSubjects: () => void,
 	subject: SubjectData,
-	editMode: boolean
+	editMode: boolean,
+	deleted: string[]
 }

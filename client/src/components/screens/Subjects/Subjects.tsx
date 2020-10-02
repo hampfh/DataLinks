@@ -73,6 +73,8 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 							showSneakPeak={this._showSneakPeak}
 							hideSneakPeak={this._hideSneakPeak}
 							updateSubjects={this.props.updateSubjects}
+							deleted={this.props.deleted}
+							addDeleted={this.props.addDeleted}
 						/>
 					}
 				</div>
@@ -94,7 +96,9 @@ interface PropsForComponent {
 	subjects: SubjectData[],
 	editMode: boolean
 	setEditMode: (mode: boolean) => void,
-	updateSubjects: () => void
+	updateSubjects: () => void,
+	deleted: string[],
+	addDeleted: (id: string) => void
 }
 
 interface StateForComponent {
