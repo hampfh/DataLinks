@@ -18,7 +18,17 @@ class App extends Component<{}, StateForComponent> {
 		}
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		this._updateSubjects()
+	}
+
+	_setEditMode = (mode: boolean) => {
+		const newState = { ...this.state }
+		newState.editMode = mode
+		this.setState(newState)
+	}
+
+	_updateSubjects = async () => {
 		const response = (await Http({
 			url: "/api/v1/subject",
 			method: "GET",
@@ -33,12 +43,6 @@ class App extends Component<{}, StateForComponent> {
 		newState.subjects = response.result
 		this.setState(newState)
 	}
-
-	_setEditMode = (mode: boolean) => {
-		const newState = { ...this.state }
-		newState.editMode = mode
-		this.setState(newState)
-	}
 	
 	render() {
 		if (this.state.subjects === undefined)
@@ -50,12 +54,18 @@ class App extends Component<{}, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Subjects subjects={this.state.subjects} editMode={this.state.editMode} setEditMode={this._setEditMode} />
+						<Subjects 
+							subjects={this.state.subjects} 
+							editMode={this.state.editMode} 
+							setEditMode={this._setEditMode} 
+							updateSubjects={this._updateSubjects}
+						/>
 					</Route>
 					{this.state.subjects.map((subject) => {
 						return (
 							<Route key={uuid()} exact path={`/D20/course/${subject.name}`}>
 								<SubjectView
+									updateSubjects={this._updateSubjects}
 									editMode={this.state.editMode}
 									subject={subject}
 									close={() => { }}

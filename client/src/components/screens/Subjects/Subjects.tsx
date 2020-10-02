@@ -72,6 +72,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 							subject={this.state.sneakPeak}
 							showSneakPeak={this._showSneakPeak}
 							hideSneakPeak={this._hideSneakPeak}
+							updateSubjects={this.props.updateSubjects}
 						/>
 					}
 				</div>
@@ -92,7 +93,8 @@ export interface SubjectData {
 interface PropsForComponent {
 	subjects: SubjectData[],
 	editMode: boolean
-	setEditMode: (mode: boolean) => void
+	setEditMode: (mode: boolean) => void,
+	updateSubjects: () => void
 }
 
 interface StateForComponent {

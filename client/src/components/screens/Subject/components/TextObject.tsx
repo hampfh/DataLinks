@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Http from '../../../../functions/HttpRequest'
-import { ILink, IText } from '../../../templates/RenderData'
+import { IText } from '../../../templates/RenderData'
 
 export default class TextObject extends Component<PropsForComponent, StateForComponent> {
 
@@ -53,6 +53,8 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 					window.location.reload()
 			}
 
+			this.props.updateSubjects()
+
 			console.log("Updated")
 			this.timer = undefined
 		}, 1000)
@@ -93,7 +95,8 @@ interface PropsForComponent {
 	parentId: string,
 	id: string,
 	editMode: boolean,
-	textObject: IText
+	textObject: IText,
+	updateSubjects: () => void
 }
 
 interface StateForComponent {

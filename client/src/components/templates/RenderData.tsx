@@ -39,6 +39,7 @@ export default class RenderData extends Component<PropsForComponent> {
 						id={contentObject._id}
 						editMode={this.props.editMode} 
 						linkObject={contentObject.link}
+						updateSubjects={this.props.updateSubjects}
 					/>
 				)
 			}
@@ -50,6 +51,7 @@ export default class RenderData extends Component<PropsForComponent> {
 				id={contentObject._id}
 				editMode={this.props.editMode}
 				textObject={contentObject.text}
+				updateSubjects={this.props.updateSubjects}
 			/>
 		} else
 			return null
@@ -95,6 +97,7 @@ export interface Group {
 }
 
 interface PropsForComponent {
+	updateSubjects: () => void,
 	editMode: boolean,
 	group: Group
 }

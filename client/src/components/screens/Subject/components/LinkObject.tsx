@@ -52,6 +52,7 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 				if (window.confirm("The site encountered an error, reload the site?"))
 					window.location.reload()
 			}
+			this.props.updateSubjects()
 			console.log("Updated")
 			this.timer = undefined
 		}, 1000)
@@ -89,7 +90,8 @@ interface PropsForComponent {
 	parentId: string,
 	id: string,
 	editMode: boolean,
-	linkObject: ILink
+	linkObject: ILink,
+	updateSubjects: () => void
 }
 
 interface StateForComponent {
