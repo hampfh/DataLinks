@@ -162,10 +162,10 @@ export default class ContentController extends CrudController {
 			return
 		}
 
-		if (req.body.displayText === "-")
-			req.body.displayText = ""
-		if (req.body.link === "-")
-			req.body.link = ""
+		if (req.body.title === "-")
+			req.body.title = ""
+		if (req.body.text === "-")
+			req.body.text = ""
 		
 		try {
 			const group = await GroupModel.findOne({
