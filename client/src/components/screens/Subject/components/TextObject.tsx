@@ -58,6 +58,24 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 		}, 1000)
 	}
 
+	_delete = async () => {
+		const response = await Http({
+			url: "/api/v1/group/content",
+			method: "DELETE",
+			data: {
+				parentGroupId: this.props.parentId,
+				id: this.props.id
+			}
+		})
+
+		if (response.status !== 200) {
+			if (window.confirm("The site encountered an error, reload the site?"))
+				window.location.reload()
+		}
+
+		this.props.deleteContent(this.props.id)
+	}
+
 	render() {
 		if (!!!this.props.editMode) {
 			return (
@@ -83,6 +101,7 @@ export default class TextObject extends Component<PropsForComponent, StateForCom
 						name="text" value={this.state.text ?? ""}
 						onChange={(event) => this._updateText(event, "Text")}
 					/>
+					<button onClick={this._delete}>Delete</button>
 				</div>
 			)
 		}
@@ -94,7 +113,8 @@ interface PropsForComponent {
 	id: string,
 	editMode: boolean,
 	textObject: IText,
-	updateSubjects: () => void
+	updateSubjects: () => void,
+	deleteContent: (id: string) => void
 }
 
 interface StateForComponent {

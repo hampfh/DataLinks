@@ -78,6 +78,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				editMode={this.props.editMode}
 				textObject={contentObject.text}
 				updateSubjects={this.props.updateSubjects}
+				deleteContent={this.deleteContent}
 			/>
 		} else
 			return null
