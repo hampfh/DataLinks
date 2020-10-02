@@ -38,15 +38,15 @@ export const createText = Joi.object({
 })
 
 export const updateText = Joi.object({
-	parentGroup: Joi.string(),
-	id: Joi.string(),
+	parentGroup: Joi.string().required(),
+	id: Joi.string().required(),
 	title: Joi.string(),
 	text: Joi.string()
-})
+}).or("title", "text")
 
 export const updateLink = Joi.object({
-	parentGroup: Joi.string(),
-	id: Joi.string(),
-	displayText: Joi.string(),
-	link: Joi.string()
-})
+	parentGroup: Joi.string().required(),
+	id: Joi.string().required(),
+	displayText: Joi.string().min(0),
+	link: Joi.string().min(0)
+}).or("displayText", "link")

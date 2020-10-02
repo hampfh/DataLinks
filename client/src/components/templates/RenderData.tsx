@@ -1,25 +1,21 @@
 import React, { Component } from 'react'
 import { v4 as uuid } from "uuid"
+import LinkObject from '../screens/Subject/components/LinkObject'
+import TextObject from '../screens/Subject/components/TextObject'
 
 export default class RenderData extends Component<PropsForComponent> {
 
-	constructor(props: PropsForComponent) {
-		super(props)
-
-		console.log(props.group)
-	}
-
-	renderObject(object: ContentObject, depth?: number) {
+	renderObject(object: ContentObject, parentId: string, depth?: number) {
 		if (object.group !== undefined) {
 			const group = object.group
 			return (
 				<div key={uuid()} className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false ? " NoBorder" : "" }`}>
 					{group.group === undefined ? null :
-						<h4 className="textObjectTitle">{group.placement}</h4>
+						<h4 className="textObjectTitle"></h4> // Enable group names
 					}
 					<div className={`GroupItemContainer${group.column ? " Column" : ""}`}>
 						{group.content.map((object) => {
-							return this.renderObject(object, depth !== undefined ? depth + 1 : 1)
+							return this.renderObject(object, group._id, depth !== undefined ? depth + 1 : 1)
 						})}
 					</div>
 				</div>
@@ -27,23 +23,34 @@ export default class RenderData extends Component<PropsForComponent> {
 		}
 		const contentObject: ContentObject = object as ContentObject
 		if (contentObject.link !== undefined) {
-			return (
-				<div key={uuid()} className="ButtonWrapper">
-					<a href={contentObject.link.link} className="Button">
-						{contentObject.link.displayText}
-					</a>
-				</div>
-			)
+			if (!!!this.props.editMode) {
+				return (
+					<div key={uuid()} className="ButtonWrapper">
+						<a href={contentObject.link.link} className="Button">
+							{contentObject.link.displayText}
+						</a>
+					</div>
+				)
+			} else {
+				return (
+					<LinkObject 
+						key={uuid()}
+						parentId={parentId}
+						id={contentObject._id}
+						editMode={this.props.editMode} 
+						linkObject={contentObject.link}
+					/>
+				)
+			}
 		}
 		else if (contentObject.text !== undefined) {
-			return <div key={uuid()} className="textObjectContainer">
-				{contentObject.text.title === undefined ? null :
-					<h5 className="textObjectTitle">{contentObject.text.title}</h5>
-				}
-				{contentObject.text.text === undefined ? null :
-					<p className="textObject">{contentObject.text.text}</p>
-				}
-			</div>
+			return <TextObject 
+				key={uuid()}
+				parentId={parentId}
+				id={contentObject._id}
+				editMode={this.props.editMode}
+				textObject={contentObject.text}
+			/>
 		} else
 			return null
 	}
@@ -52,7 +59,7 @@ export default class RenderData extends Component<PropsForComponent> {
 		return (
 			<div>
 				{this.props.group.content.map((objects) => {
-					return this.renderObject(objects)
+					return this.renderObject(objects, this.props.group._id)
 				})}
 			</div>
 		)

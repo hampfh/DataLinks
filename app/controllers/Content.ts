@@ -110,15 +110,31 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		if (req.body.displayText === "-")
+			req.body.displayText = ""
+		if (req.body.link === "-")
+			req.body.link = ""
+
 		try {
+
+			const group = await GroupModel.findOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				"content.$.link": 1
+			}) as Mongoose.Document & IGroup
+
+			if (group == null)
+				throw new Error()
+
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
 				$set: {
 					"content.$.link": {
-						displayText: req.body.displayText,
-						link: req.body.link
+						displayText: req.body.displayText ?? group.content[0].link?.displayText,
+						link: req.body.link ?? group.content[0].link?.link
 					}
 				}
 			})
@@ -145,16 +161,31 @@ export default class ContentController extends CrudController {
 			super.fail(res, error.message, 400, next)
 			return
 		}
+
+		if (req.body.displayText === "-")
+			req.body.displayText = ""
+		if (req.body.link === "-")
+			req.body.link = ""
 		
 		try {
+			const group = await GroupModel.findOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				"content.$.text": 1
+			}) as Mongoose.Document & IGroup
+
+			if (group == null)
+				throw new Error()
+			
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
 				$set: {
 					"content.$.text": {
-						title: req.body.title,
-						text: req.body.text
+						title: req.body.title ?? group.content[0].text?.title,
+						text: req.body.text ?? group.content[0].text?.text,
 					}
 				}
 			})
