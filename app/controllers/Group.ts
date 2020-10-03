@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createGroup, findElementWithId } from "./schemas"
+import { createGroup, findElementWithId, updateGroup } from "./schemas"
 import GroupModel, { IGroup } from "../models/group.model"
 import Mongoose, { Document } from "mongoose"
 
@@ -48,7 +48,9 @@ export default class GroupController extends CrudController {
 			})
 		})
 		if (!!!res.headersSent)
-			res.status(201).json(newGroup)
+			res.status(201).json({
+				group: newGroup
+			})
 		next()
 	}
 	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -69,8 +71,46 @@ export default class GroupController extends CrudController {
 			res.status(200).json(response)
 		next()
 	}
-	public async update(): Promise<void> {
-		throw new Error("Not implemented")
+	public async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateGroup.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		let updateObject: {
+			column?: boolean,
+			split?: boolean,
+			placement?: number
+		} = {}
+
+		if (req.body.column != null)
+			updateObject.column = req.body.column
+		if (req.body.split != null)
+			updateObject.split = req.body.split
+		if (req.body.placement != null)
+			updateObject.placement = req.body.placement
+		
+
+		try {
+			await GroupModel.updateOne({
+				_id: req.body.id
+			}, updateObject)
+		} catch (error) {
+			res.status(500).json({
+				message: "Could not perform request, internal error"
+			})
+			return
+		}
+		res.status(200).json({
+			message: "Resource updated",
+			group: {
+				_id: req.body.id,
+				split: req.body.split,
+				column: req.body.column,
+				placement: req.body.placement,
+			}
+		})
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = findElementWithId.validate(req.body)

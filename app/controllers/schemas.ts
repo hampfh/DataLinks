@@ -14,6 +14,13 @@ export const createGroup = Joi.object({
 	placement: Joi.number().optional()
 })
 
+export const updateGroup = Joi.object({
+	id: Joi.string().required(),
+	split: Joi.bool(),
+	column: Joi.bool(),
+	placement: Joi.number()
+})
+
 export const findElementWithId = Joi.object({
 	id: Joi.string()
 })

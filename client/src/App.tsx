@@ -15,7 +15,7 @@ export interface AddedElement {
 	type: ContentType
 }
 
-export type ContentType = "Text" | "Link"
+export type ContentType = "Text" | "Link" | "Group"
 
 class App extends Component<{}, StateForComponent> {
 
