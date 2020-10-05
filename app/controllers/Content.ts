@@ -254,7 +254,7 @@ export default class ContentController extends CrudController {
 
 		const group = await GroupModel.findOne({
 			_id: req.body.parentGroupId,
-			"content._id": req.body._id
+			"content._id": req.body.id
 		}) as Mongoose.Document & IGroup
 
 		try {
