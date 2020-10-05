@@ -56,7 +56,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
 							src={this.getSubjectIcon(this.props.subject.code)} 
 						/>
-						<h4 className="Header">{this.props.subject.name}</h4>
+						<h4 className="Header">{this.props.subject.code}</h4>
 					</div>
 					: null
 				}

@@ -51,8 +51,8 @@ export default class SubjectController extends CrudController {
 			req.ip,
 			OperationType.CREATE,
 			ContentType.SUBJECT,
-			["", "", ""],
-			[newSubject._id, newSubject.name, newSubject.description]
+			[newSubject._id, newSubject.name, newSubject.description],
+			["", "", ""]
 		);
 		
 		if (!!!res.headersSent)
