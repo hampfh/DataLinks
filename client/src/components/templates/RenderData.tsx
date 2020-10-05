@@ -43,7 +43,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	// Target specific group, not all of them
 	deleteContent = (id: string) => {
 		this.props.addDeleted(id)
-		this.forceUpdate()
 	}
 
 	_onCreateElement = (parentId: string, type: ContentType) => {
@@ -156,10 +155,9 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				alternative?.parentId ?? appendObject.parentGroup,
 				appendObject.title as string ?? appendObject.displayText ?? response.group._id,
 				appendObject.text as string ?? appendObject.link ?? "",
-				isGroup !== undefined ? "Group" : this.state.newElement?.type as ContentType
+				"Group"
 			)
 		}
-		this.forceUpdate()
 	}
 
 	renderObject(object: ContentObject, parentId: string, depth?: number) {
@@ -285,7 +283,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			return (
 				<ContentElement
 					key={uuid()}
-					type="Text"
+					type="Link"
 					parentId={parentId}
 					id={contentObject._id}
 					editMode={this.props.editMode}
