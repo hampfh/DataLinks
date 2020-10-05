@@ -95,7 +95,7 @@ class App extends Component<{}, StateForComponent> {
 					</Route>
 					{this.state.subjects.map((subject) => {
 						return (
-							<Route key={uuid()} exact path={`/D20/course/${subject.name}`}>
+							<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
 								<SubjectView
 									updateSubjects={this._updateSubjects}
 									editMode={this.state.editMode}

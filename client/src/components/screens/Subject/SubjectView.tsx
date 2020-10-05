@@ -5,6 +5,7 @@ import RenderData from "../../templates/RenderData"
 import logoutIcon from "../../../assets/icons/close.svg"
 import { Redirect } from "react-router-dom"
 import { AddedElement, ContentType } from '../../../App'
+import isMobile from "../../../functions/isMobile"
 
 export default class Subject extends Component<PropsForComponent, StateForComponent> {
 
@@ -32,9 +33,16 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 				{this.state.shouldExitView ?
 					<Redirect to="/" /> :
 					<div className="SubjectWrapper">
-						<div>
-							<button onClick={() => this.props.setEditMode(!!!this.props.editMode)}>{this.props.editMode ? "Default mode" : "Edit mode"}</button>
-						</div>
+						{isMobile() ? null :
+							<div className="editModeContainer editModeCourse">
+								<p>Default mode</p>
+								<label className="switch">
+									<input onChange={(event) => this.props.setEditMode(event.target.checked)} checked={this.props.editMode} type="checkbox" />
+									<span className="slider round"></span>
+								</label>
+								<p>Edit mode</p>
+							</div>
+						}
 						<div className="Scrollable">
 							<img className="logoutIcon" onClick={this._clickExitView} alt="Exit view" src={logoutIcon} />
 							<h2 className="HeaderSubjectView">{this.props.subject.name}</h2>

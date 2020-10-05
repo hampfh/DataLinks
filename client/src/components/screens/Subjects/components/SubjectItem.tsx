@@ -61,7 +61,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 					: null
 				}
 				{this.state.collapsState === 3 ? 
-					<Redirect to={`/D20/course/${this.props.subject.name}`} /> : null
+					<Redirect to={`/D20/course/${this.props.subject.code}`} /> : null
 				}
 			</>
 		)

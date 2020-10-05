@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
+import "./components/Switch.css"
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import { Group } from "../../templates/RenderData"
 import { AddedElement, ContentType } from '../../../App'
+import isMobile from "../../../functions/isMobile"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
@@ -50,9 +52,16 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 				<div>
 					<h1 className="Title">D20 links</h1>
 				</div>
-				<div>
-					<button onClick={() => this.props.setEditMode(!!!this.props.editMode)}>{this.props.editMode ? "Default mode" : "Edit mode"}</button>
-				</div>
+				{isMobile() ? null :
+					<div className="editModeContainer">
+						<p>Default mode</p>
+						<label className="switch">
+							<input onChange={(event) => this.props.setEditMode(event.target.checked)} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
+						<p>Edit mode</p>
+					</div>
+				}
 				<div className="SubjectContainer">
 					{
 						this.props.subjects.map((subject) =>

@@ -63,3 +63,26 @@ body {
 .Credits a{
 	color: inherit;
 }
+
+.editModeContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.editModeContainer label {
+	margin: 0 1rem;
+}
+
+.editModeContainer p {
+	font-style: italic;
+	color: #777;
+}
+
+.editModeCourse {
+	background-color: var(--complementary);
+}
+
+.editModeCourse p {
+	color: white;
+}
