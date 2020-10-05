@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid"
 import Http from '../../functions/HttpRequest'
 import ContentElement from '../screens/Subject/components/ContentObject'
 import { ContentType, AddedElement } from "../../App"
+import GroupForm from "./GroupForm"
 
 export default class RenderData extends Component<PropsForComponent, StateForComponent> {
 
@@ -79,7 +80,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		else if (setting === "placement")
 			updateObject.placement = value as number
 
-		const response = await Http({
+		await Http({
 			url: "/api/v1/group",
 			method: "PATCH",
 			data: updateObject
@@ -88,27 +89,18 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		window.location.reload()
 	}
 
-	_onCreateRootGroup = async (id: string) => {
+	_onCreateGroup = async (id: string, isSubGroup: boolean) => {
 		let newState = { ...this.state }
-		newState.newRootGroup = {
+		newState.newGroup = {
 			name: "",
-			parentGroup: id
+			parentGroup: id,
+			isSubGroup
 		}
 		this.setState(newState)
 		this.forceUpdate()
 	}
 
-	_onRootGroupNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let newState = { ...this.state }
-		newState.newRootGroup = {
-			name: event.target.value,
-			parentGroup: this.state.newRootGroup?.parentGroup as string
-		}
-		this.setState(newState)
-		this.forceUpdate()
-	}
-
-	_onSubmitRootGroup = async () => {
+	_onSubmitGroup = async (name: string) => {
 
 		let submitObject: {
 			name?: string,
@@ -116,13 +108,13 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			split: boolean,
 			column: boolean
 		} = {
-			parentGroup: this.state.newRootGroup?.parentGroup as string,
+			parentGroup: this.state.newGroup?.parentGroup as string,
 			split: false,
 			column: false
 		}
 
-		if (this.state.newRootGroup?.name != null)
-			submitObject.name = this.state.newRootGroup.name
+		if (name != null && name.length !== 0)
+			submitObject.name = name
 
 		await Http({
 			url: "/api/v1/group",
@@ -201,9 +193,12 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		}
 	}
 
+	_forceUpdateMe = () => {
+		this.forceUpdate()
+	}
+
 	renderObject(object: ContentObject, parentId: string, depth?: number) {
 		if (object.group !== undefined) {
-			console.log(object.group)
 
 			// Check if group is deleted
 			const groupId = this.props.deleted.find((deletedId: string) => deletedId.toString() === object.group?._id.toString())
@@ -244,8 +239,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 						this.props.added.map((object) => {
 							let shouldAdd = false
 							for (let i = 0; i < this.props.added.length; i++) {
-								if (object.parentId === undefined)
-									console.log(object)
 								if (group._id.toString() === object.parentId.toString()) {
 									shouldAdd = true
 									break
@@ -302,11 +295,20 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 							</div> : null
 						}
 					</div>
-					{this.props.editMode ? 
+					{this.props.editMode ?
 						<>
 							<button onClick={() => this._onCreateElement(group._id, "Text")}>Add text</button>
 							<button onClick={() => this._onCreateElement(group._id, "Link")}>Add link</button>
-							<button onClick={() => this._onCreateElement(group._id, "Group")}>Add group</button>
+							<GroupForm
+								key={uuid()}
+								forRoot={false}
+								editMode={this.props.editMode}
+								parentId={group._id}
+								newGroup={this.state.newGroup}
+								createGroup={this._onCreateGroup}
+								submitGroup={this._onSubmitGroup}
+								forceUpdateMe={this._forceUpdateMe}
+							/>
 							{group.depth > 1 ?
 								<button onClick={() => this._deleteGroup(group._id)}>Delete group</button>
 								: null
@@ -316,7 +318,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								<button onClick={() => this._updateGroup(group._id, "column", !group.column)}>{group.column ? "Disable" : "Enable"} column</button>
 							</div>
 						</>
-					: null}
+						: null}
 				</div>
 			)
 		}
@@ -356,17 +358,15 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				{this.state.content.map((objects) => {
 					return this.renderObject(objects, this.props.group._id)
 				})}
-				{ // Is edit mode on?
-				this.props.editMode ? 
-					// Two states, create group and submit group
-					this.state.newRootGroup == null ?
-						<button onClick={() => this._onCreateRootGroup(this.props.group._id)}>Add group</button> :
-						<div>
-							<input onChange={(event) => this._onRootGroupNameChange(event)} placeholder="Group name" value={this.state.newRootGroup.name} />
-							<button onClick={this._onSubmitRootGroup}>Create group</button>
-						</div>
-					: null
-				}
+				<GroupForm 
+					forRoot
+					editMode={this.props.editMode}
+					parentId={this.props.group._id}
+					newGroup={this.state.newGroup}
+					createGroup={this._onCreateGroup}
+					submitGroup={this._onSubmitGroup}
+					forceUpdateMe={this._forceUpdateMe}
+				/>
 			</div>
 		)
 	}
@@ -414,9 +414,10 @@ interface PropsForComponent {
 
 interface StateForComponent {
 	content: ContentObject[],
-	newRootGroup?: {
+	newGroup?: {
 		name: string,
-		parentGroup: string
+		parentGroup: string,
+		isSubGroup: boolean
 	},
 	newElement?: {
 		parentId: string,

@@ -10,7 +10,6 @@ export default class GroupController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createGroup.validate(req.body)
 		if (error) {
-			console.log(error.message)
 			super.fail(res, error.message, 400, next)
 			return
 		}

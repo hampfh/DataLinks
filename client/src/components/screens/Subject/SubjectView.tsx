@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import "./SubjectView.css"
 import "../Subjects/components/Switch.css"
 import { SubjectData } from '../Subjects/Subjects'
@@ -10,12 +10,31 @@ import isMobile from "../../../functions/isMobile"
 
 export default class Subject extends Component<PropsForComponent, StateForComponent> {
 
+	scrollRef: React.RefObject<HTMLInputElement>
 	constructor(props: PropsForComponent) {
 		super(props)
+
+		this.scrollRef = createRef()
 
 		this.state = {
 			shouldExitView: false,
 			editMode: props.editMode
+		}
+	}
+
+	getSnapshotBeforeUpdate(prevProps: PropsForComponent, prevState: StateForComponent) {
+		const scrollView = this.scrollRef.current
+		if (scrollView == null)
+			return null
+		return scrollView.scrollHeight - scrollView.scrollTop
+	}
+
+	componentDidUpdate(prevProps: PropsForComponent, prevState: StateForComponent, snapshot: any) {
+		// Set scroll
+		if (snapshot !== null ) {
+			const scrollView = this.scrollRef.current
+			if (scrollView != null)
+				scrollView.scrollTop = scrollView?.scrollHeight - snapshot
 		}
 	}
 
@@ -51,7 +70,7 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 								<p>Edit mode</p>
 							</div>
 						}
-						<div className="Scrollable">
+						<div className="Scrollable" ref={this.scrollRef}>
 							<img className="logoutIcon" onClick={this._clickExitView} alt="Exit view" src={logoutIcon} />
 							<h2 className="HeaderSubjectView">{this.props.subject.name}</h2>
 							<p className="Description">{this.props.subject.description}</p>

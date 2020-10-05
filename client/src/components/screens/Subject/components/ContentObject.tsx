@@ -60,8 +60,6 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 			append.link = fieldTwo.length <= 0 ? "-" : fieldTwo
 		}
 		
-		console.log(append)
-
 		const response = await Http({
 			url: "/api/v1/group/textcontent",
 			method: "PATCH",
