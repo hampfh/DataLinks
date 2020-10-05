@@ -26,11 +26,23 @@ export default class GroupController extends CrudController {
 		}
 
 		// Create group
-		const newGroup = new GroupModel({
+		let object: {
+			name?: string,
+			split: boolean,
+			column: boolean,
+			depth: number
+		} = {
 			split: req.body.split,
 			column: req.body.column,
 			depth: parent.depth + 1
-		})
+		}
+
+		if (req.body.name != null)
+			object.name = req.body.name
+
+		const newGroup = new GroupModel(object) as Mongoose.Document & IGroup
+
+		console.log("Create group", newGroup)
 
 		// Assign group to parent
 		await GroupModel.updateOne({
@@ -57,7 +69,7 @@ export default class GroupController extends CrudController {
 			OperationType.CREATE,
 			ContentType.GROUP,
 			[""],
-			["GROUP: " + newGroup._id]
+			["GROUP: " + newGroup.name]
 		);
 
 		if (!!!res.headersSent)
@@ -92,11 +104,14 @@ export default class GroupController extends CrudController {
 		}
 
 		let updateObject: {
+			name?: string,
 			column?: boolean,
 			split?: boolean,
 			placement?: number
 		} = {}
 
+		if (req.body.name != null)
+			updateObject.name = req.body.name
 		if (req.body.column != null)
 			updateObject.column = req.body.column
 		if (req.body.split != null)
@@ -129,6 +144,7 @@ export default class GroupController extends CrudController {
 			message: "Resource updated",
 			group: {
 				_id: req.body.id,
+				name: req.body.name ?? undefined,
 				split: req.body.split,
 				column: req.body.column,
 				placement: req.body.placement,

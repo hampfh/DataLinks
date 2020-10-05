@@ -9,6 +9,7 @@ export const createSubject = Joi.object({
 
 export const createGroup = Joi.object({
 	parentGroup: Joi.string(),
+	name: Joi.string().optional(),
 	split: Joi.bool(),
 	column: Joi.bool(),
 	placement: Joi.number().optional()
@@ -16,6 +17,7 @@ export const createGroup = Joi.object({
 
 export const updateGroup = Joi.object({
 	id: Joi.string().required(),
+	name: Joi.string().optional(),
 	split: Joi.bool(),
 	column: Joi.bool(),
 	placement: Joi.number()

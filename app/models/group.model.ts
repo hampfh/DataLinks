@@ -1,4 +1,4 @@
-import { number } from "joi"
+import { number, string } from "joi"
 import { Mongoose } from "mongoose"
 import database from "./index.model"
 const Schema = database.Schema
@@ -22,6 +22,7 @@ export interface IContent {
 
 export interface IGroup {
 	_id: string,
+	name?: string,
 	depth: number
 	split?: boolean,
 	column?: boolean,
@@ -64,6 +65,10 @@ export const ContentSchema = new Schema({
 })
 
 export const GroupSchema = new Schema({
+	name: {
+		type: String,
+		required: false
+	},
 	depth: {
 		type: Number,
 		required: true

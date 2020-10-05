@@ -89,15 +89,46 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	_onCreateRootGroup = async (id: string) => {
-		console.log(await Http({
+		let newState = { ...this.state }
+		newState.newRootGroup = {
+			name: "",
+			parentGroup: id
+		}
+		this.setState(newState)
+		this.forceUpdate()
+	}
+
+	_onRootGroupNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let newState = { ...this.state }
+		newState.newRootGroup = {
+			name: event.target.value,
+			parentGroup: this.state.newRootGroup?.parentGroup as string
+		}
+		this.setState(newState)
+		this.forceUpdate()
+	}
+
+	_onSubmitRootGroup = async () => {
+
+		let submitObject: {
+			name?: string,
+			parentGroup: string,
+			split: boolean,
+			column: boolean
+		} = {
+			parentGroup: this.state.newRootGroup?.parentGroup as string,
+			split: false,
+			column: false
+		}
+
+		if (this.state.newRootGroup?.name != null)
+			submitObject.name = this.state.newRootGroup.name
+
+		await Http({
 			url: "/api/v1/group",
 			method: "POST",
-			data: {
-				parentGroup: id,
-				split: false,
-				column: false
-			}
-		}))
+			data: submitObject
+		})
 		window.location.reload()
 	}
 
@@ -172,6 +203,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 
 	renderObject(object: ContentObject, parentId: string, depth?: number) {
 		if (object.group !== undefined) {
+			console.log(object.group)
 
 			// Check if group is deleted
 			const groupId = this.props.deleted.find((deletedId: string) => deletedId.toString() === object.group?._id.toString())
@@ -191,7 +223,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 					} : undefined}
 				>
 					{group.name === undefined ? null :
-						<h4 className="textObjectTitle"></h4> // Enable group names
+						<h4 className="textObjectTitle">{group.name}</h4> // Enable group names
 					}
 					<div className={`GroupItemContainer${group.column ? " Column" : ""}`}>
 						{ // Generate all elements and ignore the ones that are deleted
@@ -324,8 +356,15 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				{this.state.content.map((objects) => {
 					return this.renderObject(objects, this.props.group._id)
 				})}
-				{this.props.editMode ? 
-					<button onClick={() => this._onCreateRootGroup(this.props.group._id)}>Add group</button>
+				{ // Is edit mode on?
+				this.props.editMode ? 
+					// Two states, create group and submit group
+					this.state.newRootGroup == null ?
+						<button onClick={() => this._onCreateRootGroup(this.props.group._id)}>Add group</button> :
+						<div>
+							<input onChange={(event) => this._onRootGroupNameChange(event)} placeholder="Group name" value={this.state.newRootGroup.name} />
+							<button onClick={this._onSubmitRootGroup}>Create group</button>
+						</div>
 					: null
 				}
 			</div>
@@ -352,6 +391,7 @@ export interface ContentObject {
 	group?: Group
 }
 
+
 export interface Group {
 	_id: string,
 	name: string,
@@ -374,6 +414,10 @@ interface PropsForComponent {
 
 interface StateForComponent {
 	content: ContentObject[],
+	newRootGroup?: {
+		name: string,
+		parentGroup: string
+	},
 	newElement?: {
 		parentId: string,
 		fieldOne: string,
