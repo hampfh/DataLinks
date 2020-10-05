@@ -69,7 +69,7 @@ export default class ContentController extends CrudController {
 			_id: new Mongoose.Types.ObjectId(),
 			placement: req.body.placement ?? 0,
 			text: {
-				title: req.body.title,
+				title: req.body.title ?? "",
 				text: req.body.text
 			}
 		}
@@ -86,7 +86,7 @@ export default class ContentController extends CrudController {
 			req.ip,
 			OperationType.CREATE,
 			ContentType.TEXT,
-			[req.body.title, req.body.text]
+			[req.body.title ?? "", req.body.text]
 		)
 
 		res.status(201).json({
@@ -189,7 +189,7 @@ export default class ContentController extends CrudController {
 			return
 		}
 
-		if (req.body.title === "-")
+		if (req.body.title === "-" || req.body.title === undefined)
 			req.body.title = ""
 		if (req.body.text === "-")
 			req.body.text = ""

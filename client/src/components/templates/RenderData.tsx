@@ -116,9 +116,19 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			placement: 0
 		}
 		if (!!!isGroup && this.state.newElement?.type === "Text") {
-			appendObject.title = this.newFieldOneRef.current?.value
+			if (this.newFieldOneRef.current?.value.length !== 0)
+				appendObject.title = this.newFieldOneRef.current?.value
+
+			// Do not allow empty text
+			if (this.newFieldTwoRef.current?.value.length === 0)
+				return
 			appendObject.text = this.newFieldTwoRef.current?.value
 		} else if (!!!isGroup && this.state.newElement?.type === "Link") {
+
+			// Do not allow empty displayName or link
+			if (this.newFieldOneRef.current?.value.length === 0 || this.newFieldTwoRef.current?.value.length === 0)
+				return
+
 			appendObject.displayText = this.newFieldOneRef.current?.value
 			appendObject.link = this.newFieldTwoRef.current?.value
 		}

@@ -39,7 +39,7 @@ export const createLink = Joi.object({
 
 export const createText = Joi.object({
 	parentGroup: Joi.string(),
-	title: Joi.string(),
+	title: Joi.string().optional(),
 	text: Joi.string(),
 	placement: Joi.number().optional()
 })
@@ -47,7 +47,7 @@ export const createText = Joi.object({
 export const updateText = Joi.object({
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
-	title: Joi.string(),
+	title: Joi.string().optional(),
 	text: Joi.string()
 }).or("title", "text")
 
