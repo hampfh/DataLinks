@@ -6,6 +6,8 @@ import GroupModel from "../models/group.model"
 import { Subject } from "."
 import { Document } from "mongoose"
 import GroupController from "./Group"
+import Log from "../controllers/Log"
+import { ContentType, OperationType } from "../models/log.model"
 
 export default class SubjectController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -31,12 +33,28 @@ export default class SubjectController extends CrudController {
 			description: req.body.description,
 			color: req.body.color,
 			group: newGroup._id
-		})
+		}) as Document & {
+			name: string,
+			code: string,
+			description: string,
+			color: string,
+			group: string
+		}
 		await newSubject.save().catch(() => {
 			res.status(500).json({
 				message: "Internal error"
 			})
 		})
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.CREATE,
+			ContentType.SUBJECT,
+			["", "", ""],
+			[newSubject._id, newSubject.name, newSubject.description]
+		);
+		
 		if (!!!res.headersSent)
 			res.status(201).json(newSubject)
 		next()
@@ -89,6 +107,15 @@ export default class SubjectController extends CrudController {
 		await SubjectModel.deleteOne({
 			_id: req.body.id
 		})
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.DELETE,
+			ContentType.SUBJECT,
+			["", "", ""],
+			[subject._id, subject.name, subject.description]
+		);
 
 		res.json({
 			message: "Successfully deleted subject"

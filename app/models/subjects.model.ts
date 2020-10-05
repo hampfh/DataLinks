@@ -32,6 +32,8 @@ export const SubjectSchema = new Schema({
 		type: Mongoose.Types.ObjectId,
 		ref: "group"
 	}
+}, {
+	timestamps: true
 })
 
 export default database.model("subject", SubjectSchema)

@@ -3,6 +3,9 @@ import { CrudController } from "./CrudController"
 import { createGroup, createLink, createText, findElementWithId, findGroupChildElementId, updateText, updateLink } from "./schemas"
 import GroupModel, { IContent, IGroup } from "../models/group.model"
 import Mongoose from "mongoose"
+import Log from "./Log"
+import { ContentType, OperationType } from "../models/log.model"
+import GroupController from "./Group"
 
 interface AppendObject {
 	_id: Mongoose.Types.ObjectId,
@@ -40,6 +43,13 @@ export default class ContentController extends CrudController {
 			}
 		})
 
+		Log(
+			req.ip,
+			OperationType.CREATE,
+			ContentType.LINK,
+			[req.body.displayText, req.body.link]
+		)
+
 		res.status(201).json({
 			message: "Successfully created link object",
 			appendObject
@@ -71,6 +81,13 @@ export default class ContentController extends CrudController {
 				content: appendObject
 			}
 		})
+
+		Log(
+			req.ip,
+			OperationType.CREATE,
+			ContentType.TEXT,
+			[req.body.title, req.body.text]
+		)
 
 		res.status(201).json({
 			message: "Successfully created text object",
@@ -139,6 +156,15 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
+
+			// Notify logg			
+			Log(
+				req.ip,
+				OperationType.UPDATE,
+				ContentType.LINK,
+				[req.body.displayText, req.body.link],
+				[group.content[0].link?.displayText as string, group.content[0].link?.link as string]
+			);
 		} catch (error) {
 			console.warn(error)
 			res.json({
@@ -190,6 +216,15 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
+
+			// Notify logg			
+			Log(
+				req.ip, 
+				OperationType.UPDATE, 
+				ContentType.TEXT,
+				[req.body.title, req.body.text], 
+				[group.content[0].text?.title as string, group.content[0].text?.text as string]
+			);
 		} catch (error) {
 			console.warn(error)
 			res.json({
@@ -217,6 +252,11 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		const group = await GroupModel.findOne({
+			_id: req.body.parentGroupId,
+			"content._id": req.body._id
+		}) as Mongoose.Document & IGroup
+
 		try {
 			await GroupModel.updateOne({
 				_id: req.body.parentGroupId
@@ -233,6 +273,32 @@ export default class ContentController extends CrudController {
 			})
 			return
 		}
+
+		let fieldOne = ""
+		let fieldTwo = ""
+		let type = ContentType.GROUP
+		if (group.content[0].link !== undefined) {
+			type = ContentType.LINK
+			fieldOne = group.content[0].link.displayText
+			fieldTwo = group.content[0].link.link
+		}
+		else if (group.content[0].text !== undefined) {
+			type = ContentType.TEXT
+			fieldOne = group.content[0].text.title as string
+			fieldTwo = group.content[0].text.text as string
+		}
+		else if (group.content[0].group !== undefined) {
+			type = ContentType.GROUP
+		}
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.DELETE,
+			type,
+			["", ""],
+			[fieldOne, fieldTwo]
+		);
 
 		res.status(200).json({
 			message: "Successfully deleted item"

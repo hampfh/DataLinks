@@ -74,6 +74,8 @@ export const GroupSchema = new Schema({
 		type: [ContentSchema],
 		required: true
 	}
+}, {
+	timestamps: true
 })
 
 export default database.model("group", GroupSchema)

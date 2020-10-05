@@ -3,11 +3,14 @@ import { CrudController } from "./CrudController"
 import { createGroup, findElementWithId, updateGroup } from "./schemas"
 import GroupModel, { IGroup } from "../models/group.model"
 import Mongoose, { Document } from "mongoose"
+import Log from "../controllers/Log"
+import { ContentType, OperationType } from "../models/log.model"
 
 export default class GroupController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createGroup.validate(req.body)
 		if (error) {
+			console.log(error.message)
 			super.fail(res, error.message, 400, next)
 			return
 		}
@@ -47,6 +50,16 @@ export default class GroupController extends CrudController {
 				message: "Internal error"
 			})
 		})
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.CREATE,
+			ContentType.GROUP,
+			[""],
+			["GROUP: " + newGroup._id]
+		);
+
 		if (!!!res.headersSent)
 			res.status(201).json({
 				group: newGroup
@@ -102,6 +115,16 @@ export default class GroupController extends CrudController {
 			})
 			return
 		}
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.UPDATE,
+			ContentType.GROUP,
+			[""],
+			["GROUP: " + req.body.id]
+		);
+
 		res.status(200).json({
 			message: "Resource updated",
 			group: {
@@ -120,6 +143,15 @@ export default class GroupController extends CrudController {
 		}
 
 		const deletions = await GroupController.recursiveDelete(req.body.id)		
+
+		// Notify logg			
+		Log(
+			req.ip,
+			OperationType.DELETE,
+			ContentType.GROUP,
+			[""],
+			["GROUP: " + req.body.id]
+		);
 
 		res.status(200).json({
 			message: `Successfully deleted ${deletions} groups`
