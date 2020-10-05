@@ -81,6 +81,7 @@ body {
 
 .editModeCourse {
 	background-color: var(--complementary);
+	max-height: 5vh;
 }
 
 .editModeCourse p {
