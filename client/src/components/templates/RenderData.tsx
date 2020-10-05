@@ -47,15 +47,19 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	_onCreateElement = (parentId: string, type: ContentType) => {
-		let newState = { ...this.state }
-		newState.newElement = {
-			parentId: parentId,
-			fieldOne: "",
-			fieldTwo: "",
-			type
+		if (type === "Group") {
+			this._onSubmitElement({ parentId }, true)
+		} else {
+			let newState = { ...this.state }
+			newState.newElement = {
+				parentId: parentId,
+				fieldOne: "",
+				fieldTwo: "",
+				type
+			}
+			this.setState(newState)
+			this.forceUpdate()
 		}
-		this.setState(newState)
-		this.forceUpdate()
 	}
 
 	_updateGroup = async (id: string, setting: "split" | "column" | "placement", value: boolean | number) => {
@@ -99,7 +103,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	// Take the virtual new element from the state and submit it to the database
-	_onSubmitElement = async () => {
+	_onSubmitElement = async (alternative?: { parentId: string }, isGroup?: boolean) => {
 
 		let appendObject: {
 			parentGroup: string,
@@ -109,44 +113,50 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			link?: string,
 			placement: number
 		} = {
-			parentGroup: this.state.newElement?.parentId as string,
+			parentGroup: alternative?.parentId ?? this.state.newElement?.parentId as string,
 			placement: 0
 		}
-		let isGroup = true
-		if (this.state.newElement?.type === "Text") {
+		if (!!!isGroup && this.state.newElement?.type === "Text") {
 			appendObject.title = this.newFieldOneRef.current?.value
 			appendObject.text = this.newFieldTwoRef.current?.value
-			isGroup = false
-		} else if (this.state.newElement?.type === "Link") {
+		} else if (!!!isGroup && this.state.newElement?.type === "Link") {
 			appendObject.displayText = this.newFieldOneRef.current?.value
 			appendObject.link = this.newFieldTwoRef.current?.value
-			isGroup = false
 		}
 
-		this.props.addContent(
-			appendObject.parentGroup,
-			appendObject.title as string ?? appendObject.displayText ?? "",
-			appendObject.text as string ?? appendObject.link ?? "",
-			this.state.newElement?.type as ContentType
-		)
+		// If it's a group then add it after the response (since we need the id)
+		if (!!!isGroup) {
+			this.props.addContent(
+				alternative?.parentId ?? appendObject.parentGroup,
+				appendObject.title as string ?? appendObject.displayText ?? "",
+				appendObject.text as string ?? appendObject.link ?? "",
+				isGroup !== undefined ? "Group" : this.state.newElement?.type as ContentType
+			)
+		}
 
 		let newState = { ...this.state }
 		newState.newElement = undefined
 		this.setState(newState)
 
 		let urlSuffix: string = ""
-		if (this.state.newElement?.type === "Text")
+		if (!!!isGroup && this.state.newElement?.type === "Text")
 			urlSuffix = "/textcontent"
-		else if (this.state.newElement?.type === "Link")
+		else if (!!!isGroup && this.state.newElement?.type === "Link")
 			urlSuffix = "/linkcontent"
 
-		await Http({
+		const response = await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
 			data: appendObject
 		})
-		if (isGroup)
-			window.location.reload()
+		if (isGroup) {
+			this.props.addContent(
+				alternative?.parentId ?? appendObject.parentGroup,
+				appendObject.title as string ?? appendObject.displayText ?? response.group._id,
+				appendObject.text as string ?? appendObject.link ?? "",
+				isGroup !== undefined ? "Group" : this.state.newElement?.type as ContentType
+			)
+		}
 		else
 			this.forceUpdate()
 	}
@@ -188,10 +198,13 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								return null
 							return this.renderObject(object, group._id, depth !== undefined ? depth + 1 : 1)
 						})}
+
 						{// Generate all elements that are locally added
 						this.props.added.map((object) => {
 							let shouldAdd = false
 							for (let i = 0; i < this.props.added.length; i++) {
+								if (object.parentId === undefined)
+									console.log(object)
 								if (group._id.toString() === object.parentId.toString()) {
 									shouldAdd = true
 									break
@@ -200,27 +213,44 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 							if (!!!shouldAdd)
 								return null
 							
-							return (
-								<ContentElement
-									key={uuid()}
-									type={object.type}
-									parentId={parentId}
-									id={""}
-									editMode={this.props.editMode}
-									contentObject={( object.type === "Text" ? {
-										_id: "",
-										title: object.fieldOne,
-										text: object.fieldTwo
-									} : {
-										_id: "",
-										displayText: object.fieldOne,
-										link: object.fieldTwo
-									})}
-									updateSubjects={this.props.updateSubjects}
-									deleteContent={this.deleteContent}
-								/>
-							)
+							if (object.type === "Group") {
+
+								const test: ContentObject = {
+									_id: group._id,
+									group: {
+										name: "",
+										_id: object.fieldTwo.toString(),
+										depth: group.depth + 1,
+										placement: 0,
+										content: []
+									}
+								}
+								return this.renderObject(test, group._id)
+							}
+							else {
+								return (
+									<ContentElement
+										key={uuid()}
+										type={object.type}
+										parentId={parentId}
+										id={""}
+										editMode={this.props.editMode}
+										contentObject={(object.type === "Text" ? {
+											_id: "",
+											title: object.fieldOne,
+											text: object.fieldTwo
+										} : {
+												_id: "",
+												displayText: object.fieldOne,
+												link: object.fieldTwo
+											})}
+										updateSubjects={this.props.updateSubjects}
+										deleteContent={this.deleteContent}
+									/>
+								)	
+							}
 						})}
+
 						{ // Temporary elements
 						this.state.newElement !== undefined && group._id.toString() === this.state.newElement.parentId.toString() ?
 							<div>
@@ -228,7 +258,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								<input ref={this.newFieldOneRef} name="fieldOne" placeholder={this.state.newElement.type === "Text" ? "New title" : "New display text"} />
 								<label htmlFor="fieldTwo">{this.state.newElement.type === "Text" ? "Text" : "Link"}</label>
 								<input ref={this.newFieldTwoRef} name="fieldTwo" placeholder={this.state.newElement.type === "Text" ? "New text" : "New link"}/>
-								<button onClick={this._onSubmitElement}>Submit content</button>
+								<button onClick={() => this._onSubmitElement()}>Submit content</button>
 							</div> : null
 						}
 					</div>

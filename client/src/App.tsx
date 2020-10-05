@@ -105,6 +105,7 @@ class App extends Component<{}, StateForComponent> {
 									added={this.state.added}
 									addDeleted={this._addDeletedContent}
 									addContent={this._addContent}
+									setEditMode={this._setEditMode}
 								/>
 							</Route>
 						)
