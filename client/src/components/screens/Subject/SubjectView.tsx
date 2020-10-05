@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import "./SubjectView.css"
+import "../Subjects/components/Switch.css"
 import { SubjectData } from '../Subjects/Subjects'
 import RenderData from "../../templates/RenderData"
 import logoutIcon from "../../../assets/icons/close.svg"
@@ -13,12 +14,9 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 		super(props)
 
 		this.state = {
-			shouldExitView: false
+			shouldExitView: false,
+			editMode: props.editMode
 		}
-	}
-
-	componentWillUnmount() {
-		
 	}
 
 	_clickExitView = () => {
@@ -27,9 +25,19 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 		this.setState(newState)
 	}
 
+	_flickEditMode = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let newState = { ...this.state }
+		newState.editMode = event.target.checked;
+		this.setState(newState)
+		const checked = event.target.checked
+		setTimeout(() => {
+			this.props.setEditMode(checked)
+		}, 200)
+	}
+
 	render() {
 		return (
-			<section className="Master">
+			<section className="SubjectViewMaster">
 				{this.state.shouldExitView ?
 					<Redirect to="/" /> :
 					<div className="SubjectWrapper">
@@ -37,7 +45,7 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 							<div className="editModeContainer editModeCourse">
 								<p>Default mode</p>
 								<label className="switch">
-									<input onChange={(event) => this.props.setEditMode(event.target.checked)} checked={this.props.editMode} type="checkbox" />
+									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.editMode} type="checkbox" />
 									<span className="slider round"></span>
 								</label>
 								<p>Edit mode</p>
@@ -80,5 +88,6 @@ export interface PropsForComponent {
 }
 
 export interface StateForComponent {
-	shouldExitView: boolean
+	shouldExitView: boolean,
+	editMode: boolean
 }

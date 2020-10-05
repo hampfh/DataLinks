@@ -31,6 +31,13 @@ class App extends Component<{}, StateForComponent> {
 
 	componentDidMount() {
 		this._updateSubjects()
+
+		// Change do correct mode
+		if (localStorage.getItem("editMode") === "true") {
+			const newState = { ...this.state }
+			newState.editMode = true
+			this.setState(newState)
+		}
 	}
 
 	_addContent = (parentId: string, fieldOne: string, fieldTwo: string, type: ContentType) => {
@@ -51,18 +58,27 @@ class App extends Component<{}, StateForComponent> {
 	}
 
 	_setEditMode = (mode: boolean) => {
-		if (localStorage.getItem("agreeBehavior") === "true") {
+		let update = false
+		if (localStorage.getItem("agreeBehavior") === "true")
+			update = true
+		else {
+			if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user\n\nAlso note that this is an experimental feature thus bug reports are very much appreciated")) {
+				update = true
+				localStorage.setItem("agreeBehavior", "true")
+			} else {
+				mode = false
+			}
+		}
+
+		if (update) {
+			if (mode)
+				localStorage.setItem("editMode", "true")
+			else
+				localStorage.removeItem("editMode")
+
 			const newState = { ...this.state }
 			newState.editMode = mode
 			this.setState(newState)
-		}
-		else {
-			if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user\n\nAlso note that this is an experimental feature thus bug reports are very much appreciated")) {
-				localStorage.setItem("agreeBehavior", "true")
-				const newState = { ...this.state }
-				newState.editMode = mode
-				this.setState(newState)
-			}
 		}
 	}
 
