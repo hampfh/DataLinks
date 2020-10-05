@@ -51,9 +51,19 @@ class App extends Component<{}, StateForComponent> {
 	}
 
 	_setEditMode = (mode: boolean) => {
-		const newState = { ...this.state }
-		newState.editMode = mode
-		this.setState(newState)
+		if (localStorage.getItem("agreeBehavior") === "true") {
+			const newState = { ...this.state }
+			newState.editMode = mode
+			this.setState(newState)
+		}
+		else {
+			if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user\n\nAlso note that this is an experimental feature thus bug reports are very much appreciated")) {
+				localStorage.setItem("agreeBehavior", "true")
+				const newState = { ...this.state }
+				newState.editMode = mode
+				this.setState(newState)
+			}
+		}
 	}
 
 	_updateSubjects = async () => {

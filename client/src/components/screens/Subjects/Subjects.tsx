@@ -56,7 +56,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 					<div className="editModeContainer">
 						<p>Default mode</p>
 						<label className="switch">
-							<input onChange={(event) => this.props.setEditMode(event.target.checked)} type="checkbox" />
+							<input onChange={(event) => this.props.setEditMode(event.target.checked)} checked={this.props.editMode} type="checkbox" />
 							<span className="slider round"></span>
 						</label>
 						<p>Edit mode</p>
