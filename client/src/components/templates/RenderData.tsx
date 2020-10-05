@@ -134,6 +134,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			)
 		}
 
+		// Remove the temporary element
 		let newState = { ...this.state }
 		newState.newElement = undefined
 		this.setState(newState)
@@ -149,6 +150,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			method: "POST",
 			data: appendObject
 		})
+
 		if (isGroup) {
 			this.props.addContent(
 				alternative?.parentId ?? appendObject.parentGroup,
@@ -157,8 +159,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				isGroup !== undefined ? "Group" : this.state.newElement?.type as ContentType
 			)
 		}
-		else
-			this.forceUpdate()
+		this.forceUpdate()
 	}
 
 	renderObject(object: ContentObject, parentId: string, depth?: number) {
@@ -214,12 +215,11 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								return null
 							
 							if (object.type === "Group") {
-
 								const test: ContentObject = {
 									_id: group._id,
 									group: {
 										name: "",
-										_id: object.fieldTwo.toString(),
+										_id: object.fieldOne.toString(),
 										depth: group.depth + 1,
 										placement: 0,
 										content: []
