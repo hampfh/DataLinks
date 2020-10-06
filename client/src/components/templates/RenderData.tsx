@@ -25,7 +25,9 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	_deleteGroup = async (id: string) => {
-		this.deleteContent(id)
+		if (!!!window.confirm("Are you sure you want to delete this group, all it's children will also be deleted")) 
+			return
+		this.deleteContent(id, true)
 
 		const response = await Http({
 			url: "/api/v1/group",
@@ -39,11 +41,15 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			if (window.confirm("An error occured, would you like to reload the site?"))
 				window.location.reload()
 		}
+		this.forceUpdate()
 	}
 
 	// Target specific group, not all of them
-	deleteContent = (id: string) => {
-		this.props.addDeleted(id)
+	deleteContent = (id: string, ignoreConfirm?: boolean) => {
+		if (ignoreConfirm || window.confirm("Are you sure you want to delete this?")) {
+			this.props.addDeleted(id)
+			this.forceUpdate()
+		}
 	}
 
 	_onCreateElement = (parentId: string, type: ContentType) => {
@@ -177,20 +183,13 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		else if (!!!isGroup && this.state.newElement?.type === "Link")
 			urlSuffix = "/linkcontent"
 
-		const response = await Http({
+		await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
 			data: appendObject
 		})
 
-		if (isGroup) {
-			this.props.addContent(
-				alternative?.parentId ?? appendObject.parentGroup,
-				appendObject.title as string ?? appendObject.displayText ?? response.group._id,
-				appendObject.text as string ?? appendObject.link ?? "",
-				"Group"
-			)
-		}
+		this.forceUpdate()
 	}
 
 	_forceUpdateMe = () => {

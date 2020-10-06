@@ -41,8 +41,6 @@ export default class GroupController extends CrudController {
 
 		const newGroup = new GroupModel(object) as Mongoose.Document & IGroup
 
-		console.log("Create group", newGroup)
-
 		// Assign group to parent
 		await GroupModel.updateOne({
 			_id: req.body.parentGroup
