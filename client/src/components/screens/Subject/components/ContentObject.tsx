@@ -45,7 +45,7 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 			id: string,
 			title?: string,
 			text?: string,
-			displayName?: string,
+			displayText?: string,
 			link?: string
 		} = {
 			parentGroup: this.props.parentId.toString(),
@@ -56,12 +56,12 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 			append.title = fieldOne.length <= 0 ? "-" : fieldOne
 			append.text = fieldTwo.length <= 0 ? "-" : fieldTwo
 		} else {
-			append.displayName = fieldOne.length <= 0 ? "-" : fieldOne
+			append.displayText = fieldOne.length <= 0 ? "-" : fieldOne
 			append.link = fieldTwo.length <= 0 ? "-" : fieldTwo
 		}
 		
 		const response = await Http({
-			url: "/api/v1/group/textcontent",
+			url: `/api/v1/group/${this.props.type === "Text" ? "textcontent" : "linkcontent"}`,
 			method: "PATCH",
 			data: append
 		})
