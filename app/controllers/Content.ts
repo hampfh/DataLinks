@@ -44,7 +44,7 @@ export default class ContentController extends CrudController {
 		})
 
 		Log(
-			req.ip,
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
 			OperationType.CREATE,
 			ContentType.LINK,
 			[req.body.displayText, req.body.link]
@@ -82,7 +82,7 @@ export default class ContentController extends CrudController {
 		})
 
 		Log(
-			req.ip,
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
 			OperationType.CREATE,
 			ContentType.TEXT,
 			[req.body.title ?? "", req.body.text]
@@ -158,7 +158,7 @@ export default class ContentController extends CrudController {
 
 			// Notify logg			
 			Log(
-				req.ip,
+				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
 				OperationType.UPDATE,
 				ContentType.LINK,
 				[req.body.displayText, req.body.link],
@@ -218,7 +218,7 @@ export default class ContentController extends CrudController {
 
 			// Notify logg			
 			Log(
-				req.ip, 
+				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string, 
 				OperationType.UPDATE, 
 				ContentType.TEXT,
 				[req.body.title, req.body.text], 
@@ -292,7 +292,7 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.ip,
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
 			OperationType.DELETE,
 			type,
 			["", ""],
