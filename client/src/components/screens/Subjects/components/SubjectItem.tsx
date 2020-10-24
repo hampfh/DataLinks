@@ -34,10 +34,12 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 			case "DD1390":
 				return require("../../../../assets/icons/interfacePack/svg/group.svg")
 			case "SF1671":
+			case "SF1624":
 				return require("../../../../assets/icons/interfacePack/svg/calculator.svg")
 			case "DA1600":
 				return require("../../../../assets/icons/interfacePack/svg/document-3.svg")
 			case "DD1337":
+			case "DD1338":
 				return require("../../../../assets/icons/interfacePack/svg/computer.svg")
 		}
 		return ""
