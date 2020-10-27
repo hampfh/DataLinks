@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createGroup, createLink, createText, findElementWithId, findGroupChildElementId, updateText, updateLink } from "./schemas"
+import { createLink, createText, findGroupChildElementId, updateText, updateLink, createDeadline, updateDeadline } from "./schemas"
 import GroupModel, { IContent, IGroup } from "../models/group.model"
 import Mongoose from "mongoose"
 import Log from "./Log"
@@ -90,6 +90,44 @@ export default class ContentController extends CrudController {
 
 		res.status(201).json({
 			message: "Successfully created text object",
+			appendObject
+		})
+		next()
+	}
+
+	public async createDeadline(req: express.Request, res: express.Response, next: express.NextFunction) {
+		const { error } = createDeadline.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		const appendObject = {
+			_id: new Mongoose.Types.ObjectId(),
+			placement: req.body.placement ?? 0,
+			deadline: {
+				displayText: req.body.displayText ?? "",
+				deadline: req.body.deadline
+			}
+		}
+
+		await GroupModel.updateOne({
+			_id: req.body.parentGroup
+		}, {
+			$push: {
+				content: appendObject
+			}
+		})
+
+		Log(
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			OperationType.CREATE,
+			ContentType.DEADLINE,
+			[req.body.displayText ?? "", req.body.deadline]
+		)
+
+		res.status(201).json({
+			message: "Successfully created deadline object",
 			appendObject
 		})
 		next()
@@ -237,6 +275,66 @@ export default class ContentController extends CrudController {
 			text: {
 				title: req.body.title,
 				text: req.body.text
+			}
+		})
+	}
+
+	public async updateDeadline(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateDeadline.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		if (req.body.displayText === "-" || req.body.displayText === undefined)
+			req.body.displayText = ""
+		if (req.body.deadline === "-")
+			req.body.deadline = ""
+
+		try {
+			const group = await GroupModel.findOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				"content.$.text": 1
+			}) as Mongoose.Document & IGroup
+
+			if (group == null)
+				throw new Error()
+
+			await GroupModel.updateOne({
+				_id: req.body.parentGroup,
+				"content._id": req.body.id
+			}, {
+				$set: {
+					"content.$.text": {
+						displayText: req.body.displayText ?? group.content[0].deadline?.displayText,
+						deadline: req.body.deadline ?? group.content[0].deadline?.deadline,
+					}
+				}
+			})
+
+			// Notify logg			
+			Log(
+				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+				OperationType.UPDATE,
+				ContentType.TEXT,
+				[req.body.displayText, req.body.deadline],
+				[group.content[0].deadline?.displayText as string, (group.content[0].deadline?.deadline as Date).toString()]
+			);
+		} catch (error) {
+			console.warn(error)
+			res.json({
+				message: "Internal error"
+			})
+			return
+		}
+
+		res.json({
+			message: "Successfully updated field",
+			deadline: {
+				displayText: req.body.displayText,
+				deadline: req.body.deadline
 			}
 		})
 	}

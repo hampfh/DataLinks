@@ -13,10 +13,16 @@ export interface IText {
 	text: string
 }
 
+export interface IDeadline {
+	displayText: string,
+	deadline: Date
+}
+
 export interface IContent {
 	_id: string,
 	link?: ILink,
 	text?: IText,
+	deadline?: IDeadline,
 	group?: IGroup
 }
 
@@ -50,6 +56,17 @@ export const TextSchema = new Schema({
 	}
 }) 
 
+export const DeadlineSchema = new Schema({
+	displayText: {
+		type: String,
+		required: true,
+	},
+	deadline: {
+		type: Date,
+		required: true,
+	}
+})
+
 export const ContentSchema = new Schema({
 	_id: Schema.Types.ObjectId,
 	placement: {
@@ -58,6 +75,7 @@ export const ContentSchema = new Schema({
 	},
 	link: LinkSchema,
 	text: TextSchema,
+	deadline: DeadlineSchema,
 	group: {
 		type: Schema.Types.ObjectId,
 		ref: "group"

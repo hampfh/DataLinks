@@ -46,12 +46,12 @@ export const createText = Joi.object({
 	placement: Joi.number().optional()
 })
 
-export const updateText = Joi.object({
-	parentGroup: Joi.string().required(),
-	id: Joi.string().required(),
-	title: Joi.string().optional(),
-	text: Joi.string()
-}).or("title", "text")
+export const createDeadline = Joi.object({
+	parentGroup: Joi.string(),
+	displayText: Joi.string().optional(),
+	deadline: Joi.date().required(),
+	placement: Joi.number().optional()
+})
 
 export const updateLink = Joi.object({
 	parentGroup: Joi.string().required(),
@@ -59,3 +59,17 @@ export const updateLink = Joi.object({
 	displayText: Joi.string().min(0),
 	link: Joi.string().min(0)
 }).or("displayText", "link")
+
+export const updateText = Joi.object({
+	parentGroup: Joi.string().required(),
+	id: Joi.string().required(),
+	title: Joi.string().optional(),
+	text: Joi.string()
+}).or("title", "text")
+
+export const updateDeadline = Joi.object({
+	parentGroup: Joi.string().required(),
+	id: Joi.string().required(),
+	displayText: Joi.string().min(0),
+	deadline: Joi.date().min(5)
+}).or("displayText", "deadline")

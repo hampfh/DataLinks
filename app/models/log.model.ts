@@ -11,6 +11,7 @@ export enum ContentType {
 	"GROUP" = "GROUP",
 	"TEXT" = "TEXT",
 	"LINK" = "LINK",
+	"DEADLINE" = "DEADLINE",
 	"SUBJECT" = "SUBJECT"
 }
 
