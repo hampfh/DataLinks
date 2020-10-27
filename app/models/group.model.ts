@@ -15,7 +15,8 @@ export interface IText {
 
 export interface IDeadline {
 	displayText: string,
-	deadline: Date
+	deadline: Date,
+	start: Date
 }
 
 export interface IContent {
@@ -62,6 +63,10 @@ export const DeadlineSchema = new Schema({
 		required: true,
 	},
 	deadline: {
+		type: Date,
+		required: true,
+	},
+	start: {
 		type: Date,
 		required: true,
 	}

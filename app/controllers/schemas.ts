@@ -50,6 +50,7 @@ export const createDeadline = Joi.object({
 	parentGroup: Joi.string(),
 	displayText: Joi.string().optional(),
 	deadline: Joi.date().required(),
+	start: Joi.date().optional(),
 	placement: Joi.number().optional()
 })
 
@@ -71,5 +72,6 @@ export const updateDeadline = Joi.object({
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
 	displayText: Joi.string().min(0),
-	deadline: Joi.date().min(5)
-}).or("displayText", "deadline")
+	deadline: Joi.date().min(5),
+	start: Joi.date().min(5)
+}).or("displayText", "deadline", "start")

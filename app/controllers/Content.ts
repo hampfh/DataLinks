@@ -6,6 +6,7 @@ import Mongoose from "mongoose"
 import Log from "./Log"
 import { ContentType, OperationType } from "../models/log.model"
 import GroupController from "./Group"
+import Moment from "moment"
 
 interface AppendObject {
 	_id: Mongoose.Types.ObjectId,
@@ -107,7 +108,8 @@ export default class ContentController extends CrudController {
 			placement: req.body.placement ?? 0,
 			deadline: {
 				displayText: req.body.displayText ?? "",
-				deadline: req.body.deadline
+				deadline: req.body.deadline,
+				start: req.body.start ?? Moment().toDate()
 			}
 		}
 
@@ -123,7 +125,7 @@ export default class ContentController extends CrudController {
 			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
 			OperationType.CREATE,
 			ContentType.DEADLINE,
-			[req.body.displayText ?? "", req.body.deadline]
+			[req.body.displayText ?? "", req.body.deadline, req.body.start]
 		)
 
 		res.status(201).json({
@@ -288,8 +290,6 @@ export default class ContentController extends CrudController {
 
 		if (req.body.displayText === "-" || req.body.displayText === undefined)
 			req.body.displayText = ""
-		if (req.body.deadline === "-")
-			req.body.deadline = ""
 
 		try {
 			const group = await GroupModel.findOne({
@@ -310,6 +310,7 @@ export default class ContentController extends CrudController {
 					"content.$.text": {
 						displayText: req.body.displayText ?? group.content[0].deadline?.displayText,
 						deadline: req.body.deadline ?? group.content[0].deadline?.deadline,
+						start: req.body.start ?? group.content[0].deadline?.start
 					}
 				}
 			})
