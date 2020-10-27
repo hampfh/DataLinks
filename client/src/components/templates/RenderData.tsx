@@ -1,19 +1,33 @@
+/**
+ * This file is responsible to the layout 
+ * and distribution of all elements in the
+ * subjects view. This file also sorts all
+ * contentobjects provided by the database
+ * and sorts them into their corresponding
+ * modules. Aka sending all data belonging
+ * to the text type to the text component
+ * and vise verse for all other component-
+ * types.
+ * 
+ * This is done by recursibly dive into the 
+ * provided root object.
+ */
+
 import React, { Component } from 'react'
 import { v4 as uuid } from "uuid"
 import Http from '../../functions/HttpRequest'
 import ContentElement from '../screens/Subject/components/ContentObject'
 import { ContentType, AddedElement } from "../../App"
 import GroupForm from "./GroupForm"
+import Moment from "moment"
+import "./RenderData.css"
+import TemporaryFields from './TemporaryFields'
+import { StateForComponent as NewElement } from "./TemporaryFields"
 
 export default class RenderData extends Component<PropsForComponent, StateForComponent> {
 
-	newFieldOneRef: React.RefObject<HTMLInputElement>
-	newFieldTwoRef: React.RefObject<HTMLInputElement>
 	constructor(props: PropsForComponent) {
 		super(props)
-
-		this.newFieldOneRef = React.createRef()
-		this.newFieldTwoRef = React.createRef()
 
 		this.state = {
 			content: this.props.group.content
@@ -54,13 +68,18 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 
 	_onCreateElement = (parentId: string, type: ContentType) => {
 		if (type === "Group") {
-			this._onSubmitElement({ parentId }, true)
+			this._onSubmitElement({ 
+				parentId, 
+				fieldOne: "",
+				fieldTwo: "",
+				fieldTwoCorrect: true,
+				fieldThree: "",
+				type,
+			}, true)
 		} else {
 			let newState = { ...this.state }
 			newState.newElement = {
-				parentId: parentId,
-				fieldOne: "",
-				fieldTwo: "",
+				parentId,
 				type
 			}
 			this.setState(newState)
@@ -131,7 +150,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	// Take the virtual new element from the state and submit it to the database
-	_onSubmitElement = async (alternative?: { parentId: string }, isGroup?: boolean) => {
+	_onSubmitElement = async (newElement: NewElement, isGroup?: boolean) => {
 
 		let appendObject: {
 			parentGroup: string,
@@ -139,36 +158,47 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			text?: string,
 			displayText?: string,
 			link?: string,
+			deadline?: string,
+			start?: string,
 			placement: number
 		} = {
-			parentGroup: alternative?.parentId ?? this.state.newElement?.parentId as string,
+			parentGroup: newElement.parentId ?? this.state.newElement?.parentId,
 			placement: 0
 		}
-		if (!!!isGroup && this.state.newElement?.type === "Text") {
-			if (this.newFieldOneRef.current?.value.length !== 0)
-				appendObject.title = this.newFieldOneRef.current?.value
+		if (!!!isGroup && newElement.type === "Text") {
+			if (newElement.fieldOne.length !== 0)
+				appendObject.title = newElement.fieldOne
 
 			// Do not allow empty text
-			if (this.newFieldTwoRef.current?.value.length === 0)
+			if (newElement.fieldTwo.length === 0)
 				return
-			appendObject.text = this.newFieldTwoRef.current?.value
-		} else if (!!!isGroup && this.state.newElement?.type === "Link") {
+			appendObject.text = newElement.fieldTwo
+		} else if (!!!isGroup && newElement.type === "Link") {
 
 			// Do not allow empty displayName or link
-			if (this.newFieldOneRef.current?.value.length === 0 || this.newFieldTwoRef.current?.value.length === 0)
+			if (newElement.fieldOne.length === 0 || newElement.fieldTwo.length === 0)
 				return
 
-			appendObject.displayText = this.newFieldOneRef.current?.value
-			appendObject.link = this.newFieldTwoRef.current?.value
+			appendObject.displayText = newElement.fieldOne
+			appendObject.link = newElement.fieldTwo
+		} else if (!!!isGroup && newElement.type === "Deadline") {
+
+			// Do not allow empty date or wrong field
+			if (newElement.fieldTwo.length === 0 || !!!newElement.fieldTwoCorrect) 
+				return
+
+			appendObject.displayText = newElement.fieldOne
+			appendObject.deadline = Moment(newElement.fieldTwo).toDate().toString()
+			appendObject.start = Moment().toDate().toString()
 		}
 
 		// If it's a group then add it after the response (since we need the id)
 		if (!!!isGroup) {
 			this.props.addContent(
-				alternative?.parentId ?? appendObject.parentGroup,
+				appendObject.parentGroup,
 				appendObject.title as string ?? appendObject.displayText ?? "",
 				appendObject.text as string ?? appendObject.link ?? "",
-				isGroup !== undefined ? "Group" : this.state.newElement?.type as ContentType
+				isGroup !== undefined ? "Group" : newElement.type as ContentType
 			)
 		}
 
@@ -178,10 +208,12 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		this.setState(newState)
 
 		let urlSuffix: string = ""
-		if (!!!isGroup && this.state.newElement?.type === "Text")
+		if (!!!isGroup && newElement.type === "Text")
 			urlSuffix = "/textcontent"
-		else if (!!!isGroup && this.state.newElement?.type === "Link")
+		else if (!!!isGroup && newElement.type === "Link")
 			urlSuffix = "/linkcontent"
+		else if (!!!isGroup && newElement.type === "Deadline")
+			urlSuffix = "/deadlinecontent"
 
 		await Http({
 			url: "/api/v1/group" + urlSuffix,
@@ -285,19 +317,19 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 
 						{ // Temporary elements
 						this.state.newElement !== undefined && group._id.toString() === this.state.newElement.parentId.toString() ?
-							<div>
-								<label htmlFor="fieldOne">{this.state.newElement.type === "Text" ? "Title" : "Display Text"}</label>
-								<input ref={this.newFieldOneRef} name="fieldOne" placeholder={this.state.newElement.type === "Text" ? "New title" : "New display text"} />
-								<label htmlFor="fieldTwo">{this.state.newElement.type === "Text" ? "Text" : "Link"}</label>
-								<input ref={this.newFieldTwoRef} name="fieldTwo" placeholder={this.state.newElement.type === "Text" ? "New text" : "New link"}/>
-								<button onClick={() => this._onSubmitElement()}>Submit content</button>
-							</div> : null
+							<TemporaryFields 
+								onSubmitElement={this._onSubmitElement} 
+								type={this.state.newElement.type} 
+								parentId={group._id}
+							/> : null
 						}
 					</div>
-					{this.props.editMode ?
+					{ // Control panel for group
+					this.props.editMode ?
 						<>
 							<button onClick={() => this._onCreateElement(group._id, "Text")}>Add text</button>
 							<button onClick={() => this._onCreateElement(group._id, "Link")}>Add link</button>
+							<button onClick={() => this._onCreateElement(group._id, "Deadline")}>Add deadline</button>
 							<GroupForm
 								key={uuid()}
 								forRoot={false}
@@ -347,7 +379,18 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 				updateSubjects={this.props.updateSubjects}
 				deleteContent={this.deleteContent}
 			/>
-		} else
+		} else if (contentObject.deadline?.deadline !== undefined) {
+			return <ContentElement 
+				key={uuid()}
+				type="Deadline"
+				parentId={parentId}
+				id={contentObject._id}
+				editMode={this.props.editMode}
+				contentObject={contentObject.deadline}
+				updateSubjects={this.props.updateSubjects}
+				deleteContent={this.deleteContent}
+			/>
+		}
 			return null
 	}
 
@@ -383,10 +426,18 @@ export interface IText {
 	text: string
 }
 
+export interface IDeadline {
+	_id: string,
+	displayText: string,
+	deadline: string,
+	start: string
+}
+
 export interface ContentObject {
 	_id: string,
 	link?: ILink,
 	text?: IText,
+	deadline?: IDeadline,
 	group?: Group
 }
 
@@ -411,6 +462,8 @@ interface PropsForComponent {
 	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
 }
 
+export 
+
 interface StateForComponent {
 	content: ContentObject[],
 	newGroup?: {
@@ -420,8 +473,6 @@ interface StateForComponent {
 	},
 	newElement?: {
 		parentId: string,
-		fieldOne: string,
-		fieldTwo: string,
 		type: ContentType
 	}
 }

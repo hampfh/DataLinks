@@ -296,7 +296,7 @@ export default class ContentController extends CrudController {
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
-				"content.$.text": 1
+				"content.$.deadline": 1
 			}) as Mongoose.Document & IGroup
 
 			if (group == null)
@@ -307,7 +307,7 @@ export default class ContentController extends CrudController {
 				"content._id": req.body.id
 			}, {
 				$set: {
-					"content.$.text": {
+					"content.$.deadline": {
 						displayText: req.body.displayText ?? group.content[0].deadline?.displayText,
 						deadline: req.body.deadline ?? group.content[0].deadline?.deadline,
 						start: req.body.start ?? group.content[0].deadline?.start
@@ -335,7 +335,8 @@ export default class ContentController extends CrudController {
 			message: "Successfully updated field",
 			deadline: {
 				displayText: req.body.displayText,
-				deadline: req.body.deadline
+				deadline: req.body.deadline,
+				start: req.body.start
 			}
 		})
 	}

@@ -4,6 +4,11 @@ import "./Animation.css"
 import { SubjectData } from '../Subjects'
 import { Redirect } from 'react-router-dom'
 
+import GROUP_ICON from "../../../../assets/icons/interfacePack/svg/group.svg"
+import CALCULATOR_ICON from "../../../../assets/icons/interfacePack/svg/calculator.svg"
+import DOCUMENT_ICON from "../../../../assets/icons/interfacePack/svg/document-3.svg"
+import COMPUTER_ICON from "../../../../assets/icons/interfacePack/svg/computer.svg"
+
 export class Subject extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
@@ -32,15 +37,15 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 	getSubjectIcon(subject: string): string {
 		switch(subject) {
 			case "DD1390":
-				return require("../../../../assets/icons/interfacePack/svg/group.svg")
+				return GROUP_ICON
 			case "SF1671":
 			case "SF1624":
-				return require("../../../../assets/icons/interfacePack/svg/calculator.svg")
+				return CALCULATOR_ICON
 			case "DA1600":
-				return require("../../../../assets/icons/interfacePack/svg/document-3.svg")
+				return DOCUMENT_ICON
 			case "DD1337":
 			case "DD1338":
-				return require("../../../../assets/icons/interfacePack/svg/computer.svg")
+				return COMPUTER_ICON
 		}
 		return ""
 	}
