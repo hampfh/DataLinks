@@ -55,6 +55,14 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 	}
 
 	render() {
+		if (this.props.subject.group == null) {
+			console.warn("Subject " + this.props.subject.name + " has no root")
+			return (<div>
+				<h2>This page is not working correctly</h2>
+				<p>Please contant admin...</p>
+			</div>)
+		}
+
 		return (
 			<section className="SubjectViewMaster">
 				{this.state.shouldExitView ?

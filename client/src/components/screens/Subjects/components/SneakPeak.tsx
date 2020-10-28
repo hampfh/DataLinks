@@ -2,11 +2,18 @@ import React, { Component } from 'react'
 import { AddedElement, ContentType } from '../../../../App'
 import RenderData from '../../../templates/RenderData'
 import { SubjectData } from '../Subjects'
+import Http from "../../../../functions/HttpRequest"
 
 import "./SneakPeak.css"
 
 export default class SneakPeak extends Component<PropsForComponent> {
+
 	render() {
+		if (this.props.subject.group == null) {
+			console.warn("Subject " + this.props.subject.name + " has no root")
+			return null;
+		}
+
 		return (
 			<div 
 				className="SneakPeakWrapper" 

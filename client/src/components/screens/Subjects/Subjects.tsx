@@ -16,7 +16,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 		this.state = {
 			elementsHidden: false,
 			sneakPeak: undefined,
-			selectScore: 0
+			selectScore: 0 // Select score is used since multiple elements may be used for sneakPeakView
 		}
 	}
 
@@ -64,15 +64,19 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 				}
 				<div className="SubjectContainer">
 					{
-						this.props.subjects.map((subject) =>
-							<SubjectComponent
-								key={subject.code}
-								subject={subject}
-								elementsHidden={this.state.elementsHidden}
-								showSneakPeak={this._showSneakPeak}
-								hideSneakPeak={this._hideSneakPeak}
-							/>
-						)
+						this.props.subjects.map((subject) => {
+							if (subject.group == null) 
+								return null
+							else {
+								return <SubjectComponent
+									key={subject.code}
+									subject={subject}
+									elementsHidden={this.state.elementsHidden}
+									showSneakPeak={this._showSneakPeak}
+									hideSneakPeak={this._hideSneakPeak}
+								/>
+							}
+						})
 					}
 				</div>
 				<div className="SneakPeakContainer">

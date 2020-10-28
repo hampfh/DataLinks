@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createSubject, findElementWithId } from "./schemas"
+import { createSubject, findElementWithId, updateSubject } from "./schemas"
 import SubjectModel, { ISubject } from "../models/subjects.model"
 import GroupModel from "../models/group.model"
 import { Subject } from "."
@@ -88,8 +88,42 @@ export default class SubjectController extends CrudController {
 				result: response
 			})
 	}
-	public async update(): Promise<void> {
-		throw new Error("Not implemented")
+	public async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateSubject.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		let appendObject: {
+			name?: string,
+			code?: string,
+			description?: string,
+			color?: string
+		} = {}
+
+		if (req.body.name != null)
+			appendObject.name = req.body.name
+		if (req.body.code != null)
+			appendObject.code = req.body.code
+		if (req.body.description != null)
+			appendObject.description = req.body.description
+		if (req.body.color != null)
+			appendObject.color = req.body.color
+
+		try {
+			await SubjectModel.updateOne({
+				_id: req.body.id
+			}, appendObject) as Document
+
+			res.status(200).json({
+				message: "Successfully updated subject"
+			})
+		} catch (error) {
+			res.status(500).json({
+				message: "Encountered internal server error"
+			})
+		}
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = findElementWithId.validate(req.body)

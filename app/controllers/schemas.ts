@@ -7,6 +7,14 @@ export const createSubject = Joi.object({
 	color: Joi.string().required()
 })
 
+export const updateSubject = Joi.object({
+	id: Joi.string().required(),
+	name: Joi.string(),
+	code: Joi.string(),
+	description: Joi.string(),
+	color: Joi.string()
+}).or("name", "code", "description", "color")
+
 export const createGroup = Joi.object({
 	parentGroup: Joi.string(),
 	name: Joi.string().optional(),

@@ -13,6 +13,7 @@ router.all("/", (req: express.Request, res: express.Response) => {
 
 router.post("/subject", Subject.create)
 router.get("/subject", Subject.read)
+router.patch("/subject", Subject.update)
 router.delete("/subject", Subject.delete)
 router.post("/group", Group.create)
 router.get("/group", Group.read)
