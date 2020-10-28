@@ -4,7 +4,6 @@ import "./Subjects.css"
 import "./components/Switch.css"
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import { Group } from "../../templates/RenderData"
-import { AddedElement, ContentType } from '../../../App'
 import isMobile from "../../../functions/isMobile"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
@@ -87,10 +86,6 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 							showSneakPeak={this._showSneakPeak}
 							hideSneakPeak={this._hideSneakPeak}
 							updateSubjects={this.props.updateSubjects}
-							deleted={this.props.deleted}
-							added={this.props.added}
-							addDeleted={this.props.addDeleted}
-							addContent={this.props.addContent}
 						/>
 					}
 				</div>
@@ -113,10 +108,6 @@ interface PropsForComponent {
 	editMode: boolean
 	setEditMode: (mode: boolean) => void,
 	updateSubjects: () => void,
-	deleted: string[],
-	added: AddedElement[],
-	addDeleted: (id: string) => void,
-	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
 }
 
 interface StateForComponent {

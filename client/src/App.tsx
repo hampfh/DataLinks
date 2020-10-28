@@ -8,13 +8,6 @@ import Http, { HttpReturnType } from "./functions/HttpRequest"
 import SubjectView from "./components/screens/Subject/SubjectView"
 import { v4 as uuid } from "uuid"
 
-export interface AddedElement {
-	parentId: string,
-	fieldOne: string,
-	fieldTwo: string,
-	type: ContentType
-}
-
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
 class App extends Component<{}, StateForComponent> {
@@ -24,8 +17,6 @@ class App extends Component<{}, StateForComponent> {
 		this.state = {
 			subjects: [],
 			editMode: false,
-			deleted: [],
-			added: [],
 			hasLoaded: false
 		}
 	}
@@ -44,23 +35,6 @@ class App extends Component<{}, StateForComponent> {
 			newState.editMode = true
 			this.setState(newState)
 		}
-	}
-
-	_addContent = (parentId: string, fieldOne: string, fieldTwo: string, type: ContentType) => {
-		let newState = { ...this.state }
-		newState.added.push({
-			parentId,
-			fieldOne,
-			fieldTwo,
-			type
-		})
-		this.setState(newState)
-	}
-
-	_addDeletedContent = (id: string) => {
-		let newState = { ...this.state }
-		newState.deleted.push(id)
-		this.setState(newState)
 	}
 
 	_setEditMode = (mode: boolean) => {
@@ -122,10 +96,6 @@ class App extends Component<{}, StateForComponent> {
 							editMode={this.state.editMode} 
 							setEditMode={this._setEditMode} 
 							updateSubjects={this._updateSubjects}
-							deleted={this.state.deleted}
-							added={this.state.added}
-							addDeleted={this._addDeletedContent}
-							addContent={this._addContent}
 						/>
 					</Route>
 					{this.state.subjects.map((subject) => {
@@ -136,10 +106,6 @@ class App extends Component<{}, StateForComponent> {
 									editMode={this.state.editMode}
 									subject={subject}
 									close={() => { }}
-									deleted={this.state.deleted}
-									added={this.state.added}
-									addDeleted={this._addDeletedContent}
-									addContent={this._addContent}
 									setEditMode={this._setEditMode}
 								/>
 							</Route>
@@ -163,8 +129,6 @@ class App extends Component<{}, StateForComponent> {
 export interface StateForComponent {
 	subjects: SubjectData[],
 	editMode: boolean,
-	deleted: string[],
-	added: AddedElement[],
 	hasLoaded: boolean
 }
 

@@ -1,13 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createStore } from 'redux'
+import rootReducer from "./state/reducers"
+import { Provider } from "react-redux"
+
+let store
+declare global {interface Window {__REDUX_DEVTOOLS_EXTENSION__: any;}}
+if (process.env.NODE_ENV === 'production') {
+	store = createStore(rootReducer);
+} else {
+	store = createStore(rootReducer,
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+	);
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+	<Provider store={store}>
+		<React.StrictMode>
+			<App />
+		</React.StrictMode>
+	</Provider>,
   document.getElementById('root')
 );
 

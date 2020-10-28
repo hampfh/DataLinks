@@ -5,7 +5,6 @@ import { SubjectData } from '../Subjects/Subjects'
 import RenderData from "../../templates/RenderData"
 import logoutIcon from "../../../assets/icons/close.svg"
 import { Redirect } from "react-router-dom"
-import { AddedElement, ContentType } from '../../../App'
 import isMobile from "../../../functions/isMobile"
 
 export default class Subject extends Component<PropsForComponent, StateForComponent> {
@@ -87,10 +86,6 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 									updateSubjects={this.props.updateSubjects}
 									editMode={this.props.editMode}
 									group={this.props.subject.group}
-									added={this.props.added}
-									deleted={this.props.deleted}
-									addDeleted={this.props.addDeleted}
-									addContent={this.props.addContent}
 								/>
 							</div>
 						</div>
@@ -104,14 +99,10 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 
 export interface PropsForComponent {
 	setEditMode: (mode: boolean) => void,
-	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
-	addDeleted: (id: string) => void
 	updateSubjects: () => void,
 	close: () => void,
 	subject: SubjectData,
 	editMode: boolean,
-	deleted: string[],
-	added: AddedElement[]
 }
 
 export interface StateForComponent {

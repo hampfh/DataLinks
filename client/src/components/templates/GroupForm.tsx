@@ -45,8 +45,7 @@ interface PropsForComponent {
 		isSubGroup: boolean
 	},
 	createGroup: (id: string, isSubGroup: boolean) => Promise<void>,
-	submitGroup: (name: string) => Promise<void>,
-	forceUpdateMe: () => void
+	submitGroup: (name: string) => Promise<void>
 }
 
 interface StateForComponent {

@@ -5,8 +5,12 @@ import { IDeadline, ILink, IText } from '../../../templates/RenderData'
 import DeadlienObject from './DeadlineObject'
 import Moment from "moment"
 import "./ContentObject.css"
+import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from '../../../../state/actions/local'
+import { connect } from "react-redux"
+import { IReduxRootState } from '../../../../state/reducers'
+import { ILocalState, indexOfLocal } from '../../../../state/reducers/local'
 
-export default class ContentObject extends Component<PropsForComponent, StateForComponent> {
+class ContentObject extends Component<PropsForComponent, StateForComponent> {
 
 	newFieldOneRef: React.RefObject<HTMLInputElement>
 	newFieldTwoRef: React.RefObject<HTMLInputElement>
@@ -62,16 +66,7 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 		newState.lastFieldThree = fieldThree
 		this.setState(newState)
 
-		let append: {
-			parentGroup: string,
-			id: string,
-			title?: string,
-			text?: string,
-			displayText?: string,
-			link?: string,
-			deadline?: string,
-			start?: string
-		} = {
+		let append: IEditLocalObject = {
 			parentGroup: this.props.parentId.toString(),
 			id: this.props.id,
 		}
@@ -104,25 +99,31 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 				window.location.reload()
 		}
 
-		this.props.updateSubjects()
+		// Check if local item
+		if (indexOfLocal(this.props.local, append.id) >= 0)
+			this.props.editLocal(append.id, append)
+		else
+			this.props.updateSubjects()
 	}
 
 	_delete = async () => {
-		const response = await Http({
-			url: "/api/v1/group/content",
-			method: "DELETE",
-			data: {
-				parentGroupId: this.props.parentId,
-				id: this.props.id
+		if (window.confirm("Are you sure you want to delete this item?")) {
+			const response = await Http({
+				url: "/api/v1/group/content",
+				method: "DELETE",
+				data: {
+					parentGroupId: this.props.parentId,
+					id: this.props.id
+				}
+			})
+
+			if (response.status !== 200) {
+				if (window.confirm("The site encountered an error, reload the site?"))
+					window.location.reload()
 			}
-		})
 
-		if (response.status !== 200) {
-			if (window.confirm("The site encountered an error, reload the site?"))
-				window.location.reload()
+			this.props.deleteLocally(this.props.id)
 		}
-
-		this.props.deleteContent(this.props.id)
 	}
 
 	render() {
@@ -197,13 +198,15 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 }
 
 interface PropsForComponent {
+	local: ILocalState,
 	type: ContentType,
 	parentId: string,
 	id: string,
 	editMode: boolean,
 	contentObject: IText | ILink | IDeadline,
 	updateSubjects: () => void,
-	deleteContent: (id: string) => void
+	deleteLocally: IDeleteLocally,
+	editLocal: IEditLocal
 }
 
 interface StateForComponent {
@@ -215,3 +218,18 @@ interface StateForComponent {
 	fieldThree: string,
 	fieldTwoIsCorrect: boolean,
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		local: state.local
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		deleteLocally,
+		editLocal
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(ContentObject);

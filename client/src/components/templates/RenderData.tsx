@@ -17,14 +17,18 @@ import React, { Component } from 'react'
 import { v4 as uuid } from "uuid"
 import Http from '../../functions/HttpRequest'
 import ContentElement from '../screens/Subject/components/ContentObject'
-import { ContentType, AddedElement } from "../../App"
+import { ContentType } from "../../App"
 import GroupForm from "./GroupForm"
 import Moment from "moment"
 import "./RenderData.css"
 import TemporaryFields from './TemporaryFields'
 import { StateForComponent as NewElement } from "./TemporaryFields"
+import { connect } from "react-redux"
+import { IReduxRootState } from '../../state/reducers'
+import { addLocal, deleteLocally, editLocal, IAddLocal, IDeleteLocally, IEditLocal } from '../../state/actions/local'
+import { ILocalState } from '../../state/reducers/local'
 
-export default class RenderData extends Component<PropsForComponent, StateForComponent> {
+class RenderData extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
 		super(props)
@@ -32,10 +36,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		this.state = {
 			content: this.props.group.content
 		}
-	}
-
-	shouldComponentUpdate() {
-		return false
 	}
 
 	_deleteGroup = async (id: string) => {
@@ -55,36 +55,22 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			if (window.confirm("An error occured, would you like to reload the site?"))
 				window.location.reload()
 		}
-		this.forceUpdate()
 	}
 
 	// Target specific group, not all of them
 	deleteContent = (id: string, ignoreConfirm?: boolean) => {
 		if (ignoreConfirm || window.confirm("Are you sure you want to delete this?")) {
-			this.props.addDeleted(id)
-			this.forceUpdate()
+			this.props.deleteLocally(id)
 		}
 	}
 
-	_onCreateElement = (parentId: string, type: ContentType) => {
-		if (type === "Group") {
-			this._onSubmitElement({ 
-				parentId, 
-				fieldOne: "",
-				fieldTwo: "",
-				fieldTwoCorrect: true,
-				fieldThree: "",
-				type,
-			}, true)
-		} else {
-			let newState = { ...this.state }
-			newState.newElement = {
-				parentId,
-				type
-			}
-			this.setState(newState)
-			this.forceUpdate()
+	_onCreateElement = (parentId: string, type: "Deadline" | "Text" | "Link") => {
+		let newState = { ...this.state }
+		newState.newElement = {
+			parentId,
+			type
 		}
+		this.setState(newState)
 	}
 
 	_updateGroup = async (id: string, setting: "split" | "column" | "placement", value: boolean | number) => {
@@ -122,7 +108,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			isSubGroup
 		}
 		this.setState(newState)
-		this.forceUpdate()
 	}
 
 	_onSubmitGroup = async (name: string) => {
@@ -150,7 +135,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 	}
 
 	// Take the virtual new element from the state and submit it to the database
-	_onSubmitElement = async (newElement: NewElement, isGroup?: boolean) => {
+	_onSubmitElement = async (newElement: NewElement) => {
 
 		let appendObject: {
 			parentGroup: string,
@@ -165,7 +150,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			parentGroup: newElement.parentId ?? this.state.newElement?.parentId,
 			placement: 0
 		}
-		if (!!!isGroup && newElement.type === "Text") {
+		if (newElement.type === "Text") {
 			if (newElement.fieldOne.length !== 0)
 				appendObject.title = newElement.fieldOne
 
@@ -173,7 +158,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			if (newElement.fieldTwo.length === 0)
 				return
 			appendObject.text = newElement.fieldTwo
-		} else if (!!!isGroup && newElement.type === "Link") {
+		} else if (newElement.type === "Link") {
 
 			// Do not allow empty displayName or link
 			if (newElement.fieldOne.length === 0 || newElement.fieldTwo.length === 0)
@@ -181,7 +166,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 
 			appendObject.displayText = newElement.fieldOne
 			appendObject.link = newElement.fieldTwo
-		} else if (!!!isGroup && newElement.type === "Deadline") {
+		} else if (newElement.type === "Deadline") {
 
 			// Do not allow empty date or wrong field
 			if (newElement.fieldTwo.length === 0 || !!!newElement.fieldTwoCorrect) 
@@ -192,54 +177,51 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 			appendObject.start = Moment().toDate().toString()
 		}
 
-		// If it's a group then add it after the response (since we need the id)
-		if (!!!isGroup) {
-			this.props.addContent(
-				appendObject.parentGroup,
-				appendObject.title as string ?? appendObject.displayText ?? "",
-				appendObject.text as string ?? appendObject.link ?? "",
-				isGroup !== undefined ? "Group" : newElement.type as ContentType
-			)
-		}
+		let urlSuffix: string = ""
+		if (newElement.type === "Text")
+			urlSuffix = "/textcontent"
+		else if (newElement.type === "Link")
+			urlSuffix = "/linkcontent"
+		else if (newElement.type === "Deadline")
+			urlSuffix = "/deadlinecontent"
 
 		// Remove the temporary element
 		let newState = { ...this.state }
 		newState.newElement = undefined
 		this.setState(newState)
 
-		let urlSuffix: string = ""
-		if (!!!isGroup && newElement.type === "Text")
-			urlSuffix = "/textcontent"
-		else if (!!!isGroup && newElement.type === "Link")
-			urlSuffix = "/linkcontent"
-		else if (!!!isGroup && newElement.type === "Deadline")
-			urlSuffix = "/deadlinecontent"
-
-		await Http({
+		const response = await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
 			data: appendObject
 		})
 
-		this.forceUpdate()
-	}
 
-	_forceUpdateMe = () => {
-		this.forceUpdate()
+		if (response.element._id != null) {
+			this.props.addLocal(
+				appendObject.parentGroup,
+				appendObject.title ?? appendObject.displayText ?? "",
+				appendObject.text ?? appendObject.link ?? appendObject.deadline ?? "",
+				newElement.type === "Deadline" ? Moment().toString() : "",
+				newElement.type,
+				response.element._id
+			)
+		}
+
 	}
 
 	renderObject(object: ContentObject, parentId: string, depth?: number) {
 		if (object.group !== undefined) {
 
 			// Check if group is deleted
-			const groupId = this.props.deleted.find((deletedId: string) => deletedId.toString() === object.group?._id.toString())
+			const groupId = this.props.local.deleted.find((deletedId: string) => deletedId.toString() === object.group?._id.toString())
 			if (groupId != null || object.group == null)
 				return null
 
 			const group = object.group
 			return (
 				<div 
-					key={uuid()} 
+					key={object.group._id} 
 					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.editMode ? " NoBorder" : "" }`}
 					style={this.props.editMode ? {
 						margin: "1rem",
@@ -255,8 +237,8 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 						{ // Generate all elements and ignore the ones that are deleted
 						group.content.map((object) => {
 							let deleted = false
-							for (let i = 0; i < this.props.deleted.length; i++) {
-								if (object._id.toString() === this.props.deleted[i].toString()) {
+							for (let i = 0; i < this.props.local.deleted.length; i++) {
+								if (object._id.toString() === this.props.local.deleted[i].toString()) {
 									deleted = true
 									break
 								}
@@ -267,9 +249,9 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 						})}
 
 						{// Generate all elements that are locally added
-						this.props.added.map((object) => {
+						this.props.local.added.map((object) => {
 							let shouldAdd = false
-							for (let i = 0; i < this.props.added.length; i++) {
+							for (let i = 0; i < this.props.local.added.length; i++) {
 								if (group._id.toString() === object.parentId.toString()) {
 									shouldAdd = true
 									break
@@ -279,7 +261,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								return null
 							
 							if (object.type === "Group") {
-								const test: ContentObject = {
+								const groupElement: ContentObject = {
 									_id: group._id,
 									group: {
 										name: "",
@@ -289,32 +271,45 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 										content: []
 									}
 								}
-								return this.renderObject(test, group._id)
+								return this.renderObject(groupElement, group._id)
 							}
 							else {
+								let contentObject: IText | ILink | IDeadline
+								if (object.type === "Text") {
+									contentObject = {
+										_id: object.id ?? "",
+										title: object.fieldOne,
+										text: object.fieldTwo
+									}
+								}
+								else if (object.type === "Link") {
+									contentObject = {
+										_id: object.id ?? "",
+										displayText: object.fieldOne,
+										link: object.fieldTwo
+									}
+								} else {
+									contentObject = {
+										_id: object.id ?? "",
+										displayText: object.fieldOne,
+										deadline: object.fieldTwo,
+										start: object.fieldThree
+									}
+								}
+
 								return (
 									<ContentElement
-										key={uuid()}
+										key={object.id ?? uuid()}
 										type={object.type}
-										parentId={parentId}
-										id={""}
+										parentId={group._id}
+										id={object.id ?? ""}
 										editMode={this.props.editMode}
-										contentObject={(object.type === "Text" ? {
-											_id: "",
-											title: object.fieldOne,
-											text: object.fieldTwo
-										} : {
-												_id: "",
-												displayText: object.fieldOne,
-												link: object.fieldTwo
-											})}
+										contentObject={contentObject}
 										updateSubjects={this.props.updateSubjects}
-										deleteContent={this.deleteContent}
 									/>
 								)	
 							}
 						})}
-
 						{ // Temporary elements
 						this.state.newElement !== undefined && group._id.toString() === this.state.newElement.parentId.toString() ?
 							<TemporaryFields 
@@ -338,7 +333,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								newGroup={this.state.newGroup}
 								createGroup={this._onCreateGroup}
 								submitGroup={this._onSubmitGroup}
-								forceUpdateMe={this._forceUpdateMe}
 							/>
 							{group.depth > 1 ?
 								<button onClick={() => this._deleteGroup(group._id)}>Delete this group</button>
@@ -357,38 +351,35 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 		if (contentObject.link !== undefined) {
 			return (
 				<ContentElement
-					key={uuid()}
+					key={contentObject._id}
 					type="Link"
 					parentId={parentId}
 					id={contentObject._id}
 					editMode={this.props.editMode}
 					contentObject={contentObject.link}
 					updateSubjects={this.props.updateSubjects}
-					deleteContent={this.deleteContent}
 				/>
 			)
 		}
 		else if (contentObject.text !== undefined) {
 			return <ContentElement 
-				key={uuid()}
+				key={contentObject._id}
 				type="Text"
 				parentId={parentId}
 				id={contentObject._id}
 				editMode={this.props.editMode}
 				contentObject={contentObject.text}
 				updateSubjects={this.props.updateSubjects}
-				deleteContent={this.deleteContent}
 			/>
 		} else if (contentObject.deadline?.deadline !== undefined) {
 			return <ContentElement 
-				key={uuid()}
+				key={contentObject._id}
 				type="Deadline"
 				parentId={parentId}
 				id={contentObject._id}
 				editMode={this.props.editMode}
 				contentObject={contentObject.deadline}
 				updateSubjects={this.props.updateSubjects}
-				deleteContent={this.deleteContent}
 			/>
 		}
 			return null
@@ -407,7 +398,6 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 					newGroup={this.state.newGroup}
 					createGroup={this._onCreateGroup}
 					submitGroup={this._onSubmitGroup}
-					forceUpdateMe={this._forceUpdateMe}
 				/>
 			</div>
 		)
@@ -456,13 +446,11 @@ interface PropsForComponent {
 	updateSubjects: () => void,
 	editMode: boolean,
 	group: Group,
-	deleted: string[],
-	added: AddedElement[]
-	addDeleted: (id: string) => void,
-	addContent: (id: string, fieldOne: string, fieldTwo: string, type: ContentType) => void
+	local: ILocalState,
+	deleteLocally: IDeleteLocally,
+	addLocal: IAddLocal
+	editLocal: IEditLocal
 }
-
-export 
 
 interface StateForComponent {
 	content: ContentObject[],
@@ -476,3 +464,19 @@ interface StateForComponent {
 		type: ContentType
 	}
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		local: state.local,
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		addLocal,
+		deleteLocally,
+		editLocal
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(RenderData);
