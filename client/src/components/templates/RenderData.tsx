@@ -341,7 +341,7 @@ export default class RenderData extends Component<PropsForComponent, StateForCom
 								forceUpdateMe={this._forceUpdateMe}
 							/>
 							{group.depth > 1 ?
-								<button onClick={() => this._deleteGroup(group._id)}>Delete group</button>
+								<button onClick={() => this._deleteGroup(group._id)}>Delete this group</button>
 								: null
 							}
 							<div>

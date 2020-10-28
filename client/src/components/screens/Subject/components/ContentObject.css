@@ -1,0 +1,29 @@
+@import "../../../root.css";
+
+.ButtonWrapperEditMode {
+	margin: 0.5rem;
+	background-color: var(--dark);
+	padding: 0.5rem;
+	border-radius: 10px;
+}
+
+.editModeField {
+	display: grid;
+}
+
+.editLabel {
+	color: white;
+}
+
+.buttonContainerEditMode {
+	display: flex;
+	justify-content: center;
+}
+
+.editModeInputField {
+	border-radius: 4px;
+	padding: 0.25rem;
+	color: white;
+	border: none;
+	background-color: var(--complementary);
+}

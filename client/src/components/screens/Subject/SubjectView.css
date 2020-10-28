@@ -52,6 +52,11 @@
 	transform: scale(0.95);
 }
 
+.GroupContainer {
+	padding: 0.25rem;
+	border-radius: 10px;
+}
+
 .GroupContainer:not(.Nested) {
 	align-self: flex-start;
 	flex-wrap: wrap;

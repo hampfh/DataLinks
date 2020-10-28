@@ -125,20 +125,6 @@
 	padding-bottom: 0.5rem;
 }
 
-.groupContainer {
-	width: 80%;
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-top-color: white;
-	padding-bottom: 1rem;
-	padding-top: 0.75rem;
-}
-
-.groupContainer:nth-of-type(1) {
-	border: none;
-	padding-top: 0.75rem;
-}
-
 .textObjectTitle, 
 .textObject {
 	margin: 0;

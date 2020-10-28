@@ -4,6 +4,7 @@ import Http from '../../../../functions/HttpRequest'
 import { IDeadline, ILink, IText } from '../../../templates/RenderData'
 import DeadlienObject from './DeadlineObject'
 import Moment from "moment"
+import "./ContentObject.css"
 
 export default class ContentObject extends Component<PropsForComponent, StateForComponent> {
 
@@ -149,41 +150,46 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 				return <DeadlienObject displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} />
 		} else {
 			return (
-				<div className="ButtonWrapper" style={{
+				<div className="ButtonWrapper ButtonWrapperEditMode" style={{
 					display: this.props.type === "Deadline" ? "grid" : "block"
 				}}>
-					<label htmlFor="fieldOne">{this.props.type === "Text" ? "Title" : this.props.type === "Link" ? "Display text" : "Deadline description"}</label>
-					<input ref={this.newFieldOneRef} disabled={this.props.id.toString().length === 0}
-						name="fieldOne" value={this.state.fieldOne ?? ""}
-						onChange={(event) => this._updateField(event, "first")}
-					/>
+					<div className="editModeField">
+						<label htmlFor="fieldOne" className="editLabel">{this.props.type === "Text" ? "Title" : this.props.type === "Link" ? "Display text" : "Deadline description"}</label>
+						<input className="editModeInputField" ref={this.newFieldOneRef} disabled={this.props.id.toString().length === 0}
+							name="fieldOne" value={this.state.fieldOne ?? ""}
+							onChange={(event) => this._updateField(event, "first")}
+						/>
+					</div>
 
-					{this.props.type === "Deadline" ?
-						<p style={{
-							color: this.state.fieldTwoIsCorrect ? "transparent" : "#fff",
-							textDecoration: "underline",
-							marginTop: "0",
-							marginBottom: "0.1rem"
-						}}>Deadline is not formatted correctly</p>
-						: null
-					}
-					<label htmlFor="fieldTwo">{this.props.type === "Text" ? "Text" : this.props.type === "Link" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
-					<input ref={this.newFieldTwoRef} disabled={this.props.id.toString().length === 0}
-						name="fieldTwo" value={this.state.fieldTwo ?? ""}
-						onChange={(event) => this._updateField(event, "second")}
-						placeholder={this.props.type === "Deadline" ? "YYYY-MM-DD HH:mm" : ""}
-					/>
-
-					{this.props.id.toString().length !== 0 && (
-						this.state.lastFieldOne !== this.state.fieldOne ||
-						this.state.lastFieldTwo !== this.state.fieldTwo
-					) ?
-						<button onClick={this._updateContent}>Update fields</button>
-						: null
-					}
-					{this.props.id.toString().length === 0 ? null :
-						<button onClick={this._delete}>Delete</button>
-					}
+					<div className="editModeField">
+						{this.props.type === "Deadline" ?
+							<p style={{
+								color: this.state.fieldTwoIsCorrect ? "transparent" : "#fff",
+								textDecoration: "underline",
+								marginTop: "0",
+								marginBottom: "0.1rem"
+							}}>Deadline is not formatted correctly</p>
+							: null
+						}
+						<label htmlFor="fieldTwo" className="editLabel">{this.props.type === "Text" ? "Text" : this.props.type === "Link" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
+						<input className="editModeInputField" ref={this.newFieldTwoRef} disabled={this.props.id.toString().length === 0}
+							name="fieldTwo" value={this.state.fieldTwo ?? ""}
+							onChange={(event) => this._updateField(event, "second")}
+							placeholder={this.props.type === "Deadline" ? "YYYY-MM-DD HH:mm" : ""}
+						/>
+					</div>
+					<div className="buttonContainerEditMode">
+						{this.props.id.toString().length !== 0 && (
+							this.state.lastFieldOne !== this.state.fieldOne ||
+							this.state.lastFieldTwo !== this.state.fieldTwo
+						) ?
+							<button onClick={this._updateContent}>Update fields</button>
+							: null
+						}
+						{this.props.id.toString().length === 0 ? null :
+							<button onClick={this._delete}>Delete</button>
+						}
+					</div>
 				</div>
 			)
 		}
