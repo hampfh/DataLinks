@@ -76,7 +76,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 					}
 				</div>
 				<div className="SneakPeakContainer">
-					{this.state.sneakPeak == null ? null :
+					{this.state.sneakPeak == null || window.innerWidth < 750 || isMobile() ? null :
 						<SubjectSneakPeak 
 							editMode={this.props.editMode}
 							subject={this.state.sneakPeak}
