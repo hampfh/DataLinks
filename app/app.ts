@@ -25,25 +25,7 @@ app.use(function (req: Request, res: Response, next: express.NextFunction) {
 	next()
 })
 
-// Only update information every 10th second
-let currentFile = initialFile
-setInterval(() => {
-	fs.readFile("./app/assets/data.json", "utf8", (err, data) => {
-		let chunk = data.toString()
-		try {
-			currentFile = JSON.parse(chunk)
-		} catch(err) {
-			console.log(err)
-		}
-	})
-}, 10000)
-
 app.use("/api/v1", apiRoute)
-app.get("/data", (req: Request, res: Response) => {
-	res.json({
-		data: currentFile
-	})
-})
 
 // Serve to react
 app.get("*", (req: express.Request, res: express.Response) => {

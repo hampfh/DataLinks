@@ -31,6 +31,7 @@ export default class ContentController extends CrudController {
 			_id: new Mongoose.Types.ObjectId(),
 			placement: req.body.placement ?? 0,
 			link: {
+				_id: new Mongoose.Types.ObjectId(),
 				displayText: req.body.displayText,
 				link: req.body.link
 			}
@@ -53,7 +54,7 @@ export default class ContentController extends CrudController {
 
 		res.status(201).json({
 			message: "Successfully created link object",
-			appendObject
+			element: appendObject
 		})
 		next()
 	}
@@ -69,6 +70,7 @@ export default class ContentController extends CrudController {
 			_id: new Mongoose.Types.ObjectId(),
 			placement: req.body.placement ?? 0,
 			text: {
+				_id: new Mongoose.Types.ObjectId(),
 				title: req.body.title ?? "",
 				text: req.body.text
 			}
@@ -91,7 +93,7 @@ export default class ContentController extends CrudController {
 
 		res.status(201).json({
 			message: "Successfully created text object",
-			appendObject
+			element: appendObject
 		})
 		next()
 	}
@@ -107,6 +109,7 @@ export default class ContentController extends CrudController {
 			_id: new Mongoose.Types.ObjectId(),
 			placement: req.body.placement ?? 0,
 			deadline: {
+				_id: new Mongoose.Types.ObjectId(),
 				displayText: req.body.displayText ?? "",
 				deadline: req.body.deadline,
 				start: req.body.start ?? Moment().toDate()
@@ -130,7 +133,7 @@ export default class ContentController extends CrudController {
 
 		res.status(201).json({
 			message: "Successfully created deadline object",
-			appendObject
+			element: appendObject
 		})
 		next()
 	}
@@ -355,6 +358,13 @@ export default class ContentController extends CrudController {
 			_id: req.body.parentGroupId,
 			"content._id": req.body.id
 		}) as Mongoose.Document & IGroup
+
+		if (group == null) {
+			res.status(404).json({
+				message: "Id did not match any specific object"
+			})
+			return
+		}
 
 		try {
 			await GroupModel.updateOne({
