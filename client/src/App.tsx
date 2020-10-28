@@ -25,12 +25,18 @@ class App extends Component<{}, StateForComponent> {
 			subjects: [],
 			editMode: false,
 			deleted: [],
-			added: []
+			added: [],
+			hasLoaded: false
 		}
 	}
 
 	componentDidMount() {
-		this._updateSubjects()
+		this._updateSubjects(() => {
+			// Content has loaded
+			const newState = { ...this.state }
+			newState.hasLoaded = true;
+			this.setState(newState)
+		})
 
 		// Change do correct mode
 		if (localStorage.getItem("editMode") === "true") {
@@ -82,7 +88,7 @@ class App extends Component<{}, StateForComponent> {
 		}
 	}
 
-	_updateSubjects = async () => {
+	_updateSubjects = async (callback?: () => void) => {
 		const response = (await Http({
 			url: "/api/v1/subject",
 			method: "GET",
@@ -95,7 +101,10 @@ class App extends Component<{}, StateForComponent> {
 
 		const newState = { ...this.state }
 		newState.subjects = response.result
-		this.setState(newState)
+		this.setState(newState, () => {
+			if (callback != null)
+				callback()
+		})
 	}
 	
 	render() {
@@ -136,6 +145,15 @@ class App extends Component<{}, StateForComponent> {
 							</Route>
 						)
 					})}
+					{this.state.hasLoaded ? 
+						<Route>
+							<div className="404Container">
+								<h1>404</h1>
+								<h2>This page could not be found</h2>
+								<p>Return back to the <a href="/">home</a> page</p>
+							</div>
+						</Route> : null
+					}
 				</Switch>
 			</Router>
 		);
@@ -146,7 +164,8 @@ export interface StateForComponent {
 	subjects: SubjectData[],
 	editMode: boolean,
 	deleted: string[],
-	added: AddedElement[]
+	added: AddedElement[],
+	hasLoaded: boolean
 }
 
 export default App;
