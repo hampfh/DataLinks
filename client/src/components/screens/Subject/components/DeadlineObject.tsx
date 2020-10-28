@@ -19,13 +19,7 @@ export default class DeadlineObject extends Component<PropsForComponent, StateFo
 			bar: {
 				max: 0,
 				value: 0
-			},
-			interval: setInterval(() => {
-				let newState = { ...this.state }
-				newState.countdown = calcTimeLeft(this.props.deadline)
-				newState.bar = calcDeadlinePercentage(this.props.start, this.props.deadline)
-				this.setState(newState)
-			}, 1000)
+			}
 		}
 	}
 
@@ -33,15 +27,21 @@ export default class DeadlineObject extends Component<PropsForComponent, StateFo
 		let newState = { ...this.state }
 		newState.countdown = calcTimeLeft(this.props.deadline)
 		newState.bar = calcDeadlinePercentage(this.props.start, this.props.deadline)
+		newState.interval = setInterval(() => {
+			let newState = { ...this.state }
+			newState.countdown = calcTimeLeft(this.props.deadline)
+			newState.bar = calcDeadlinePercentage(this.props.start, this.props.deadline)
+			this.setState(newState)
+		}, 1000)
 		this.setState(newState)
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.state.interval)
+		if (this.state.interval)
+			clearInterval(this.state.interval)
 	}
 
 	render() {
-		
 		
 		return (
 			<div className="deadlineContainer">
@@ -91,5 +91,5 @@ interface StateForComponent {
 		max: number,
 		value: number
 	},
-	interval: NodeJS.Timeout
+	interval?: NodeJS.Timeout
 }

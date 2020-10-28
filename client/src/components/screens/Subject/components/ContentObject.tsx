@@ -31,12 +31,9 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 	_updateField = async (event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") => {
 		let newState = { ...this.state }
 
-		console.log("RESULT:",event.target.value)
 		if (this.props.type === "Deadline" && fieldNum === "second" && !!!Moment(event.target.value).isValid()) {
-			console.log("Not correct")
 			newState.fieldTwoIsCorrect = false;
 		} else {
-			console.log("Correct")
 			newState.fieldTwoIsCorrect = true;
 		}
 
@@ -101,7 +98,6 @@ export default class ContentObject extends Component<PropsForComponent, StateFor
 			data: append
 		})
 
-		console.log(response)
 		if (response.status !== 200) {
 			if (window.confirm("The site encountered an error, reload the site?"))
 				window.location.reload()
