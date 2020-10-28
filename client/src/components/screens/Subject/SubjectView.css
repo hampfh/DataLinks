@@ -53,6 +53,7 @@
 }
 
 .GroupContainer {
+	display: block;
 	padding: 0.25rem;
 	border-radius: 10px;
 }
@@ -98,17 +99,6 @@
 	margin-bottom: 1rem;
 }
 
-.textObjectContainer {
-	justify-self: center;
-	text-align: center;
-	max-width: 20rem;
-	margin-bottom: 2rem;
-}
-
-.Column > .textObjectContainer {
-	margin-bottom: 0.5rem;
-}
-
 @media(min-width: 40rem) {
 	.textObjectContainer {
 		margin-left: 1rem;
@@ -117,6 +107,8 @@
 }
 
 .ButtonWrapper {
+	display: grid;
+	align-items: center;
 	width: fit-content;
 	margin: 0.6rem 0.25rem;
 	justify-self: center;

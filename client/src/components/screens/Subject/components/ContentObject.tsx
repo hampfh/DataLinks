@@ -130,7 +130,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		if (!!!this.props.editMode) {
 			if (this.props.type === "Text") {
 				return (
-					<div className="textObjectContainer">
+					<div className="textObjectWrapper">
 						{this.state.fieldOne === undefined ? null :
 							<h5 className="textObjectTitle">{this.state.fieldOne}</h5>
 						}
