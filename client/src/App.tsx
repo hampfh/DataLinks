@@ -7,39 +7,67 @@ import { SubjectData } from "./components/screens/Subjects/Subjects"
 import Http, { HttpReturnType } from "./functions/HttpRequest"
 import SubjectView from "./components/screens/Subject/SubjectView"
 import { v4 as uuid } from "uuid"
+import { connect } from 'react-redux';
+import { IReduxRootState } from './state/reducers';
+import { IAppState } from './state/reducers/app';
+import { enableEditMode, IEnableEditMode, ISetExtendMode, setExtendMode } from './state/actions/app'
 
-class App extends Component<{}, StateForComponent> {
+export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
-	constructor(props: {}) {
+class App extends Component<PropsForComponent, StateForComponent> {
+
+	constructor(props: PropsForComponent) {
 		super(props)
 		this.state = {
-			data: {
-				title: "",
-				subjects: []
-			}
+			subjects: [],
+			hasLoaded: false
 		}
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		this._updateSubjects(() => {
+			// Content has loaded
+			const newState = { ...this.state }
+			newState.hasLoaded = true;
+			this.setState(newState)
+		})
+
+		// Change to correct mode
+		if (localStorage.getItem("editMode") === "true") {
+			const newState = { ...this.state }
+			this.props.enableEditMode()
+			this.setState(newState)
+		}
+		// Change to correct mode
+		if (localStorage.getItem("extendMode") === "true") {
+			const newState = { ...this.state }
+			this.props.setExtendMode(true)
+			this.setState(newState)
+		}
+	}
+
+	_updateSubjects = async (callback?: () => void) => {
 		const response = (await Http({
-			url: "/data",
+			url: "/api/v1/subject",
 			method: "GET",
 			body: {
 
 			}
 		})) as HttpReturnType & {
-			data: {
-				title: string,
-				subjects: Array<SubjectData>
-			}
+			result: Array<SubjectData>
 		}
 
 		const newState = { ...this.state }
-		newState.data = response.data
-		this.setState(newState)
+		newState.subjects = response.result
+		this.setState(newState, () => {
+			if (callback != null)
+				callback()
+		})
 	}
 	
 	render() {
+		if (this.state.subjects === undefined)
+			return null
 		return (
 			<Router>
 				<Switch>
@@ -47,29 +75,58 @@ class App extends Component<{}, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Subjects data={this.state.data} />
+						<Subjects 
+							subjects={this.state.subjects} 
+							updateSubjects={this._updateSubjects}
+						/>
 					</Route>
-					{this.state.data.subjects.map((subject) => {
+					{this.state.subjects.map((subject) => {
 						return (
-							<Route key={uuid()} exact path={`/D20/course/${subject.title}`}>
+							<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
 								<SubjectView
+									updateSubjects={this._updateSubjects}
 									subject={subject}
-									close={() => { }}
 								/>
 							</Route>
 						)
 					})}
+					{this.state.hasLoaded ? 
+						<Route>
+							<div className="404Container">
+								<h1>404</h1>
+								<h2>This page could not be found</h2>
+								<p>Return back to the <a href="/">home</a> page</p>
+							</div>
+						</Route> : null
+					}
 				</Switch>
 			</Router>
 		);
 	}
 }
 
+export interface PropsForComponent {
+	app: IAppState,
+	enableEditMode: IEnableEditMode,
+	setExtendMode: ISetExtendMode
+}
+
 export interface StateForComponent {
-	data: {
-		title: string,
-		subjects: Array<SubjectData>
+	subjects: SubjectData[],
+	hasLoaded: boolean
+}
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
 	}
 }
 
-export default App;
+const reduxDispatch = () => {
+	return {
+		enableEditMode,
+		setExtendMode
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(App);

@@ -8,10 +8,12 @@
 
 .SneakPeakWrapper {
 	justify-self: center;
-	height: 30rem;
+	align-self: flex-start;
+	max-height: 20rem;
 
 	animation: SneakPeakSummon;
 	animation-duration: 0.25s;
+	z-index: 10;
 }
 
 .ContentContainer {

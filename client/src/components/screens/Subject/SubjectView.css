@@ -1,6 +1,11 @@
 @import url("../../root.css");
 @import url("./components/Animation.css");
 
+.SubjectViewMaster {
+	background-color: var(--primary);
+	scrollbar-width: thin;
+}
+
 .SubjectWrapper {
 	width: 100vw;
 	min-height: 100vh;
@@ -13,7 +18,7 @@
 	margin: 0 auto;
 	overflow-y: auto;
 	max-width: 50rem;
-	height: 100vh;
+	height: 95vh;
 }
 
 .HeaderSubjectView {
@@ -47,6 +52,11 @@
 	transform: scale(0.95);
 }
 
+.GroupContainer {
+	display: block;
+	padding: 0.25rem;
+}
+
 .GroupContainer:not(.Nested) {
 	align-self: flex-start;
 	flex-wrap: wrap;
@@ -65,7 +75,8 @@
 .NoBorder {
 	width: 100%;
 	padding-top: 0 !important;
-	margin: 0 !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
 	border: none !important;
 }
 
@@ -77,6 +88,7 @@
 }
 
 .Nested {
+	margin-top: 1rem;
 	margin: 0;
 }
 
@@ -84,17 +96,6 @@
 	display: grid !important;
 	justify-content: center;
 	margin-bottom: 1rem;
-}
-
-.textObjectContainer {
-	justify-self: center;
-	text-align: center;
-	max-width: 20rem;
-	margin-bottom: 2rem;
-}
-
-.Column > .textObjectContainer {
-	margin-bottom: 0.5rem;
 }
 
 @media(min-width: 40rem) {
@@ -105,6 +106,8 @@
 }
 
 .ButtonWrapper {
+	display: grid;
+	align-items: center;
 	width: fit-content;
 	margin: 0.6rem 0.25rem;
 	justify-self: center;

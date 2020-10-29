@@ -7,6 +7,8 @@ import debug from "debug"
 import http from "http"
 import app from "./app"
 
+import { connectDB } from "./models/index.model"
+
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -68,6 +70,7 @@ const onListening = () => {
  */
 server.listen(port, () => {
 	console.log("Server listening on port test", port)
+	connectDB()
 })
 server.on("error", onError)
 server.on("listening", onListening)

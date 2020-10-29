@@ -11,9 +11,10 @@ body {
 	margin: 0;
 	width: 100%;
 	background-color: var(--primary-background);
-	overflow-y: hidden;
 	scrollbar-width: thin;
+	justify-content: center;
 }
+
 
 .Title {
 	text-align: center;
@@ -62,4 +63,69 @@ body {
 }
 .Credits a{
 	color: inherit;
+}
+
+.editModeContainer {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+}
+
+.editModeContainer label {
+	margin: 0 1rem;
+}
+
+.extendModeContainer p,
+.editModeContainer p {
+	margin-top: 0;
+	font-style: italic;
+}
+
+.subjectViewEditMode {
+	display: flex !important;	
+	align-items: center;
+}
+
+.subjectViewEditMode p {
+	margin: 1rem;
+}
+
+.editModeCourse {
+	background-color: var(--complementary);
+	max-height: 5vh;
+}
+
+.extendModeContainer {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+}
+
+.editModeCourse p {
+	color: white;
+}
+
+.versionText {
+	font-size: 0.9rem;
+	margin-top: 0.25rem;
+	text-align: center;
+	color: var(--primary);
+}
+
+.bottomContainer {
+	background-color: var(--accent-background);
+	position: absolute;
+	bottom: 0rem;
+	display: flex;
+	justify-content: center;
+
+	padding: 1rem;
+	width: calc(100% - 2rem);
+	z-index: 101;
+}
+
+.toolbarItem {
+	color: white;
+	margin: 0 3rem;
 }
