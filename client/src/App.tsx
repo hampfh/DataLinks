@@ -86,7 +86,6 @@ class App extends Component<PropsForComponent, StateForComponent> {
 								<SubjectView
 									updateSubjects={this._updateSubjects}
 									subject={subject}
-									close={() => { }}
 								/>
 							</Route>
 						)

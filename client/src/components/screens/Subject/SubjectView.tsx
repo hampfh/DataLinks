@@ -14,6 +14,7 @@ import { disableEditMode, enableEditMode, IDisableEditMode, IEnableEditMode } fr
 class SubjectView extends Component<PropsForComponent, StateForComponent> {
 
 	scrollRef: React.RefObject<HTMLInputElement>
+	timeout?: NodeJS.Timeout
 	constructor(props: PropsForComponent) {
 		super(props)
 
@@ -22,6 +23,11 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 		this.state = {
 			shouldExitView: false,
 		}
+	}
+
+	componentWillUnmount() {
+		if (this.timeout)
+			clearTimeout(this.timeout)
 	}
 
 	getSnapshotBeforeUpdate(prevProps: PropsForComponent, prevState: StateForComponent) {
@@ -47,10 +53,24 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	_flickEditMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.checked)
-			this.props.enableEditMode()
-		else 
-			this.props.disableEditMode()
+
+		const checked = event.target.checked
+		let newState = { ...this.state }
+		newState.checked = !!!this.props.app.editMode
+		this.setState(newState)
+
+		if (this.timeout)
+			clearTimeout(this.timeout)
+		this.timeout = setTimeout(() => {
+			if (checked)
+				this.props.enableEditMode()
+			else
+				this.props.disableEditMode()
+
+			let newState = { ...this.state }
+			newState.checked = undefined
+			this.setState(newState)
+		}, 100)
 	}
 
 	render() {
@@ -68,10 +88,10 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 					<Redirect to="/" /> :
 					<div className="SubjectWrapper">
 						{isMobile() ? null :
-							<div className="editModeContainer editModeCourse">
+							<div className="editModeContainer editModeCourse subjectViewEditMode">
 								<p>Default mode</p>
 								<label className="switch">
-									<input onChange={(event) => this._flickEditMode(event)} checked={this.props.app.editMode} type="checkbox" />
+									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.checked ?? this.props.app.editMode} type="checkbox" />
 									<span className="slider round"></span>
 								</label>
 								<p>Edit mode</p>
@@ -100,13 +120,13 @@ export interface PropsForComponent {
 	enableEditMode: IEnableEditMode,
 	disableEditMode: IDisableEditMode,
 	updateSubjects: () => void,
-	close: () => void,
 	subject: SubjectData,
 	app: IAppState,
 }
 
 export interface StateForComponent {
 	shouldExitView: boolean,
+	checked?: boolean
 }
 
 const reduxSelect = (state: IReduxRootState) => {

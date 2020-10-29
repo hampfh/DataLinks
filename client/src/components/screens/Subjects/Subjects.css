@@ -82,6 +82,15 @@ body {
 	font-style: italic;
 }
 
+.subjectViewEditMode {
+	display: flex !important;	
+	align-items: center;
+}
+
+.subjectViewEditMode p {
+	margin: 1rem;
+}
+
 .editModeCourse {
 	background-color: var(--complementary);
 	max-height: 5vh;
