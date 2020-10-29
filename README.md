@@ -1,2 +1,1 @@
-# Subjects
-A site for ease of access for links for multiple subjects
+# DataLinks <img src="https://github.com/Hampfh/DataLinks/blob/master/client/public/favicon-32x32.png?raw=true">
