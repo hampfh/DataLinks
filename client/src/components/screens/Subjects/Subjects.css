@@ -114,6 +114,7 @@ body {
 
 	padding: 1rem;
 	width: calc(100% - 2rem);
+	z-index: 101;
 }
 
 .toolbarItem {
