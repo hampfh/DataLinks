@@ -1,20 +1,54 @@
 import React, { Component } from 'react'
+import { IReduxRootState } from '../../../../state/reducers'
 import RenderData from '../../../templates/RenderData'
 import { SubjectData } from '../Subjects'
+import { connect } from 'react-redux'
 
 import "./SneakPeak.css"
+import { IAppState } from '../../../../state/reducers/app'
+import { hideSneakPeak, IHideSneakPeak, ISetSneakPeakSelectionCount, IShowSneakPeak, setSneakPeakSelectionCount, showSneakPeak } from '../../../../state/actions/app'
 
-export default class SneakPeak extends Component<PropsForComponent> {
+class SneakPeak extends Component<PropsForComponent, StateForComponent> {
+
+	constructor(props: PropsForComponent) {
+		super(props)
+
+		this.state = {
+			eventsAllowed: false
+		}
+	}
+
+	_mouseEnter = () => {
+		this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount + 1)
+	}
+
+	_mouseLeave = () => {
+		this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount - 1)
+	}
+
 	render() {
+		if (this.props.app.sneakPeak?.group == null) {
+			console.warn("Subject " + this.props.app.sneakPeak?.name + " has no root")
+			return null;
+		}
+
 		return (
 			<div 
 				className="SneakPeakWrapper" 
-				onMouseEnter={() => this.props.showSneakPeak(this.props.subject)}
-				onMouseLeave={this.props.hideSneakPeak}
+				style={{
+					height: "50rem"
+				}}
+				onMouseEnter={this._mouseEnter}
+				onMouseLeave={this._mouseLeave}
 			>
-				<div className="ContentContainer">
+				<div className="ContentContainer"
+					style={{
+						maxHeight: this.props.app.extendedMode ? "35rem" : "20rem",
+					}}
+				>
 					<RenderData 
-						objects={this.props.subject.objects}
+						updateSubjects={this.props.updateSubjects}
+						group={(this.props.app.sneakPeak as SubjectData).group}
 					/>
 				</div>
 			</div>
@@ -23,7 +57,29 @@ export default class SneakPeak extends Component<PropsForComponent> {
 }
 
 export interface PropsForComponent {
-	showSneakPeak: (subject: SubjectData) => void,
-	hideSneakPeak: () => void,
-	subject: SubjectData
+	showSneakPeak: IShowSneakPeak,
+	hideSneakPeak: IHideSneakPeak,
+	updateSubjects: () => void,
+	setSneakPeakSelectionCount: ISetSneakPeakSelectionCount,
+	app: IAppState
 }
+
+export interface StateForComponent {
+	eventsAllowed: boolean
+}
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		setSneakPeakSelectionCount,
+		showSneakPeak,
+		hideSneakPeak
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(SneakPeak)

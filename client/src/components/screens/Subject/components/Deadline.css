@@ -1,0 +1,72 @@
+@import "../../../root.css";
+
+.deadlineContainer {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	margin: 0 1rem;
+	margin-bottom: 1rem;
+}
+
+.countdownText {
+	text-align: center;
+	color: white;
+	margin: 0.2rem 0;
+}
+.countdownText:nth-of-type(2) {
+	margin-top: 1rem;
+}
+
+.deadlineTitleText {
+	text-align: center;
+	color: white
+}
+
+.deadLineProgressBar::-webkit-progress-bar,
+.deadLineProgressBar {
+	width: 10rem;
+	margin: 0 auto;
+
+	/* Reset the default appearance */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border: none;
+	border-radius: 10px;
+
+	background-color: var(--complementary);	
+	-webkit-box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.25);
+	-moz-box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.25);
+	box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.25);
+}
+
+.deadLineProgressBar::-webkit-progress-value,
+.deadLineProgressBar::-webkit-progress-inner-element {
+	background-color: var(--dark);
+	border-radius: 10px;
+}
+.deadLineProgressBar::-moz-progress-bar {	
+
+	animation-name: loadIn;
+	animation-duration: 10s;
+	animation-timing-function: ease-out;
+	animation-iteration-count: infinite;
+
+	background-color: var(--dark);
+	border-radius: 10px;
+}
+
+@keyframes loadIn {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 1;
+	}
+	55% {
+		opacity: 0.5;
+	}
+	65% {
+		opacity: 1;
+	}
+}
