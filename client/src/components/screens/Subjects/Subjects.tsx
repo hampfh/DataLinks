@@ -59,11 +59,13 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 						}
 					</div>
 				</div>
-				{this.props.app.sneakPeak == null || window.innerWidth < 750 || window.innerHeight < 600 || isMobile() ? null :
-					<SubjectSneakPeak
-						updateSubjects={this.props.updateSubjects}
-					/>
-				}
+				<div className="SneakPeakContainer">
+					{this.props.app.sneakPeak == null || window.innerWidth < 750 || window.innerHeight < 600 || isMobile() ? null :
+						<SubjectSneakPeak
+							updateSubjects={this.props.updateSubjects}
+						/>
+					}
+				</div>
 
 				<div className="bottomContainer">
 					{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 

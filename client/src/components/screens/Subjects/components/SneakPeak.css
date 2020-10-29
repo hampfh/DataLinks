@@ -8,6 +8,8 @@
 
 .SneakPeakWrapper {
 	justify-self: center;
+	align-self: flex-start;
+	max-height: 20rem;
 
 	animation: SneakPeakSummon;
 	animation-duration: 0.25s;
