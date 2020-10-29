@@ -43,16 +43,6 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 							<h3 className="versionText">Version: {version}</h3>
 						</div>
 					}
-					{isMobile() ? null :
-						<div className="editModeContainer">
-							<p>Default mode</p>
-							<label className="switch">
-								<input onChange={this._onflick} checked={this.props.app.editMode} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-							<p>Edit mode</p>
-						</div>
-					}
 					<div className="SubjectContainer">
 						{
 							this.props.subjects.map((subject) => {
@@ -77,14 +67,22 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
 				<div className="bottomContainer">
 					{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 
-						<div className="extendModeContainer">
+					<>
+						<div className="extendModeContainer  toolbarItem">
 							<p>Content view</p>
 							<label className="switch">
 								<input onChange={this._onExtendModeFlick} checked={this.props.app.extendedMode} type="checkbox" />
 								<span className="slider round"></span>
 							</label>
 						</div>
-					}
+						<div className="editModeContainer toolbarItem">
+							<p>Edit mode</p>
+							<label className="switch">
+								<input onChange={this._onflick} checked={this.props.app.editMode} type="checkbox" />
+								<span className="slider round"></span>
+							</label>
+						</div>
+					</>}
 				</div>
 			</section>
 		)
