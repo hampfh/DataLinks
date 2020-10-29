@@ -55,7 +55,6 @@
 .GroupContainer {
 	display: block;
 	padding: 0.25rem;
-	border-radius: 10px;
 }
 
 .GroupContainer:not(.Nested) {
