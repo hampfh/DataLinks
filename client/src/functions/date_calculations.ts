@@ -29,16 +29,16 @@ export function calcTimeLeft(endDate: string): { months: number, weeks: number, 
 		}
 	}
 
-	const months = Math.round(secondsLeft / SECONDS_IN_A_MONTH)
-	let timeleft = Math.round(secondsLeft % SECONDS_IN_A_MONTH)
-	const weeks = Math.round(timeleft / SECONDS_IN_A_WEEK)
-	timeleft = Math.round(timeleft % SECONDS_IN_A_WEEK)
-	const days = Math.round(timeleft / SECONDS_IN_A_DAY)
-	timeleft = Math.round(timeleft % SECONDS_IN_A_DAY)
-	const hours = Math.round(timeleft / SECONDS_IN_AN_HOUR)
-	timeleft = Math.round(timeleft % SECONDS_IN_AN_HOUR)
-	const minutes = Math.round(timeleft / 60)
-	const seconds = Math.round(timeleft % 60)
+	const months = Math.floor(secondsLeft / SECONDS_IN_A_MONTH)
+	let timeleft = Math.floor(secondsLeft % SECONDS_IN_A_MONTH)
+	const weeks = Math.floor(timeleft / SECONDS_IN_A_WEEK)
+	timeleft = Math.floor(timeleft % SECONDS_IN_A_WEEK)
+	const days = Math.floor(timeleft / SECONDS_IN_A_DAY)
+	timeleft = Math.floor(timeleft % SECONDS_IN_A_DAY)
+	const hours = Math.floor(timeleft / SECONDS_IN_AN_HOUR)
+	timeleft = Math.floor(timeleft % SECONDS_IN_AN_HOUR)
+	const minutes = Math.floor(timeleft / 60)
+	const seconds = Math.floor(timeleft % 60)
 	
 	return {
 		months,
