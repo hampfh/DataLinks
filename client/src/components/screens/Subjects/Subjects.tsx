@@ -8,7 +8,7 @@ import { version } from "../../../../package.json"
 import { connect } from 'react-redux'
 import { IReduxRootState } from '../../../state/reducers'
 import { IAppState } from '../../../state/reducers/app'
-import { disableEditMode, enableEditMode, IDisableEditMode, IEnableEditMode } from '../../../state/actions/app'
+import { disableEditMode, enableEditMode, IDisableEditMode, IEnableEditMode, ISetExtendMode, setExtendMode } from '../../../state/actions/app'
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
@@ -29,14 +29,20 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 			this.props.disableEditMode()
 	}
 
+	_onExtendModeFlick = (event: React.ChangeEvent<HTMLInputElement>) => {
+		this.props.setExtendMode(event.target.checked)
+	}
+
 	render() {
 		return (
 			<section className="Master">
 				<div className="Uppercontainer">
-					<div>
-						<h1 className="Title">D20 links</h1>
-						<h3 className="versionText">Version: {version}</h3>
-					</div>
+					{this.props.app.extendedMode ? null : 
+						<div>
+							<h1 className="Title">D20 links</h1>
+							<h3 className="versionText">Version: {version}</h3>
+						</div>
+					}
 					{isMobile() ? null :
 						<div className="editModeContainer">
 							<p>Default mode</p>
@@ -68,6 +74,18 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 						updateSubjects={this.props.updateSubjects}
 					/>
 				}
+
+				<div className="bottomContainer">
+					{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 
+						<div className="extendModeContainer">
+							<p>Content view</p>
+							<label className="switch">
+								<input onChange={this._onExtendModeFlick} checked={this.props.app.extendedMode} type="checkbox" />
+								<span className="slider round"></span>
+							</label>
+						</div>
+					}
+				</div>
 			</section>
 		)
 	}
@@ -87,7 +105,8 @@ interface PropsForComponent {
 	app: IAppState,
 	updateSubjects: () => void,
 	enableEditMode: IEnableEditMode,
-	disableEditMode: IDisableEditMode
+	disableEditMode: IDisableEditMode,
+	setExtendMode: ISetExtendMode
 }
 
 interface StateForComponent {
@@ -104,7 +123,8 @@ const reduxSelect = (state: IReduxRootState) => {
 const reduxDispatch = () => {
 	return {
 		enableEditMode,
-		disableEditMode
+		disableEditMode,
+		setExtendMode
 	}
 }
 

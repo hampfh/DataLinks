@@ -4,13 +4,15 @@ import { SubjectData } from "../../components/screens/Subjects/Subjects";
 export interface IAppState {
 	editMode: boolean,
 	sneakPeak?: SubjectData,
-	sneakPeakSelectionCount: number
+	sneakPeakSelectionCount: number,
+	extendedMode: boolean
 }
 
 const defaultState = {
 	editMode: false,
 	sneakPeak: undefined,
-	sneakPeakSelectionCount: 0
+	sneakPeakSelectionCount: 0,
+	extendedMode: false
 }
 
 const app = (state: IAppState = defaultState, action: ActionType<any>) => {
@@ -36,6 +38,9 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 				newState.sneakPeak = undefined
 				newState.sneakPeakSelectionCount = 0
 			}
+			return newState
+		case 'SET_EXTEND_MODE':
+			newState.extendedMode = action.payload.mode
 			return newState
 		default:
 			return newState

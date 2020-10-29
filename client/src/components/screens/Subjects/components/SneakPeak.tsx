@@ -35,10 +35,17 @@ class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 		return (
 			<div 
 				className="SneakPeakWrapper" 
+				style={{
+					height: "50rem"
+				}}
 				onMouseEnter={this._mouseEnter}
 				onMouseLeave={this._mouseLeave}
 			>
-				<div className="ContentContainer">
+				<div className="ContentContainer"
+					style={{
+						maxHeight: this.props.app.extendedMode ? "35rem" : "20rem",
+					}}
+				>
 					<RenderData 
 						updateSubjects={this.props.updateSubjects}
 						group={(this.props.app.sneakPeak as SubjectData).group}

@@ -26,8 +26,9 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	shouldComponentUpdate(newProps: PropsForComponent) {
-		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString())
+	shouldComponentUpdate(newProps: PropsForComponent, newState: StateForComponent) {
+		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString() && 
+		newState.collapsState === this.state.collapsState)
 			return false
 
 		return true;
@@ -51,7 +52,8 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				const newState = { ...this.state }
 				newState.collapsState = 3
 				this.setState(newState)
-			}, 200)
+			}, 100)
+			this.props.hideSneakPeak()
 		}
 	}
 

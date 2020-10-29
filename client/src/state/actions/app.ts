@@ -34,6 +34,13 @@ function saveEditMode(mode: boolean): boolean {
 	}
 }
 
+function saveExtendMode(mode: boolean) {
+	if (mode)
+		localStorage.setItem("extendMode", "true")
+	else
+		localStorage.removeItem("extendMode")
+}
+
 export interface IEnableEditMode { (): void }
 export const enableEditMode = (mode = true) => {
 
@@ -85,6 +92,17 @@ export const setSneakPeakSelectionCount = (count: number) => {
 		type: "SET_SNEAK_PEAK_SELECTION_COUNT",
 		payload: {
 			newCount: count
+		}
+	}
+}
+
+export interface ISetExtendMode { (enableExtend: boolean): void }
+export const setExtendMode = (enableExtend: boolean) => {
+	saveExtendMode(enableExtend)
+	return {
+		type: "SET_EXTEND_MODE",
+		payload: {
+			mode: enableExtend
 		}
 	}
 }

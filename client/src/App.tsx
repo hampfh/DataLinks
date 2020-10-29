@@ -10,7 +10,7 @@ import { v4 as uuid } from "uuid"
 import { connect } from 'react-redux';
 import { IReduxRootState } from './state/reducers';
 import { IAppState } from './state/reducers/app';
-import { enableEditMode, IEnableEditMode } from './state/actions/app'
+import { enableEditMode, IEnableEditMode, ISetExtendMode, setExtendMode } from './state/actions/app'
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
@@ -32,10 +32,16 @@ class App extends Component<PropsForComponent, StateForComponent> {
 			this.setState(newState)
 		})
 
-		// Change do correct mode
+		// Change to correct mode
 		if (localStorage.getItem("editMode") === "true") {
 			const newState = { ...this.state }
 			this.props.enableEditMode()
+			this.setState(newState)
+		}
+		// Change to correct mode
+		if (localStorage.getItem("extendMode") === "true") {
+			const newState = { ...this.state }
+			this.props.setExtendMode(true)
 			this.setState(newState)
 		}
 	}
@@ -102,7 +108,8 @@ class App extends Component<PropsForComponent, StateForComponent> {
 
 export interface PropsForComponent {
 	app: IAppState,
-	enableEditMode: IEnableEditMode
+	enableEditMode: IEnableEditMode,
+	setExtendMode: ISetExtendMode
 }
 
 export interface StateForComponent {
@@ -118,7 +125,8 @@ const reduxSelect = (state: IReduxRootState) => {
 
 const reduxDispatch = () => {
 	return {
-		enableEditMode
+		enableEditMode,
+		setExtendMode
 	}
 }
 
