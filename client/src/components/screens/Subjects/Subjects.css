@@ -87,3 +87,9 @@ body {
 .editModeCourse p {
 	color: white;
 }
+
+.versionText {
+	margin-top: 0.25rem;
+	text-align: center;
+	color: var(--primary);
+}

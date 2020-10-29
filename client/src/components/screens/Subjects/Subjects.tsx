@@ -5,6 +5,7 @@ import "./components/Switch.css"
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import { Group } from "../../templates/RenderData"
 import isMobile from "../../../functions/isMobile"
+import { version } from "../../../../package.json"
 
 export class Subjects extends Component<PropsForComponent, StateForComponent> {
 
@@ -50,6 +51,7 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 			<section className="Master">
 				<div>
 					<h1 className="Title">D20 links</h1>
+					<h3 className="versionText">{version}</h3>
 				</div>
 				{isMobile() ? null :
 					<div className="editModeContainer">
