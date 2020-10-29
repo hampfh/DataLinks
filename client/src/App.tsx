@@ -7,16 +7,19 @@ import { SubjectData } from "./components/screens/Subjects/Subjects"
 import Http, { HttpReturnType } from "./functions/HttpRequest"
 import SubjectView from "./components/screens/Subject/SubjectView"
 import { v4 as uuid } from "uuid"
+import { connect } from 'react-redux';
+import { IReduxRootState } from './state/reducers';
+import { IAppState } from './state/reducers/app';
+import { enableEditMode, IEnableEditMode } from './state/actions/app'
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
-class App extends Component<{}, StateForComponent> {
+class App extends Component<PropsForComponent, StateForComponent> {
 
-	constructor(props: {}) {
+	constructor(props: PropsForComponent) {
 		super(props)
 		this.state = {
 			subjects: [],
-			editMode: false,
 			hasLoaded: false
 		}
 	}
@@ -32,32 +35,7 @@ class App extends Component<{}, StateForComponent> {
 		// Change do correct mode
 		if (localStorage.getItem("editMode") === "true") {
 			const newState = { ...this.state }
-			newState.editMode = true
-			this.setState(newState)
-		}
-	}
-
-	_setEditMode = (mode: boolean) => {
-		let update = false
-		if (localStorage.getItem("agreeBehavior") === "true")
-			update = true
-		else {
-			if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user\n\nAlso note that this is an experimental feature thus bug reports are very much appreciated")) {
-				update = true
-				localStorage.setItem("agreeBehavior", "true")
-			} else {
-				mode = false
-			}
-		}
-
-		if (update) {
-			if (mode)
-				localStorage.setItem("editMode", "true")
-			else
-				localStorage.removeItem("editMode")
-
-			const newState = { ...this.state }
-			newState.editMode = mode
+			this.props.enableEditMode()
 			this.setState(newState)
 		}
 	}
@@ -93,8 +71,6 @@ class App extends Component<{}, StateForComponent> {
 					<Route exact path="/D20">
 						<Subjects 
 							subjects={this.state.subjects} 
-							editMode={this.state.editMode} 
-							setEditMode={this._setEditMode} 
 							updateSubjects={this._updateSubjects}
 						/>
 					</Route>
@@ -103,10 +79,8 @@ class App extends Component<{}, StateForComponent> {
 							<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
 								<SubjectView
 									updateSubjects={this._updateSubjects}
-									editMode={this.state.editMode}
 									subject={subject}
 									close={() => { }}
-									setEditMode={this._setEditMode}
 								/>
 							</Route>
 						)
@@ -126,10 +100,26 @@ class App extends Component<{}, StateForComponent> {
 	}
 }
 
+export interface PropsForComponent {
+	app: IAppState,
+	enableEditMode: IEnableEditMode
+}
+
 export interface StateForComponent {
 	subjects: SubjectData[],
-	editMode: boolean,
 	hasLoaded: boolean
 }
 
-export default App;
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		enableEditMode
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(App);

@@ -9,6 +9,7 @@ import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject 
 import { connect } from "react-redux"
 import { IReduxRootState } from '../../../../state/reducers'
 import { ILocalState, indexOfLocal } from '../../../../state/reducers/local'
+import { IAppState } from '../../../../state/reducers/app'
 
 class ContentObject extends Component<PropsForComponent, StateForComponent> {
 
@@ -127,7 +128,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	render() {
-		if (!!!this.props.editMode) {
+		if (!!!this.props.app.editMode) {
 			if (this.props.type === "Text") {
 				return (
 					<div className="textObjectWrapper">
@@ -202,7 +203,7 @@ interface PropsForComponent {
 	type: ContentType,
 	parentId: string,
 	id: string,
-	editMode: boolean,
+	app: IAppState,
 	contentObject: IText | ILink | IDeadline,
 	updateSubjects: () => void,
 	deleteLocally: IDeleteLocally,
@@ -221,6 +222,7 @@ interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
+		app: state.app,
 		local: state.local
 	}
 }

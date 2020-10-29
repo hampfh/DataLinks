@@ -6,8 +6,12 @@ import RenderData from "../../templates/RenderData"
 import logoutIcon from "../../../assets/icons/close.svg"
 import { Redirect } from "react-router-dom"
 import isMobile from "../../../functions/isMobile"
+import { connect } from 'react-redux'
+import { IReduxRootState } from '../../../state/reducers'
+import { IAppState } from '../../../state/reducers/app'
+import { disableEditMode, enableEditMode, IDisableEditMode, IEnableEditMode } from '../../../state/actions/app'
 
-export default class Subject extends Component<PropsForComponent, StateForComponent> {
+class SubjectView extends Component<PropsForComponent, StateForComponent> {
 
 	scrollRef: React.RefObject<HTMLInputElement>
 	constructor(props: PropsForComponent) {
@@ -17,7 +21,6 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 
 		this.state = {
 			shouldExitView: false,
-			editMode: props.editMode
 		}
 	}
 
@@ -44,13 +47,10 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 	}
 
 	_flickEditMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let newState = { ...this.state }
-		newState.editMode = event.target.checked;
-		this.setState(newState)
-		const checked = event.target.checked
-		setTimeout(() => {
-			this.props.setEditMode(checked)
-		}, 200)
+		if (event.target.checked)
+			this.props.enableEditMode()
+		else 
+			this.props.disableEditMode()
 	}
 
 	render() {
@@ -71,7 +71,7 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 							<div className="editModeContainer editModeCourse">
 								<p>Default mode</p>
 								<label className="switch">
-									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.editMode} type="checkbox" />
+									<input onChange={(event) => this._flickEditMode(event)} checked={this.props.app.editMode} type="checkbox" />
 									<span className="slider round"></span>
 								</label>
 								<p>Edit mode</p>
@@ -84,7 +84,6 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 							<div className="LinkContainer">
 								<RenderData 
 									updateSubjects={this.props.updateSubjects}
-									editMode={this.props.editMode}
 									group={this.props.subject.group}
 								/>
 							</div>
@@ -98,14 +97,29 @@ export default class Subject extends Component<PropsForComponent, StateForCompon
 }
 
 export interface PropsForComponent {
-	setEditMode: (mode: boolean) => void,
+	enableEditMode: IEnableEditMode,
+	disableEditMode: IDisableEditMode,
 	updateSubjects: () => void,
 	close: () => void,
 	subject: SubjectData,
-	editMode: boolean,
+	app: IAppState,
 }
 
 export interface StateForComponent {
 	shouldExitView: boolean,
-	editMode: boolean
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		enableEditMode,
+		disableEditMode
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(SubjectView)

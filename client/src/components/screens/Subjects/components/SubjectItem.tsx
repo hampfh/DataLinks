@@ -8,15 +8,36 @@ import GROUP_ICON from "../../../../assets/icons/interfacePack/svg/group.svg"
 import CALCULATOR_ICON from "../../../../assets/icons/interfacePack/svg/calculator.svg"
 import DOCUMENT_ICON from "../../../../assets/icons/interfacePack/svg/document-3.svg"
 import COMPUTER_ICON from "../../../../assets/icons/interfacePack/svg/computer.svg"
+import { IReduxRootState } from '../../../../state/reducers'
+import { connect } from "react-redux"
+import { IAppState } from '../../../../state/reducers/app'
+import { hideSneakPeak, IHideSneakPeak, ISetSneakPeakSelectionCount, IShowSneakPeak, setSneakPeakSelectionCount, showSneakPeak } from '../../../../state/actions/app'
 
 export class Subject extends Component<PropsForComponent, StateForComponent> {
 
+	collapseStateTimeout?: NodeJS.Timeout
+	mouseLeaveLock?: NodeJS.Timeout
 	constructor(props: PropsForComponent) {
 		super(props)
 
 		this.state = {
-			collapsState: 0
+			collapsState: 0,
+			timeoutDone: false
 		}
+	}
+
+	shouldComponentUpdate(newProps: PropsForComponent) {
+		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString())
+			return false
+
+		return true;
+	}
+
+	componentWillUnmount() {
+		if (this.collapseStateTimeout)
+			clearTimeout(this.collapseStateTimeout)
+		if (this.mouseLeaveLock)
+			clearTimeout(this.mouseLeaveLock)
 	}
 
 	_onClick = () => {
@@ -26,11 +47,35 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 			newState.collapsState = 2
 			this.setState(newState)
 
-			setTimeout(() => {
+			this.collapseStateTimeout = setTimeout(() => {
 				const newState = { ...this.state }
 				newState.collapsState = 3
 				this.setState(newState)
-			}, 100)
+			}, 200)
+		}
+	}
+
+	_mouseEnter = () => {
+
+		// We don't need to set it again
+		if (this.props.subject._id.toString() === this.props.app.sneakPeak?._id.toString()) {
+			this.props.showSneakPeak(this.props.subject)
+			return
+		}
+
+		let newState = { ...this.state }
+		newState.timeoutDone = false;
+		this.setState(newState)
+
+		this.props.showSneakPeak(this.props.subject)
+	}
+
+	_mouseLeave = () => {
+		if (this.props.subject._id.toString() === this.props.app.sneakPeak?._id.toString()) {
+			this.mouseLeaveLock = setTimeout(() => {
+				// Lower selection score
+				this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount - 1)
+			}, 10)
 		}
 	}
 
@@ -52,14 +97,14 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 
 	render() {
 		return (
-			<>
-				{(this.state.collapsState !== 3 && !!!this.props.elementsHidden) || this.state.collapsState === 2 ? 
-					<div className={`Subject`} 
+			<div className="SubjectItemWrapper">
+				{this.state.collapsState !== 3 ? 
+					<div className="Subject" 
 						onClick={this._onClick} 
-						onMouseLeave={this.props.hideSneakPeak}
+						onMouseLeave={this._mouseLeave}
 					>
 						<img alt="Subject icon" 
-							onMouseEnter={() => this.props.showSneakPeak(this.props.subject)}
+							onMouseEnter={this._mouseEnter}
 							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
 							src={this.getSubjectIcon(this.props.subject.code)} 
 						/>
@@ -70,20 +115,36 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				{this.state.collapsState === 3 ? 
 					<Redirect to={`/D20/course/${this.props.subject.code}`} /> : null
 				}
-			</>
+			</div>
 		)
 	}
 }
 
 export interface StateForComponent {
-	collapsState: number
+	collapsState: number,
+	timeoutDone: boolean
 }
 
 export interface PropsForComponent {
+	app: IAppState,
 	subject: SubjectData,
-	elementsHidden: boolean,
-	showSneakPeak: (subject: SubjectData) => void,
-	hideSneakPeak: () => void
+	showSneakPeak: IShowSneakPeak,
+	hideSneakPeak: IHideSneakPeak,
+	setSneakPeakSelectionCount: ISetSneakPeakSelectionCount,
+	updateSubjects: () => void,
 }
 
-export default Subject
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		setSneakPeakSelectionCount,
+		showSneakPeak,
+		hideSneakPeak
+	}
+}
+export default connect(reduxSelect, reduxDispatch())(Subject)

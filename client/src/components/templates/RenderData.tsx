@@ -27,6 +27,7 @@ import { connect } from "react-redux"
 import { IReduxRootState } from '../../state/reducers'
 import { addLocal, deleteLocally, editLocal, IAddLocal, IDeleteLocally, IEditLocal } from '../../state/actions/local'
 import { ILocalState } from '../../state/reducers/local'
+import { IAppState } from '../../state/reducers/app'
 
 class RenderData extends Component<PropsForComponent, StateForComponent> {
 
@@ -222,8 +223,8 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			return (
 				<div 
 					key={object.group._id} 
-					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.editMode ? " NoBorder" : "" }`}
-					style={this.props.editMode ? {
+					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.app.editMode ? " NoBorder" : "" }`}
+					style={this.props.app.editMode ? {
 						margin: "1rem",
 						borderStyle: "solid",
 						borderWidth: "3px",
@@ -303,7 +304,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 										type={object.type}
 										parentId={group._id}
 										id={object.id ?? ""}
-										editMode={this.props.editMode}
 										contentObject={contentObject}
 										updateSubjects={this.props.updateSubjects}
 									/>
@@ -320,7 +320,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 						}
 					</div>
 					{ // Control panel for group
-					this.props.editMode ?
+					this.props.app.editMode ?
 						<>
 							<button onClick={() => this._onCreateElement(group._id, "Text")}>Add text</button>
 							<button onClick={() => this._onCreateElement(group._id, "Link")}>Add link</button>
@@ -328,7 +328,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 							<GroupForm
 								key={uuid()}
 								forRoot={false}
-								editMode={this.props.editMode}
 								parentId={group._id}
 								newGroup={this.state.newGroup}
 								createGroup={this._onCreateGroup}
@@ -355,7 +354,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 					type="Link"
 					parentId={parentId}
 					id={contentObject._id}
-					editMode={this.props.editMode}
 					contentObject={contentObject.link}
 					updateSubjects={this.props.updateSubjects}
 				/>
@@ -367,7 +365,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				type="Text"
 				parentId={parentId}
 				id={contentObject._id}
-				editMode={this.props.editMode}
 				contentObject={contentObject.text}
 				updateSubjects={this.props.updateSubjects}
 			/>
@@ -377,7 +374,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				type="Deadline"
 				parentId={parentId}
 				id={contentObject._id}
-				editMode={this.props.editMode}
 				contentObject={contentObject.deadline}
 				updateSubjects={this.props.updateSubjects}
 			/>
@@ -393,7 +389,6 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				})}
 				<GroupForm 
 					forRoot
-					editMode={this.props.editMode}
 					parentId={this.props.group._id}
 					newGroup={this.state.newGroup}
 					createGroup={this._onCreateGroup}
@@ -443,13 +438,13 @@ export interface Group {
 }
 
 interface PropsForComponent {
-	updateSubjects: () => void,
-	editMode: boolean,
+	app: IAppState,
 	group: Group,
 	local: ILocalState,
 	deleteLocally: IDeleteLocally,
 	addLocal: IAddLocal
-	editLocal: IEditLocal
+	editLocal: IEditLocal,
+	updateSubjects: () => void,
 }
 
 interface StateForComponent {
@@ -467,6 +462,7 @@ interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
+		app: state.app,
 		local: state.local,
 	}
 }

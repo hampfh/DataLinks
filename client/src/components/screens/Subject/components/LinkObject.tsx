@@ -14,6 +14,11 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.timer)
+			clearTimeout(this.timer)
+	}
+
 	_updateLink = async (event: React.ChangeEvent<HTMLInputElement>, type: "DisplayText" | "Link") => {
 		let newState = { ...this.state }
 		if (type === "DisplayText") {
@@ -39,7 +44,7 @@ export default class LinkObject extends Component<PropsForComponent, StateForCom
 		else
 			append.link = event.target.value.length <= 0 ? "-" : event.target.value
 
-		if (this.timer !== undefined)
+		if (this.timer)
 			clearTimeout(this.timer)
 			this.timer = setTimeout(async () => {
 			const response = await Http({

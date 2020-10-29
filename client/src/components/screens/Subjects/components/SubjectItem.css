@@ -5,6 +5,11 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+.SubjectItemWrapper {
+	position: relative;
+	overflow: visible;
+}
+
 .Subject {
 	justify-content: center;
 	align-items: center;
@@ -19,6 +24,7 @@
 	transition-duration: 0.15s;
 	transition-property: all;
 	transition-timing-function: ease-in;
+	padding: 0.5rem;
 
 	user-select: none;
 	-webkit-tap-highlight-color:transparent;
@@ -34,6 +40,7 @@
 	cursor: pointer;
 	transition-property: transform;
 	transition-duration: 0.15s;
+	width: 5rem;
 }
 
 .collapsed:hover {

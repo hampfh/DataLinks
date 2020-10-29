@@ -10,9 +10,15 @@ body {
 	display: grid;
 	margin: 0;
 	width: 100%;
+	height: 100vh;
 	background-color: var(--primary-background);
 	overflow-y: hidden;
 	scrollbar-width: thin;
+	justify-content: center;
+}
+
+.Uppercontainer {
+	margin-bottom: -5rem;
 }
 
 .Title {
@@ -89,6 +95,7 @@ body {
 }
 
 .versionText {
+	font-size: 0.9rem;
 	margin-top: 0.25rem;
 	text-align: center;
 	color: var(--primary);

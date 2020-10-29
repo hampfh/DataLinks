@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { IAppState } from '../../state/reducers/app'
+import { connect } from 'react-redux'
+import { IReduxRootState } from '../../state/reducers'
 
-export default class GroupForm extends Component<PropsForComponent, StateForComponent> {
+class GroupForm extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
 		super(props)
@@ -17,7 +20,7 @@ export default class GroupForm extends Component<PropsForComponent, StateForComp
 	}
 
 	render() {
-		if (!!!this.props.editMode)
+		if (!!!this.props.app.editMode)
 			return null
 
 		// Only render form if on the correct level
@@ -37,7 +40,7 @@ export default class GroupForm extends Component<PropsForComponent, StateForComp
 
 interface PropsForComponent {
 	forRoot: boolean,
-	editMode: boolean,
+	app: IAppState,
 	parentId: string,
 	newGroup?: {
 		name: string,
@@ -51,3 +54,11 @@ interface PropsForComponent {
 interface StateForComponent {
 	name: string
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		app: state.app
+	}
+}
+
+export default connect(reduxSelect)(GroupForm)
