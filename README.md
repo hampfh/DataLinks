@@ -34,9 +34,23 @@ Datalinks is split into two parts, a backend and frontend. The general framework
 2. `clone the project`. Click the green button on the Github page, copy the code, and clone it as usual. 
 3. `install dependencies`. Before we can run the application we need to install all dependencies, this is done by running the command `npm install`. Don't forget that you also need to install dependencies for the client. Repeat the same process but in the client folder.
 4. `install MongoDB local db`. Since this web application uses MongoDB you need to install a local database that you can use for testing and playing around yourself. You can find the download [here](https://www.mongodb.com/try/download/community). This is the raw database, however, it isn't very intuitive, I, therefore, recommend that you also install [monodb compass](https://www.mongodb.com/try/download/compass) (if it isn't following when downloading the community edition).
-5. `Start everything`. Assuming you've now done all the previous steps successfully we need to compile and start the backend and the frontend. (This requires two cmds). In cmd one locate the root directory of the application and run `npm run tsc`, this will compile the backend code to js. Now we're ready to run it with `npm start`. 
+5. Before we can start the application we also need to create a `.env` file in the root directory. It's very important that it hasn't any name and the extension .env. This file is not included in this repository as it's a sensitive file that should be individual to each computer. However, here is an example you can use. As long as you stay in `development` mode and not `production` you don't need to add a DB_USER and DB_PASSWORD (as long as you haven't put your local database behind an authentication wall, then you need to fill in these fields too)
+```.env
+# Env file for datalinks
+
+PORT=8084
+NODE_ENV=development
+
+# Database properties
+DB_HOST=127.0.0.1
+DB_PORT=27017
+DB_USER=<your database user here>
+DB_PASSWORD=<your database password here>
+DB_NAME=datasektionen
+```
+6. `Start everything`. Assuming you've now done all the previous steps successfully we need to compile and start the backend and the frontend. (This requires two cmds). In cmd one locate the root directory of the application and run `npm run tsc`, this will compile the backend code to js. Now we're ready to run it with `npm start`. 
 In the other cmd you can simply run `npm start` and react should start its development server for you.
-6. `Happy coding`. You're now good to go
+7. `Happy coding`. You're now good to go
 
 ## Backend docs
 Here is all documentation for Datalink's backend, aka the API. This includes route-management, db-communication logic, etc.
