@@ -24,7 +24,7 @@ Datalinks is split into two parts, a backend and frontend. The general framework
 Here is all documentation for Datalink's backend, aka the API. This includes route-management, db-communication logic etc.
 ### Structure
 In github all backend related code is located in the `app` folder in the root directory. This folder has four subfolders, `assets`, `controllers`, `models` and `routes`. Here is an explenation of what that means:  
-*assets:*  
+**assets:**  
 Holds all static data that may be served from the api, this is often the home to images, json files etc. Before this web-app was upgraded to a wiki-backend this folder held one file called data.json where all information was stored.  
 **controllers:**  
 This folder contains all logic, one could say that this is the brain of the api. All routes goes to one controller which decides what to do with the information and then responds to the user.  
