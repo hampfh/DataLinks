@@ -27,7 +27,7 @@ In github all backend related code is located in the `app` folder in the root di
 *assets:*  
 Holds all static data that may be served from the api, this is often the home to images, json files etc. Before this web-app was upgraded to a wiki-backend this folder held one file called data.json where all information was stored.  
 **controllers:**  
-This folder contains all logic, one could say that this is the brain of the api. All routes goes to one controller which decides what to do with the information and then responds to the user.
+This folder contains all logic, one could say that this is the brain of the api. All routes goes to one controller which decides what to do with the information and then responds to the user.  
 **models:**  
 This is basically a blueprint folder, telling MongoDb (the database) how data should be structured. After these blueprints have been defined the rest of the web-app must follow these rules when posting data to the database.
 **routes:**  
