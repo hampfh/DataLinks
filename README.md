@@ -11,7 +11,7 @@
   * [Frameworks](#frameworks)
 
 ## Questions
-If you have any questions that isn't answered here please don't hesitate to create an issue and tag it with `questions`. If you don't have a questions but a feature-request or bug I also encourage you to create an issue and give it the `implementation`- or `bug` tag.
+If you have any questions that aren't answered here please don't hesitate to create an issue and label it with `questions`. If you don't have questions but a feature request or bug I also encourage you to create an issue and give it the `improvement`- or `bug` label.
 
 ## Project stack
 Datalinks is split into two parts, a backend and frontend. The general framework/language stack looks something like this:  
