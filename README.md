@@ -2,6 +2,7 @@
 
 ## Contents
 * [Project stack](#project-stack)
+* [Setup development tools](#setup-development)
 * [Frontend docs]()
 * [Backend docs](#backend-docs)
   * [Structure](#structure)
@@ -24,6 +25,15 @@ Datalinks is split into two parts, a backend and frontend. The general framework
 * Redux
 * Typescript
 
+## Setup development
+1. `Install vscode`. I really recommend that you use vscode, I know there are a lot of text editors out there but vscode has the best support for extensions and also works very well together with typescript.
+2. `clone the project`. Click the green button on the Github page, copy the code, and clone it as usual. 
+3. `install dependencies`. Before we can run the application we need to install all dependencies, this is done by running the command `npm install`. Don't forget that you also need to install dependencies for the client. Repeat the same process but in the client folder.
+4. `install MongoDB local db`. Since this web application uses MongoDB you need to install a local database that you can use for testing and playing around yourself. You can find the download [here](https://www.mongodb.com/try/download/community). This is the raw database, however, it isn't very intuitive, I, therefore, recommend that you also install [monodb compass](https://www.mongodb.com/try/download/compass) (if it isn't following when downloading the community edition).
+5. `Start everything`. Assuming you've now done all the previous steps successfully we need to compile and start the backend and the frontend. (This requires two cmds). In cmd one locate the root directory of the application and run `npm run tsc`, this will compile the backend code to js. Now we're ready to run it with `npm start`. 
+In the other cmd you can simply run `npm start` and react should start its development server for you.
+6. `Happy coding`. You're now good to go
+
 ## Backend docs
 Here is all documentation for Datalink's backend, aka the API. This includes route-management, db-communication logic, etc.
 ### Structure
@@ -33,9 +43,9 @@ Holds all static data that may be served from the API, this is often the home to
 **controllers:**  
 This folder contains all logic, one could say that this is the brain of the API. All routes go to one controller which decides what to do with the information and then responds to the user.  
 **models:**  
-This is basically a blueprint folder, telling MongoDb (the database) how data should be structured. After these blueprints have been defined the rest of the web-app must follow these rules when posting data to the database.
+This is a blueprint folder, telling MongoDb (the database) how data should be structured. After these blueprints have been defined the rest of the web-app must follow these rules when posting data to the database.
 **routes:**  
-Currently, this folder only holds one file, mainly because there aren't that many routes and it doesn't get very cluttered by putting them all into the `api.ts` file located in it. A route file is responsible for taking the URL that the user/(or website) put in and then send that to the correct controller. It's basically a middleman that makes sure that information is going to the correct place.
+Currently, this folder only holds one file, mainly because there aren't that many routes and it doesn't get very cluttered by putting them all into the `api.ts` file located in it. A route file is responsible for taking the URL that the user/(or website) put in and then send that to the correct controller. It's a middleman that makes sure that information is going to the correct place.
 
 ### Data structures
 There are two important data structures in the database, there are subjects that hold information about course name, description, code, etc (generally things that the user cannot change). The other structure is groups. The whole site is built with these, a group may contain other groups (thus enabling nesting) but it may also contain `content objects`. A content object is what it's named, it's an object holding content. There are currently three different of these, link objects, text objects (and in the new release deadline objects). For further exploration, I recommend you go and seem them for yourself [here](https://github.com/Hampfh/DataLinks/tree/master/app/models). You might also notice that a third data model exists, the logging model. This is used for logging all changes done to the site, this allows for overtime tracking of the site changes and might in the future be connected to some form of reward system.
