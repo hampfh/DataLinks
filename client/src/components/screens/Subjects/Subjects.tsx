@@ -67,25 +67,23 @@ export class Subjects extends Component<PropsForComponent, StateForComponent> {
 					}
 				</div>
 
-				<div className="bottomContainer">
-					{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 
-					<>
-						<div className="extendModeContainer  toolbarItem">
-							<p>Content view</p>
-							<label className="switch">
-								<input onChange={this._onExtendModeFlick} checked={this.props.app.extendedMode} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-						</div>
-						<div className="editModeContainer toolbarItem">
-							<p>Edit mode</p>
-							<label className="switch">
-								<input onChange={this._onflick} checked={this.props.app.editMode} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-						</div>
-					</>}
-				</div>
+				{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 
+					<div className="bottomContainer">
+					<div className="extendModeContainer  toolbarItem">
+						<p>Content view</p>
+						<label className="switch">
+							<input onChange={this._onExtendModeFlick} checked={this.props.app.extendedMode} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
+					</div>
+					<div className="editModeContainer toolbarItem">
+						<p>Edit mode</p>
+						<label className="switch">
+							<input onChange={this._onflick} checked={this.props.app.editMode} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
+					</div>
+				</div>}
 			</section>
 		)
 	}
