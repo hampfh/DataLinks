@@ -15,6 +15,17 @@ body {
 	justify-content: center;
 }
 
+@media (max-width: 35rem) {
+	body {
+		overflow-y: auto;
+	}
+}
+
+@media (max-width: 20rem) {
+	.Master {
+		margin-bottom: 4rem;
+	}
+}
 
 .Title {
 	text-align: center;
