@@ -14,7 +14,7 @@
 	justify-content: center;
 	align-items: center;
 
-	width: 100%;
+	width: 50%;
 	height: min-content;
 	max-width: 6rem;
 	max-height: 120rem;
@@ -55,12 +55,6 @@
 .expanding {
 	animation-name: Expand;
 	animation-duration: 0.45s;
-}
-
-@media(min-width: 40rem) {
-	.Subject {
-		width: 50%;
-	}
 }
 
 .Header {
