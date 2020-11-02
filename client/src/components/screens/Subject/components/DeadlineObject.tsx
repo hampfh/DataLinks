@@ -44,6 +44,10 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 		clearInterval(this.state.interval as NodeJS.Timeout)
 	}
 
+	isEmptyFirstRow() {
+		return !!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days
+	}
+
 	render() {
 		
 		const deadlineReached = this.state.countdown.months === 0 &&
@@ -62,17 +66,16 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 					{deadlineReached ?
 						<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>Deadline reached!</p> :
 						<>
-							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
+							{this.isEmptyFirstRow() ? null : <p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
 								${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
 								${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
 								${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
 								`}
-							</p>
+							</p>}
 							
 							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${this.state.countdown.hours}:${this.state.countdown.minutes}:${this.state.countdown.seconds}`}</p>
-							{ // Add dummy text to align deadlines correctly if one line is empty
-							!!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days ?
-								<p className="countdownText transparent">---</p> :
+							{this.isEmptyFirstRow() ?
+								<p className="countdownText transparent">-</p> :
 								null
 							}
 						</>

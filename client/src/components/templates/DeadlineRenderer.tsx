@@ -3,6 +3,7 @@ import ContentObject from '../screens/Subject/components/ContentObject';
 import { SubjectData } from '../screens/Subjects/Subjects';
 import { Group, IDeadline } from './RenderData'
 import "./DeadlineRenderer.css"
+import Moment from "moment"
 
 export default class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 
@@ -11,16 +12,23 @@ export default class DeadlineRenderer extends Component<PropsForComponent, State
 
 		let deadlines: IDeadline[] | undefined = undefined
 		if (this.props.subjects)
-			deadlines = this.compileDeadlines()
+			deadlines = this.sortDeadlines(this.compileDeadlines())
 
 		this.state = {
 			deadlines: deadlines ?? []
 		}
 	}
 
+	sortDeadlines(deadlines: IDeadline[]) {
+		deadlines.sort((a, b) => {
+			return Moment(a.deadline).diff(b.deadline, "second")
+		})
+		return deadlines
+	}
+
 	componentDidUpdate() {
 		let newState = { ...this.state }
-		newState.deadlines = this.compileDeadlines()
+		newState.deadlines = this.sortDeadlines(this.compileDeadlines())
 		if (newState.deadlines.length === this.state.deadlines.length)
 			return
 
