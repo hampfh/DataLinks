@@ -41,7 +41,8 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.state.interval as NodeJS.Timeout)
+		if (this.state.interval)
+			clearInterval(this.state.interval)
 	}
 
 	isEmptyFirstRow() {

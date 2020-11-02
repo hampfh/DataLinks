@@ -66,10 +66,6 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 				this.props.enableEditMode()
 			else
 				this.props.disableEditModeFlag()
-
-			let newState = { ...this.state }
-			newState.checked = undefined
-			this.setState(newState)
 		}, 100)
 	}
 
