@@ -1,21 +1,31 @@
 .deadlineRendererContainer {
 	animation-name: fadeIn;
 	animation-duration: 0.5s;
-	height: 22rem;
-	overflow-y: auto;
 	scrollbar-width: thin;
+	display: grid;
+	justify-content: center;
 }
 
 .deadlineWrapper {
-	position: relative;
-	left: 50%;
-	transform: translateX(-50%);
 	width: 80vw;
 	max-width: 70rem;
+	height: 23rem;
+	overflow-y: auto;
 
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+}
+
+.deadlineWrapper::-webkit-scrollbar {
+	width: 0.4rem;
+	border-radius: 5px;
+	background-color: #dfdfdf;
+}
+
+.deadlineWrapper::-webkit-scrollbar-thumb {
+	background-color: var(--primary);
+	border-radius: 5px;
 }
 
 .deadlineWrapperTitle {
