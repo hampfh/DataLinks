@@ -83,7 +83,7 @@ body {
 }
 
 .editModeContainer label {
-	margin: 0 auto;
+	margin: 0 1rem;
 }
 
 .extendModeContainer p,
@@ -140,4 +140,8 @@ body {
 .toolbarItem {
 	color: white;
 	margin: 0 3rem;
+}
+
+.toolbarItem .switch {
+	margin: 0 auto;
 }

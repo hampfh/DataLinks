@@ -223,7 +223,9 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			return (
 				<div 
 					key={object.group._id} 
-					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.app.flags.editMode ? " NoBorder" : "" }`}
+					className={`GroupContainer${group.column ? " Column" : ""}
+					${depth !== undefined && depth > 0 ? " Nested" : ""}
+					${group.split !== undefined && group.split === false && !!!this.props.app.flags.editMode ? " NoBorder" : "" }`}
 					style={this.props.app.flags.editMode ? {
 						margin: "1rem",
 						borderStyle: "solid",

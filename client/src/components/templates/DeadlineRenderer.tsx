@@ -44,7 +44,7 @@ export default class DeadlineRenderer extends Component<PropsForComponent, State
 			if (deadlines.length <= 0)
 				deadlines = strippedDeadlines
 			else
-				deadlines.concat(strippedDeadlines)
+				deadlines = deadlines.concat(strippedDeadlines)	
 		}
 		return deadlines
 	}

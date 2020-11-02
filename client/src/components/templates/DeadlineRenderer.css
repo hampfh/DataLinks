@@ -1,7 +1,6 @@
 .deadlineRendererContainer {
 	animation-name: fadeIn;
 	animation-duration: 0.5s;
-	scrollbar-width: thin;
 	display: grid;
 	justify-content: center;
 }
@@ -15,6 +14,7 @@
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	scrollbar-width: thin;
 }
 
 .deadlineWrapper::-webkit-scrollbar {
