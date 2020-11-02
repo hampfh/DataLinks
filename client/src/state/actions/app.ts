@@ -4,8 +4,8 @@ export const APP_FLAG_KEY = "flags"
 
 export interface IFlagInterface {
 	editMode: boolean,
-	extendMode: boolean,
-	deadlineViewMode: boolean
+	extendedView: boolean,
+	deadlineView: boolean
 }
 
 /**
@@ -140,7 +140,7 @@ export const setSneakPeakSelectionCount = (count: number) => {
 
 export interface ISetExtendViewFlag { (enableExtend: boolean): void }
 export const setExtendViewFlag = (enableExtend: boolean) => {
-	saveFlags("extendedMode", enableExtend)
+	saveFlags("extendedView", enableExtend)
 	return {
 		type: "SET_EXTEND_VIEW_FLAG",
 		payload: {

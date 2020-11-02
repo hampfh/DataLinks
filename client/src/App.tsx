@@ -36,9 +36,9 @@ class App extends Component<PropsForComponent, StateForComponent> {
 		if (flags) {
 			if (flags.editMode)
 				this.props.enableEditMode()
-			if (flags.extendMode)
+			if (flags.extendedView)
 				this.props.setExtendViewFlag(true)
-			if (flags.deadlineViewMode)
+			if (flags.deadlineView)
 				this.props.setDeadlineViewFlag(true)
 		}
 	}

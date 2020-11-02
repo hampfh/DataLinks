@@ -17,7 +17,7 @@ const defaultState = {
 	flags: {
 		editMode: false,
 		extendedView: false,
-		deadlineView: true,
+		deadlineView: false,
 	}
 }
 
@@ -50,7 +50,7 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 			return newState
 		case 'SET_DEADLINE_VIEW_FLAG':
 			newState.flags.deadlineView = action.payload.mode
-			return
+			return newState
 		default:
 			return newState
 	}

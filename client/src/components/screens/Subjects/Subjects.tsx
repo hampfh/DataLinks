@@ -8,7 +8,7 @@ import { version } from "../../../../package.json"
 import { connect } from 'react-redux'
 import { IReduxRootState } from '../../../state/reducers'
 import { IAppState } from '../../../state/reducers/app'
-import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode, ISetExtendViewFlag, setExtendViewFlag } from '../../../state/actions/app'
+import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode, ISetDeadlineViewFlag, ISetExtendViewFlag, setDeadlineViewFlag, setExtendViewFlag } from '../../../state/actions/app'
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import DeadlineRenderer from '../../templates/DeadlineRenderer'
 
@@ -23,6 +23,9 @@ export class Subjects extends Component<PropsForComponent> {
 
 	_onExtendModeFlick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		this.props.setExtendViewFlag(event.target.checked)
+	}
+	_onDeadlineViewFlick = (event: React.ChangeEvent<HTMLInputElement>) => {
+		this.props.setDeadlineViewFlag(event.target.checked)
 	}
 
 	render() {
@@ -80,6 +83,13 @@ export class Subjects extends Component<PropsForComponent> {
 								<span className="slider round"></span>
 							</label>
 						</div>
+						<div className="editModeContainer toolbarItem">
+							<p>Deadline view</p>
+							<label className="switch">
+								<input onChange={this._onDeadlineViewFlick} checked={this.props.app.flags.deadlineView} type="checkbox" />
+								<span className="slider round"></span>
+							</label>
+						</div>
 					</div>
 				}
 			</section>
@@ -102,7 +112,8 @@ interface PropsForComponent {
 	updateSubjects: () => void,
 	enableEditMode: IEnableEditMode,
 	disableEditModeFlag: IDisableEditModeFlag,
-	setExtendViewFlag: ISetExtendViewFlag
+	setExtendViewFlag: ISetExtendViewFlag,
+	setDeadlineViewFlag: ISetDeadlineViewFlag
 }
 
 const reduxSelect = (state: IReduxRootState) => {
@@ -115,7 +126,8 @@ const reduxDispatch = () => {
 	return {
 		enableEditMode,
 		disableEditModeFlag,
-		setExtendViewFlag
+		setExtendViewFlag,
+		setDeadlineViewFlag
 	}
 }
 

@@ -83,13 +83,14 @@ body {
 }
 
 .editModeContainer label {
-	margin: 0 1rem;
+	margin: 0 auto;
 }
 
 .extendModeContainer p,
 .editModeContainer p {
 	margin-top: 0;
 	font-style: italic;
+	text-align: center;
 }
 
 .subjectViewEditMode {
