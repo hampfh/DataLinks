@@ -49,3 +49,13 @@ export function calcTimeLeft(endDate: string): { months: number, weeks: number, 
 		seconds
 	}
 }
+
+/**
+ * This method ensures that a number always consists
+ * out of two digits, if number is smaller than 10
+ * then we add a zero before it
+ * @param number 
+ */
+export function formatNumberToClock(number: number) {
+	return number < 10 ? `0${number}` : number
+}

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { calcDeadlinePercentage, calcTimeLeft } from '../../../../functions/date_calculations'
+import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from '../../../../functions/date_calculations'
 import "./Deadline.css"
 
 export default class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
@@ -74,7 +74,7 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 								`}
 							</p>}
 							
-							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${this.state.countdown.hours}:${this.state.countdown.minutes}:${this.state.countdown.seconds}`}</p>
+							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}</p>
 							{this.isEmptyFirstRow() ?
 								<p className="countdownText transparent">-</p> :
 								null
