@@ -9,7 +9,7 @@ import isMobile from "../../../functions/isMobile"
 import { connect } from 'react-redux'
 import { IReduxRootState } from '../../../state/reducers'
 import { IAppState } from '../../../state/reducers/app'
-import { disableEditMode, enableEditMode, IDisableEditMode, IEnableEditMode } from '../../../state/actions/app'
+import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from '../../../state/actions/app'
 
 class SubjectView extends Component<PropsForComponent, StateForComponent> {
 
@@ -56,7 +56,7 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 
 		const checked = event.target.checked
 		let newState = { ...this.state }
-		newState.checked = !!!this.props.app.editMode
+		newState.checked = !!!this.props.app.flags.editMode
 		this.setState(newState)
 
 		if (this.timeout)
@@ -65,7 +65,7 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 			if (checked)
 				this.props.enableEditMode()
 			else
-				this.props.disableEditMode()
+				this.props.disableEditModeFlag()
 
 			let newState = { ...this.state }
 			newState.checked = undefined
@@ -91,7 +91,7 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 							<div className="editModeContainer editModeCourse subjectViewEditMode">
 								<p>Default mode</p>
 								<label className="switch">
-									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.checked ?? this.props.app.editMode} type="checkbox" />
+									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.checked ?? this.props.app.flags.editMode} type="checkbox" />
 									<span className="slider round"></span>
 								</label>
 								<p>Edit mode</p>
@@ -118,7 +118,7 @@ class SubjectView extends Component<PropsForComponent, StateForComponent> {
 
 export interface PropsForComponent {
 	enableEditMode: IEnableEditMode,
-	disableEditMode: IDisableEditMode,
+	disableEditModeFlag: IDisableEditModeFlag,
 	updateSubjects: () => void,
 	subject: SubjectData,
 	app: IAppState,
@@ -138,7 +138,7 @@ const reduxSelect = (state: IReduxRootState) => {
 const reduxDispatch = () => {
 	return {
 		enableEditMode,
-		disableEditMode
+		disableEditModeFlag
 	}
 }
 

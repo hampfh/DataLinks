@@ -1,5 +1,13 @@
 import { SubjectData } from "../../components/screens/Subjects/Subjects"
 
+export const APP_FLAG_KEY = "flags"
+
+export interface IFlagInterface {
+	editMode: boolean,
+	extendMode: boolean,
+	deadlineViewMode: boolean
+}
+
 /**
  * Checks if user has agreed
  * @param mode
@@ -24,21 +32,55 @@ function agreeBehavior (): boolean {
  */
 function saveEditMode(mode: boolean): boolean {
 	if (agreeBehavior()) {
-		if (mode)
-			localStorage.setItem("editMode", "true")
-		else
-			localStorage.removeItem("editMode")
+		saveFlags("editMode", mode)
 		return true
-	} else {
+	} else
 		return false
+}
+
+function saveFlags(settingName: string, mode: boolean) {
+
+	
+
+	function setFlag(settingName: string, mode: boolean) {
+		localStorage.setItem(APP_FLAG_KEY, JSON.stringify({
+			[settingName]: mode
+		}))
+	}
+
+	// Check if flag target exists
+	const target = localStorage.getItem(APP_FLAG_KEY)
+	if (target == null) {
+		setFlag(settingName, mode)
+		return
+	}
+	else {
+		try {
+			// Add the new flag to the already existing ones
+			let flags = JSON.parse(target)
+			// If mode is false then remove the flag from the object
+			if (!!!mode) {
+				let { [settingName]: exclude, ...other } = flags
+				flags = other
+			} else 
+				flags[settingName] = mode
+			localStorage.setItem(APP_FLAG_KEY, JSON.stringify(flags))
+		} catch (error) {
+			// If fail the override localstorage with the new setting
+			setFlag(settingName, mode)
+		}
 	}
 }
 
-function saveExtendMode(mode: boolean) {
-	if (mode)
-		localStorage.setItem("extendMode", "true")
-	else
-		localStorage.removeItem("extendMode")
+export function loadFlags(): IFlagInterface | null  {
+	const target = localStorage.getItem(APP_FLAG_KEY)
+	if (target == null)
+		return null
+	
+	try {
+		const flags = JSON.parse(target)
+		return flags
+	} catch (error) { return null }
 }
 
 export interface IEnableEditMode { (): void }
@@ -57,8 +99,8 @@ export const enableEditMode = (mode = true) => {
 	}
 }
 
-export interface IDisableEditMode { (): void }
-export const disableEditMode = () => {
+export interface IDisableEditModeFlag { (): void }
+export const disableEditModeFlag = () => {
 
 	saveEditMode(false)
 
@@ -96,13 +138,24 @@ export const setSneakPeakSelectionCount = (count: number) => {
 	}
 }
 
-export interface ISetExtendMode { (enableExtend: boolean): void }
-export const setExtendMode = (enableExtend: boolean) => {
-	saveExtendMode(enableExtend)
+export interface ISetExtendViewFlag { (enableExtend: boolean): void }
+export const setExtendViewFlag = (enableExtend: boolean) => {
+	saveFlags("extendedMode", enableExtend)
 	return {
-		type: "SET_EXTEND_MODE",
+		type: "SET_EXTEND_VIEW_FLAG",
 		payload: {
 			mode: enableExtend
+		}
+	}
+}
+
+export interface ISetDeadlineViewFlag { (deadlineViewMode: boolean): void }
+export const setDeadlineViewFlag = (deadlineViewMode: boolean) => {
+	saveFlags("deadlineView", deadlineViewMode)
+	return {
+		type: "SET_DEADLINE_VIEW_FLAG",
+		payload: {
+			mode: deadlineViewMode
 		}
 	}
 }

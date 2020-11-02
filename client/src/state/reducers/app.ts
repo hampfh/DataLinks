@@ -2,27 +2,33 @@ import { ActionType } from ".";
 import { SubjectData } from "../../components/screens/Subjects/Subjects";
 
 export interface IAppState {
-	editMode: boolean,
 	sneakPeak?: SubjectData,
 	sneakPeakSelectionCount: number,
-	extendedMode: boolean
+	flags: {
+		editMode: boolean,
+		extendedView: boolean,
+		deadlineView: boolean
+	}
 }
 
 const defaultState = {
-	editMode: false,
 	sneakPeak: undefined,
 	sneakPeakSelectionCount: 0,
-	extendedMode: false
+	flags: {
+		editMode: false,
+		extendedView: false,
+		deadlineView: true,
+	}
 }
 
 const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 	let newState = { ...state };
 	switch (action.type) {
 		case 'ENABLE_EDIT_MODE':
-			newState.editMode = true;
+			newState.flags.editMode = true;
 			return newState
 		case 'DISABLE_EDIT_MODE':
-			newState.editMode = false;
+			newState.flags.editMode = false;
 			return newState
 		case 'SHOW_SNEAK_PEAK':
 			newState.sneakPeak = action.payload.subject
@@ -39,9 +45,12 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 				newState.sneakPeakSelectionCount = 0
 			}
 			return newState
-		case 'SET_EXTEND_MODE':
-			newState.extendedMode = action.payload.mode
+		case 'SET_EXTEND_VIEW_FLAG':
+			newState.flags.extendedView = action.payload.mode
 			return newState
+		case 'SET_DEADLINE_VIEW_FLAG':
+			newState.flags.deadlineView = action.payload.mode
+			return
 		default:
 			return newState
 	}

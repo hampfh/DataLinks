@@ -56,19 +56,25 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 		return (
 			<div className="deadlineContainer">
 				{this.props.displayText ? 
-					<p className="deadlineTitleText">{this.props.displayText}</p>
+					<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
 				: null}
 					<progress className="deadLineProgressBar" value={deadlineReached ? 1 : this.state.bar.value.toString()} max={deadlineReached ? 1 : this.state.bar.max.toString()} />
 					{deadlineReached ?
-						<p className="countdownText">Deadline reached!</p> :
+						<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>Deadline reached!</p> :
 						<>
-							<p className="countdownText">{`
+							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
 								${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
 								${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
 								${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
 								`}
 							</p>
-							<p className="countdownText">{`${this.state.countdown.hours}:${this.state.countdown.minutes}:${this.state.countdown.seconds}`}</p>
+							
+							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${this.state.countdown.hours}:${this.state.countdown.minutes}:${this.state.countdown.seconds}`}</p>
+							{ // Add dummy text to align deadlines correctly if one line is empty
+							!!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days ?
+								<p className="countdownText transparent">---</p> :
+								null
+							}
 						</>
 					}
 					
@@ -81,6 +87,7 @@ interface PropsForComponent {
 	displayText?: string,
 	deadline: string,
 	start: string,
+	accent?: boolean
 }
 
 interface StateForComponent {

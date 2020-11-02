@@ -223,8 +223,8 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			return (
 				<div 
 					key={object.group._id} 
-					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.app.editMode ? " NoBorder" : "" }`}
-					style={this.props.app.editMode ? {
+					className={`GroupContainer${group.column ? " Column" : ""}${depth !== undefined && depth > 0 ? " Nested" : ""}${group.split !== undefined && group.split === false && !!!this.props.app.flags.editMode ? " NoBorder" : "" }`}
+					style={this.props.app.flags.editMode ? {
 						margin: "1rem",
 						borderStyle: "solid",
 						borderWidth: "3px",
@@ -320,7 +320,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 						}
 					</div>
 					{ // Control panel for group
-					this.props.app.editMode ?
+					this.props.app.flags.editMode ?
 						<>
 							<button onClick={() => this._onCreateElement(group._id, "Text")}>Add text</button>
 							<button onClick={() => this._onCreateElement(group._id, "Link")}>Add link</button>

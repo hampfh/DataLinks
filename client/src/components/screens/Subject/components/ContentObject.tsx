@@ -103,7 +103,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		// Check if local item
 		if (indexOfLocal(this.props.local, append.id) >= 0)
 			this.props.editLocal(append.id, append)
-		else
+		else if (this.props.updateSubjects)
 			this.props.updateSubjects()
 	}
 
@@ -128,7 +128,14 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	render() {
-		if (!!!this.props.app.editMode) {
+		if (this.props.updateSubjects === undefined && (this.props.noEditMode === undefined || !!!this.props.noEditMode)) {
+			if (process.env.NODE_ENV === "development")
+				throw new Error("Must specify either updateSubjects or noEditMode")
+			else
+				return null;
+		}
+			
+		if (!!!this.props.app.flags.editMode || this.props.noEditMode) {
 			if (this.props.type === "Text") {
 				return (
 					<div className="textObjectWrapper">
@@ -149,7 +156,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 					</div>
 				)
 			} else // Render deadline object
-				return <DeadlienObject displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} />
+				return <DeadlienObject displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} accent={this.props.accent} />
 		} else {
 			return (
 				<div className="ButtonWrapper ButtonWrapperEditMode" style={{
@@ -205,7 +212,9 @@ interface PropsForComponent {
 	id: string,
 	app: IAppState,
 	contentObject: IText | ILink | IDeadline,
-	updateSubjects: () => void,
+	noEditMode?: boolean,
+	accent?: boolean,
+	updateSubjects?: () => void,
 	deleteLocally: IDeleteLocally,
 	editLocal: IEditLocal
 }

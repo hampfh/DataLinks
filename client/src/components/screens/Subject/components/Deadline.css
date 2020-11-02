@@ -47,7 +47,7 @@
 }
 .deadLineProgressBar::-moz-progress-bar {	
 
-	animation-name: loadIn;
+	animation-name: deadlineFlash;
 	animation-duration: 10s;
 	animation-timing-function: ease-out;
 	animation-iteration-count: infinite;
@@ -56,7 +56,15 @@
 	border-radius: 10px;
 }
 
-@keyframes loadIn {
+.transparent {
+	color: transparent;
+}
+
+.accent {
+	color: var(--primary);
+}
+
+@keyframes deadlineFlash {
 	0% {
 		opacity: 1;
 	}

@@ -20,7 +20,7 @@ class GroupForm extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	render() {
-		if (!!!this.props.app.editMode)
+		if (!!!this.props.app.flags.editMode)
 			return null
 
 		// Only render form if on the correct level

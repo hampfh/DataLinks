@@ -1,0 +1,33 @@
+.deadlineRendererContainer {
+	animation-name: fadeIn;
+	animation-duration: 0.5s;
+	height: 22rem;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+.deadlineWrapper {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 80vw;
+	max-width: 70rem;
+
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.deadlineWrapperTitle {
+	text-align: center;
+	color: var(--primary);
+}
+
+@keyframes fadeIn{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

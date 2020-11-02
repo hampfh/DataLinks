@@ -126,7 +126,7 @@ body {
 
 .bottomContainer {
 	background-color: var(--accent-background);
-	position: absolute;
+	position: fixed;
 	bottom: 0rem;
 	display: flex;
 	justify-content: center;

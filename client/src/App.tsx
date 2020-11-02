@@ -10,7 +10,7 @@ import { v4 as uuid } from "uuid"
 import { connect } from 'react-redux';
 import { IReduxRootState } from './state/reducers';
 import { IAppState } from './state/reducers/app';
-import { enableEditMode, IEnableEditMode, ISetExtendMode, setExtendMode } from './state/actions/app'
+import { enableEditMode, IEnableEditMode, ISetExtendViewFlag, ISetDeadlineViewFlag, loadFlags, setDeadlineViewFlag, setExtendViewFlag } from './state/actions/app'
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
@@ -32,17 +32,14 @@ class App extends Component<PropsForComponent, StateForComponent> {
 			this.setState(newState)
 		})
 
-		// Change to correct mode
-		if (localStorage.getItem("editMode") === "true") {
-			const newState = { ...this.state }
-			this.props.enableEditMode()
-			this.setState(newState)
-		}
-		// Change to correct mode
-		if (localStorage.getItem("extendMode") === "true") {
-			const newState = { ...this.state }
-			this.props.setExtendMode(true)
-			this.setState(newState)
+		const flags = loadFlags()
+		if (flags) {
+			if (flags.editMode)
+				this.props.enableEditMode()
+			if (flags.extendMode)
+				this.props.setExtendViewFlag(true)
+			if (flags.deadlineViewMode)
+				this.props.setDeadlineViewFlag(true)
 		}
 	}
 
@@ -108,7 +105,8 @@ class App extends Component<PropsForComponent, StateForComponent> {
 export interface PropsForComponent {
 	app: IAppState,
 	enableEditMode: IEnableEditMode,
-	setExtendMode: ISetExtendMode
+	setExtendViewFlag: ISetExtendViewFlag,
+	setDeadlineViewFlag: ISetDeadlineViewFlag
 }
 
 export interface StateForComponent {
@@ -125,7 +123,8 @@ const reduxSelect = (state: IReduxRootState) => {
 const reduxDispatch = () => {
 	return {
 		enableEditMode,
-		setExtendMode
+		setExtendViewFlag,
+		setDeadlineViewFlag
 	}
 }
 

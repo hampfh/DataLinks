@@ -43,7 +43,7 @@ class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 			>
 				<div className="ContentContainer"
 					style={{
-						maxHeight: this.props.app.extendedMode ? "35rem" : "20rem",
+						maxHeight: this.props.app.flags.extendedView ? "35rem" : "20rem",
 					}}
 				>
 					<RenderData 
