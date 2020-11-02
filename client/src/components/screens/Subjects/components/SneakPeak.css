@@ -25,3 +25,13 @@
 
 	border-radius: 20px;
 }
+
+.ContentContainer::-webkit-scrollbar {
+	width: 0.5rem;
+	background-color: transparent;
+}
+
+.ContentContainer::-webkit-scrollbar-thumb {
+	background-color: var(--complementary);
+	border-radius: 10px;
+}
