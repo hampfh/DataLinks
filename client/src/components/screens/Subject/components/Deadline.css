@@ -1,11 +1,15 @@
 @import "../../../root.css";
 
 .deadlineContainer {
+	justify-self: center;
+
 	display: grid;
 	justify-content: center;
 	align-items: center;
 	margin: 0 1rem;
 	margin-bottom: 1rem;
+	width: 10rem;
+	overflow-x: hidden;
 }
 
 .countdownText {
@@ -20,6 +24,14 @@
 .deadlineTitleText {
 	text-align: center;
 	color: white
+}
+
+.deadlineWrapper > .deadlineContainer > .deadlineTitleText {
+	overflow-x: hidden;
+	width: 10rem;
+	word-wrap: none;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .deadLineProgressBar::-webkit-progress-bar,
@@ -48,7 +60,7 @@
 .deadLineProgressBar::-moz-progress-bar {	
 
 	animation-name: deadlineFlash;
-	animation-duration: 10s;
+	animation-duration: 7s;
 	animation-timing-function: ease-out;
 	animation-iteration-count: infinite;
 
@@ -72,7 +84,7 @@
 		opacity: 1;
 	}
 	55% {
-		opacity: 0.5;
+		opacity: 0.25;
 	}
 	65% {
 		opacity: 1;
