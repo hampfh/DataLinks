@@ -1,6 +1,7 @@
 import Log, { ContentType, OperationType } from "../models/log.model"
+import Bcrypt from "bcrypt"
 
-const log = (ip: string, operation: OperationType, type: ContentType, to: string[], from?: string[]) => {
+const log = async (ip: string, operation: OperationType, type: ContentType, to: string[], from?: string[]) => {
 
 	if (from !== undefined) {
 		// Delete all things that hasn't changed
@@ -16,8 +17,12 @@ const log = (ip: string, operation: OperationType, type: ContentType, to: string
 		}
 	}
 
+	// Generate ip hash password
+	const salt = await Bcrypt.genSalt(2)
+	const hashedIp = await Bcrypt.hash(ip, salt)
+
 	const newLog = new Log({
-		user: ip,
+		user: hashedIp,
 		operation,
 		to,
 		type,
