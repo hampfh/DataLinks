@@ -4,11 +4,6 @@
     top: -50%;
 }
 
-.checkmark:hover,
-.centerCheckmarkAligner:hover {
-    cursor: pointer;
-}
-
 .checkmark__circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
@@ -38,10 +33,6 @@
     stroke: #fff;
     stroke-miterlimit: 10;
     animation: fill 0s ease-in-out 0s forwards, scale 0s ease-in-out 0s both;
-}
-
-.checkmark:hover {
-    cursor: pointer;
 }
 
 .checkmark.animate {

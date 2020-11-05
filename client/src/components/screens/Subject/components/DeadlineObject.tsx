@@ -58,9 +58,13 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 		return !!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days
 	}
 
-	_toggleDone = () => {
+	_toggleDone = (complete: boolean) => {
 
-		if (this.state.complete) {
+		// It is not possible to change completeness in edit mode
+		if (this.props.editMode)
+			return
+
+		if (!!!complete) {
 			this.props.resetAnimatedDeadline(this.state.hash)
 			this.props.removeCompleteDeadline(this.state.hash)
 		}
@@ -68,14 +72,6 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 			this.props.addCompleteDeadline(this.state.hash)
 		let newState = { ...this.state }
 		newState.complete = !!!newState.complete
-		this.setState(newState)
-	}
-
-	unCompleteDeadline = () => {
-		this.props.removeCompleteDeadline(this.state.hash)
-		this.props.resetAnimatedDeadline(this.state.hash)
-		let newState = { ...this.state }
-		newState.complete = false
 		this.setState(newState)
 	}
 
@@ -93,15 +89,15 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 				{this.props.displayText ? 
 					<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
 				: null}
-					<div className="deadlineProgressBarContainer">
+					<div className={`deadlineProgressBarContainer ${!!!this.props.editMode ? "clickable" : ""}`}>
 						<progress
 							className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
 							value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
 							max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
-							onClick={this._toggleDone}
+							onClick={() => this._toggleDone(!!!this.state.complete)}
 						/>
 						{this.state.complete ? 
-							<Checkmark hash={this.state.hash} unCompleteThisDeadline={this.unCompleteDeadline} /> : null}
+							<Checkmark hash={this.state.hash} unCompleteThisDeadline={() => this._toggleDone(false)} /> : null}
 					</div>
 					{deadlineReached || this.state.complete ?
 						<>
@@ -136,6 +132,7 @@ interface PropsForComponent {
 	start: string,
 	accent?: boolean,
 	deadlines: IDeadlineState,
+	editMode: boolean,
 	addCompleteDeadline: IAddCompleteDeadline,
 	removeCompleteDeadline: IRemoveCompleteDeadline,
 	resetAnimatedDeadline: IResetAnimatedDeadline
@@ -162,7 +159,8 @@ interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
-		deadlines: state.deadlines
+		deadlines: state.deadlines,
+		editMode: state.app.flags.editMode
 	}
 }
 
