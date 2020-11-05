@@ -40,8 +40,6 @@ function saveEditMode(mode: boolean): boolean {
 
 function saveFlags(settingName: string, mode: boolean) {
 
-	
-
 	function setFlag(settingName: string, mode: boolean) {
 		localStorage.setItem(APP_FLAG_KEY, JSON.stringify({
 			[settingName]: mode

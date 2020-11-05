@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { IReduxRootState } from './state/reducers';
 import { IAppState } from './state/reducers/app';
 import { enableEditMode, IEnableEditMode, ISetExtendViewFlag, ISetDeadlineViewFlag, loadFlags, setDeadlineViewFlag, setExtendViewFlag } from './state/actions/app'
+import { ISetCompletedDeadlines, loadCompletedDeadlines, setCompletedDeadlines } from './state/actions/deadlines';
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
@@ -32,6 +33,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 			this.setState(newState)
 		})
 
+		// Load setting flags from localstorage
 		const flags = loadFlags()
 		if (flags) {
 			if (flags.editMode)
@@ -41,6 +43,10 @@ class App extends Component<PropsForComponent, StateForComponent> {
 			if (flags.deadlineView)
 				this.props.setDeadlineViewFlag(true)
 		}
+
+		// Load completed deadlines from localstorage
+		const completedDeadlines = loadCompletedDeadlines()
+		this.props.setCompletedDeadlines(completedDeadlines)
 	}
 
 	_updateSubjects = async (callback?: () => void) => {
@@ -106,7 +112,8 @@ export interface PropsForComponent {
 	app: IAppState,
 	enableEditMode: IEnableEditMode,
 	setExtendViewFlag: ISetExtendViewFlag,
-	setDeadlineViewFlag: ISetDeadlineViewFlag
+	setDeadlineViewFlag: ISetDeadlineViewFlag,
+	setCompletedDeadlines: ISetCompletedDeadlines
 }
 
 export interface StateForComponent {
@@ -121,10 +128,12 @@ const reduxSelect = (state: IReduxRootState) => {
 }
 
 const reduxDispatch = () => {
+	
 	return {
 		enableEditMode,
 		setExtendViewFlag,
-		setDeadlineViewFlag
+		setDeadlineViewFlag,
+		setCompletedDeadlines
 	}
 }
 

@@ -1,13 +1,22 @@
 import React, { PureComponent } from 'react'
 import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from '../../../../functions/date_calculations'
 import "./Deadline.css"
+import { connect } from 'react-redux'
+import { addCompleteDeadline, IAddCompleteDeadline, IRemoveCompleteDeadline, IResetAnimatedDeadline, removeCompleteDeadline, resetAnimatedDeadline } from '../../../../state/actions/deadlines';
+import { IReduxRootState } from '../../../../state/reducers';
+import { IDeadlineState } from '../../../../state/reducers/deadlines';
+import Checkmark from './Checkmark';
 
-export default class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
+class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
 		super(props);
 
+		const hash = this.props.id.toString()
+
 		this.state = {
+			hash: hash,
+			complete: this.props.deadlines.completed.find((currentHash) => currentHash === hash) != null,
 			countdown: {
 				months: 0,
 				weeks: 0,
@@ -16,12 +25,12 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 				minutes: 0,
 				seconds: 0
 			},
-			bar: {
+			bar: { // Progress bar values
 				max: 0,
 				value: 0
 			},
-			mounted: false,
-			interval: setInterval(() => {
+			mounted: false,	// Mounted is used to determine if it's ok to start updating the clock every second
+			interval: setInterval(() => { // Timer
 				if (this.state.mounted) {
 					let newState = { ...this.state }
 					newState.countdown = calcTimeLeft(this.props.deadline)
@@ -49,6 +58,27 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 		return !!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days
 	}
 
+	_toggleDone = () => {
+
+		if (this.state.complete) {
+			this.props.resetAnimatedDeadline(this.state.hash)
+			this.props.removeCompleteDeadline(this.state.hash)
+		}
+		else
+			this.props.addCompleteDeadline(this.state.hash)
+		let newState = { ...this.state }
+		newState.complete = !!!newState.complete
+		this.setState(newState)
+	}
+
+	unCompleteDeadline = () => {
+		this.props.removeCompleteDeadline(this.state.hash)
+		this.props.resetAnimatedDeadline(this.state.hash)
+		let newState = { ...this.state }
+		newState.complete = false
+		this.setState(newState)
+	}
+
 	render() {
 		
 		const deadlineReached = this.state.countdown.months === 0 &&
@@ -63,9 +93,21 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 				{this.props.displayText ? 
 					<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
 				: null}
-					<progress className="deadLineProgressBar" value={deadlineReached ? 1 : this.state.bar.value.toString()} max={deadlineReached ? 1 : this.state.bar.max.toString()} />
-					{deadlineReached ?
-						<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>Deadline reached!</p> :
+					<div className="deadlineProgressBarContainer">
+						<progress
+							className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
+							value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
+							max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
+							onClick={this._toggleDone}
+						/>
+						{this.state.complete ? 
+							<Checkmark hash={this.state.hash} unCompleteThisDeadline={this.unCompleteDeadline} /> : null}
+					</div>
+					{deadlineReached || this.state.complete ?
+						<>
+							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{this.state.complete ? "Task done!" : "Deadline reached!"}</p> 
+							<p className="countdownText transparent">-</p>
+						</>:
 						<>
 							{this.isEmptyFirstRow() ? null : <p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
 								${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
@@ -88,13 +130,20 @@ export default class DeadlineObject extends PureComponent<PropsForComponent, Sta
 }
 
 interface PropsForComponent {
+	id: string,
 	displayText?: string,
 	deadline: string,
 	start: string,
-	accent?: boolean
+	accent?: boolean,
+	deadlines: IDeadlineState,
+	addCompleteDeadline: IAddCompleteDeadline,
+	removeCompleteDeadline: IRemoveCompleteDeadline,
+	resetAnimatedDeadline: IResetAnimatedDeadline
 }
 
 interface StateForComponent {
+	hash: string,
+	complete: boolean,
 	countdown: {
 		months: number,
 		weeks: number,
@@ -110,3 +159,19 @@ interface StateForComponent {
 	interval?: NodeJS.Timeout,
 	mounted: boolean
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		deadlines: state.deadlines
+	}
+}
+
+const reduxDispatch = () => {
+	return {
+		addCompleteDeadline,
+		removeCompleteDeadline,
+		resetAnimatedDeadline
+	}
+}
+
+export default connect(reduxSelect, reduxDispatch())(DeadlineObject)

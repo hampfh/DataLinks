@@ -376,11 +376,12 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				type="Deadline"
 				parentId={parentId}
 				id={contentObject._id}
+				childId={contentObject.deadline._id}
 				contentObject={contentObject.deadline}
 				updateSubjects={this.props.updateSubjects}
 			/>
 		}
-			return null
+		return null
 	}
 
 	render() {

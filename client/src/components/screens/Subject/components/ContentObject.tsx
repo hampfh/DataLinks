@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ContentType } from '../../../../App'
 import Http from '../../../../functions/HttpRequest'
 import { IDeadline, ILink, IText } from '../../../templates/RenderData'
-import DeadlienObject from './DeadlineObject'
+import DeadlineObject from './DeadlineObject'
 import Moment from "moment"
 import "./ContentObject.css"
 import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from '../../../../state/actions/local'
@@ -156,7 +156,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 					</div>
 				)
 			} else // Render deadline object
-				return <DeadlienObject displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} accent={this.props.accent} />
+				return <DeadlineObject id={this.props.childId ?? this.props.id} displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} accent={this.props.accent} />
 		} else {
 			return (
 				<div className="ButtonWrapper ButtonWrapperEditMode" style={{
@@ -210,6 +210,7 @@ interface PropsForComponent {
 	type: ContentType,
 	parentId: string,
 	id: string,
+	childId?: string,
 	app: IAppState,
 	contentObject: IText | ILink | IDeadline,
 	noEditMode?: boolean,
