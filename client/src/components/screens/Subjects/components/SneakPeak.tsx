@@ -44,7 +44,7 @@ class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 			>
 				<div className="ContentContainer"
 					style={{
-						maxHeight: this.props.dimensions.content.height * 0.9,
+						maxHeight: this.props.dimensions.content.height - 50,
 					}}
 				>
 					<RenderData 
