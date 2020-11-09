@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
-import { IReduxRootState } from '../../../../state/reducers'
-import RenderData from '../../../templates/RenderData'
+import React, { Component } from "react"
+import { connect } from "react-redux"
+
+import { IReduxRootState } from "state/reducers"
+import RenderData from "components/templates/RenderData"
 import { SubjectData } from '../Subjects'
-import { connect } from 'react-redux'
 
 import "./SneakPeak.css"
-import { IAppState } from '../../../../state/reducers/app'
+import { IAppState } from "state/reducers/app"
 import { hideSneakPeak, IHideSneakPeak, ISetSneakPeakSelectionCount, IShowSneakPeak, setSneakPeakSelectionCount, showSneakPeak } from '../../../../state/actions/app'
-import { IDimensionState } from '../../../../state/reducers/dimensions'
+import { IDimensionState } from "state/reducers/dimensions"
 
 class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 

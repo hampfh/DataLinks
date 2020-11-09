@@ -1,18 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import "./components/Switch.css"
-import { Group } from "../../templates/RenderData"
-import isMobile from "../../../functions/isMobile"
-import { version } from "../../../../package.json"
-import { connect } from 'react-redux'
-import { IReduxRootState } from '../../../state/reducers'
-import { IAppState } from '../../../state/reducers/app'
-import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode, ISetDeadlineViewFlag, ISetExtendViewFlag, setDeadlineViewFlag, setExtendViewFlag } from '../../../state/actions/app'
-import SubjectSneakPeak from "../Subjects/components/SneakPeak"
-import DeadlineRenderer from '../../templates/DeadlineRenderer'
-import { IDimensionState } from '../../../state/reducers/dimensions'
-import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
+import { Group } from "components/templates/RenderData"
+import isMobile from "functions/isMobile"
+import { version } from "components/../../package.json"
+import { connect } from "react-redux"
+import { IReduxRootState } from "state/reducers"
+import { IAppState } from "state/reducers/app"
+import { 
+	disableEditModeFlag, 
+	enableEditMode, 
+	IDisableEditModeFlag, 
+	IEnableEditMode, 
+	ISetDeadlineViewFlag, 
+	ISetExtendViewFlag, 
+	setDeadlineViewFlag, 
+	setExtendViewFlag 
+} from "state/actions/app"
+import SubjectSneakPeak from "components/screens/Subjects/components/SneakPeak"
+import DeadlineRenderer from "components/templates/DeadlineRenderer"
+import { IDimensionState } from "state/reducers/dimensions"
+//import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
+import { ISetTransforms, setTransforms} from "state/actions/dimensions"
 
 const uiDistribution = {
 	dynamic: {

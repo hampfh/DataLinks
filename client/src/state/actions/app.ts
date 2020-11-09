@@ -1,4 +1,4 @@
-import { SubjectData } from "../../components/screens/Subjects/Subjects"
+import { SubjectData } from "components/screens/Subjects/Subjects"
 
 export const APP_FLAG_KEY = "flags"
 

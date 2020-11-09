@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Http from '../../../../functions/HttpRequest'
-import { ILink } from '../../../templates/RenderData'
+import Http from "functions/HttpRequest"
+import { ILink } from "components/templates/RenderData"
 
 export default class LinkObject extends Component<PropsForComponent, StateForComponent> {
 

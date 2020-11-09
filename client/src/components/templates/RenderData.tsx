@@ -14,20 +14,28 @@
  */
 
 import React, { Component } from 'react'
+import { connect } from "react-redux"
 import { v4 as uuid } from "uuid"
-import Http from '../../functions/HttpRequest'
-import ContentElement from '../screens/Subject/components/ContentObject'
-import { ContentType } from "../../App"
-import GroupForm from "./GroupForm"
 import Moment from "moment"
+
+import Http from "functions/HttpRequest"
+import ContentElement from "components/screens/Subject/components/ContentObject"
+import { ContentType } from "App"
+import GroupForm from "./GroupForm"
 import "./RenderData.css"
 import TemporaryFields from './TemporaryFields'
 import { StateForComponent as NewElement } from "./TemporaryFields"
-import { connect } from "react-redux"
-import { IReduxRootState } from '../../state/reducers'
-import { addLocal, deleteLocally, editLocal, IAddLocal, IDeleteLocally, IEditLocal } from '../../state/actions/local'
-import { ILocalState } from '../../state/reducers/local'
-import { IAppState } from '../../state/reducers/app'
+import { IReduxRootState } from "state/reducers"
+import { 
+	addLocal, 
+	deleteLocally, 
+	editLocal, 
+	IAddLocal, 
+	IDeleteLocally, 
+	IEditLocal 
+} from "state/actions/local"
+import { ILocalState } from "state/reducers/local"
+import { IAppState } from "state/reducers/app"
 
 class RenderData extends Component<PropsForComponent, StateForComponent> {
 

@@ -12,7 +12,7 @@ http({
 })
 */
 
-import queryString from 'querystring'
+import queryString from "querystring"
 
 export interface HttpReturnType {
     status: number,

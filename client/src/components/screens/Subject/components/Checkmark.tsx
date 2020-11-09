@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import "./Checkmark.css"
-import { connect } from 'react-redux'
-import { IReduxRootState } from '../../../../state/reducers'
-import { IDeadlineState } from '../../../../state/reducers/deadlines'
-import { hasAnimatedDeadline, IHasAnimatedDeadline, IResetAnimatedDeadline, resetAnimatedDeadline } from '../../../../state/actions/deadlines'
+import { connect } from "react-redux"
+import { IReduxRootState } from "state/reducers"
+import { IDeadlineState } from "state/reducers/deadlines"
+import { 
+	hasAnimatedDeadline, 
+	IHasAnimatedDeadline, 
+	IResetAnimatedDeadline, 
+	resetAnimatedDeadline 
+} from "state/actions/deadlines"
 
 class Checkmark extends Component<PropsForComponent, StateForComponent> {
 

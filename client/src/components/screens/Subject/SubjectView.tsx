@@ -1,15 +1,16 @@
 import React, { Component, createRef } from 'react'
-import "./SubjectView.css"
-import "../Subjects/components/Switch.css"
-import { SubjectData } from '../Subjects/Subjects'
-import RenderData from "../../templates/RenderData"
-import logoutIcon from "../../../assets/icons/close.svg"
+import { connect } from "react-redux"
 import { Redirect } from "react-router-dom"
-import isMobile from "../../../functions/isMobile"
-import { connect } from 'react-redux'
-import { IReduxRootState } from '../../../state/reducers'
-import { IAppState } from '../../../state/reducers/app'
-import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from '../../../state/actions/app'
+
+import "./SubjectView.css"
+import "components/screens/Subjects/components/Switch.css"
+import { SubjectData } from "../Subjects/Subjects"
+import RenderData from "components/templates/RenderData"
+import logoutIcon from "assets/icons/close.svg"
+import isMobile from "functions/isMobile"
+import { IReduxRootState } from "state/reducers"
+import { IAppState } from "state/reducers/app"
+import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from "state/actions/app"
 
 class SubjectView extends Component<PropsForComponent, StateForComponent> {
 

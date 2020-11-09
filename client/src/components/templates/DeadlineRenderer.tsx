@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import ContentObject from '../screens/Subject/components/ContentObject';
-import { SubjectData } from '../screens/Subjects/Subjects';
+import { connect } from 'react-redux'
+import Moment from "moment"
+
+import ContentObject from "components/screens/Subject/components/ContentObject"
+import { SubjectData } from "components/screens/Subjects/Subjects"
 import { Group, IDeadline } from './RenderData'
 import "./DeadlineRenderer.css"
-import Moment from "moment"
-import { connect } from 'react-redux'
-import { IReduxRootState } from '../../state/reducers';
-import { IDimensionState } from '../../state/reducers/dimensions';
+import { IReduxRootState } from "state/reducers"
+import { IDimensionState } from "state/reducers/dimensions"
 
 class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 

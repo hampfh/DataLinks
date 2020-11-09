@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Moment from "moment"
-import { ContentType } from '../../App'
+import { ContentType } from "App"
 
 export default class TemporaryFields extends Component<PropsForComponent, StateForComponent> {
 

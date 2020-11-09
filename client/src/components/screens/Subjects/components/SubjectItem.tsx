@@ -2,16 +2,23 @@ import React, { Component } from 'react'
 import "./SubjectItem.css"
 import "./Animation.css"
 import { SubjectData } from '../Subjects'
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom"
 
-import GROUP_ICON from "../../../../assets/icons/interfacePack/svg/group.svg"
-import CALCULATOR_ICON from "../../../../assets/icons/interfacePack/svg/calculator.svg"
-import DOCUMENT_ICON from "../../../../assets/icons/interfacePack/svg/document-3.svg"
-import COMPUTER_ICON from "../../../../assets/icons/interfacePack/svg/computer.svg"
-import { IReduxRootState } from '../../../../state/reducers'
+import GROUP_ICON from "assets/icons/interfacePack/svg/group.svg"
+import CALCULATOR_ICON from "assets/icons/interfacePack/svg/calculator.svg"
+import DOCUMENT_ICON from "assets/icons/interfacePack/svg/document-3.svg"
+import COMPUTER_ICON from "assets/icons/interfacePack/svg/computer.svg"
+import { IReduxRootState } from "state/reducers"
 import { connect } from "react-redux"
-import { IAppState } from '../../../../state/reducers/app'
-import { hideSneakPeak, IHideSneakPeak, ISetSneakPeakSelectionCount, IShowSneakPeak, setSneakPeakSelectionCount, showSneakPeak } from '../../../../state/actions/app'
+import { IAppState } from "state/reducers/app"
+import { 
+	hideSneakPeak, 
+	IHideSneakPeak, 
+	ISetSneakPeakSelectionCount, 
+	IShowSneakPeak, 
+	setSneakPeakSelectionCount, 
+	showSneakPeak 
+} from "state/actions/app"
 
 export class Subject extends Component<PropsForComponent, StateForComponent> {
 

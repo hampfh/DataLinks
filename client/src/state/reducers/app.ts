@@ -1,5 +1,5 @@
 import { ActionType } from ".";
-import { SubjectData } from "../../components/screens/Subjects/Subjects";
+import { SubjectData } from "components/screens/Subjects/Subjects";
 
 export interface IAppState {
 	sneakPeak?: SubjectData,

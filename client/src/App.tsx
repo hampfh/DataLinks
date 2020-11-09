@@ -1,17 +1,29 @@
-import React from 'react';
-import Subjects from "./components/screens/Subjects/Subjects"
-import './App.css';
+import React, { Component } from 'react';
+import Subjects from "components/screens/Subjects/Subjects"
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-import { Component } from 'react';
-import { SubjectData } from "./components/screens/Subjects/Subjects"
-import Http, { HttpReturnType } from "./functions/HttpRequest"
-import SubjectView from "./components/screens/Subject/SubjectView"
 import { v4 as uuid } from "uuid"
 import { connect } from 'react-redux';
-import { IReduxRootState } from './state/reducers';
-import { IAppState } from './state/reducers/app';
-import { enableEditMode, IEnableEditMode, ISetExtendViewFlag, ISetDeadlineViewFlag, loadFlags, setDeadlineViewFlag, setExtendViewFlag } from './state/actions/app'
-import { ISetCompletedDeadlines, loadCompletedDeadlines, setCompletedDeadlines } from './state/actions/deadlines';
+
+import './App.css';
+import { SubjectData } from "components/screens/Subjects/Subjects"
+import Http, { HttpReturnType } from "functions/HttpRequest"
+import SubjectView from "components/screens/Subject/SubjectView"
+import { IReduxRootState } from 'state/reducers';
+import { IAppState } from 'state/reducers/app';
+import { 
+	enableEditMode, 
+	IEnableEditMode, 
+	ISetExtendViewFlag, 
+	ISetDeadlineViewFlag, 
+	loadFlags, 
+	setDeadlineViewFlag, 
+	setExtendViewFlag 
+} from 'state/actions/app'
+import { 
+	ISetCompletedDeadlines, 
+	loadCompletedDeadlines, 
+	setCompletedDeadlines 
+} from 'state/actions/deadlines';
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 

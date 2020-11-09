@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux'
-import rootReducer from "./state/reducers"
+import React from "react"
+import ReactDOM from "react-dom"
+import { createStore } from "redux"
 import { Provider } from "react-redux"
+
+import App from "App";
+import * as serviceWorker from "./serviceWorker"
+import rootReducer from "state/reducers"
 
 let store
 declare global {interface Window {__REDUX_DEVTOOLS_EXTENSION__: any;}}

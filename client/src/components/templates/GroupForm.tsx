@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { IAppState } from '../../state/reducers/app'
 import { connect } from 'react-redux'
-import { IReduxRootState } from '../../state/reducers'
+import { IAppState } from "state/reducers/app"
+import { IReduxRootState } from "state/reducers"
 
 class GroupForm extends Component<PropsForComponent, StateForComponent> {
 

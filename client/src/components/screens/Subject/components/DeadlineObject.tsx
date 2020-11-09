@@ -1,11 +1,19 @@
 import React, { PureComponent } from 'react'
-import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from '../../../../functions/date_calculations'
-import "./Deadline.css"
 import { connect } from 'react-redux'
-import { addCompleteDeadline, IAddCompleteDeadline, IRemoveCompleteDeadline, IResetAnimatedDeadline, removeCompleteDeadline, resetAnimatedDeadline } from '../../../../state/actions/deadlines';
-import { IReduxRootState } from '../../../../state/reducers';
-import { IDeadlineState } from '../../../../state/reducers/deadlines';
-import Checkmark from './Checkmark';
+
+import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from "functions/date_calculations"
+import "./Deadline.css"
+import { 
+	addCompleteDeadline, 
+	IAddCompleteDeadline, 
+	IRemoveCompleteDeadline, 
+	IResetAnimatedDeadline, 
+	removeCompleteDeadline, 
+	resetAnimatedDeadline 
+} from "state/actions/deadlines"
+import { IReduxRootState } from "state/reducers"
+import { IDeadlineState } from "state/reducers/deadlines"
+import Checkmark from './Checkmark'
 
 class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 

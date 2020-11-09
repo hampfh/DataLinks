@@ -1,4 +1,4 @@
-import { IDimension, IDimensionState, DimensionTarget } from "../reducers/dimensions";
+import { IDimension, IDimensionState, DimensionTarget } from "state/reducers/dimensions";
 
 export interface ISetTransform { (target: DimensionTarget, transform: IDimension): void }
 export const setTransform = (target: DimensionTarget, transform: IDimension) => {

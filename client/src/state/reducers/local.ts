@@ -1,6 +1,6 @@
-import { ContentType } from '../../App';
-import { IEditLocalObject } from '../actions/local';
-import { ActionType } from './'
+import { ContentType } from "App"
+import { IEditLocalObject } from "state/actions/local"
+import { ActionType } from "./"
 
 export interface AddedElement {
 	parentId: string,

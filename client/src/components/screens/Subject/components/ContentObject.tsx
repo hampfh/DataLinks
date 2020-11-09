@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { ContentType } from '../../../../App'
-import Http from '../../../../functions/HttpRequest'
-import { IDeadline, ILink, IText } from '../../../templates/RenderData'
-import DeadlineObject from './DeadlineObject'
-import Moment from "moment"
-import "./ContentObject.css"
-import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from '../../../../state/actions/local'
 import { connect } from "react-redux"
-import { IReduxRootState } from '../../../../state/reducers'
-import { ILocalState, indexOfLocal } from '../../../../state/reducers/local'
-import { IAppState } from '../../../../state/reducers/app'
+import Moment from "moment"
+
+import { ContentType } from "App"
+import Http from "functions/HttpRequest"
+import { IDeadline, ILink, IText } from "components/templates/RenderData"
+import DeadlineObject from './DeadlineObject'
+import "./ContentObject.css"
+import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from "state/actions/local"
+import { IReduxRootState } from "state/reducers"
+import { ILocalState, indexOfLocal } from "state/reducers/local"
+import { IAppState } from "state/reducers/app"
 
 class ContentObject extends Component<PropsForComponent, StateForComponent> {
 
