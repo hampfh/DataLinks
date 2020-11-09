@@ -4,8 +4,11 @@ import { SubjectData } from '../screens/Subjects/Subjects';
 import { Group, IDeadline } from './RenderData'
 import "./DeadlineRenderer.css"
 import Moment from "moment"
+import { connect } from 'react-redux'
+import { IReduxRootState } from '../../state/reducers';
+import { IDimensionState } from '../../state/reducers/dimensions';
 
-export default class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
+class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
 		super(props)
@@ -71,7 +74,11 @@ export default class DeadlineRenderer extends Component<PropsForComponent, State
 		if (this.state.deadlines.length <= 0)
 			return null
 		return (
-			<div className="deadlineRendererContainer">
+			<div className="deadlineRendererContainer"
+				style={{
+					height: this.props.dimensions.content.height
+				}}
+			>
 				<h3 className="deadlineWrapperTitle">Deadlines</h3>
 				<div className="deadlineWrapper">
 					{this.state.deadlines.map((deadline) => <ContentObject
@@ -91,8 +98,17 @@ export default class DeadlineRenderer extends Component<PropsForComponent, State
 
 interface PropsForComponent {
 	subjects: SubjectData[],
+	dimensions: IDimensionState,
 }
 
 interface StateForComponent {
 	deadlines: IDeadline[]
 }
+
+const reduxSelect = (state: IReduxRootState) => {
+	return {
+		dimensions: state.dimensions
+	}
+}
+
+export default connect(reduxSelect)(DeadlineRenderer)

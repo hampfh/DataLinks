@@ -11,8 +11,75 @@ import { IAppState } from '../../../state/reducers/app'
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode, ISetDeadlineViewFlag, ISetExtendViewFlag, setDeadlineViewFlag, setExtendViewFlag } from '../../../state/actions/app'
 import SubjectSneakPeak from "../Subjects/components/SneakPeak"
 import DeadlineRenderer from '../../templates/DeadlineRenderer'
+import { IDimensionState } from '../../../state/reducers/dimensions'
+import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
+
+const uiDistribution = {
+	dynamic: {
+		SUBJECTS: 0.39,
+		CONTENT: 0.61,	
+	},
+	static: {
+		TOOLBAR: 90
+	}
+}
+
+const desktopWidth = 800
 
 export class Subjects extends Component<PropsForComponent> {
+
+	debouncer?: NodeJS.Timeout
+	toolBarRef: React.RefObject<HTMLDivElement>
+	constructor(props: PropsForComponent) {
+		super(props)
+
+		this.toolBarRef = React.createRef()
+	}
+
+	componentDidMount() {
+		window.addEventListener("resize", this._onResize)
+		this.performResize()
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("resize", this._onResize)
+		if (this.debouncer)
+			clearTimeout(this.debouncer)
+	}
+
+	_onResize = () => {
+		if (this.debouncer)
+			clearTimeout(this.debouncer)
+		this.debouncer = setTimeout(this.performResize, 500)
+	}
+
+	performResize = () => {
+		const windowHeightAfterStatic = window.innerHeight - uiDistribution.static.TOOLBAR
+
+		// Calculate and update dimensions
+		this.props.setTransforms({
+			window: {
+				width: window.innerWidth,
+				height: window.innerHeight
+			},
+			subjects: {
+				width: window.innerWidth,
+				height: window.innerWidth >= 400 ? 
+					windowHeightAfterStatic * uiDistribution.dynamic.SUBJECTS :
+					windowHeightAfterStatic * (uiDistribution.dynamic.SUBJECTS + uiDistribution.dynamic.SUBJECTS)
+			},
+			content: {
+				width: window.innerWidth,
+				height: window.innerWidth >= 700 ?
+					windowHeightAfterStatic * uiDistribution.dynamic.CONTENT :
+					0
+			},
+			toolbar: {
+				width: window.innerWidth,
+				height: uiDistribution.static.TOOLBAR
+			}
+		})
+	}
 
 	_onflick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.checked) 
@@ -31,7 +98,11 @@ export class Subjects extends Component<PropsForComponent> {
 	render() {
 		return (
 			<section className="Master">
-				<div className="Uppercontainer">
+				<div className="Uppercontainer" 
+					style={{
+						maxHeight: this.props.dimensions.subjects.height
+					}}
+				>
 					{this.props.app.flags.extendedView ? null : 
 						<div>
 							<h1 className="Title">D20 links</h1>
@@ -54,21 +125,24 @@ export class Subjects extends Component<PropsForComponent> {
 						}
 					</div>
 				</div>
-				<div className="SneakPeakContainer">
-					{this.props.app.sneakPeak == null || window.innerWidth < 750 || window.innerHeight < 600 || isMobile() ? null :
-						<SubjectSneakPeak
-							updateSubjects={this.props.updateSubjects}
-						/>
-					}
-				</div>
-				{this.props.app.flags.deadlineView && this.props.app.sneakPeakSelectionCount <= 0 ? 
+				{this.props.app.sneakPeak == null || this.props.dimensions.window.width < desktopWidth || this.props.dimensions.window.height < 600 || isMobile() ? null :
+					<SubjectSneakPeak
+						updateSubjects={this.props.updateSubjects}
+					/>
+				}
+				{this.props.app.flags.deadlineView && this.props.app.sneakPeakSelectionCount <= 0 && this.props.dimensions.window.width > desktopWidth ? 
 					<DeadlineRenderer
 						subjects={this.props.subjects}
 					/>: null
 				}
 
-				{isMobile() || window.innerHeight < 500 || window.innerWidth < 600 ? null : 
-					<div className="bottomContainer">
+				{isMobile() || this.props.dimensions.window.height < 500 || this.props.dimensions.window.width < desktopWidth ? null : 
+					<div className="bottomContainer"
+						ref={this.toolBarRef}
+						style={{
+							height: this.props.dimensions.toolbar.height
+						}}
+					>
 						<div className="extendModeContainer  toolbarItem">
 							<p>Content view</p>
 							<label className="switch">
@@ -109,16 +183,19 @@ export interface SubjectData {
 interface PropsForComponent {
 	subjects: SubjectData[],
 	app: IAppState,
+	dimensions: IDimensionState,
 	updateSubjects: () => void,
 	enableEditMode: IEnableEditMode,
 	disableEditModeFlag: IDisableEditModeFlag,
 	setExtendViewFlag: ISetExtendViewFlag,
-	setDeadlineViewFlag: ISetDeadlineViewFlag
+	setDeadlineViewFlag: ISetDeadlineViewFlag,
+	setTransforms: ISetTransforms
 }
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
-		app: state.app
+		app: state.app,
+		dimensions: state.dimensions
 	}
 }
 
@@ -127,7 +204,8 @@ const reduxDispatch = () => {
 		enableEditMode,
 		disableEditModeFlag,
 		setExtendViewFlag,
-		setDeadlineViewFlag
+		setDeadlineViewFlag,
+		setTransforms
 	}
 }
 

@@ -131,9 +131,9 @@ body {
 	bottom: 0rem;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 
-	padding: 1rem;
-	width: calc(100% - 2rem);
+	width: 100%;
 	z-index: 101;
 }
 

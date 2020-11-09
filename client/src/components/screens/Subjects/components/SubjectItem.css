@@ -18,8 +18,7 @@
 	height: min-content;
 	max-width: 6rem;
 	max-height: 120rem;
-	margin: 1rem 2rem;
-	margin-bottom: 0;
+	margin: 0 2rem;
 	border-radius: 1rem;
 	transition-duration: 0.15s;
 	transition-property: all;
@@ -63,13 +62,14 @@
 	user-select: none;
 	width: min-content;
 
-	margin: 0.9rem auto;
+	margin: auto;
+	margin-top: 0.9rem;
 	padding: 0.5rem 0rem;
 }
 .Header:hover {
 	cursor: pointer;
 	text-decoration: underline;
-}
+}.
 
 .expandable {
 	transition-duration: 1s;

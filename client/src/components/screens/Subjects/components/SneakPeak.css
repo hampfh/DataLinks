@@ -9,7 +9,6 @@
 .SneakPeakWrapper {
 	justify-self: center;
 	align-self: flex-start;
-	max-height: 20rem;
 
 	animation: SneakPeakSummon;
 	animation-duration: 0.25s;
@@ -17,9 +16,8 @@
 }
 
 .ContentContainer {
-	padding: 1rem;
+	padding: 0 15px;
 	width: 40rem;
-	max-height: 20rem;
 	background-color: var(--primary);
 	overflow-y: auto;
 

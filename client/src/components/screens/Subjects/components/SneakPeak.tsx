@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import "./SneakPeak.css"
 import { IAppState } from '../../../../state/reducers/app'
 import { hideSneakPeak, IHideSneakPeak, ISetSneakPeakSelectionCount, IShowSneakPeak, setSneakPeakSelectionCount, showSneakPeak } from '../../../../state/actions/app'
+import { IDimensionState } from '../../../../state/reducers/dimensions'
 
 class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 
@@ -36,14 +37,14 @@ class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 			<div 
 				className="SneakPeakWrapper" 
 				style={{
-					height: "50rem"
+					height: this.props.dimensions.content.height
 				}}
 				onMouseEnter={this._mouseEnter}
 				onMouseLeave={this._mouseLeave}
 			>
 				<div className="ContentContainer"
 					style={{
-						maxHeight: this.props.app.flags.extendedView ? "35rem" : "20rem",
+						maxHeight: this.props.dimensions.content.height * 0.9,
 					}}
 				>
 					<RenderData 
@@ -61,7 +62,8 @@ export interface PropsForComponent {
 	hideSneakPeak: IHideSneakPeak,
 	updateSubjects: () => void,
 	setSneakPeakSelectionCount: ISetSneakPeakSelectionCount,
-	app: IAppState
+	app: IAppState,
+	dimensions: IDimensionState
 }
 
 export interface StateForComponent {
@@ -70,7 +72,8 @@ export interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
-		app: state.app
+		app: state.app,
+		dimensions: state.dimensions
 	}
 }
 
