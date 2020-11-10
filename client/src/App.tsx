@@ -109,7 +109,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 						<Route>
 							<div className="404Container">
 								<h1>404</h1>
-								<h2>This page could not be found</h2>
+								<h2>Oups, page not found</h2>
 								<p>Return back to the <a href="/">home</a> page</p>
 							</div>
 						</Route> : null
