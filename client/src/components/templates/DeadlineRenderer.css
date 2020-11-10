@@ -1,4 +1,6 @@
 .deadlineRendererContainer {
+	overflow-y: auto;
+	overflow-x: hidden;
 	animation-name: fadeIn;
 	animation-duration: 0.5s;
 	display: grid;
