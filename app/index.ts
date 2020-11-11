@@ -4,7 +4,7 @@
 // const debug = require('debug')('quick-credit:server');
 import debug from "debug"
 import http from "http"
-import RealTime from "RealTime"
+import RealTime from "./RealTime"
 import app from "./app"
 
 import { connectDB } from "./models/index.model"

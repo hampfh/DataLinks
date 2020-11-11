@@ -22,20 +22,14 @@ export default class SocketManager extends Component<PropsForComponent, StateFor
 		socket.off(this.props.subscribeTo, this._onEvent)
 	}
 
-	_onEvent = () => {
-		if (this.state.multipleCallbacks) {
-			for (let i = 0; i < this.props.callback.length; i++) 
-				(this.props.callback as unknown as [() => void])[i]()
-		} else
-			this.props.callback()
-	}
+	_onEvent = (data: any) => this.props.callback(data)
 
 	render() { return null }
 }
 
 interface PropsForComponent {
 	subscribeTo: string,
-	callback: () => void | [() => void]
+	callback: (data: any) => void
 }
 
 interface StateForComponent {

@@ -73,7 +73,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	_onCreateElement = (parentId: string, type: "Deadline" | "Text" | "Link") => {
+	_onCreateElement = (parentId: string, type: "DEADLINE" | "TEXT" | "LINK") => {
 		let newState = { ...this.state }
 		newState.newElement = {
 			parentId,
@@ -159,7 +159,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			parentGroup: newElement.parentId ?? this.state.newElement?.parentId,
 			placement: 0
 		}
-		if (newElement.type === "Text") {
+		if (newElement.type === "TEXT") {
 			if (newElement.fieldOne.length !== 0)
 				appendObject.title = newElement.fieldOne
 
@@ -167,7 +167,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			if (newElement.fieldTwo.length === 0)
 				return
 			appendObject.text = newElement.fieldTwo
-		} else if (newElement.type === "Link") {
+		} else if (newElement.type === "LINK") {
 
 			// Do not allow empty displayName or link
 			if (newElement.fieldOne.length === 0 || newElement.fieldTwo.length === 0)
@@ -175,7 +175,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 
 			appendObject.displayText = newElement.fieldOne
 			appendObject.link = newElement.fieldTwo
-		} else if (newElement.type === "Deadline") {
+		} else if (newElement.type === "DEADLINE") {
 
 			// Do not allow empty date or wrong field
 			if (newElement.fieldTwo.length === 0 || !!!newElement.fieldTwoCorrect) 
@@ -187,11 +187,11 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		}
 
 		let urlSuffix: string = ""
-		if (newElement.type === "Text")
+		if (newElement.type === "TEXT")
 			urlSuffix = "/textcontent"
-		else if (newElement.type === "Link")
+		else if (newElement.type === "LINK")
 			urlSuffix = "/linkcontent"
-		else if (newElement.type === "Deadline")
+		else if (newElement.type === "DEADLINE")
 			urlSuffix = "/deadlinecontent"
 
 		// Remove the temporary element
@@ -199,23 +199,22 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		newState.newElement = undefined
 		this.setState(newState)
 
-		const response = await Http({
+		await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
 			data: appendObject
 		})
 
-
-		if (response.element._id != null) {
-			this.props.addLocal(
-				appendObject.parentGroup,
-				appendObject.title ?? appendObject.displayText ?? "",
-				appendObject.text ?? appendObject.link ?? appendObject.deadline ?? "",
-				newElement.type === "Deadline" ? Moment().toString() : "",
-				newElement.type,
-				response.element._id
-			)
-		}
+		//if (response.element._id != null) {
+		//	this.props.addLocal(
+		//		appendObject.parentGroup,
+		//		appendObject.title ?? appendObject.displayText ?? "",
+		//		appendObject.text ?? appendObject.link ?? appendObject.deadline ?? "",
+		//		newElement.type === "DEADLINE" ? Moment().toString() : "",
+		//		newElement.type,
+		//		response.element._id
+		//	)
+		//}
 
 	}
 
@@ -271,7 +270,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 							if (!!!shouldAdd)
 								return null
 							
-							if (object.type === "Group") {
+							if (object.type === "GROUP") {
 								const groupElement: ContentObject = {
 									_id: group._id,
 									group: {
@@ -286,14 +285,14 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 							}
 							else {
 								let contentObject: IText | ILink | IDeadline
-								if (object.type === "Text") {
+								if (object.type === "TEXT") {
 									contentObject = {
 										_id: object.id ?? "",
 										title: object.fieldOne,
 										text: object.fieldTwo
 									}
 								}
-								else if (object.type === "Link") {
+								else if (object.type === "LINK") {
 									contentObject = {
 										_id: object.id ?? "",
 										displayText: object.fieldOne,
@@ -332,9 +331,9 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 					{ // Control panel for group
 					this.props.app.flags.editMode ?
 						<>
-							<button onClick={() => this._onCreateElement(group._id, "Text")}>Add text</button>
-							<button onClick={() => this._onCreateElement(group._id, "Link")}>Add link</button>
-							<button onClick={() => this._onCreateElement(group._id, "Deadline")}>Add deadline</button>
+							<button onClick={() => this._onCreateElement(group._id, "TEXT")}>Add text</button>
+							<button onClick={() => this._onCreateElement(group._id, "LINK")}>Add link</button>
+							<button onClick={() => this._onCreateElement(group._id, "DEADLINE")}>Add deadline</button>
 							<GroupForm
 								key={uuid()}
 								forRoot={false}
@@ -361,7 +360,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			return (
 				<ContentElement
 					key={contentObject._id}
-					type="Link"
+					type="LINK"
 					parentId={parentId}
 					id={contentObject._id}
 					contentObject={contentObject.link}
@@ -372,7 +371,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		else if (contentObject.text !== undefined) {
 			return <ContentElement 
 				key={contentObject._id}
-				type="Text"
+				type="TEXT"
 				parentId={parentId}
 				id={contentObject._id}
 				contentObject={contentObject.text}
@@ -381,7 +380,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		} else if (contentObject.deadline?.deadline !== undefined) {
 			return <ContentElement 
 				key={contentObject._id}
-				type="Deadline"
+				type="DEADLINE"
 				parentId={parentId}
 				id={contentObject._id}
 				childId={contentObject.deadline._id}

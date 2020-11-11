@@ -38,7 +38,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 	_updateField = async (event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") => {
 		let newState = { ...this.state }
 
-		if (this.props.type === "Deadline" && fieldNum === "second" && !!!Moment(event.target.value).isValid()) {
+		if (this.props.type === "DEADLINE" && fieldNum === "second" && !!!Moment(event.target.value).isValid()) {
 			newState.fieldTwoIsCorrect = false;
 		} else {
 			newState.fieldTwoIsCorrect = true;
@@ -74,11 +74,11 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		}
 
 		let urlPathPrefix = ""
-		if (this.props.type === "Text") {
+		if (this.props.type === "TEXT") {
 			urlPathPrefix = "textcontent"
 			append.title = fieldOne.length <= 0 ? "-" : fieldOne
 			append.text = fieldTwo.length <= 0 ? "-" : fieldTwo
-		} else if (this.props.type === "Link") {
+		} else if (this.props.type === "LINK") {
 			urlPathPrefix = "linkcontent"
 			append.displayText = fieldOne.length <= 0 ? "-" : fieldOne
 			append.link = fieldTwo.length <= 0 ? "-" : fieldTwo
@@ -137,7 +137,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		}
 			
 		if (!!!this.props.app.flags.editMode || this.props.noEditMode) {
-			if (this.props.type === "Text") {
+			if (this.props.type === "TEXT") {
 				return (
 					<div className="textObjectWrapper">
 						{this.state.fieldOne === undefined ? null :
@@ -148,7 +148,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 						}
 					</div>
 				)
-			} else if (this.props.type === "Link") {
+			} else if (this.props.type === "LINK") {
 				return (
 					<div className="ButtonWrapper">
 						<a href={this.state.fieldTwo} className="Button">
@@ -161,10 +161,10 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		} else {
 			return (
 				<div className="ButtonWrapper ButtonWrapperEditMode" style={{
-					display: this.props.type === "Deadline" ? "grid" : "block"
+					display: this.props.type === "DEADLINE" ? "grid" : "block"
 				}}>
 					<div className="editModeField">
-						<label htmlFor="fieldOne" className="editLabel">{this.props.type === "Text" ? "Title" : this.props.type === "Link" ? "Display text" : "Deadline description"}</label>
+						<label htmlFor="fieldOne" className="editLabel">{this.props.type === "TEXT" ? "Title" : this.props.type === "LINK" ? "Display text" : "Deadline description"}</label>
 						<input className="editModeInputField" ref={this.newFieldOneRef} disabled={this.props.id.toString().length === 0}
 							name="fieldOne" value={this.state.fieldOne ?? ""}
 							onChange={(event) => this._updateField(event, "first")}
@@ -172,7 +172,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 					</div>
 
 					<div className="editModeField">
-						{this.props.type === "Deadline" ?
+						{this.props.type === "DEADLINE" ?
 							<p style={{
 								color: this.state.fieldTwoIsCorrect ? "transparent" : "#fff",
 								textDecoration: "underline",
@@ -181,11 +181,11 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 							}}>Deadline is not formatted correctly</p>
 							: null
 						}
-						<label htmlFor="fieldTwo" className="editLabel">{this.props.type === "Text" ? "Text" : this.props.type === "Link" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
+						<label htmlFor="fieldTwo" className="editLabel">{this.props.type === "TEXT" ? "Text" : this.props.type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
 						<input className="editModeInputField" ref={this.newFieldTwoRef} disabled={this.props.id.toString().length === 0}
 							name="fieldTwo" value={this.state.fieldTwo ?? ""}
 							onChange={(event) => this._updateField(event, "second")}
-							placeholder={this.props.type === "Deadline" ? "YYYY-MM-DD HH:mm" : ""}
+							placeholder={this.props.type === "DEADLINE" ? "YYYY-MM-DD HH:mm" : ""}
 						/>
 					</div>
 					<div className="buttonContainerEditMode">

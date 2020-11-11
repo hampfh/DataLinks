@@ -17,7 +17,7 @@ class RealTime {
 	}
 
 	subscribe = (event: string, callback: () => void) => {
-		this.attached && this.io.on(event, callback)
+		this.io.on(event, callback)
 	}
 	unsubscribe = (event: string, callback: () => void) => {
 		this.attached && this.io.off(event, callback)

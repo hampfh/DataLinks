@@ -1,22 +1,12 @@
 import express from "express"
 import { CrudController } from "./CrudController"
 import { createLink, createText, findGroupChildElementId, updateText, updateLink, createDeadline, updateDeadline } from "./schemas"
-import GroupModel, { IContent, IGroup } from "../models/group.model"
+import GroupModel, { IGroup } from "../models/group.model"
 import Mongoose from "mongoose"
 import Log from "./Log"
 import { ContentType, OperationType } from "../models/log.model"
-import GroupController from "./Group"
 import Moment from "moment"
-
-interface AppendObject {
-	_id: Mongoose.Types.ObjectId,
-	displayText?: string,
-	link?: string,
-	title?: string,
-	text?: string,
-	split?: string,
-	column?: string
-}
+import RealTime from "../RealTime"
 
 export default class ContentController extends CrudController {
 
@@ -51,6 +41,15 @@ export default class ContentController extends CrudController {
 			ContentType.LINK,
 			[req.body.displayText, req.body.link]
 		)
+
+		RealTime.emitToSockets("newElement", {
+			parent: req.body.parentGroup,
+			id: appendObject._id,
+			placement: req.body.placement ?? 0,
+			fieldOne: appendObject.link.displayText,
+			fieldTwo: appendObject.link.link,
+			type: ContentType.LINK
+		})
 
 		res.status(201).json({
 			message: "Successfully created link object",
@@ -91,6 +90,15 @@ export default class ContentController extends CrudController {
 			[req.body.title ?? "", req.body.text]
 		)
 
+		RealTime.emitToSockets("newElement", {
+			parent: req.body.parentGroup,
+			id: appendObject._id,
+			placement: req.body.placement ?? 0,
+			fieldOne: appendObject.text.title,
+			fieldTwo: appendObject.text.text,
+			type: ContentType.TEXT
+		})
+
 		res.status(201).json({
 			message: "Successfully created text object",
 			element: appendObject
@@ -130,6 +138,16 @@ export default class ContentController extends CrudController {
 			ContentType.DEADLINE,
 			[req.body.displayText ?? "", req.body.deadline, req.body.start]
 		)
+
+		RealTime.emitToSockets("newElement", {
+			parent: req.body.parentGroup,
+			id: appendObject._id,
+			placement: req.body.placement ?? 0,
+			fieldOne: appendObject.deadline.displayText,
+			fieldTwo: appendObject.deadline.deadline,
+			fieldThree: appendObject.deadline.start,
+			type: ContentType.DEADLINE
+		})
 
 		res.status(201).json({
 			message: "Successfully created deadline object",
@@ -175,9 +193,10 @@ export default class ContentController extends CrudController {
 		if (req.body.link === "-")
 			req.body.link = ""
 
+		let group
 		try {
 
-			const group = await GroupModel.findOne({
+			group = await GroupModel.findOne({
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
@@ -198,15 +217,6 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
-
-			// Notify logg			
-			Log(
-				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
-				OperationType.UPDATE,
-				ContentType.LINK,
-				[req.body.displayText, req.body.link],
-				[group.content[0].link?.displayText as string, group.content[0].link?.link as string]
-			);
 		} catch (error) {
 			console.warn(error)
 			res.json({
@@ -214,6 +224,23 @@ export default class ContentController extends CrudController {
 			})
 			return
 		}
+
+		// Notify logg			
+		Log(
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			OperationType.UPDATE,
+			ContentType.LINK,
+			[req.body.displayText, req.body.link],
+			[group.content[0].link?.displayText as string, group.content[0].link?.link as string]
+		);
+
+		RealTime.emitToSockets("updateElement", {
+			parent: req.body.parentGroup,
+			id: req.body.id,
+			fieldOne: req.body.displayText ?? group.content[0].link?.displayText,
+			fieldTwo: req.body.link ?? group.content[0].link?.link,
+			type: ContentType.LINK
+		})
 
 		res.json({
 			message: "Successfully updated field",
@@ -236,8 +263,9 @@ export default class ContentController extends CrudController {
 		if (req.body.text === "-")
 			req.body.text = ""
 		
+		let group
 		try {
-			const group = await GroupModel.findOne({
+			group = await GroupModel.findOne({
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
@@ -258,15 +286,6 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
-
-			// Notify logg			
-			Log(
-				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string, 
-				OperationType.UPDATE, 
-				ContentType.TEXT,
-				[req.body.title, req.body.text], 
-				[group.content[0].text?.title as string, group.content[0].text?.text as string]
-			);
 		} catch (error) {
 			console.warn(error)
 			res.json({
@@ -274,6 +293,23 @@ export default class ContentController extends CrudController {
 			})
 			return
 		}
+
+		// Notify logg			
+		Log(
+			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			OperationType.UPDATE,
+			ContentType.TEXT,
+			[req.body.title, req.body.text],
+			[group.content[0].text?.title as string, group.content[0].text?.text as string]
+		);
+
+		RealTime.emitToSockets("updateElement", {
+			parent: req.body.parentGroup,
+			id: req.body.id,
+			fieldOne: req.body.title ?? group.content[0].text?.title,
+			fieldTwo: req.body.text ?? group.content[0].text?.text,
+			type: ContentType.TEXT
+		})
 
 		res.json({
 			message: "Successfully updated field",
@@ -294,8 +330,9 @@ export default class ContentController extends CrudController {
 		if (req.body.displayText === "-" || req.body.displayText === undefined)
 			req.body.displayText = ""
 
+		let group
 		try {
-			const group = await GroupModel.findOne({
+			group = await GroupModel.findOne({
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
@@ -333,6 +370,15 @@ export default class ContentController extends CrudController {
 			})
 			return
 		}
+
+		RealTime.emitToSockets("updateElement", {
+			parent: req.body.parentGroup,
+			id: req.body.id,
+			fieldOne: req.body.displayText ?? group.content[0].deadline?.displayText,
+			fieldTwo: req.body.deadline ?? group.content[0].deadline?.deadline,
+			fieldThree: req.body.start ?? group.content[0].deadline?.start,
+			type: ContentType.DEADLINE
+		})
 
 		res.json({
 			message: "Successfully updated field",
@@ -408,6 +454,11 @@ export default class ContentController extends CrudController {
 			["", ""],
 			[fieldOne, fieldTwo]
 		);
+
+		RealTime.emitToSockets("deleteElement", {
+			parent: req.body.parentGroupId,
+			id: req.body.id
+		})
 
 		res.status(200).json({
 			message: "Successfully deleted item"

@@ -24,9 +24,10 @@ import {
 	loadCompletedDeadlines, 
 	setCompletedDeadlines 
 } from 'state/actions/deadlines';
-import Socket from "components/utilities/SocketManager"
+import { addLocal, deleteLocally, IAddLocal, IDeleteLocally } from 'state/actions/local';
+import Subscriptions from 'components/utilities/Subscriptions';
 
-export type ContentType = "Text" | "Link" | "Deadline" | "Group"
+export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
 
 class App extends Component<PropsForComponent, StateForComponent> {
 
@@ -91,9 +92,8 @@ class App extends Component<PropsForComponent, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Socket subscribeTo="subjectItem" callback={() => {
-							console.log("Change made")
-						}} />
+						<Subscriptions />
+						
 						<Subjects 
 							subjects={this.state.subjects} 
 							updateSubjects={this._updateSubjects}
@@ -102,6 +102,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 					{this.state.subjects.map((subject) => {
 						return (
 							<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
+								<Subscriptions />
 								<SubjectView
 									updateSubjects={this._updateSubjects}
 									subject={subject}
@@ -129,7 +130,9 @@ export interface PropsForComponent {
 	enableEditMode: IEnableEditMode,
 	setExtendViewFlag: ISetExtendViewFlag,
 	setDeadlineViewFlag: ISetDeadlineViewFlag,
-	setCompletedDeadlines: ISetCompletedDeadlines
+	setCompletedDeadlines: ISetCompletedDeadlines,
+	addLocal: IAddLocal,
+	deleteLocally: IDeleteLocally
 }
 
 export interface StateForComponent {
@@ -139,17 +142,19 @@ export interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
-		app: state.app
+		app: state.app,
+		local: state.local
 	}
 }
 
 const reduxDispatch = () => {
-	
 	return {
 		enableEditMode,
 		setExtendViewFlag,
 		setDeadlineViewFlag,
-		setCompletedDeadlines
+		setCompletedDeadlines,
+		addLocal,
+		deleteLocally
 	}
 }
 

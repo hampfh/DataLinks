@@ -23,7 +23,7 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 
 		const validDate = Moment(event.currentTarget.value).isValid()
 
-		if (newState.type === "Deadline" && field === "second" &&
+		if (newState.type === "DEADLINE" && field === "second" &&
 			validDate !== this.state.fieldTwoCorrect) {
 			// Invert field
 			newState.fieldTwoCorrect = validDate;
@@ -52,15 +52,15 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 		return (
 			<div className="tempNewFieldsWrapper">
 				<div className="tempNewFieldsContainer">
-					<label htmlFor="fieldOne">{this.state.type === "Text" ? "Title" : this.state.type === "Link" ? "Link" : "Text"}</label>
+					<label htmlFor="fieldOne">{this.state.type === "TEXT" ? "Title" : this.state.type === "LINK" ? "Link" : "Text"}</label>
 					<input
 						name="fieldOne"
-						placeholder={this.state.type === "Text" ? "New title" : "New display text"}
+						placeholder={this.state.type === "TEXT" ? "New title" : "New display text"}
 						onChange={(event) => this._checkTemporaryField(event, "first")}
 						value={this.state.fieldOne}
 					/>
 
-					{this.state.type === "Deadline" ?
+					{this.state.type === "DEADLINE" ?
 						<p style={{
 							color: this.state.fieldTwoCorrect ? "transparent" : "#fff",
 							textDecoration: "underline",
@@ -68,9 +68,9 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 						}}>Deadline is not formatted correctly</p>
 						: null
 					}
-					<label htmlFor="fieldTwo">{this.state.type === "Text" ? "Text" : this.state.type === "Link" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
+					<label htmlFor="fieldTwo">{this.state.type === "TEXT" ? "Text" : this.state.type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
 					<input
-						name="fieldTwo" placeholder={this.state.type === "Text" ? "New text" : this.state.type === "Link" ? "New link" : "YYYY-MM-DD HH:mm"}
+						name="fieldTwo" placeholder={this.state.type === "TEXT" ? "New text" : this.state.type === "LINK" ? "New link" : "YYYY-MM-DD HH:mm"}
 						onChange={(event) => this._checkTemporaryField(event, "second")}
 						value={this.state.fieldTwo}
 					/>

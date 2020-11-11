@@ -84,7 +84,7 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 				<div className="deadlineWrapper">
 					{this.state.deadlines.map((deadline) => <ContentObject
 						key={deadline._id + "_NOEDIT"}
-						type="Deadline"
+						type="DEADLINE"
 						parentId={"0"}
 						id={deadline._id}
 						contentObject={deadline}
