@@ -27,6 +27,7 @@
 	},
 	"dependencies": {
 		"@types/bcrypt": "^3.0.0",
+		"@types/socket.io": "^2.1.11",
 		"bcrypt": "^5.0.0",
 		"cookie-parser": "^1.4.5",
 		"debug": "^4.1.1",
@@ -35,6 +36,7 @@
 		"joi": "^17.2.1",
 		"moment": "^2.29.1",
 		"mongoose": "^5.10.7",
-		"morgan": "^1.10.0"
+		"morgan": "^1.10.0",
+		"socket.io": "^3.0.1"
 	}
 }

@@ -24,6 +24,7 @@ import {
 	loadCompletedDeadlines, 
 	setCompletedDeadlines 
 } from 'state/actions/deadlines';
+import Socket from "components/utilities/SocketManager"
 
 export type ContentType = "Text" | "Link" | "Deadline" | "Group"
 
@@ -90,6 +91,9 @@ class App extends Component<PropsForComponent, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
+						<Socket subscribeTo="subjectItem" callback={() => {
+							console.log("Change made")
+						}} />
 						<Subjects 
 							subjects={this.state.subjects} 
 							updateSubjects={this._updateSubjects}

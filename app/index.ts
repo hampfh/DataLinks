@@ -4,6 +4,7 @@
 // const debug = require('debug')('quick-credit:server');
 import debug from "debug"
 import http from "http"
+import RealTime from "RealTime"
 import app from "./app"
 
 import { connectDB } from "./models/index.model"
@@ -32,6 +33,7 @@ app.set("port", port)
  * Create HTTP server.
  */
 const server = http.createServer(app)
+RealTime.attach(server)
 /**
  * Event listener for HTTP server "error" event.
  */

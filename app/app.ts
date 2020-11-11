@@ -2,9 +2,8 @@ import logger from "morgan"
 import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
-import initialFile from "./assets/data.json"
-import fs from "fs"
 import apiRoute from "./routes/api"
+import RealTime from "RealTime"
 
 const app = express()
 
@@ -26,6 +25,9 @@ app.use(function (req: Request, res: Response, next: express.NextFunction) {
 })
 
 app.use("/api/v1", apiRoute)
+RealTime.subscribe("connection", () => {
+	console.log("New connection")
+})
 
 // Serve to react
 app.get("*", (req: express.Request, res: express.Response) => {
