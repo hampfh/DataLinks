@@ -26,6 +26,8 @@ import {
 } from 'state/actions/deadlines';
 import { addLocal, deleteLocally, IAddLocal, IDeleteLocally } from 'state/actions/local';
 import Subscriptions from 'components/utilities/Subscriptions';
+import { ContentObject } from 'components/templates/RenderData';
+import { updateElement } from 'functions/updateElement';
 
 export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
 
@@ -81,6 +83,12 @@ class App extends Component<PropsForComponent, StateForComponent> {
 				callback()
 		})
 	}
+
+	_updateRawElement = (newElement: ContentObject) => {
+		let newState = { ...this.state }
+		updateElement(newState.subjects, newElement)
+		this.setState(newState)
+	}
 	
 	render() {
 		if (this.state.subjects === undefined)
@@ -92,7 +100,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 						<Redirect to="/D20"/>
 					</Route>
 					<Route exact path="/D20">
-						<Subscriptions />
+						<Subscriptions updateRawData={this._updateRawElement} />
 						
 						<Subjects 
 							subjects={this.state.subjects} 
@@ -102,7 +110,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 					{this.state.subjects.map((subject) => {
 						return (
 							<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
-								<Subscriptions />
+								<Subscriptions updateRawData={this._updateRawElement} />
 								<SubjectView
 									updateSubjects={this._updateSubjects}
 									subject={subject}
