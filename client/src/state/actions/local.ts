@@ -25,8 +25,8 @@ export interface IEditLocalObject {
 	deadline?: string,
 	start?: string
 }
-export interface IEditLocal { (id: string, object: IEditLocalObject): void }
-export const editLocal = (id: string, object: IEditLocalObject) => {
+export interface IEditLocal { (id: string, object: Partial<IEditLocalObject>): void }
+export const editLocal = (id: string, object: Partial<IEditLocalObject>) => {
 	return {
 		type: 'EDIT_LOCAL',
 		payload: {

@@ -9,7 +9,7 @@ import DeadlineObject from './DeadlineObject'
 import "./ContentObject.css"
 import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from "state/actions/local"
 import { IReduxRootState } from "state/reducers"
-import { ILocalState, indexOfLocal } from "state/reducers/local"
+import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
 
 class ContentObject extends Component<PropsForComponent, StateForComponent> {
@@ -101,11 +101,13 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 				window.location.reload()
 		}
 
+		// Update is made with sockets, this code is redundant
+
 		// Check if local item
-		if (indexOfLocal(this.props.local, append.id) >= 0)
-			this.props.editLocal(append.id, append)
-		else if (this.props.updateSubjects)
-			this.props.updateSubjects()
+		//if (indexOfLocal(this.props.local, append.id) >= 0)
+		//	this.props.editLocal(append.id, append)
+		//else if (this.props.updateSubjects)
+		//	this.props.updateSubjects()
 	}
 
 	_delete = async () => {
@@ -124,7 +126,8 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 					window.location.reload()
 			}
 
-			this.props.deleteLocally(this.props.id)
+			// Deletion is made with sockets
+			//this.props.deleteLocally(this.props.id)
 		}
 	}
 

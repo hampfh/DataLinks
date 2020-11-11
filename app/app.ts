@@ -3,7 +3,6 @@ import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
 import apiRoute from "./routes/api"
-import RealTime from "./RealTime"
 
 const app = express()
 

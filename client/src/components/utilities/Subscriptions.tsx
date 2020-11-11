@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { addLocal, deleteLocally, IAddLocal, IDeleteLocally } from 'state/actions/local'
+import { addLocal, deleteLocally, editLocal, IAddLocal, IDeleteLocally, IEditLocal } from 'state/actions/local'
 import { IReduxRootState } from 'state/reducers'
 import { ILocalState } from 'state/reducers/local'
 import { connect } from "react-redux"
@@ -52,7 +52,20 @@ class Subscriptions extends Component<PropsForComponent> {
 							appendObject.deadline = deadlines
 						}
 
-						this.props.updateRawData(appendObject)
+						// Is the item local?
+						if (this.props.local.added.find((element) => element.id?.toString() === data.id.toString()) != null) {
+						
+							this.props.editLocal(data.id, {
+								id: data.id,
+								title: data.type as ContentType === "TEXT" ? data.fieldOne : undefined,
+								text: data.type as ContentType === "TEXT" ? data.fieldTwo : undefined,
+								displayText: data.type as ContentType === "LINK" || data.type as ContentType === "DEADLINE" ? data.fieldOne : undefined,
+								deadline: data.type as ContentType === "DEADLINE" ? data.fieldTwo : undefined,
+								link: data.type as ContentType === "LINK" ? data.fieldTwo : undefined,
+								start: data.type as ContentType === "DEADLINE" ? data.fieldThree : undefined
+							})
+						} else 
+							this.props.updateRawData(appendObject)
 					}} 
 				/>
 				<Socket subscribeTo="deleteElement" callback={(data: any) => {
@@ -70,6 +83,7 @@ export interface PropsForComponent {
 	local: ILocalState,
 	addLocal: IAddLocal,
 	deleteLocally: IDeleteLocally
+	editLocal: IEditLocal
 }
 
 const reduxSelect = (state: IReduxRootState) => {
@@ -81,7 +95,8 @@ const reduxSelect = (state: IReduxRootState) => {
 const reduxDispatch = () => {
 	return {
 		addLocal,
-		deleteLocally
+		deleteLocally,
+		editLocal
 	}
 }
 
