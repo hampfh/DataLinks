@@ -1,5 +1,5 @@
 {
-	"name": "sitelinks-server",
+	"name": "datalinks-server",
 	"version": "1.7.0",
 	"private": true,
 	"scripts": {
@@ -10,13 +10,13 @@
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Hampfh/subjects.git"
+		"url": "git+https://github.com/Hampfh/DataLinks.git"
 	},
 	"author": "Hampus Hallkvist",
 	"bugs": {
-		"url": "https://github.com/Hampfh/subjects/issues"
+		"url": "https://github.com/Hampfh/DataLinks/issues"
 	},
-	"homepage": "https://github.com/Hampfh/subjects#readme",
+	"homepage": "https://github.com/Hampfh/DataLinks#readme",
 	"devDependencies": {
 		"@types/cookie-parser": "^1.4.2",
 		"@types/debug": "^4.1.5",
