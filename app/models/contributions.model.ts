@@ -5,14 +5,18 @@ export interface IDB_Contributor {
 	_id: string,
 	name?: string,
 	contributions: {
-		creates: number,
-		updates: number,
-		deletes: number,
-		links: number,			// Amount of links either created, deleted or updated
-		texts: number,			// Amount of texts either created, deleted or updated
-		deadlines: number,		// Amount of deadlines either created, deleted or updated
-		groups: number,			// Amount of groups either created, deleted or updated
-		subjects: number		// Amount of subjects either created, deleted or updated
+		operations: {
+			creates: number,
+			updates: number,
+			deletes: number,
+		}, 
+		targets: {
+			links: number,			// Amount of links either created, deleted or updated
+			texts: number,			// Amount of texts either created, deleted or updated
+			deadlines: number,		// Amount of deadlines either created, deleted or updated
+			groups: number,			// Amount of groups either created, deleted or updated
+			subjects: number		// Amount of subjects either created, deleted or updated
+		}
 	},
 	identifier: string,
 	createdAt?: string,
@@ -20,7 +24,7 @@ export interface IDB_Contributor {
 	__v?: string
 }
 
-export const ContributionSchema = new Schema({
+export const OperationSchema = new Schema({
 	creates: {
 		type: Number,
 		required: true
@@ -33,6 +37,11 @@ export const ContributionSchema = new Schema({
 		type: Number,
 		required: true
 	},
+}, {
+	_id: false
+})
+
+export const TargetSchema = new Schema({
 	links: {
 		type: Number,
 		required: true
@@ -41,8 +50,29 @@ export const ContributionSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	deadliens: {
+	deadlines: {
 		type: Number,
+		required: true
+	},
+	groups: {
+		type: Number,
+		required: true
+	},
+	subjects: {
+		type: Number,
+		required: true
+	}
+}, {
+	_id: false
+})
+
+export const ContributionSchema = new Schema({
+	operations: {
+		type: OperationSchema,
+		required: true
+	},
+	targets: {
+		type: TargetSchema,
 		required: true
 	}
 }, {
@@ -66,4 +96,4 @@ export const ContributorSchema = new Schema({
 	timestamps: true
 })
 
-export default database.model("contributor", ContributionSchema)
+export default database.model("contributor", ContributorSchema)

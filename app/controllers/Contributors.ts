@@ -21,6 +21,7 @@ export default class Contributors {
 
 		// Generate ip hash
 		const ipHash = Crypto.createHash("sha512").update(ip, "utf8").digest("hex")
+		console.log("Hash", ip, ipHash)
 
 		const response = await Contributions.findOne({
 			identifier: ipHash
@@ -28,7 +29,7 @@ export default class Contributors {
 
 		// Contributor doesn't exist, create new one
 		if (response == null) {
-			await this.createNewContributor(ipHash, req.body.name)
+			await Contributors.createNewContributor(ipHash, req.body.name)
 			res.json({
 				message: `New contributor added with name ${req.body.name}`
 			})
@@ -52,37 +53,37 @@ export default class Contributors {
 
 		// This machine doesn't exist, create new
 		if (response == null) {
-			await this.createNewContributor(ipHash, null, operation, type)
+			await Contributors.createNewContributor(ipHash, null, operation, type)
 			return
 		}
 
 		switch (operation) {
 			case "CREATE":
-				response.contributions.creates++
+				response.contributions.operations.creates++
 				break
 			case "UPDATE":
-				response.contributions.updates++
+				response.contributions.operations.updates++
 				break
 			case "DELETE":
-				response.contributions.deletes++
+				response.contributions.operations.deletes++
 				break
 		}
 
 		switch (type) {
 			case "GROUP":
-				response.contributions.groups++
+				response.contributions.targets.groups++
 				break
 			case "TEXT":
-				response.contributions.texts++
+				response.contributions.targets.texts++
 				break
 			case "LINK":
-				response.contributions.links++
+				response.contributions.targets.links++
 				break
 			case "DEADLINE":
-				response.contributions.deadlines++
+				response.contributions.targets.deadlines++
 				break
 			case "SUBJECT":
-				response.contributions.subjects++
+				response.contributions.targets.subjects++
 				break
 		}
 
@@ -98,18 +99,22 @@ export default class Contributors {
 		})
 	}
 
-	private async createNewContributor(ipHash: string, name: string | null, operation?: OperationType, type?: ContentType) {
+	private static async createNewContributor(ipHash: string, name: string | null, operation?: OperationType, type?: ContentType) {
 		const newContributor = new Contributions({
 			name,
 			contributions: {
-				creates: operation === "CREATE" ? 1 : 0,
-				updates: operation === "UPDATE" ? 1 : 0,
-				deletes: operation === "UPDATE" ? 1 : 0,
-				links: type === "LINK" ? 1 : 0,
-				texts: type === "TEXT" ? 1 : 0,
-				deadlines: type === "DEADLINE" ? 1 : 0,
-				groups: type === "GROUP" ? 1 : 0,
-				subjects: type === "SUBJECT" ? 1 : 0
+				operations: {
+					creates: operation === "CREATE" ? 1 : 0,
+					updates: operation === "UPDATE" ? 1 : 0,
+					deletes: operation === "DELETE" ? 1 : 0,
+				},
+				targets: {
+					links: type === "LINK" ? 1 : 0,
+					texts: type === "TEXT" ? 1 : 0,
+					deadlines: type === "DEADLINE" ? 1 : 0,
+					groups: type === "GROUP" ? 1 : 0,
+					subjects: type === "SUBJECT" ? 1 : 0
+				}
 			},
 			identifier: ipHash
 		} as IDB_Contributor)
