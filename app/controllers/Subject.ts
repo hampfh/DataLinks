@@ -48,7 +48,7 @@ export default class SubjectController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.CREATE,
 			ContentType.SUBJECT,
 			[newSubject._id, newSubject.name, newSubject.description],
@@ -144,7 +144,7 @@ export default class SubjectController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.DELETE,
 			ContentType.SUBJECT,
 			["", "", ""],

@@ -36,7 +36,7 @@ export default class ContentController extends CrudController {
 		})
 
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.CREATE,
 			ContentType.LINK,
 			[req.body.displayText, req.body.link]
@@ -84,7 +84,7 @@ export default class ContentController extends CrudController {
 		})
 
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.CREATE,
 			ContentType.TEXT,
 			[req.body.title ?? "", req.body.text]
@@ -133,7 +133,7 @@ export default class ContentController extends CrudController {
 		})
 
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.CREATE,
 			ContentType.DEADLINE,
 			[req.body.displayText ?? "", req.body.deadline, req.body.start]
@@ -227,7 +227,7 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.UPDATE,
 			ContentType.LINK,
 			[req.body.displayText, req.body.link],
@@ -296,7 +296,7 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.UPDATE,
 			ContentType.TEXT,
 			[req.body.title, req.body.text],
@@ -357,7 +357,7 @@ export default class ContentController extends CrudController {
 
 			// Notify logg			
 			Log(
-				req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+				req.body.fingerprint,
 				OperationType.UPDATE,
 				ContentType.TEXT,
 				[req.body.displayText, req.body.deadline],
@@ -448,7 +448,7 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.DELETE,
 			type,
 			["", ""],

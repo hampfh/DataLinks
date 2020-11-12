@@ -62,7 +62,7 @@ export default class GroupController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.CREATE,
 			ContentType.GROUP,
 			[""],
@@ -130,7 +130,7 @@ export default class GroupController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.UPDATE,
 			ContentType.GROUP,
 			[""],
@@ -159,7 +159,7 @@ export default class GroupController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string,
+			req.body.fingerprint,
 			OperationType.DELETE,
 			ContentType.GROUP,
 			[""],

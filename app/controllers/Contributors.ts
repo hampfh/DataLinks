@@ -17,18 +17,13 @@ export default class Contributors {
 			return
 		}
 
-		const ip = req.headers['x-forwarded-for'] as string || req.connection.remoteAddress as string
-
-		// Generate ip hash
-		const ipHash = Crypto.createHash("sha512").update(ip, "utf8").digest("hex")
-
 		const response = await Contributions.findOne({
-			identifier: ipHash
+			identifier: req.body.fingerprint
 		}) as Document & IDB_Contributor
 
 		// Contributor doesn't exist, create new one
 		if (response == null) {
-			await Contributors.createNewContributor(ipHash, req.body.name)
+			await Contributors.createNewContributor(req.body.fingerprint, req.body.name)
 			res.json({
 				message: `New contributor added with name ${req.body.name}`
 			})

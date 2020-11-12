@@ -1,8 +1,7 @@
 import Log, { ContentType, OperationType } from "../models/log.model"
-import Crypto from "crypto"
 import { Contributors } from "./";
 
-const log = async (ip: string, operation: OperationType, type: ContentType, to: string[], from?: string[]) => {
+const log = async (fingerprint: string, operation: OperationType, type: ContentType, to: string[], from?: string[]) => {
 
 	if (from !== undefined) {
 		// Delete all things that hasn't changed
@@ -18,11 +17,8 @@ const log = async (ip: string, operation: OperationType, type: ContentType, to: 
 		}
 	}
 
-	// Generate ip hash
-	const ipHash = Crypto.createHash("sha512").update(ip, "utf8").digest("hex")
-
 	const newLog = new Log({
-		user: ipHash,
+		user: fingerprint,
 		operation,
 		to,
 		type,
@@ -32,7 +28,7 @@ const log = async (ip: string, operation: OperationType, type: ContentType, to: 
 	await newLog.save()
 
 	await Contributors.contribute(
-		ipHash, 
+		fingerprint, 
 		operation, 
 		type
 	)
