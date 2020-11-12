@@ -8,7 +8,7 @@ export function connectDB(): Promise<void> {
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise<void>(async (resolve, reject) => {
 
-		mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=datasektionen`, {
+		mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=${process.env.DB_AUTHSOURCE}`, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			useFindAndModify: false,
