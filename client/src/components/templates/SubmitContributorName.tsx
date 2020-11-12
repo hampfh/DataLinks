@@ -44,7 +44,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 				<div className="contributorContentContainer">
 					<h3>Contributor</h3>
 					<p>Hi! Thank you for contributing to DataLinks. As a contributor, all your changes are associated with you and for each edit you increase your contribution score. Enter your preferred display name as a contributor (leave empty for anonymous)</p>
-					<p>Note that a contributor is related to the device, if you change device you're considered another contributor</p>
+					<p>Note that a contributor is related to the browser, if you change device and/or browser you're considered another contributor</p>
 					<div className="contributorInteractive">
 						<input onChange={this.inputChange} placeholder="Display name" />
 						<button onClick={this.submitName}>Submit name</button>
