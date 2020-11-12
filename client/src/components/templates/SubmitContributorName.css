@@ -1,0 +1,32 @@
+@import "../root.css";
+
+.contributorOverlayWrapper {
+	width: 100vw;
+	height: 90vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.contributorContentContainer {
+	max-width: 50rem;
+	background-color: var(--dark);
+	padding: 2rem;
+	display: grid;
+	justify-content: center;
+}
+
+.contributorContentContainer h3,
+.contributorContentContainer p {
+	color: white;
+	text-align: center;
+}
+.contributorContentContainer p {
+	width: 30rem;
+	text-align: left;
+}
+
+.contributorInteractive {
+	display: flex;
+	justify-content: center;
+}

@@ -93,7 +93,10 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 		const response = await Http({
 			url: `/api/v1/group/${urlPathPrefix}`,
 			method: "PATCH",
-			data: append
+			data: {
+				...append,
+				fingerprint: this.props.app.fingerprint
+			}
 		})
 
 		if (response.status !== 200) {
@@ -117,7 +120,8 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 				method: "DELETE",
 				data: {
 					parentGroupId: this.props.parentId,
-					id: this.props.id
+					id: this.props.id,
+					fingerprint: this.props.app.fingerprint
 				}
 			})
 

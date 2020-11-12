@@ -17,7 +17,12 @@ import {
 	ISetDeadlineViewFlag, 
 	loadFlags, 
 	setDeadlineViewFlag, 
-	setExtendViewFlag 
+	setExtendViewFlag, 
+	setContributor,
+	ISetContributor,
+	APP_CONTRIBUTOR_KEY,
+	setFingerPrint,
+	ISetFingerPrint
 } from 'state/actions/app'
 import { 
 	ISetCompletedDeadlines, 
@@ -28,6 +33,8 @@ import { addLocal, deleteLocally, IAddLocal, IDeleteLocally } from 'state/action
 import Subscriptions from 'components/utilities/Subscriptions';
 import { ContentObject } from 'components/templates/RenderData';
 import { updateElement } from 'functions/updateElement';
+import SubmitContributorName from 'components/templates/SubmitContributorName';
+import FingerPrint from '@fingerprintjs/fingerprintjs'
 
 export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
 
@@ -37,7 +44,8 @@ class App extends Component<PropsForComponent, StateForComponent> {
 		super(props)
 		this.state = {
 			subjects: [],
-			hasLoaded: false
+			hasLoaded: false,
+			showContributorOverlay: false
 		}
 	}
 
@@ -63,15 +71,40 @@ class App extends Component<PropsForComponent, StateForComponent> {
 		// Load completed deadlines from localstorage
 		const completedDeadlines = loadCompletedDeadlines()
 		this.props.setCompletedDeadlines(completedDeadlines)
+
+		// Load contributor (if it's set)
+		const contributor = localStorage.getItem(APP_CONTRIBUTOR_KEY)
+		if (contributor != null) {
+			this.props.setContributor(contributor)
+		}
+
+		// Initialize fingerprint
+		(async () => {
+			const fp =  await FingerPrint.load();
+			const result = await fp.get()
+			this.props.setFingerPrint(result.visitorId)
+		})();
+	}
+
+	componentDidUpdate() {
+		if (this.props.app.flags.editMode && 
+			localStorage.getItem(APP_CONTRIBUTOR_KEY) == null
+			&& !!!this.state.showContributorOverlay
+		) {
+			this.toggleContributionForm(true)
+		}
+	}
+
+	toggleContributionForm = (state: boolean) => {
+		let newState = { ...this.state }
+		newState.showContributorOverlay = state
+		this.setState(newState)
 	}
 
 	_updateSubjects = async (callback?: () => void) => {
 		const response = (await Http({
 			url: "/api/v1/subject",
 			method: "GET",
-			body: {
-
-			}
 		})) as HttpReturnType & {
 			result: Array<SubjectData>
 		}
@@ -91,6 +124,9 @@ class App extends Component<PropsForComponent, StateForComponent> {
 	}
 	
 	render() {
+		// Render contribution form if contributor isn't set
+		if (this.state.showContributorOverlay)
+			return <SubmitContributorName toggleView={this.toggleContributionForm} />
 		if (this.state.subjects === undefined)
 			return null
 		return (
@@ -140,12 +176,15 @@ export interface PropsForComponent {
 	setDeadlineViewFlag: ISetDeadlineViewFlag,
 	setCompletedDeadlines: ISetCompletedDeadlines,
 	addLocal: IAddLocal,
-	deleteLocally: IDeleteLocally
+	deleteLocally: IDeleteLocally,
+	setContributor: ISetContributor,
+	setFingerPrint: ISetFingerPrint
 }
 
 export interface StateForComponent {
 	subjects: SubjectData[],
-	hasLoaded: boolean
+	hasLoaded: boolean,
+	showContributorOverlay: boolean
 }
 
 const reduxSelect = (state: IReduxRootState) => {
@@ -162,7 +201,9 @@ const reduxDispatch = () => {
 		setDeadlineViewFlag,
 		setCompletedDeadlines,
 		addLocal,
-		deleteLocally
+		deleteLocally,
+		setContributor,
+		setFingerPrint
 	}
 }
 

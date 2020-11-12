@@ -1,6 +1,7 @@
 import { SubjectData } from "components/screens/Subjects/Subjects"
 
 export const APP_FLAG_KEY = "flags"
+export const APP_CONTRIBUTOR_KEY = "contributor"
 
 export interface IFlagInterface {
 	editMode: boolean,
@@ -136,6 +137,28 @@ export const setSneakPeakSelectionCount = (count: number) => {
 	}
 }
 
+// Same as setContributor but also saves localstorage
+export interface IAddContributor { (name: string): void }
+export const addContributor = (name: string) => {
+	localStorage.setItem(APP_CONTRIBUTOR_KEY, name)
+	return {
+		type: "SET_CONTRIBUTOR",
+		payload: {
+			name
+		}
+	}
+}
+
+export interface ISetContributor { (name: string): void }
+export const setContributor = (name: string) => {
+	return {
+		type: "SET_CONTRIBUTOR",
+		payload: {
+			name
+		}
+	}
+}
+
 export interface ISetExtendViewFlag { (enableExtend: boolean): void }
 export const setExtendViewFlag = (enableExtend: boolean) => {
 	saveFlags("extendedView", enableExtend)
@@ -154,6 +177,16 @@ export const setDeadlineViewFlag = (deadlineViewMode: boolean) => {
 		type: "SET_DEADLINE_VIEW_FLAG",
 		payload: {
 			mode: deadlineViewMode
+		}
+	}
+}
+
+export interface ISetFingerPrint { (fingerprint: string): void }
+export const setFingerPrint = (fingerprint: string) => {
+	return {
+		type: "SET_FINGERPRINT",
+		payload: {
+			fingerprint
 		}
 	}
 }

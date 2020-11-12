@@ -4,6 +4,8 @@ import { SubjectData } from "components/screens/Subjects/Subjects";
 export interface IAppState {
 	sneakPeak?: SubjectData,
 	sneakPeakSelectionCount: number,
+	contributor?: string,
+	fingerprint?: string,
 	flags: {
 		editMode: boolean,
 		extendedView: boolean,
@@ -45,11 +47,17 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 				newState.sneakPeakSelectionCount = 0
 			}
 			return newState
+		case 'SET_CONTRIBUTOR':
+			newState.contributor = action.payload.name
+			return newState
 		case 'SET_EXTEND_VIEW_FLAG':
 			newState.flags.extendedView = action.payload.mode
 			return newState
 		case 'SET_DEADLINE_VIEW_FLAG':
 			newState.flags.deadlineView = action.payload.mode
+			return newState
+		case 'SET_FINGERPRINT':
+			newState.fingerprint = action.payload.fingerprint
 			return newState
 		default:
 			return newState

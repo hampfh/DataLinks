@@ -56,7 +56,8 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			url: "/api/v1/group",
 			method: "DELETE",
 			data: {
-				id
+				id,
+				fingerprint: this.props.app.fingerprint
 			}
 		})
 
@@ -103,7 +104,10 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		await Http({
 			url: "/api/v1/group",
 			method: "PATCH",
-			data: updateObject
+			data: {
+				...updateObject,
+				fingerprint: this.props.app.fingerprint
+			}
 		})
 
 		window.location.reload()
@@ -138,7 +142,10 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		await Http({
 			url: "/api/v1/group",
 			method: "POST",
-			data: submitObject
+			data: {
+				...submitObject,
+				fingerprint: this.props.app.fingerprint
+			}
 		})
 		window.location.reload()
 	}
@@ -202,7 +209,10 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
-			data: appendObject
+			data: {
+				...appendObject,
+				fingerprint: this.props.app.fingerprint
+			}
 		})
 
 		//if (response.element._id != null) {
