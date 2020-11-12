@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import socketIo from "socket.io-client"
-const socket = socketIo()
+const socket = process.env.NODE_ENV === "production" ?
+	socketIo(process.env.REMOTE_IP + ":" + process.env.REMOTE_PORT) :
+	socketIo()
 
 export const socketEmit = (key: string, data: any) => socket.emit(key, data)
 
