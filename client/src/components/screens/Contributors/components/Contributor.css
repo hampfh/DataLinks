@@ -24,3 +24,10 @@
 h3.date {
 	font-style: normal;
 }
+
+/* Light theme colors */
+@media (prefers-color-scheme: light) {
+	.contributor {
+		border-bottom-color: var(--primary);
+	}
+}

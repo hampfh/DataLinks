@@ -20,3 +20,10 @@ h1 {
 .contributorList {
 	margin: 2rem;
 }
+
+/* Light theme colors */
+@media (prefers-color-scheme: light) {
+	h1, h2, h3, p {
+		color: var(--primary);
+	}
+}

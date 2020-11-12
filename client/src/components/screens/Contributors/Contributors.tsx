@@ -35,7 +35,7 @@ export default class Contributors extends Component<{}, StateForComponent> {
 							<h3 className="score">Contributions</h3>
 							<h3 className="date">Last edit</h3>
 						</div>
-						{this.state.contributors.map((contributor) => <Contributor key={contributor.identifier} contributor={contributor} />)}
+						{this.state.contributors.map((contributor, index) => <Contributor key={contributor.identifier} place={index + 1} contributor={contributor} />)}
 					</section>
 				</div>
 			</section>
