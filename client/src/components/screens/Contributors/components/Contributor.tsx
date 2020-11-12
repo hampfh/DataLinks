@@ -19,7 +19,7 @@ export default class Contributor extends Component<PropsForComponent> {
 	render() {
 		return (
 			<div className="contributor">
-				<p className="name">{this.props.place}. <span>{this.props.contributor.name}</span></p>
+				<p className="name">{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span></p>
 				<p className="score">{this.props.contributor.contributionCount} edits</p>
 				<p className="date">{this.displayDate()}</p>
 			</div>
@@ -28,7 +28,7 @@ export default class Contributor extends Component<PropsForComponent> {
 }
 
 export interface IContributor {
-	name: string,
+	name?: string,
 	contributionCount: number,
 	identifier: string,
 	updatedAt: string
