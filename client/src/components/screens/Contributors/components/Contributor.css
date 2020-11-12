@@ -5,6 +5,13 @@
 
 	display: grid;
 	grid-template-columns: 1fr 0.5fr 1fr;
+
+	animation-name: fadeIn;
+	animation-duration: 1s;
+}
+
+.hidden {
+	display: none;
 }
 
 .contributor:nth-child(1),
@@ -29,5 +36,14 @@ h3.date {
 @media (prefers-color-scheme: light) {
 	.contributor {
 		border-bottom-color: var(--primary);
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }
