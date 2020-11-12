@@ -1,0 +1,22 @@
+h1, h2, h3, p {
+	color: white;
+}
+
+h1 {
+	text-align: center;
+}
+
+.contributorsWrapper {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.contributorsContainer {
+	width: 35rem;
+}
+
+.contributorList {
+	margin: 2rem;
+}

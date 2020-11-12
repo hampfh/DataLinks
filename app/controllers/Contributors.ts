@@ -44,7 +44,9 @@ export default class Contributors {
 			{
 				'$project': {
 					'name': 1,
-					'contributions': 1
+					'contributions': 1,
+					'updatedAt': 1,
+					'identifier': 1
 				}
 			}, {
 				'$addFields': {
@@ -58,7 +60,9 @@ export default class Contributors {
 				'$project': {
 					'_id': 0,
 					'name': 1,
-					'contributionCount': 1
+					'contributionCount': 1,
+					'updatedAt': 1,
+					'identifier': 1
 				}
 			},{
 				'$sort': {

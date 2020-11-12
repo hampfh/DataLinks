@@ -35,6 +35,7 @@ import { ContentObject } from 'components/templates/RenderData';
 import { updateElement } from 'functions/updateElement';
 import SubmitContributorName from 'components/templates/SubmitContributorName';
 import FingerPrint from '@fingerprintjs/fingerprintjs'
+import Contributors from 'components/screens/Contributors/Contributors';
 
 export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
 
@@ -142,6 +143,9 @@ class App extends Component<PropsForComponent, StateForComponent> {
 							subjects={this.state.subjects} 
 							updateSubjects={this._updateSubjects}
 						/>
+					</Route>
+					<Route exact path="/D20/contributors">
+						<Contributors />
 					</Route>
 					{this.state.subjects.map((subject) => {
 						return (

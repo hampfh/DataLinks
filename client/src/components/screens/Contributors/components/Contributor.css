@@ -1,0 +1,26 @@
+.contributor {
+	border-bottom-style: solid;
+	border-bottom-width: 3px;
+	border-bottom-color: white;
+
+	display: grid;
+	grid-template-columns: 1fr 0.5fr 1fr;
+}
+
+.contributor:nth-child(1),
+.contributor:nth-last-child(1) {
+	border-bottom: none;
+}
+
+.score {
+	text-align: center;
+}
+
+.date {
+	justify-self: right;
+	font-style: italic;
+}
+
+h3.date {
+	font-style: normal;
+}
