@@ -78,15 +78,15 @@ export default class Contributors {
 		})
 	}
 	
-	async contribute(ipHash: string, operation: OperationType, type: ContentType) {
+	async contribute(fingerprint: string, operation: OperationType, type: ContentType) {
 		// Check if user exists
 		const response = await ContributorModel.findOne({
-			identifier: ipHash
+			identifier: fingerprint
 		}) as Document & IDB_Contributor
 
 		// This machine doesn't exist, create new
 		if (response == null) {
-			await Contributors.createNewContributor(ipHash, null, operation, type)
+			await Contributors.createNewContributor(fingerprint, null, operation, type)
 			return
 		}
 
@@ -126,13 +126,13 @@ export default class Contributors {
 		// TODO only emit to users on the /contributors page
 		RealTime.emitToSockets("contribution", { 
 			name: response.name ?? "Anonymous",
-			hashedIdentifier: ipHash, 
+			identifier: fingerprint, 
 			operation,
 			type
 		})
 	}
 
-	private static async createNewContributor(ipHash: string, name: string | null, operation?: OperationType, type?: ContentType) {
+	private static async createNewContributor(fingerprint: string, name: string | null, operation?: OperationType, type?: ContentType) {
 		const newContributor = new ContributorModel({
 			name,
 			contributions: {
@@ -149,7 +149,7 @@ export default class Contributors {
 					subjects: type === "SUBJECT" ? 1 : 0
 				}
 			},
-			identifier: ipHash
+			identifier: fingerprint
 		} as IDB_Contributor)
 
 		// Save contributor
