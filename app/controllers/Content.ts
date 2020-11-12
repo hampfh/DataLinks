@@ -27,13 +27,20 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		await GroupModel.updateOne({
+		const result = await GroupModel.updateOne({
 			_id: req.body.parentGroup
 		}, {
 			$push: {
 				content: appendObject
 			}
 		})
+
+		if (result.nModified <= 0) {
+			res.status(404).json({
+				message: "Parent group doesn't exist"
+			})
+			return
+		}
 
 		Log(
 			req.body.fingerprint,
@@ -75,13 +82,21 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		await GroupModel.updateOne({
+		
+		const result = await GroupModel.updateOne({
 			_id: req.body.parentGroup
 		}, {
 			$push: {
 				content: appendObject
 			}
 		})
+
+		if (result.nModified <= 0) {
+			res.status(404).json({
+				message: "Parent group doesn't exist"
+			})
+			return
+		}
 
 		Log(
 			req.body.fingerprint,
@@ -124,13 +139,20 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		await GroupModel.updateOne({
+		const result = await GroupModel.updateOne({
 			_id: req.body.parentGroup
 		}, {
 			$push: {
 				content: appendObject
 			}
 		})
+
+		if (result.nModified <= 0) {
+			res.status(404).json({
+				message: "Parent group doesn't exist"
+			})
+			return
+		}
 
 		Log(
 			req.body.fingerprint,
@@ -203,8 +225,13 @@ export default class ContentController extends CrudController {
 				"content.$.link": 1
 			}) as Mongoose.Document & IGroup
 
-			if (group == null)
-				throw new Error()
+			// User tries to update item that has been deleted or doesn't exist
+			if (group == null) {
+				res.status(404).json({
+					message: "Specified group doesn't exist"
+				})
+				return
+			}
 
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup,
@@ -272,8 +299,13 @@ export default class ContentController extends CrudController {
 				"content.$.text": 1
 			}) as Mongoose.Document & IGroup
 
-			if (group == null)
-				throw new Error()
+			// User tries to update item that has been deleted or doesn't exist
+			if (group == null) {
+				res.status(404).json({
+					message: "Specified group doesn't exist"
+				})
+				return
+			}
 			
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup,
@@ -339,8 +371,13 @@ export default class ContentController extends CrudController {
 				"content.$.deadline": 1
 			}) as Mongoose.Document & IGroup
 
-			if (group == null)
-				throw new Error()
+			// User tries to update item that has been deleted or doesn't exist
+			if (group == null) {
+				res.status(404).json({
+					message: "Specified group doesn't exist"
+				})
+				return
+			}
 
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup,
