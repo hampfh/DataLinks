@@ -206,7 +206,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		newState.newElement = undefined
 		this.setState(newState)
 
-		await Http({
+		const response = await Http({
 			url: "/api/v1/group" + urlSuffix,
 			method: "POST",
 			data: {
@@ -214,6 +214,15 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				fingerprint: this.props.app.fingerprint
 			}
 		})
+
+		if (response.status === 404) {
+			if (window.confirm("You tried to edit a deleted resource, reload the page to renew the content"))
+				window.location.reload()
+		}
+		else if (response.status !== 201 && response.status !== 200) {
+			if (window.confirm("The site encountered an error, reload the site?"))
+				window.location.reload()
+		}
 
 		//if (response.element._id != null) {
 		//	this.props.addLocal(
