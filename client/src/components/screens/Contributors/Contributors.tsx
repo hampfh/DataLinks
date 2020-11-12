@@ -5,6 +5,8 @@ import "./Contributors.css"
 import SocketManager from 'components/utilities/SocketManager'
 import { ContentType } from 'App'
 import Moment from "moment"
+import logoutIcon from "assets/icons/close.svg"
+import { Redirect } from 'react-router-dom'
 
 interface INewContribution {
 	name?: string,
@@ -19,7 +21,8 @@ export default class Contributors extends Component<{}, StateForComponent> {
 		super(props)
 
 		this.state = {
-			contributors: []
+			contributors: [],
+			shouldExitView: false
 		}
 	}
 
@@ -58,11 +61,20 @@ export default class Contributors extends Component<{}, StateForComponent> {
 		this.setState(newState)
 	}
 
+	_onExitView = () => {
+		let newState = { ...this.state }
+		newState.shouldExitView = true
+		this.setState(newState)
+	}
+
 	render() {
+		if (this.state.shouldExitView)
+			return <Redirect to="/" />
 		return (
 			<>
 				<SocketManager subscribeTo="contribution" callback={this._onContribution} />
 				<section className="contributorsWrapper">
+					<img className="logoutIcon" alt="Exit view" onClick={this._onExitView} src={logoutIcon} />
 					<div className="contributorsContainer">
 						<h1>Top contributors</h1>
 						<section className="contributorList">
@@ -82,5 +94,6 @@ export default class Contributors extends Component<{}, StateForComponent> {
 
 
 interface StateForComponent {
-	contributors: IContributor[]
+	contributors: IContributor[],
+	shouldExitView: boolean
 }

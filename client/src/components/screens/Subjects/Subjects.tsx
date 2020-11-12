@@ -23,6 +23,7 @@ import DeadlineRenderer from "components/templates/DeadlineRenderer"
 import { IDimensionState } from "state/reducers/dimensions"
 //import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
 import { ISetTransforms, setTransforms} from "state/actions/dimensions"
+import { Link } from "react-router-dom"
 
 const uiDistribution = {
 	dynamic: {
@@ -118,11 +119,11 @@ export class Subjects extends Component<PropsForComponent> {
 							<h1 className="Title">D20 links</h1>
 							<h3 className="versionText">Version: {version}</h3>
 							<div className="leaderboardButtonWrapper">
-								<a className="leaderboardLink" href="/D20/contributors">
+								<Link className="leaderboardLink" to="/D20/contributors">
 									<div className="leaderboardButton">
 										Contributor leaderboard
 									</div>
-								</a>
+								</Link>
 							</div>
 						</div>
 					}
