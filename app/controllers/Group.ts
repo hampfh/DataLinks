@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createGroup, findElementWithId, updateGroup } from "./schemas"
+import { createGroup, findElementWithId, findElementWithIdFingerPrint, updateGroup } from "./schemas"
 import GroupModel, { IGroup } from "../models/group.model"
 import Mongoose, { Document } from "mongoose"
 import Log from "../controllers/Log"
@@ -84,7 +84,7 @@ export default class GroupController extends CrudController {
 		}
 
 		const response = await GroupModel.find({
-			_id: req.body.findElementWithId
+			_id: req.body.id
 		}).populate("group")
 
 		if (response != null)
@@ -149,7 +149,7 @@ export default class GroupController extends CrudController {
 		})
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-		const { error } = findElementWithId.validate(req.body)
+		const { error } = findElementWithIdFingerPrint.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)
 			return

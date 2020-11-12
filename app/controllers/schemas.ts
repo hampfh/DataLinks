@@ -39,9 +39,15 @@ export const findElementWithId = Joi.object({
 	id: Joi.string()
 })
 
+export const findElementWithIdFingerPrint = Joi.object({
+	id: Joi.string(),
+	fingerprint: Joi.string().required()
+})
+
 export const findGroupChildElementId = Joi.object({
 	parentGroupId: Joi.string().required(),
-	id: Joi.string().required()
+	id: Joi.string().required(),
+	fingerprint: Joi.string().required()
 })
 
 export const createLink = Joi.object({

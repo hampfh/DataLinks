@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createSubject, findElementWithId, updateSubject } from "./schemas"
+import { createSubject, findElementWithIdFingerPrint, updateSubject } from "./schemas"
 import SubjectModel, { ISubject } from "../models/subjects.model"
 import GroupModel from "../models/group.model"
 import { Subject } from "."
@@ -126,7 +126,7 @@ export default class SubjectController extends CrudController {
 		}
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-		const { error } = findElementWithId.validate(req.body)
+		const { error } = findElementWithIdFingerPrint.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)
 			return
