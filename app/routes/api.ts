@@ -29,5 +29,6 @@ router.patch("/group/deadlinecontent", Content.updateDeadline)
 router.get("/group/content", Content.read)
 router.delete("/group/content", Content.delete)
 router.post("/contributor/name", Contributors.nameContributor)
+router.get("/contributors", Contributors.getContributors)
 
 export default router

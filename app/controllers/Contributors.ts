@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Document } from "mongoose";
-import Contributions, { IDB_Contributor } from "../models/contributions.model";
+import ContributorModel, { IDB_Contributor } from "../models/contributions.model";
 import { ContentType, OperationType } from "../models/log.model";
 import { nameContributor } from "./schemas";
-import Crypto from "crypto"
 import RealTime from "../RealTime";
 
 export default class Contributors {
@@ -17,7 +16,7 @@ export default class Contributors {
 			return
 		}
 
-		const response = await Contributions.findOne({
+		const response = await ContributorModel.findOne({
 			identifier: req.body.fingerprint
 		}) as Document & IDB_Contributor
 
@@ -38,10 +37,46 @@ export default class Contributors {
 			message: `Successfully changed contributor name to ${req.body.name}`
 		})
 	}
+
+	async getContributors(req: Request, res: Response) {
+		// TODO make the db perform this operations instead of the client
+		const contributors = await ContributorModel.aggregate([
+			{
+				'$project': {
+					'name': 1,
+					'contributions': 1
+				}
+			}, {
+				'$addFields': {
+					'contributionCount': {
+						'$sum': [
+							'$contributions.operations.creates', '$contributions.operations.updates', '$contributions.operations.deletes'
+						]
+					}
+				}
+			}, {
+				'$project': {
+					'_id': 0,
+					'name': 1,
+					'contributionCount': 1
+				}
+			},{
+				'$sort': {
+					'contributionCount': -1
+				}
+			}, {
+				'$limit': 1000
+			}
+		])
+
+		res.json({
+			contributors
+		})
+	}
 	
 	async contribute(ipHash: string, operation: OperationType, type: ContentType) {
 		// Check if user exists
-		const response = await Contributions.findOne({
+		const response = await ContributorModel.findOne({
 			identifier: ipHash
 		}) as Document & IDB_Contributor
 
@@ -94,7 +129,7 @@ export default class Contributors {
 	}
 
 	private static async createNewContributor(ipHash: string, name: string | null, operation?: OperationType, type?: ContentType) {
-		const newContributor = new Contributions({
+		const newContributor = new ContributorModel({
 			name,
 			contributions: {
 				operations: {
