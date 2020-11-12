@@ -1,5 +1,6 @@
 import Log, { ContentType, OperationType } from "../models/log.model"
-import Bcrypt from "bcrypt"
+import Crypto from "crypto"
+import { Contributors } from "./";
 
 const log = async (ip: string, operation: OperationType, type: ContentType, to: string[], from?: string[]) => {
 
@@ -17,19 +18,24 @@ const log = async (ip: string, operation: OperationType, type: ContentType, to: 
 		}
 	}
 
-	// Generate ip hash password
-	const salt = await Bcrypt.genSalt(2)
-	const hashedIp = await Bcrypt.hash(ip, salt)
+	// Generate ip hash
+	const ipHash = Crypto.createHash("sha512").update(ip, "utf8").digest("hex")
 
 	const newLog = new Log({
-		user: hashedIp,
+		user: ipHash,
 		operation,
 		to,
 		type,
 		from: from ?? []
 	})
 
-	newLog.save()
+	await newLog.save()
+
+	await Contributors.contribute(
+		ipHash, 
+		operation, 
+		type
+	)
 }
 
 export default log

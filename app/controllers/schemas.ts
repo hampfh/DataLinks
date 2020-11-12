@@ -83,3 +83,7 @@ export const updateDeadline = Joi.object({
 	deadline: Joi.date().min(5),
 	start: Joi.date().min(5)
 }).or("displayText", "deadline", "start")
+
+export const nameContributor = Joi.object({
+	name: Joi.string()
+})

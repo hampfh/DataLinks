@@ -1,5 +1,5 @@
 import express from "express"
-import { Content, Group, Subject } from "../controllers"
+import { Content, Group, Subject, Contributors } from "../controllers"
 
 const router = express.Router({
 	strict: true
@@ -28,5 +28,6 @@ router.patch("/group/deadlinecontent", Content.updateDeadline)
 //router.post("/group/groupcontent", Content.createGroup)
 router.get("/group/content", Content.read)
 router.delete("/group/content", Content.delete)
+router.post("/contributor/name", Contributors.nameContributor)
 
 export default router
