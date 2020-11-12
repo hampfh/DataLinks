@@ -21,7 +21,6 @@ export default class Contributors {
 
 		// Generate ip hash
 		const ipHash = Crypto.createHash("sha512").update(ip, "utf8").digest("hex")
-		console.log("Hash", ip, ipHash)
 
 		const response = await Contributions.findOne({
 			identifier: ipHash
