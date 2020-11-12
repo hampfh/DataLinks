@@ -117,6 +117,13 @@ export class Subjects extends Component<PropsForComponent> {
 						<div>
 							<h1 className="Title">D20 links</h1>
 							<h3 className="versionText">Version: {version}</h3>
+							<div className="leaderboardButtonWrapper">
+								<a className="leaderboardLink" href="/D20/contributors">
+									<div className="leaderboardButton">
+										Contributor leaderboard
+									</div>
+								</a>
+							</div>
 						</div>
 					}
 					<div className="SubjectContainer">

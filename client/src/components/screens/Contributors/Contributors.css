@@ -1,8 +1,11 @@
-h1, h2, h3, p {
+.contributorsWrapper h1, 
+.contributorsWrapper h2, 
+.contributorsWrapper h3, 
+.contributorsWrapper p {
 	color: white;
 }
 
-h1 {
+.contributorsWrapper h1 {
 	text-align: center;
 }
 
@@ -23,7 +26,10 @@ h1 {
 
 /* Light theme colors */
 @media (prefers-color-scheme: light) {
-	h1, h2, h3, p {
+	.contributorsWrapper h1, 
+	.contributorsWrapper h2, 
+	.contributorsWrapper h3, 
+	.contributorsWrapper p {
 		color: var(--primary);
 	}
 }

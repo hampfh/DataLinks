@@ -45,7 +45,7 @@ body {
 
 @media(min-width: 40rem) {
 	.Title {
-		margin-top: 4rem;
+		margin-top: 2rem;
 	}
 	.SubjectContainer {
 		align-items: center;
@@ -144,4 +144,40 @@ body {
 
 .toolbarItem .switch {
 	margin: 0 auto;
+}
+
+.leaderboardButtonWrapper {
+	display: grid;
+	justify-content: center;
+	margin: 1rem 0;
+}
+
+.leaderboardLink {
+	font-size: 0.8rem;
+	color: white;
+	text-decoration: none;
+}
+
+.leaderboardButton {
+	background-color: var(--primary);
+	padding: 0.65rem 1.15rem;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+
+	transition-property: opacity;
+	transition-duration: 0.3s;
+}
+
+/* Light theme colors */
+@media (prefers-color-scheme: light) {
+	.leaderboardButton {
+		border-color: transparent;
+	}
+}
+
+.leaderboardButton:hover {
+	cursor: pointer;
+	opacity: 0.7;
 }
