@@ -1,5 +1,3 @@
-import { number, string } from "joi"
-import { Mongoose } from "mongoose"
 import database from "./index.model"
 const Schema = database.Schema
 
