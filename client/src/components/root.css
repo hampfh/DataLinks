@@ -3,6 +3,10 @@
 	--primary: #ff007b;
 	--complementary: #ff80bd;
 	--dark: #cc0063;
+
+	--addition:#81c784;
+	--modification: #64b5f6;
+	--deletion:#e57373;
 }
 
 @media (prefers-color-scheme: light) {

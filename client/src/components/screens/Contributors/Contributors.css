@@ -36,5 +36,7 @@
 
 .contributorsWrapper .logoutIcon {
 	top: 1.5rem;
-	left: 0;
+	left: 1rem;
+	padding: 0.5rem;
+	background-color: var(--primary);
 }

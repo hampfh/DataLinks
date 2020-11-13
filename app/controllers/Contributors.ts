@@ -60,6 +60,9 @@ export default class Contributors {
 				'$project': {
 					'_id': 0,
 					'name': 1,
+					'contributions': {
+						'operations': 1
+					},
 					'contributionCount': 1,
 					'updatedAt': 1,
 					'identifier': 1

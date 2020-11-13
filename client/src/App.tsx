@@ -38,6 +38,7 @@ import FingerPrint from '@fingerprintjs/fingerprintjs'
 import Contributors from 'components/screens/Contributors/Contributors';
 
 export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
+export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
 class App extends Component<PropsForComponent, StateForComponent> {
 

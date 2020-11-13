@@ -34,11 +34,36 @@ export default class Contributor extends Component<PropsForComponent, StateForCo
 	}
 
 	render() {
+		const totalEdits = this.props.contributor.contributions.operations.creates + 
+			this.props.contributor.contributions.operations.updates + 
+			this.props.contributor.contributions.operations.deletes
+		const containerWidth = 150		
+
+		const createsWidth = containerWidth * (this.props.contributor.contributions.operations.creates / totalEdits)
+		const updatesWidth = containerWidth * (this.props.contributor.contributions.operations.updates / totalEdits)
+		const deletesWidth = containerWidth * (this.props.contributor.contributions.operations.deletes / totalEdits)
+
 		return (
-			<div className={`${this.state.hidden ? "hidden" : "contributor"}`}>
-				<p className="name">{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span></p>
-				<p className="score">{this.props.contributor.contributionCount} edits</p>
-				<p className="date">{this.displayDate()}</p>
+			<div className={`${this.state.hidden ? "hidden" : "contributorElementWrapper"}`}>
+				<div className="contributor">
+					<p className="name">{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span></p>
+					<p className="score">{this.props.contributor.contributionCount}</p>
+					<p className="date">{this.displayDate()}</p>
+				</div>
+				<div className="editSummeryBar">
+					{createsWidth > 0 ? 
+						<div className="creates segment" style={{ width: createsWidth }} /> : 
+						null
+					}
+					{updatesWidth > 0 ? 
+						<div className="updates segment" style={{ width: updatesWidth }} /> :
+						null
+					}
+					{deletesWidth > 0 ?
+						<div className="deletes segment" style={{ width: deletesWidth }} /> :
+						null
+					}
+				</div>
 			</div>
 		)
 	}
@@ -46,6 +71,13 @@ export default class Contributor extends Component<PropsForComponent, StateForCo
 
 export interface IContributor {
 	name?: string,
+	contributions: {
+		operations: {
+			creates: number,
+			updates: number,
+			deletes: number
+		},
+	},
 	contributionCount: number,
 	identifier: string,
 	updatedAt: string
