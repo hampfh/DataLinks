@@ -116,6 +116,13 @@ export class Subjects extends Component<PropsForComponent> {
 				>
 					{this.props.app.flags.extendedView ? null : 
 						<div>
+							<div className="feedbackWrapper">
+								<a href="https://github.com/hampfh/DataLinks/issues">
+									<div className="feedbackContainer">
+										Give Feedback
+									</div>
+								</a>
+							</div>
 							<h1 className="Title">D20 links</h1>
 							<h3 className="versionText">Version: {version}</h3>
 							<div className="leaderboardButtonWrapper">

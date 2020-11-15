@@ -181,3 +181,58 @@ body {
 	cursor: pointer;
 	opacity: 0.7;
 }
+
+.feedbackWrapper {
+	display: none;
+
+	position: absolute;
+	top: 0;
+	right: 10%;
+
+	text-align: center;
+}
+
+.feedbackContainer {
+	padding: 0.5rem 1rem;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: white;
+	
+	border-top: none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+
+	width: 8rem;
+
+	transition-property: background-color;
+	transition-duration: 0.25s;
+}
+
+.feedbackContainer:hover {
+	cursor: pointer;
+	background-color: var(--primary);
+}
+
+@media(min-width: 60rem) {
+	.feedbackWrapper {
+		display: block;
+	}	
+}
+
+.feedbackWrapper a {
+	color: white;
+	text-decoration: none;
+}
+
+@media (prefers-color-scheme: light) {
+	.feedbackContainer {
+		border-color: var(--primary);
+	}
+  	.feedbackWrapper a {
+		color: var(--primary)
+	}
+	.feedbackContainer:hover {
+		color: white;
+	}
+}
