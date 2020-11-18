@@ -83,7 +83,8 @@ export class Subjects extends Component<PropsForComponent> {
 			},
 			content: {
 				width: window.innerWidth,
-				height: contentHeight <= 100 ? 0 : contentHeight
+				// 144px is 9 rems which is the size of a deadline
+				height: contentHeight <= 144 ? 0 : contentHeight
 			},
 			toolbar: {
 				width: window.innerWidth,
