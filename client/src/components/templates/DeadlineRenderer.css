@@ -11,7 +11,6 @@
 .deadlineWrapper {
 	width: 80vw;
 	max-width: 70rem;
-	height: 23rem;
 	overflow-y: auto;
 
 	display: flex;

@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, createRef } from "react"
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import "./components/Switch.css"
@@ -40,16 +40,13 @@ const desktopWidth = 800
 export class Subjects extends Component<PropsForComponent> {
 
 	debouncer?: NodeJS.Timeout
-	toolBarRef: React.RefObject<HTMLDivElement>
-	constructor(props: PropsForComponent) {
-		super(props)
-
-		this.toolBarRef = React.createRef()
-	}
+	subjectContainerRef?: React.RefObject<HTMLDivElement>
 
 	componentDidMount() {
 		window.addEventListener("resize", this._onResize)
 		this.performResize()
+
+		this.subjectContainerRef = createRef()
 	}
 
 	componentWillUnmount() {
@@ -61,11 +58,16 @@ export class Subjects extends Component<PropsForComponent> {
 	_onResize = () => {
 		if (this.debouncer)
 			clearTimeout(this.debouncer)
-		this.debouncer = setTimeout(this.performResize, 500)
+		this.debouncer = setTimeout(this.performResize, 10)
 	}
 
 	performResize = () => {
 		const windowHeightAfterStatic = window.innerHeight - uiDistribution.static.TOOLBAR
+
+		if (!this.subjectContainerRef || !this.subjectContainerRef.current)
+			return
+
+		const contentHeight = windowHeightAfterStatic - this.subjectContainerRef.current?.clientHeight ?? windowHeightAfterStatic
 
 		// Calculate and update dimensions
 		this.props.setTransforms({
@@ -77,13 +79,11 @@ export class Subjects extends Component<PropsForComponent> {
 				width: window.innerWidth,
 				height: window.innerWidth >= 400 ? 
 					windowHeightAfterStatic * uiDistribution.dynamic.SUBJECTS :
-					windowHeightAfterStatic * (uiDistribution.dynamic.SUBJECTS + uiDistribution.dynamic.SUBJECTS)
+					windowHeightAfterStatic * (uiDistribution.dynamic.SUBJECTS + uiDistribution.dynamic.CONTENT)
 			},
 			content: {
 				width: window.innerWidth,
-				height: window.innerWidth >= 700 ?
-					windowHeightAfterStatic * uiDistribution.dynamic.CONTENT :
-					0
+				height: contentHeight <= 100 ? 0 : contentHeight
 			},
 			toolbar: {
 				width: window.innerWidth,
@@ -110,9 +110,7 @@ export class Subjects extends Component<PropsForComponent> {
 		return (
 			<section className="Master">
 				<div className="Uppercontainer" 
-					style={{
-						maxHeight: this.props.dimensions.subjects.height
-					}}
+					ref={this.subjectContainerRef}
 				>
 					{this.props.app.flags.extendedView ? null : 
 						<div>
@@ -163,7 +161,6 @@ export class Subjects extends Component<PropsForComponent> {
 
 				{isMobile() || this.props.dimensions.window.height < 500 || this.props.dimensions.window.width < desktopWidth ? null : 
 					<div className="bottomContainer"
-						ref={this.toolBarRef}
 						style={{
 							height: this.props.dimensions.toolbar.height
 						}}
