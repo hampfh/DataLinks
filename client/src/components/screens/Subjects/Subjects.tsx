@@ -163,7 +163,7 @@ export class Subjects extends Component<PropsForComponent> {
 				{isMobile() || this.props.dimensions.window.height < 500 || this.props.dimensions.window.width < desktopWidth ? null : 
 					<div className="bottomContainer"
 						style={{
-							height: this.props.dimensions.toolbar.height
+							height: this.props.dimensions.toolbar.height || uiDistribution.static.TOOLBAR
 						}}
 					>
 						<div className="extendModeContainer  toolbarItem">
