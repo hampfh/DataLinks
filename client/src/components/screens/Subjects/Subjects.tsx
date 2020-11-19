@@ -42,11 +42,19 @@ export class Subjects extends Component<PropsForComponent> {
 	debouncer?: NodeJS.Timeout
 	subjectContainerRef?: React.RefObject<HTMLDivElement>
 
+	constructor(props: PropsForComponent) {
+		super(props)
+		this.subjectContainerRef = createRef()
+	}
+
 	componentDidMount() {
 		window.addEventListener("resize", this._onResize)
-		this.performResize()
+	}
 
-		this.subjectContainerRef = createRef()
+	componentDidUpdate() {
+		// If heights does't match, resize page
+		if (this.subjectContainerRef && this.subjectContainerRef.current && this.subjectContainerRef.current.clientHeight !== this.props.dimensions.subjects.height)
+			this.performResize()
 	}
 
 	componentWillUnmount() {
@@ -77,9 +85,7 @@ export class Subjects extends Component<PropsForComponent> {
 			},
 			subjects: {
 				width: window.innerWidth,
-				height: window.innerWidth >= 400 ? 
-					windowHeightAfterStatic * uiDistribution.dynamic.SUBJECTS :
-					windowHeightAfterStatic * (uiDistribution.dynamic.SUBJECTS + uiDistribution.dynamic.CONTENT)
+				height: this.subjectContainerRef.current.clientHeight
 			},
 			content: {
 				width: window.innerWidth,
@@ -163,7 +169,7 @@ export class Subjects extends Component<PropsForComponent> {
 				{isMobile() || this.props.dimensions.window.height < 500 || this.props.dimensions.window.width < desktopWidth ? null : 
 					<div className="bottomContainer"
 						style={{
-							height: this.props.dimensions.toolbar.height || uiDistribution.static.TOOLBAR
+							height: this.props.dimensions.toolbar.height
 						}}
 					>
 						<div className="extendModeContainer  toolbarItem">
