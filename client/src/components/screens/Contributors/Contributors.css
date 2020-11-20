@@ -18,6 +18,19 @@
 
 .contributorsContainer {
 	width: 35rem;
+	height: 100vh;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+.contributorsContainer::-webkit-scrollbar {
+	width: 0.4rem;
+	border-radius: 5px;
+}
+
+.contributorsContainer::-webkit-scrollbar-thumb {
+	background-color: var(--primary);
+	border-radius: 5px;
 }
 
 .contributorList {
