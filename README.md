@@ -90,7 +90,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Fetch subjects
 `GET`
-`https://new.datasektionen.link/api/v1/subject`   
+`https://new.datasektionen.link/api/v1/subject`    
 **Params:**  
 | key 			| description 			|   
 | --			| --		  			|  
@@ -98,7 +98,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Delete subject
 `DELETE`
-`https://new.datasektionen.link/api/v1/subject`  
+`https://new.datasektionen.link/api/v1/subject`   
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -107,7 +107,7 @@ There are two important data structures in the database, there are subjects that
 #### Group
 ##### Create group
 `POST`
-`https://new.datasektionen.link/api/v1/group`  
+`https://new.datasektionen.link/api/v1/group`    
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -115,7 +115,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### DELETE group
 `DELETE`
-`https://new.datasektionen.link/api/v1/group`  
+`https://new.datasektionen.link/api/v1/group`    
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -124,7 +124,7 @@ There are two important data structures in the database, there are subjects that
 #### Content
 ##### Create link
 `POST` 
-`https://new.datasektionen.link/api/v1/group/linkcontent`
+`https://new.datasektionen.link/api/v1/group/linkcontent`  
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -134,7 +134,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Create text
 `POST` 
-`https://new.datasektionen.link/api/v1/group/textcontent`
+`https://new.datasektionen.link/api/v1/group/textcontent`  
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -144,7 +144,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Create deadline
 `POST` 
-`https://new.datasektionen.link/api/v1/group/deadlinecontent`
+`https://new.datasektionen.link/api/v1/group/deadlinecontent`  
 **Params:**  
 | key 			| description 				|  
 | --			| --		  				| 
@@ -155,7 +155,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Update link
 `PATCH` 
-`https://new.datasektionen.link/api/v1/group/linkcontent`
+`https://new.datasektionen.link/api/v1/group/linkcontent`  
 **Params:**  
 | key 			| description 				|  
 | --			| --		  				| 
@@ -166,7 +166,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Update text
 `POST` 
-`https://new.datasektionen.link/api/v1/group/textcontent`
+`https://new.datasektionen.link/api/v1/group/textcontent`  
 **Params:**  
 | key 			| description 			|  
 | --			| --		  			| 
@@ -177,7 +177,7 @@ There are two important data structures in the database, there are subjects that
 ---
 ##### Update deadline
 `POST` 
-`https://new.datasektionen.link/api/v1/group/deadlinecontent`
+`https://new.datasektionen.link/api/v1/group/deadlinecontent`  
 **Params:**  
 | key 			| description 							|  
 | --			| --		  							| 
@@ -190,8 +190,8 @@ There are two important data structures in the database, there are subjects that
 ##### Delete content
 Delete any element (link, text or deadline)
 `POST` 
-`https://new.datasektionen.link/api/v1/group/deadlinecontent`
-**Params:**  
+`https://new.datasektionen.link/api/v1/group/deadlinecontent`  
+**Params:**   
 | key 			| description 							|  
 | --			| --		  							| 
 | id			| Id of target element					| 
@@ -199,8 +199,8 @@ Delete any element (link, text or deadline)
 #### Contributor
 ##### Set contributor name
 `POST`
-`https://new.datasektionen.link/api/v1/contributor/name`
-**Params:**
+`https://new.datasektionen.link/api/v1/contributor/name`  
+**Params:**  
 | key 			| description 							|  
 | --			| --		  							| 
 | name			| Contributor name						|
@@ -209,7 +209,7 @@ Delete any element (link, text or deadline)
 Load all contributors sorted from the  
 contributor with most contributions to the least  
 `GET`
-`https://new.datasektionen.link/api/v1/contributors`  
+`https://new.datasektionen.link/api/v1/contributors`    
 **Params:**  
 | key 			| description 							|  
 | --			| --		  							| 
