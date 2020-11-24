@@ -25,7 +25,8 @@ class Subscriptions extends Component<PropsForComponent> {
 				<Socket subscribeTo="updateElement" callback={(data: any) => {
 						// Delete old node and replace with new
 						let appendObject: ContentObject = {
-							_id: data.id
+							_id: data.id,
+							placement: data.placement
 						}
 
 						if (data.type as ContentType === "TEXT") {

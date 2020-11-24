@@ -36,6 +36,7 @@ import { updateElement } from 'functions/updateElement';
 import SubmitContributorName from 'components/templates/SubmitContributorName';
 import FingerPrint from '@fingerprintjs/fingerprintjs'
 import Contributors from 'components/screens/Contributors/Contributors';
+import { sortSubjects } from 'functions/sortElements';
 
 export type ContentType = "TEXT" | "LINK" | "DEADLINE" | "GROUP"
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
@@ -112,6 +113,8 @@ class App extends Component<PropsForComponent, StateForComponent> {
 		}
 
 		const newState = { ...this.state }
+		// Sort all content by it's placement
+		sortSubjects(response.result)
 		newState.subjects = response.result
 		this.setState(newState, () => {
 			if (callback != null)

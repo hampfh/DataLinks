@@ -74,11 +74,12 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	_onCreateElement = (parentId: string, type: "DEADLINE" | "TEXT" | "LINK") => {
+	_onCreateElement = (parentId: string, placement: number, type: "DEADLINE" | "TEXT" | "LINK") => {
 		let newState = { ...this.state }
 		newState.newElement = {
 			parentId,
-			type
+			type,
+			placement
 		}
 		this.setState(newState)
 	}
@@ -164,7 +165,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 			placement: number
 		} = {
 			parentGroup: newElement.parentId ?? this.state.newElement?.parentId,
-			placement: 0
+			placement: this.state.newElement?.placement ?? 0
 		}
 		if (newElement.type === "TEXT") {
 			if (newElement.fieldOne.length !== 0)
@@ -224,6 +225,7 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				window.location.reload()
 		}
 
+		// Disabled since websockets (socket.io) is automatically fixing this for us
 		//if (response.element._id != null) {
 		//	this.props.addLocal(
 		//		appendObject.parentGroup,
@@ -292,11 +294,11 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 							if (object.type === "GROUP") {
 								const groupElement: ContentObject = {
 									_id: group._id,
+									placement: group.content[group.content.length - 1].placement + 1,
 									group: {
 										name: "",
 										_id: object.fieldOne.toString(),
 										depth: group.depth + 1,
-										placement: 0,
 										content: []
 									}
 								}
@@ -350,9 +352,9 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 					{ // Control panel for group
 					this.props.app.flags.editMode ?
 						<>
-							<button onClick={() => this._onCreateElement(group._id, "TEXT")}>Add text</button>
-							<button onClick={() => this._onCreateElement(group._id, "LINK")}>Add link</button>
-							<button onClick={() => this._onCreateElement(group._id, "DEADLINE")}>Add deadline</button>
+							<button onClick={() => this._onCreateElement(group._id, group.content[group.content.length - 1].placement + 1, "TEXT")}>Add text</button>
+							<button onClick={() => this._onCreateElement(group._id, group.content[group.content.length - 1].placement + 1, "LINK")}>Add link</button>
+							<button onClick={() => this._onCreateElement(group._id, group.content[group.content.length - 1].placement + 1, "DEADLINE")}>Add deadline</button>
 							<GroupForm
 								key={uuid()}
 								forRoot={false}
@@ -449,6 +451,7 @@ export interface IDeadline {
 
 export interface ContentObject {
 	_id: string,
+	placement: number,
 	link?: ILink,
 	text?: IText,
 	deadline?: IDeadline,
@@ -460,7 +463,6 @@ export interface Group {
 	_id: string,
 	name: string,
 	depth: number,
-	placement: number,
 	content: Array<ContentObject>,
 	column?: boolean,
 	split?: boolean
@@ -485,7 +487,8 @@ interface StateForComponent {
 	},
 	newElement?: {
 		parentId: string,
-		type: ContentType
+		type: ContentType,
+		placement: number
 	}
 }
 

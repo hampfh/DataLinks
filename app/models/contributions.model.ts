@@ -18,7 +18,7 @@ export interface IDB_Contributor {
 			subjects: number		// Amount of subjects either created, deleted or updated
 		}
 	},
-	identifier: string,
+	identifiers: [string],
 	createdAt?: string,
 	updatedAt?: string,
 	__v?: string
@@ -88,10 +88,7 @@ export const ContributorSchema = new Schema({
 		type: ContributionSchema,
 		required: true,
 	},
-	identifier: {
-		type: String,
-		required: true
-	}
+	identifiers: [String]
 }, {
 	timestamps: true
 })

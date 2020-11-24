@@ -206,6 +206,7 @@ export interface SubjectData {
 	code: string,
 	description: string,
 	color: string,
+	placement: number,
 	group: Group
 }
 

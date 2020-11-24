@@ -1,5 +1,5 @@
 import Mongoose from "mongoose"
-import { GroupSchema, IGroup } from "./group.model"
+import { IGroup } from "./group.model"
 import database from "./index.model"
 const Schema = database.Schema
 
@@ -8,6 +8,7 @@ export interface ISubject {
 	code: string,
 	description: string,
 	color: string,
+	placement: Number,
 	group: IGroup
 }
 
@@ -26,6 +27,10 @@ export const SubjectSchema = new Schema({
 	},
 	color: {
 		type: String,
+		required: true
+	},
+	placement: {
+		type: Number,
 		required: true
 	},
 	group: {

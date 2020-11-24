@@ -39,7 +39,6 @@ export default class Contributors {
 	}
 
 	async getContributors(req: Request, res: Response) {
-		// TODO make the db perform this operations instead of the client
 		const contributors = await ContributorModel.aggregate([
 			{
 				'$project': {
@@ -152,7 +151,7 @@ export default class Contributors {
 					subjects: type === "SUBJECT" ? 1 : 0
 				}
 			},
-			identifier: fingerprint
+			identifiers: [fingerprint]
 		} as IDB_Contributor)
 
 		// Save contributor
