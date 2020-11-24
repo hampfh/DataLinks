@@ -36,6 +36,7 @@ import {
 } from "state/actions/local"
 import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
+import { formatTime, getCurrentTimeZone } from 'components/utilities/time'
 
 class RenderData extends Component<PropsForComponent, StateForComponent> {
 
@@ -403,7 +404,12 @@ class RenderData extends Component<PropsForComponent, StateForComponent> {
 				parentId={parentId}
 				id={contentObject._id}
 				childId={contentObject.deadline._id}
-				contentObject={contentObject.deadline}
+				contentObject={(() => {
+					// Format deadline date format (and timezone)
+					if (contentObject.deadline)
+						contentObject.deadline.deadline = formatTime(getCurrentTimeZone(contentObject.deadline?.deadline))
+					return contentObject.deadline
+				})()}
 				updateSubjects={this.props.updateSubjects}
 			/>
 		}

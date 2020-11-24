@@ -1,7 +1,13 @@
 import { SubjectData } from "components/screens/Subjects/Subjects";
 import { ContentObject } from "components/templates/RenderData";
+import { formatTime, getCurrentTimeZone } from "components/utilities/time";
 
 export const updateElement = (subjects: SubjectData[], newElement: ContentObject) => {
+
+	// Format deadline if it exists
+	if (newElement.deadline)
+		newElement.deadline.deadline = formatTime(getCurrentTimeZone(newElement.deadline.deadline))
+
 	for (let i = 0; i < subjects.length; i++) {
 		if (recursiveSearchElement(subjects[i], newElement))
 			return

@@ -6,6 +6,7 @@ import { connect } from "react-redux"
 import Socket from "components/utilities/SocketManager"
 import { ContentObject } from 'components/templates/RenderData'
 import { ContentType } from 'App'
+import { formatTime, getCurrentTimeZone } from './time'
 
 class Subscriptions extends Component<PropsForComponent> {
 	render() {
@@ -23,6 +24,7 @@ class Subscriptions extends Component<PropsForComponent> {
 					}} 
 				/>
 				<Socket subscribeTo="updateElement" callback={(data: any) => {
+
 						// Delete old node and replace with new
 						let appendObject: ContentObject = {
 							_id: data.id
@@ -60,7 +62,7 @@ class Subscriptions extends Component<PropsForComponent> {
 								title: data.type as ContentType === "TEXT" ? data.fieldOne : undefined,
 								text: data.type as ContentType === "TEXT" ? data.fieldTwo : undefined,
 								displayText: data.type as ContentType === "LINK" || data.type as ContentType === "DEADLINE" ? data.fieldOne : undefined,
-								deadline: data.type as ContentType === "DEADLINE" ? data.fieldTwo : undefined,
+								deadline: data.type as ContentType === "DEADLINE" ? formatTime(getCurrentTimeZone(data.fieldTwo)) : undefined,
 								link: data.type as ContentType === "LINK" ? data.fieldTwo : undefined,
 								start: data.type as ContentType === "DEADLINE" ? data.fieldThree : undefined
 							})
