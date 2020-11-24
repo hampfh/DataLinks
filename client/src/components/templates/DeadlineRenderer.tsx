@@ -54,17 +54,19 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	recursiveCompilation(group: Group, depth?: number): IDeadline[] {
-		if (group == null || (depth !== undefined && depth > 5)) 
+		if (group == null || (depth !== undefined && depth > 5))
 			return []
 
 		let content: IDeadline[] = []
 		for (let i = 0; i < group.content.length; i++) {
 			if (group.content[i].group != null) {
 				let response = this.recursiveCompilation(group.content[i].group as Group, depth === undefined ? 1 : depth + 1)
-				if (content.length <= 0)
-					content = response
-				else
-					content.concat(response)
+				if (response.length > 0) {
+					if (content.length <= 0)
+						content = response
+					else
+						content = content.concat(response)
+				}
 			} else if (group.content[i].deadline?.deadline != null)
 				content.push(group.content[i].deadline as IDeadline)
 		}
