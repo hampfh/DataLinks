@@ -5,9 +5,9 @@
       "dom",
       "dom.iterable",
       "esnext"
-	],
-	"rootDir": "./",
-	"baseUrl": "./src",
+    ],
+    "rootDir": "./",
+    "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,8 +19,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-	"jsx": "react",
-	"noFallthroughCasesInSwitch": false
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": false
   },
   "include": [
     "src"
