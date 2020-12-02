@@ -1,23 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 :root {
-	--primary: #ff007b;
-	--complementary: #ff80bd;
-	--dark: #cc0063;
+	/* Please use official Datasektionen colours :P https://datasektionen.se/organisation/grafisk-profil */
+	--primary: #EE2A7B;
+	--complementary: #EC5F99;
+	--dark: #E83D84;
 
-	--addition:#81c784;
+	--addition: #FCDA04;
 	--modification: #64b5f6;
-	--deletion:#e57373;
+	--deletion: #e57373;
 }
 
 @media (prefers-color-scheme: light) {
-  	:root {
-		--primary-background: #e3f2fd;
-		--accent-background: #ff4da3;
+	:root {
+		--primary-background: #F7F7F7;
+		--accent-background: #EC5F99;
 	}
 }
 
 @media (prefers-color-scheme: dark) {
-  	:root {
+	:root {
 		--primary-background: #330019;
 		background-color: var(--primary-background);
 	}
