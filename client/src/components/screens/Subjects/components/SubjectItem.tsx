@@ -94,6 +94,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 				return GROUP_ICON
 			case "SF1671":
 			case "SF1624":
+			case "SF1625":
 				return CALCULATOR_ICON
 			case "DA1600":
 				return DOCUMENT_ICON
