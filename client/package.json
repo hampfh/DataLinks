@@ -1,6 +1,6 @@
 {
   "name": "datalinks-client",
-  "version": "2.4.15",
+  "version": "2.5.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
