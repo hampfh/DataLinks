@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Http from "functions/HttpRequest"
 import { connect } from "react-redux"
 import { IReduxRootState } from 'state/reducers'
-import { IAddContributor, addContributor } from 'state/actions/app'
+import { IAddContributor, addContributor, disableEditModeFlag, IDisableEditModeFlag } from 'state/actions/app'
 import { IAppState } from 'state/reducers/app'
 import "./SubmitContributorName.css"
 
@@ -38,6 +38,10 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 		this.props.toggleView(false)
 	}
 
+	goBackToMainPage = () => {
+		this.props.disableEditModeFlag()
+	}
+
 	render() {
 		return (
 			<div className="contributorOverlayWrapper">
@@ -49,6 +53,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 						<input onChange={this.inputChange} placeholder="Display name" />
 						<button onClick={this.submitName}>Submit name</button>
 					</div>
+					<button onClick={this.goBackToMainPage}>Go back to main page</button>
 				</div>
 			</div>
 		)
@@ -58,7 +63,8 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 interface PropsForComponent {
 	app: IAppState,
 	toggleView: (on: boolean) => void,
-	addContributor: IAddContributor
+	addContributor: IAddContributor,
+	disableEditModeFlag: IDisableEditModeFlag
 }
 
 interface StateForComponent {
@@ -73,7 +79,8 @@ const reduxSelect = (state: IReduxRootState) => {
 
 const reduxDispatch = () => {
 	return {
-		addContributor
+		addContributor,
+		disableEditModeFlag
 	}
 }
 

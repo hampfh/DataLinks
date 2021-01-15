@@ -127,7 +127,7 @@ class App extends Component<PropsForComponent, StateForComponent> {
 	
 	render() {
 		// Render contribution form if contributor isn't set
-		if (this.state.showContributorOverlay)
+		if (this.state.showContributorOverlay && this.props.app.flags.editMode)
 			return <SubmitContributorName toggleView={this.toggleContributionForm} />
 		if (this.state.subjects === undefined)
 			return null

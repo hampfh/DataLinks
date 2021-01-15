@@ -32,7 +32,7 @@ function agreeBehavior (): boolean {
  * @returns a boolean indicating if operation was successful
  */
 function saveEditMode(mode: boolean): boolean {
-	if (agreeBehavior()) {
+	if (agreeBehavior() || !!!mode) {
 		saveFlags("editMode", mode)
 		return true
 	} else

@@ -31,12 +31,14 @@ export default class SubjectController extends CrudController {
 			name: req.body.name,
 			code: req.body.code,
 			description: req.body.description,
+			logo: req.body.logoURL,
 			color: req.body.color,
 			group: newGroup._id
 		}) as Document & {
 			name: string,
 			code: string,
 			description: string,
+			logo: string,
 			color: string,
 			group: string
 		}
@@ -99,6 +101,7 @@ export default class SubjectController extends CrudController {
 			name?: string,
 			code?: string,
 			description?: string,
+			logo?: string
 			color?: string
 		} = {}
 
@@ -108,6 +111,8 @@ export default class SubjectController extends CrudController {
 			appendObject.code = req.body.code
 		if (req.body.description != null)
 			appendObject.description = req.body.description
+		if (req.body.logo != null)
+			appendObject.logo = req.body.logoURL
 		if (req.body.color != null)
 			appendObject.color = req.body.color
 

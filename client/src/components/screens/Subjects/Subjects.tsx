@@ -24,6 +24,7 @@ import { IDimensionState } from "state/reducers/dimensions"
 //import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
 import { ISetTransforms, setTransforms} from "state/actions/dimensions"
 import { Link } from "react-router-dom"
+import { LOGO } from "components/utilities/logos"
 
 const uiDistribution = {
 	dynamic: {
@@ -205,6 +206,7 @@ export interface SubjectData {
 	name: string,
 	code: string,
 	description: string,
+	logo: LOGO,
 	color: string,
 	group: Group
 }

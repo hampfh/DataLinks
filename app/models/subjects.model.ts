@@ -7,6 +7,7 @@ export interface ISubject {
 	name: string,
 	code: string,
 	description: string,
+	logo: string,
 	color: string,
 	group: IGroup
 }
@@ -23,6 +24,10 @@ export const SubjectSchema = new Schema({
 	description: {
 		type: String,
 		required: true,
+	},
+	logo: {
+		type: String,
+		required: true
 	},
 	color: {
 		type: String,

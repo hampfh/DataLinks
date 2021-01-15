@@ -4,10 +4,6 @@ import "./Animation.css"
 import { SubjectData } from '../Subjects'
 import { Redirect } from "react-router-dom"
 
-import GROUP_ICON from "assets/icons/interfacePack/svg/group.svg"
-import CALCULATOR_ICON from "assets/icons/interfacePack/svg/calculator.svg"
-import DOCUMENT_ICON from "assets/icons/interfacePack/svg/document-3.svg"
-import COMPUTER_ICON from "assets/icons/interfacePack/svg/computer.svg"
 import { IReduxRootState } from "state/reducers"
 import { connect } from "react-redux"
 import { IAppState } from "state/reducers/app"
@@ -19,6 +15,7 @@ import {
 	setSneakPeakSelectionCount, 
 	showSneakPeak 
 } from "state/actions/app"
+import { getSubjectIcon } from 'components/utilities/logos'
 
 export class Subject extends Component<PropsForComponent, StateForComponent> {
 
@@ -88,22 +85,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	getSubjectIcon(subject: string): string {
-		switch(subject) {
-			case "DD1390":
-				return GROUP_ICON
-			case "SF1671":
-			case "SF1624":
-			case "SF1625":
-				return CALCULATOR_ICON
-			case "DA1600":
-				return DOCUMENT_ICON
-			case "DD1337":
-			case "DD1338":
-				return COMPUTER_ICON
-		}
-		return ""
-	}
+	
 
 	render() {
 		return (
@@ -116,7 +98,7 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 						<img alt="Subject icon" 
 							onMouseEnter={this._mouseEnter}
 							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
-							src={this.getSubjectIcon(this.props.subject.code)} 
+							src={getSubjectIcon(this.props.subject.logo)} 
 						/>
 						<h4 className="Header">{this.props.subject.code}</h4>
 					</div>

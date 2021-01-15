@@ -5,6 +5,7 @@ export const createSubject = Joi.object({
 	code: Joi.string().required(),
 	description: Joi.string().required(),
 	color: Joi.string().required(),
+	logo: Joi.string().required(),
 	fingerprint: Joi.string().required()
 })
 
@@ -14,8 +15,9 @@ export const updateSubject = Joi.object({
 	code: Joi.string(),
 	description: Joi.string(),
 	color: Joi.string(),
+	logo: Joi.string().required(),
 	fingerprint: Joi.string().required()
-}).or("name", "code", "description", "color")
+}).or("name", "code", "description", "logo", "color")
 
 export const createGroup = Joi.object({
 	parentGroup: Joi.string(),

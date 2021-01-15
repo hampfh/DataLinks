@@ -4,10 +4,9 @@
 	"private": true,
 	"scripts": {
 		"tsc": "tsc --watch",
-		"start": "node --experimental-specifier-resolution=node -r dotenv/config ./dist/index.js",
+		"start": "node -r dotenv/config ./dist/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"type": "module",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Hampfh/DataLinks.git"
