@@ -64,7 +64,9 @@ export default class SubjectController extends CrudController {
 	public async read(req: express.Request, res: express.Response): Promise<void> {
 
 		// Max depth is 5
-		const response = await SubjectModel.find().populate("group").populate({
+		const response = await SubjectModel.find({
+			archived: false
+		}).populate("group").populate({
 			path: "group",
 			populate: {
 				path: "content.group",

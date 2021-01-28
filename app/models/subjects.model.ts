@@ -21,6 +21,10 @@ export const SubjectSchema = new Schema({
 		type: String,
 		required: true
 	},
+	archived: {
+		type: Boolean,
+		required: true
+	},
 	description: {
 		type: String,
 		required: true,
