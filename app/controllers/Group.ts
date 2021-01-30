@@ -175,7 +175,7 @@ export default class GroupController extends CrudController {
 
 		const deletions = await GroupController.recursiveDelete(req.body.id)		
 
-		// Notify logg			
+		// Notify log			
 		Log(
 			req.body.fingerprint,
 			OperationType.DELETE,
