@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 // Set ES6 promises to mongoose default
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("mongoose").Promise = global.Promise
 
 export function connectDB(): Promise<void> {

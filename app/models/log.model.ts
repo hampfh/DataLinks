@@ -1,5 +1,4 @@
 import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose"
-import { Severity, WhatIsIt } from "@typegoose/typegoose/lib/internal/constants"
 
 export enum OperationType {
 	CREATE = "CREATE",

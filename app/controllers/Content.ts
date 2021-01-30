@@ -10,7 +10,7 @@ import RealTime from "../RealTime"
 
 export default class ContentController extends CrudController {
 
-	public async createLink(req: express.Request, res: express.Response, next: express.NextFunction) {
+	public async createLink(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createLink.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)
@@ -65,7 +65,7 @@ export default class ContentController extends CrudController {
 		next()
 	}
 
-	public async createText(req: express.Request, res: express.Response, next: express.NextFunction) {
+	public async createText(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createText.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)
@@ -121,7 +121,7 @@ export default class ContentController extends CrudController {
 		next()
 	}
 
-	public async createDeadline(req: express.Request, res: express.Response, next: express.NextFunction) {
+	public async createDeadline(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = createDeadline.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)
@@ -178,7 +178,7 @@ export default class ContentController extends CrudController {
 		next()
 	}
 
-	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+	public async create(): Promise<void> {
 		throw new Error("Method not implemented")
 	}
 	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -266,7 +266,7 @@ export default class ContentController extends CrudController {
 			ContentType.LINK,
 			[req.body.displayText, req.body.link],
 			[group.content[0].link?.displayText as string, group.content[0].link?.link as string]
-		);
+		)
 
 		RealTime.emitToSockets("updateElement", {
 			parent: req.body.parentGroup,
@@ -340,7 +340,7 @@ export default class ContentController extends CrudController {
 			ContentType.TEXT,
 			[req.body.title, req.body.text],
 			[group.content[0].text?.title as string, group.content[0].text?.text as string]
-		);
+		)
 
 		RealTime.emitToSockets("updateElement", {
 			parent: req.body.parentGroup,
@@ -406,7 +406,7 @@ export default class ContentController extends CrudController {
 				ContentType.TEXT,
 				[req.body.displayText, req.body.deadline],
 				[group.content[0].deadline?.displayText as string, (group.content[0].deadline?.deadline as Date).toString()]
-			);
+			)
 		} catch (error) {
 			console.warn(error)
 			res.json({
@@ -434,7 +434,7 @@ export default class ContentController extends CrudController {
 		})
 	}
 
-	public async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+	public async update(): Promise<void> {
 		throw new Error("Not implemented")
 	}
 	public async delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -497,7 +497,7 @@ export default class ContentController extends CrudController {
 			type,
 			["", ""],
 			[fieldOne, fieldTwo]
-		);
+		)
 
 		RealTime.emitToSockets("deleteElement", {
 			parent: req.body.parentGroupId,

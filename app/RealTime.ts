@@ -29,10 +29,10 @@ class RealTime {
 		this.attached && this.io.removeAllListeners()
 	}
 
-	emit = (event: string, data: any) => {
+	emit = (event: string, data: unknown) => {
 		this.attached && this.io.emit(event, data)
 	}
-	emitToSockets = (event: string, data: any) => {
+	emitToSockets = (event: string, data: unknown) => {
 		this.attached && this.io.sockets.emit(event, data)
 	}
 }

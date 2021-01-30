@@ -3,7 +3,6 @@ import { CrudController } from "./CrudController"
 import { createSubject, findElementWithIdFingerPrint, updateSubject } from "./schemas"
 import SubjectModel from "../models/subjects.model"
 import GroupModel from "../models/group.model"
-import { Subject } from "."
 import { Document } from "mongoose"
 import GroupController from "./Group"
 import Log from "../controllers/Log"
@@ -53,9 +52,9 @@ export default class SubjectController extends CrudController {
 			ContentType.SUBJECT,
 			[newSubject._id, newSubject.name, newSubject.description],
 			["", "", ""]
-		);
+		)
 		
-		if (!!!res.headersSent)
+		if (!res.headersSent)
 			res.status(201).json(newSubject)
 		next()
 	}
@@ -97,7 +96,7 @@ export default class SubjectController extends CrudController {
 			return
 		}
 
-		let appendObject: {
+		const appendObject: {
 			name?: string,
 			code?: string,
 			description?: string,
@@ -161,7 +160,7 @@ export default class SubjectController extends CrudController {
 			ContentType.SUBJECT,
 			["", "", ""],
 			[subject._id, subject.name, subject.description]
-		);
+		)
 
 		res.json({
 			message: "Successfully deleted subject"

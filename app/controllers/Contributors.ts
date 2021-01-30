@@ -1,13 +1,12 @@
-import { Request, Response } from "express";
-import { Document } from "mongoose";
-import ContributorModel from "../models/contributions.model";
-import { ContentType, OperationType } from "../models/log.model";
-import { nameContributor } from "./schemas";
-import RealTime from "../RealTime";
+import { Request, Response } from "express"
+import ContributorModel from "../models/contributions.model"
+import { ContentType, OperationType } from "../models/log.model"
+import { nameContributor } from "./schemas"
+import RealTime from "../RealTime"
 
 export default class Contributors {
 
-	async nameContributor(req: Request, res: Response) {
+	async nameContributor(req: Request, res: Response): Promise<void> {
 		const { error } = nameContributor.validate(req.body)
 		if (error) {
 			res.status(400).json({
@@ -38,41 +37,41 @@ export default class Contributors {
 		})
 	}
 
-	async getContributors(req: Request, res: Response) {
+	async getContributors(req: Request, res: Response): Promise<void> {
 		// TODO make the db perform this operations instead of the client
 		const contributors = await ContributorModel.aggregate([
 			{
-				'$project': {
-					'name': 1,
-					'contributions': 1,
-					'updatedAt': 1,
-					'identifier': 1
+				"$project": {
+					"name": 1,
+					"contributions": 1,
+					"updatedAt": 1,
+					"identifier": 1
 				}
 			}, {
-				'$addFields': {
-					'contributionCount': {
-						'$sum': [
-							'$contributions.operations.creates', '$contributions.operations.updates', '$contributions.operations.deletes'
+				"$addFields": {
+					"contributionCount": {
+						"$sum": [
+							"$contributions.operations.creates", "$contributions.operations.updates", "$contributions.operations.deletes"
 						]
 					}
 				}
 			}, {
-				'$project': {
-					'_id': 0,
-					'name': 1,
-					'contributions': {
-						'operations': 1
+				"$project": {
+					"_id": 0,
+					"name": 1,
+					"contributions": {
+						"operations": 1
 					},
-					'contributionCount': 1,
-					'updatedAt': 1,
-					'identifier': 1
+					"contributionCount": 1,
+					"updatedAt": 1,
+					"identifier": 1
 				}
 			},{
-				'$sort': {
-					'contributionCount': -1
+				"$sort": {
+					"contributionCount": -1
 				}
 			}, {
-				'$limit': 1000
+				"$limit": 1000
 			}
 		])
 
@@ -82,7 +81,7 @@ export default class Contributors {
 		})
 	}
 	
-	async contribute(fingerprint: string, operation: OperationType, type: ContentType) {
+	async contribute(fingerprint: string, operation: OperationType, type: ContentType): Promise<void> {
 		// Check if user exists
 		const response = await ContributorModel.findOne({
 			identifier: fingerprint
@@ -95,33 +94,33 @@ export default class Contributors {
 		}
 
 		switch (operation) {
-			case "CREATE":
-				response.contributions.operations.creates++
-				break
-			case "UPDATE":
-				response.contributions.operations.updates++
-				break
-			case "DELETE":
-				response.contributions.operations.deletes++
-				break
+		case "CREATE":
+			response.contributions.operations.creates++
+			break
+		case "UPDATE":
+			response.contributions.operations.updates++
+			break
+		case "DELETE":
+			response.contributions.operations.deletes++
+			break
 		}
 
 		switch (type) {
-			case "GROUP":
-				response.contributions.targets.groups++
-				break
-			case "TEXT":
-				response.contributions.targets.texts++
-				break
-			case "LINK":
-				response.contributions.targets.links++
-				break
-			case "DEADLINE":
-				response.contributions.targets.deadlines++
-				break
-			case "SUBJECT":
-				response.contributions.targets.subjects++
-				break
+		case "GROUP":
+			response.contributions.targets.groups++
+			break
+		case "TEXT":
+			response.contributions.targets.texts++
+			break
+		case "LINK":
+			response.contributions.targets.links++
+			break
+		case "DEADLINE":
+			response.contributions.targets.deadlines++
+			break
+		case "SUBJECT":
+			response.contributions.targets.subjects++
+			break
 		}
 
 		// Update contributor

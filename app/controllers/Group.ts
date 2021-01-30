@@ -2,7 +2,7 @@ import express from "express"
 import { CrudController } from "./CrudController"
 import { createGroup, findElementWithId, findElementWithIdFingerPrint, updateGroup } from "./schemas"
 import GroupModel from "../models/group.model"
-import Mongoose, { Document } from "mongoose"
+import Mongoose from "mongoose"
 import Log from "../controllers/Log"
 import { ContentType, OperationType } from "../models/log.model"
 
@@ -25,7 +25,7 @@ export default class GroupController extends CrudController {
 		}
 
 		// Create group
-		let object: {
+		const object: {
 			name?: string,
 			split: boolean,
 			column: boolean,
@@ -67,9 +67,9 @@ export default class GroupController extends CrudController {
 			ContentType.GROUP,
 			[""],
 			["GROUP: " + newGroup.name]
-		);
+		)
 
-		if (!!!res.headersSent)
+		if (!res.headersSent)
 			res.status(201).json({
 				message: "Successfully created group",
 				group: newGroup
@@ -101,7 +101,7 @@ export default class GroupController extends CrudController {
 			return
 		}
 
-		let updateObject: {
+		const updateObject: {
 			name?: string,
 			column?: boolean,
 			split?: boolean,
@@ -136,7 +136,7 @@ export default class GroupController extends CrudController {
 			ContentType.GROUP,
 			[""],
 			["GROUP: " + req.body.id]
-		);
+		)
 
 		res.status(200).json({
 			message: "Resource updated",
@@ -182,7 +182,7 @@ export default class GroupController extends CrudController {
 			ContentType.GROUP,
 			[""],
 			["GROUP: " + req.body.id]
-		);
+		)
 
 		res.status(200).json({
 			message: `Successfully deleted ${deletions} groups`
@@ -202,7 +202,7 @@ export default class GroupController extends CrudController {
 		if (group == null)
 			return 0
 
-		let deletions = []
+		const deletions = []
 		let deleteCount = 1
 
 		if (group.content != null) {

@@ -1,5 +1,4 @@
 import { prop, getModelForClass, modelOptions, Ref } from "@typegoose/typegoose"
-import { WhatIsIt } from "@typegoose/typegoose/lib/internal/constants"
 import { Schema } from "mongoose"
 
 class Link {
