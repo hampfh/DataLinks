@@ -1,7 +1,7 @@
 import express from "express"
 import { CrudController } from "./CrudController"
 import { createSubject, findElementWithIdFingerPrint, updateSubject } from "./schemas"
-import SubjectModel, { ISubject } from "../models/subjects.model"
+import SubjectModel from "../models/subjects.model"
 import GroupModel from "../models/group.model"
 import { Subject } from "."
 import { Document } from "mongoose"
@@ -33,20 +33,18 @@ export default class SubjectController extends CrudController {
 			description: req.body.description,
 			logo: req.body.logo,
 			color: req.body.color,
-			group: newGroup._id
-		}) as Document & {
-			name: string,
-			code: string,
-			description: string,
-			logo: string,
-			color: string,
-			group: string
-		}
-		await newSubject.save().catch(() => {
+			group: newGroup._id,
+			archived: false
+		})
+
+		try {
+			await newSubject.save()
+		} catch (error) {
 			res.status(500).json({
 				message: "Internal error"
 			})
-		})
+			return
+		}
 
 		// Notify logg			
 		Log(
@@ -141,9 +139,16 @@ export default class SubjectController extends CrudController {
 
 		const subject = await SubjectModel.findOne({
 			_id: req.body.id
-		}) as Document & ISubject
+		})
 
-		await GroupController.recursiveDelete(subject.group._id.toString())
+		if (!subject || !subject.group) {
+			res.json({
+				message: "The specified subject does not exist"
+			})
+			return
+		}
+
+		await GroupController.recursiveDelete(subject.group.toString())
 
 		await SubjectModel.deleteOne({
 			_id: req.body.id

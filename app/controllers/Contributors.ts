@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { Document } from "mongoose";
-import ContributorModel, { IDB_Contributor } from "../models/contributions.model";
+import ContributorModel from "../models/contributions.model";
 import { ContentType, OperationType } from "../models/log.model";
 import { nameContributor } from "./schemas";
 import RealTime from "../RealTime";
@@ -18,7 +18,7 @@ export default class Contributors {
 
 		const response = await ContributorModel.findOne({
 			identifier: req.body.fingerprint
-		}) as Document & IDB_Contributor
+		})
 
 		// Contributor doesn't exist, create new one
 		if (response == null) {
@@ -77,6 +77,7 @@ export default class Contributors {
 		])
 
 		res.json({
+			message: "Successfully fetched contributors",
 			contributors
 		})
 	}
@@ -85,7 +86,7 @@ export default class Contributors {
 		// Check if user exists
 		const response = await ContributorModel.findOne({
 			identifier: fingerprint
-		}) as Document & IDB_Contributor
+		})
 
 		// This machine doesn't exist, create new
 		if (response == null) {
@@ -153,7 +154,7 @@ export default class Contributors {
 				}
 			},
 			identifier: fingerprint
-		} as IDB_Contributor)
+		})
 
 		// Save contributor
 		await newContributor.save()

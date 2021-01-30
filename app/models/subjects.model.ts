@@ -1,48 +1,29 @@
-import Mongoose from "mongoose"
-import { GroupSchema, IGroup } from "./group.model"
-import database from "./index.model"
-const Schema = database.Schema
+import { prop, getModelForClass, modelOptions, Ref } from "@typegoose/typegoose"
+import { Schema } from "mongoose"
+import { Group } from "./group.model"
 
-export interface ISubject {
-	name: string,
-	code: string,
-	description: string,
-	logo: string,
-	color: string,
-	group: IGroup
+@modelOptions({ schemaOptions: { timestamps: true }})
+class Subject {
+	@prop({ required: true })
+	public name!: string
+
+	@prop({ required: true })
+	public code!: string
+
+	@prop({ required: true })
+	public description!: string
+
+	@prop({ required: true })
+	public logo!: string
+
+	@prop({ required: true })
+	public color!: string
+
+	@prop({ required: true, ref: () => Group, type: Schema.Types.ObjectId })
+	public group!: Ref<Group>
+
+	@prop({ required: true })
+	public archived!: boolean
 }
 
-export const SubjectSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
-	code: {
-		type: String,
-		required: true
-	},
-	archived: {
-		type: Boolean,
-		required: true
-	},
-	description: {
-		type: String,
-		required: true,
-	},
-	logo: {
-		type: String,
-		required: true
-	},
-	color: {
-		type: String,
-		required: true
-	},
-	group: {
-		type: Mongoose.Types.ObjectId,
-		ref: "group"
-	}
-}, {
-	timestamps: true
-})
-
-export default database.model("subject", SubjectSchema)
+export default getModelForClass(Subject)

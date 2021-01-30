@@ -1,7 +1,7 @@
 import express from "express"
 import { CrudController } from "./CrudController"
 import { createLink, createText, findGroupChildElementId, updateText, updateLink, createDeadline, updateDeadline } from "./schemas"
-import GroupModel, { IGroup } from "../models/group.model"
+import GroupModel from "../models/group.model"
 import Mongoose from "mongoose"
 import Log from "./Log"
 import { ContentType, OperationType } from "../models/log.model"
@@ -18,10 +18,10 @@ export default class ContentController extends CrudController {
 		}
 
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId(),
+			_id: new Mongoose.Types.ObjectId().toHexString(),
 			placement: req.body.placement ?? 0,
 			link: {
-				_id: new Mongoose.Types.ObjectId(),
+				_id: new Mongoose.Types.ObjectId().toHexString(),
 				displayText: req.body.displayText,
 				link: req.body.link
 			}
@@ -73,10 +73,10 @@ export default class ContentController extends CrudController {
 		}
 
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId(),
+			_id: new Mongoose.Types.ObjectId().toHexString(),
 			placement: req.body.placement ?? 0,
 			text: {
-				_id: new Mongoose.Types.ObjectId(),
+				_id: new Mongoose.Types.ObjectId().toHexString(),
 				title: req.body.title ?? "",
 				text: req.body.text
 			}
@@ -129,10 +129,10 @@ export default class ContentController extends CrudController {
 		}
 
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId(),
+			_id: new Mongoose.Types.ObjectId().toHexString(),
 			placement: req.body.placement ?? 0,
 			deadline: {
-				_id: new Mongoose.Types.ObjectId(),
+				_id: new Mongoose.Types.ObjectId().toHexString(),
 				displayText: req.body.displayText ?? "",
 				deadline: req.body.deadline,
 				start: req.body.start ?? Moment().toDate()
@@ -190,7 +190,14 @@ export default class ContentController extends CrudController {
 
 		const group = await GroupModel.findOne({
 			_id: req.body.parentGroupId
-		}) as Mongoose.Document & IGroup
+		})
+
+		if (group == null) {
+			res.status(404).json({
+				message: "Could not find the requested group"
+			})
+			return
+		}
 
 		const target = group.content.find((content) => {
 			return content._id.toString() === req.body.id.toString()
@@ -222,8 +229,8 @@ export default class ContentController extends CrudController {
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
-				"content.$.link": 1
-			}) as Mongoose.Document & IGroup
+				"content.$": 1
+			})
 
 			// User tries to update item that has been deleted or doesn't exist
 			if (group == null) {
@@ -296,8 +303,8 @@ export default class ContentController extends CrudController {
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
-				"content.$.text": 1
-			}) as Mongoose.Document & IGroup
+				"content.$": 1
+			})
 
 			// User tries to update item that has been deleted or doesn't exist
 			if (group == null) {
@@ -368,8 +375,8 @@ export default class ContentController extends CrudController {
 				_id: req.body.parentGroup,
 				"content._id": req.body.id
 			}, {
-				"content.$.deadline": 1
-			}) as Mongoose.Document & IGroup
+				"content.$": 1
+			})
 
 			// User tries to update item that has been deleted or doesn't exist
 			if (group == null) {
@@ -440,7 +447,7 @@ export default class ContentController extends CrudController {
 		const group = await GroupModel.findOne({
 			_id: req.body.parentGroupId,
 			"content._id": req.body.id
-		}) as Mongoose.Document & IGroup
+		})
 
 		if (group == null) {
 			res.status(404).json({

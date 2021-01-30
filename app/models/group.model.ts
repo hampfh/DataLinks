@@ -1,107 +1,71 @@
-import database from "./index.model"
-const Schema = database.Schema
+import { prop, getModelForClass, modelOptions, Ref } from "@typegoose/typegoose"
+import { WhatIsIt } from "@typegoose/typegoose/lib/internal/constants"
+import { Schema } from "mongoose"
 
-export interface ILink {
-	displayText: string,
-	link: string
+class Link {
+	@prop({ required: true })
+	public displayText!: string
+
+	@prop({ required: true })
+	public link!: string
 }
 
-export interface IText {
-	title?: string,
-	text: string
+class Text {
+	@prop()
+	public title?: string
+
+	@prop({ required: true })
+	public text!: string
 }
 
-export interface IDeadline {
-	displayText: string,
-	deadline: Date,
-	start: Date
+class Deadline {
+	@prop({ required: true })
+	public displayText!: string
+
+	@prop({ required: true })
+	public deadline!: Date
+
+	@prop({ required: true })
+	public start!: Date
 }
 
-export interface IContent {
-	_id: string,
-	link?: ILink,
-	text?: IText,
-	deadline?: IDeadline,
-	group?: IGroup
+class Content {
+	@prop({ required: true, type: Schema.Types.ObjectId })
+	public _id!: string
+
+	@prop({ required: true })
+	public placement!: number
+
+	@prop()
+	public link?: Link
+	
+	@prop()
+	public text?: Text
+
+	@prop()
+	public deadline?: Deadline
+
+	@prop({ ref: () => Group, type: Schema.Types.ObjectId })
+	public group?: Ref<Group>
 }
 
-export interface IGroup {
-	_id: string,
-	name?: string,
-	depth: number
-	split?: boolean,
-	column?: boolean,
-	content: [IContent]
+@modelOptions({ schemaOptions: { timestamps: true }})
+export class Group {
+
+	@prop()
+	public name?: string
+
+	@prop({ required: true })
+	public depth!: number 
+
+	@prop()
+	public split?: boolean
+
+	@prop()
+	public column?: boolean
+
+	@prop({ required: true, type: [Content] })
+	public content!: Content[]
 }
 
-export const LinkSchema = new Schema({
-	displayText: {
-		type: String,
-		required: true
-	},
-	link: {
-		type: String,
-		required: true
-	}
-})
-
-export const TextSchema = new Schema({
-	title: {
-		type: String
-	},
-	text: {
-		type: String,
-		required: true
-	}
-}) 
-
-export const DeadlineSchema = new Schema({
-	displayText: {
-		type: String,
-		required: true,
-	},
-	deadline: {
-		type: Date,
-		required: true,
-	},
-	start: {
-		type: Date,
-		required: true,
-	}
-})
-
-export const ContentSchema = new Schema({
-	_id: Schema.Types.ObjectId,
-	placement: {
-		type: Number,
-		required: true
-	},
-	link: LinkSchema,
-	text: TextSchema,
-	deadline: DeadlineSchema,
-	group: {
-		type: Schema.Types.ObjectId,
-		ref: "group"
-	}
-})
-
-export const GroupSchema = new Schema({
-	name: {
-		type: String,
-		required: false
-	},
-	depth: {
-		type: Number,
-		required: true
-	},
-	split: Boolean,
-	column: Boolean,
-	content: {
-		type: [ContentSchema],
-		required: true
-	}
-}, {
-	timestamps: true
-})
-
-export default database.model("group", GroupSchema)
+export default getModelForClass(Group)

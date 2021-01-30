@@ -1,43 +1,36 @@
-import database from "./index.model"
-const Schema = database.Schema
+import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose"
+import { Severity, WhatIsIt } from "@typegoose/typegoose/lib/internal/constants"
 
 export enum OperationType {
-	"CREATE" = "CREATE",
-	"UPDATE" = "UPDATE",
-	"DELETE" = "DELETE"
+	CREATE = "CREATE",
+	UPDATE = "UPDATE",
+	DELETE = "DELETE"
 }
 
 export enum ContentType {
-	"GROUP" = "GROUP",
-	"TEXT" = "TEXT",
-	"LINK" = "LINK",
-	"DEADLINE" = "DEADLINE",
-	"SUBJECT" = "SUBJECT"
+	GROUP = "GROUP",
+	TEXT = "TEXT",
+	LINK = "LINK",
+	DEADLINE = "DEADLINE",
+	SUBJECT = "SUBJECT"
 }
 
-export const LogSchema = new Schema({
-	user: {
-		type: String,
-		required: true
-	},
-	operation: {
-		type: OperationType,
-		required: true
-	},
-	type: {
-		type: ContentType,
-		required: true
-	},
-	from: {
-		type: [String],
-		required: false
-	},
-	to: {
-		type: [String],
-		required: false,
-	}
-}, {
-	timestamps: true
-})
+@modelOptions({ schemaOptions: { timestamps: true }})
+class Log {
+	@prop({ required: true })
+	public user!: string
 
-export default database.model("log", LogSchema)
+	@prop({ required: true })
+	public operation!: OperationType
+
+	@prop({ required: true })
+	public type!: ContentType
+
+	@prop({ required: true, type: [String] })
+	public from!: string[]
+
+	@prop({ required: true, type: [String] })
+	public to!: string[]
+}
+
+export default getModelForClass(Log)
