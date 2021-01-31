@@ -3,6 +3,7 @@ import local, { ILocalState } from './local';
 import app, { IAppState } from './app'
 import deadlines, { IDeadlineState } from './deadlines'
 import dimensions, { IDimensionState } from './dimensions'
+import content, { IContentState } from './content';
 
 export interface ActionType<T> {
 	type: string,
@@ -13,14 +14,16 @@ export interface IReduxRootState {
 	app: IAppState,
 	local: ILocalState,
 	deadlines: IDeadlineState,
-	dimensions: IDimensionState
+	dimensions: IDimensionState,
+	content: IContentState
 }
 
 const rootReducer = combineReducers({
 	app,
 	local,
 	deadlines,
-	dimensions
+	dimensions,
+	content
 });
 
 export default rootReducer;

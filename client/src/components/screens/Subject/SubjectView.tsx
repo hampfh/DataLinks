@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from "react-redux"
 import { Redirect } from "react-router-dom"
 
@@ -12,105 +12,93 @@ import { IReduxRootState } from "state/reducers"
 import { IAppState } from "state/reducers/app"
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from "state/actions/app"
 
-class SubjectView extends Component<PropsForComponent, StateForComponent> {
+function SubjectView(props: PropsForComponent) {
 
-	scrollRef: React.RefObject<HTMLInputElement>
-	timeout?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props)
+	const scrollRef = useRef(null)
+	let timeout: NodeJS.Timeout | undefined = undefined
 
-		this.scrollRef = createRef()
+	const [shouldExitView, setShouldExitView] = useState(false)
+	const [editModeSwitchActive, setEditModeSwitchActive] = useState<boolean | undefined>(undefined)
 
-		this.state = {
-			shouldExitView: false,
+	useEffect(() => {
+		
+		return () => {
+			if (timeout)
+				clearTimeout(timeout)
 		}
-	}
+	}, [timeout])
 
-	componentWillUnmount() {
-		if (this.timeout)
-			clearTimeout(this.timeout)
-	}
-
-	getSnapshotBeforeUpdate(prevProps: PropsForComponent, prevState: StateForComponent) {
+	/* getSnapshotBeforeUpdate(prevProps: PropsForComponent, prevState: StateForComponent) {
 		const scrollView = this.scrollRef.current
 		if (scrollView == null)
 			return null
 		return scrollView.scrollHeight - scrollView.scrollTop
-	}
+	} */
 
-	componentDidUpdate(prevProps: PropsForComponent, prevState: StateForComponent, snapshot: any) {
+	/* componentDidUpdate(prevProps: PropsForComponent, prevState: StateForComponent, snapshot: any) {
 		// Set scroll
 		if (snapshot !== null ) {
 			const scrollView = this.scrollRef.current
 			if (scrollView != null)
 				scrollView.scrollTop = scrollView?.scrollHeight - snapshot
 		}
-	}
+	} */
 
-	_clickExitView = () => {
-		const newState = { ...this.state }
-		newState.shouldExitView = true
-		this.setState(newState)
-	}
-
-	_flickEditMode = (event: React.ChangeEvent<HTMLInputElement>) => {
+	function _flickEditMode(event: React.ChangeEvent<HTMLInputElement>) {
 
 		const checked = event.target.checked
-		let newState = { ...this.state }
-		newState.checked = !!!this.props.app.flags.editMode
-		this.setState(newState)
 
-		if (this.timeout)
-			clearTimeout(this.timeout)
-		this.timeout = setTimeout(() => {
+		setEditModeSwitchActive(!!!props.app.flags.editMode)
+		if (timeout)
+			clearTimeout(timeout)
+
+		timeout = setTimeout(() => {
 			if (checked)
-				this.props.enableEditMode()
+				props.enableEditMode()
 			else
-				this.props.disableEditModeFlag()
+				props.disableEditModeFlag()
 		}, 100)
 	}
 
-	render() {
-		if (this.props.subject.group == null) {
-			console.warn("Subject " + this.props.subject.name + " has no root")
-			return (<div>
-				<h2>This page is not working correctly</h2>
-				<p>Please contant admin...</p>
-			</div>)
-		}
+	if (props.subject.group == null) {
+		console.warn("Subject " + props.subject.name + " has no root")
+		return (<div>
+			<h2>This page is not working correctly</h2>
+			<p>Please contant admin...</p>
+		</div>)
+	}
 
-		return (
-			<section className="SubjectViewMaster">
-				{this.state.shouldExitView ?
-					<Redirect to="/" /> :
-					<div className="SubjectWrapper">
-						{isMobile() ? null :
-							<div className="editModeContainer editModeCourse subjectViewEditMode">
-								<p>Default mode</p>
-								<label className="switch">
-									<input onChange={(event) => this._flickEditMode(event)} checked={this.state.checked ?? this.props.app.flags.editMode} type="checkbox" />
-									<span className="slider round"></span>
-								</label>
-								<p>Edit mode</p>
-							</div>
-						}
-						<div className="Scrollable" ref={this.scrollRef}>
-							<img className="logoutIcon" onClick={this._clickExitView} alt="Exit view" src={logoutIcon} />
-							<h2 className="HeaderSubjectView">{this.props.subject.name}</h2>
-							<p className="Description">{this.props.subject.description}</p>
-							<div className="LinkContainer">
-								<RenderData 
-									updateSubjects={this.props.updateSubjects}
-									group={this.props.subject.group}
-								/>
-							</div>
+	return (
+		<section className="SubjectViewMaster">
+			{shouldExitView ?
+				<Redirect to="/" /> :
+				<div className="SubjectWrapper">
+					{isMobile() ? null :
+						<div className="editModeContainer editModeCourse subjectViewEditMode">
+							<p>Default mode</p>
+							<label className="switch">
+								<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive ?? props.app.flags.editMode} type="checkbox" />
+								<span className="slider round"></span>
+							</label>
+							<p>Edit mode</p>
+						</div>
+					}
+					<div className="Scrollable" ref={scrollRef}>
+						<img className="logoutIcon" onClick={() => setShouldExitView(true)} alt="Exit view" src={logoutIcon} />
+						<h2 className="HeaderSubjectView">{props.subject.name}</h2>
+						<p className="Description">{props.subject.description}</p>
+						<div className="LinkContainer">
+							<RenderData 
+								updateSubjects={props.updateSubjects}
+								group={props.subject.group}
+							/>
 						</div>
 					</div>
+				</div>
 
-				}
-			</section>
-		)
-	}
+			}
+		</section>
+	)
 }
 
 export interface PropsForComponent {

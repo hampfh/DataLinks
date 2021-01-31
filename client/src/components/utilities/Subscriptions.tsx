@@ -1,105 +1,133 @@
-import React, { Component } from 'react'
-import { addLocal, deleteLocally, editLocal, IAddLocal, IDeleteLocally, IEditLocal } from 'state/actions/local'
 import { IReduxRootState } from 'state/reducers'
-import { ILocalState } from 'state/reducers/local'
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import Socket from "components/utilities/SocketManager"
-import { ContentObject } from 'components/templates/RenderData'
-import { ContentType } from 'App'
-import { formatTime, getCurrentTimeZone } from './time'
+import { ContentType } from './contentTypes'
+import { addElement, deleteElement, updateElement } from 'functions/updateElement'
+import { IContentState } from 'state/reducers/content'
+import moment from "moment"
 
-class Subscriptions extends Component<PropsForComponent> {
-	render() {
-		return (
-			<>
-				<Socket subscribeTo="newElement" callback={(data: any) => {
-						this.props.addLocal(
-							data.parent, 
-							data.fieldOne, 
-							data.fieldTwo, 
-							data.fieldThree, 
-							data.type, 
-							data.id
-						)
-					}} 
-				/>
-				<Socket subscribeTo="updateElement" callback={(data: any) => {
+interface ISocketNewElement {
+	parent: string,
+	id: string,
+	nestedId: string,
+	placement: number,
+	fieldOne: string,
+	fieldTwo: string,
+	fieldThree?: string,
+	type: ContentType
+}
 
-						// Delete old node and replace with new
-						let appendObject: ContentObject = {
-							_id: data.id
-						}
+interface ISocketDeleteElement {
+	parent: string,
+	id: string
+}
 
-						if (data.type as ContentType === "TEXT") {
-							const text = {
-								_id: "NOTHING",
-								title: data.fieldOne,
-								text: data.fieldTwo
-							}
-							appendObject.text = text
-						} else if (data.type as ContentType === "LINK") {
-							const link = {
-								_id: "NOTHING",
-								displayText: data.fieldOne,
-								link: data.fieldTwo
-							}
-							appendObject.link = link
-						} else if (data.type as ContentType === "DEADLINE") {
-							const deadlines = {
-								_id: "NOTHING",
-								displayText: data.fieldOne,
-								deadline: data.fieldTwo,
-								start: data.fieldThree
-							}
-							appendObject.deadline = deadlines
-						}
+function Subscriptions(props: PropsForComponent) {
 
-						// Is the item local?
-						if (this.props.local.added.find((element) => element.id?.toString() === data.id.toString()) != null) {
-						
-							this.props.editLocal(data.id, {
-								id: data.id,
-								title: data.type as ContentType === "TEXT" ? data.fieldOne : undefined,
-								text: data.type as ContentType === "TEXT" ? data.fieldTwo : undefined,
-								displayText: data.type as ContentType === "LINK" || data.type as ContentType === "DEADLINE" ? data.fieldOne : undefined,
-								deadline: data.type as ContentType === "DEADLINE" ? formatTime(getCurrentTimeZone(data.fieldTwo)) : undefined,
-								link: data.type as ContentType === "LINK" ? data.fieldTwo : undefined,
-								start: data.type as ContentType === "DEADLINE" ? data.fieldThree : undefined
+	const dispatch = useDispatch()
+
+	return (
+		<>
+			<Socket subscribeTo="newElement" callback={(data: ISocketNewElement) => {
+					const newSubjects = [ ...props.content.subjects ]
+
+					console.log("Add",data.parent)
+					switch(data.type) {
+						case ContentType.LINK:
+							addElement(newSubjects, {
+								_id: data.id,
+								link: {
+									_id: data.nestedId,
+									displayText: data.fieldOne,
+									link: data.fieldTwo,
+								}
+							}, data.parent)
+							break
+						case ContentType.TEXT:
+							addElement(newSubjects, {
+								_id: data.id,
+								text: {
+									_id: data.nestedId,
+									title: data.fieldOne,
+									text: data.fieldTwo,
+								}
+							}, data.parent)
+							break
+						case ContentType.DEADLINE:
+							addElement(newSubjects, {
+								_id: data.id,
+								deadline: {
+									_id: data.nestedId,
+									displayText: data.fieldOne,
+									deadline: data.fieldTwo,
+									start: data.fieldThree ?? moment().toString()
+								}
+							}, data.parent)
+							break
+					}
+					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
+				}} 
+			/>
+			<Socket subscribeTo="updateElement" callback={(data: ISocketNewElement) => {
+
+					console.log("UPDATE")
+					const newSubjects = [ ...props.content.subjects ]
+					switch(data.type) {
+						case ContentType.LINK:
+							updateElement(newSubjects, {
+								_id: data.id,
+								link: {
+									_id: "",
+									displayText: data.fieldOne,
+									link: data.fieldTwo
+								}
 							})
-						} else 
-							this.props.updateRawData(appendObject)
-					}} 
-				/>
-				<Socket subscribeTo="deleteElement" callback={(data: any) => {
-						// Delete old node
-						this.props.deleteLocally(data.id)
-					}}
-				/>
-			</>
-		)
-	}
+							break
+
+						case ContentType.TEXT:
+							updateElement(newSubjects, {
+								_id: data.id,
+								text: {
+									_id: "",
+									title: data.fieldOne,
+									text: data.fieldTwo
+								}
+							})
+							break
+
+						case ContentType.DEADLINE:
+							updateElement(newSubjects, {
+								_id: data.id,
+								deadline: {
+									_id: "",
+									displayText: data.fieldOne,
+									deadline: data.fieldTwo,
+									start: data.fieldThree!
+								}
+							})
+							break
+					}
+					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects } })
+				}} 
+			/>
+			<Socket subscribeTo="deleteElement" callback={(data: ISocketDeleteElement) => {
+					
+					const newSubjects = [ ...props.content.subjects ]
+					deleteElement(newSubjects, data.id)
+
+					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects } })
+				}}
+			/>
+		</>
+	)
 }
 
 export interface PropsForComponent {
-	updateRawData: (newElement: ContentObject) => void
-	local: ILocalState,
-	addLocal: IAddLocal,
-	deleteLocally: IDeleteLocally
-	editLocal: IEditLocal
+	content: IContentState,
 }
 
-const reduxSelect = (state: IReduxRootState) => {
-	return {
-		local: state.local
-	}
-}
+const reduxSelect = (state: IReduxRootState) => ({
+	content: state.content
+})
 
-const reduxDispatch = () => {
-	return {
-		addLocal,
-		deleteLocally,
-		editLocal
-	}
-}
-
-export default connect(reduxSelect, reduxDispatch())(Subscriptions);
+export default connect(reduxSelect)(Subscriptions);

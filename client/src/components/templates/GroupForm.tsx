@@ -34,7 +34,7 @@ class GroupForm extends Component<PropsForComponent, StateForComponent> {
 		}
 		// Render Add group button
 		else
-			return (<button onClick={() => this.props.createGroup(this.props.parentId ?? this.props.parentId, true)}>Add group</button>)	
+			return (<button onClick={() => this.props.createGroup(true)}>Add group</button>)	
 	}
 }
 
@@ -47,7 +47,7 @@ interface PropsForComponent {
 		parentGroup: string,
 		isSubGroup: boolean
 	},
-	createGroup: (id: string, isSubGroup: boolean) => Promise<void>,
+	createGroup: (isSubGroup: boolean) => void,
 	submitGroup: (name: string) => Promise<void>
 }
 

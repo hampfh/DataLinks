@@ -53,6 +53,7 @@ export default class ContentController extends CrudController {
 		RealTime.emitToSockets("newElement", {
 			parent: req.body.parentGroup,
 			id: appendObject._id,
+			nestedId: appendObject.link._id,
 			placement: req.body.placement ?? 0,
 			fieldOne: appendObject.link.displayText,
 			fieldTwo: appendObject.link.link,
@@ -109,6 +110,7 @@ export default class ContentController extends CrudController {
 		RealTime.emitToSockets("newElement", {
 			parent: req.body.parentGroup,
 			id: appendObject._id,
+			nestedId: appendObject.text._id,
 			placement: req.body.placement ?? 0,
 			fieldOne: appendObject.text.title,
 			fieldTwo: appendObject.text.text,
@@ -165,6 +167,7 @@ export default class ContentController extends CrudController {
 		RealTime.emitToSockets("newElement", {
 			parent: req.body.parentGroup,
 			id: appendObject._id,
+			nestedId: appendObject.deadline._id,
 			placement: req.body.placement ?? 0,
 			fieldOne: appendObject.deadline.displayText,
 			fieldTwo: appendObject.deadline.deadline,

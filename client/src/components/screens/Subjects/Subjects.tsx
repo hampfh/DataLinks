@@ -2,7 +2,6 @@ import React, { Component, createRef } from "react"
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import "./components/Switch.css"
-import { Group } from "components/templates/RenderData"
 import isMobile from "functions/isMobile"
 import { version } from "components/../../package.json"
 import { connect } from "react-redux"
@@ -208,7 +207,11 @@ export interface SubjectData {
 	description: string,
 	logo: LOGO,
 	color: string,
-	group: Group
+	group: Group,
+	archived: boolean,
+	createdAt: Date,
+	updatedAt: Date,
+	__v: number
 }
 
 interface PropsForComponent {

@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import { connect } from "react-redux"
 import Moment from "moment"
 
-import { ContentType } from "App"
 import Http from "functions/HttpRequest"
-import { IDeadline, ILink, IText } from "components/templates/RenderData"
 import DeadlineObject from './DeadlineObject'
 import "./ContentObject.css"
 import { deleteLocally, editLocal, IDeleteLocally, IEditLocal, IEditLocalObject } from "state/actions/local"
 import { IReduxRootState } from "state/reducers"
 import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
+import { ContentType } from 'components/utilities/contentTypes'
 
 class ContentObject extends Component<PropsForComponent, StateForComponent> {
 
@@ -165,7 +164,7 @@ class ContentObject extends Component<PropsForComponent, StateForComponent> {
 				)
 			} else // Render deadline object
 				return <DeadlineObject id={this.props.childId ?? this.props.id} displayText={this.state.fieldOne} deadline={this.state.fieldTwo} start={this.state.fieldThree} accent={this.props.accent} />
-		} else {
+		} else { // Edit mode
 			return (
 				<div className="ButtonWrapper ButtonWrapperEditMode" style={{
 					display: this.props.type === "DEADLINE" ? "grid" : "block"

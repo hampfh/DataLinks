@@ -4,10 +4,10 @@ import Moment from "moment"
 
 import ContentObject from "components/screens/Subject/components/ContentObject"
 import { SubjectData } from "components/screens/Subjects/Subjects"
-import { Group, IDeadline } from './RenderData'
 import "./DeadlineRenderer.css"
 import { IReduxRootState } from "state/reducers"
 import { IDimensionState } from "state/reducers/dimensions"
+import { ContentType } from 'components/utilities/contentTypes'
 
 class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 
@@ -86,7 +86,7 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 				<div className="deadlineWrapper">
 					{this.state.deadlines.map((deadline) => <ContentObject
 						key={deadline._id + "_NOEDIT"}
-						type="DEADLINE"
+						type={ContentType.DEADLINE}
 						parentId={"0"}
 						id={deadline._id}
 						contentObject={deadline}

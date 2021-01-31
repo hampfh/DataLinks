@@ -3,10 +3,11 @@ import Contributor, { IContributor } from './components/Contributor'
 import Http from 'functions/HttpRequest'
 import "./Contributors.css"
 import SocketManager from 'components/utilities/SocketManager'
-import { ContentType, OperationType } from 'App'
+import { OperationType } from 'App'
 import Moment from "moment"
 import logoutIcon from "assets/icons/close.svg"
 import { Redirect } from 'react-router-dom'
+import { ContentType } from 'components/utilities/contentTypes'
 
 interface INewContribution {
 	name?: string,
