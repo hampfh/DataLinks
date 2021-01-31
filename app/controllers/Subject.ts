@@ -63,7 +63,7 @@ export default class SubjectController extends CrudController {
 		// Max depth is 5
 		const response = await SubjectModel.find({
 			archived: false
-		}).populate("group").populate({
+		}).populate({
 			path: "group",
 			populate: {
 				path: "content.group",
@@ -74,7 +74,7 @@ export default class SubjectController extends CrudController {
 						populate: {
 							path: "content.group",
 							populate: {
-								path: "content.group",
+								path: "content.group"
 							}
 						}
 					}
@@ -83,9 +83,12 @@ export default class SubjectController extends CrudController {
 		})
 		
 		if (response == null)
-			res.status(200).json([])
+			res.status(404).json({
+				message: "No subjects were found"
+			})
 		else
 			res.status(200).json({
+				message: "Successfully fetched subjects",
 				result: response
 			})
 	}

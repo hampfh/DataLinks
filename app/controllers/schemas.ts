@@ -106,3 +106,9 @@ export const nameContributor = Joi.object({
 	name: Joi.string(),
 	fingerprint: Joi.string().required()
 })
+
+export const updateContentPosition = Joi.object({
+	parentGroup: Joi.string().required(),
+	id: Joi.string().required(),
+	position: Joi.number().required().min(0)
+})

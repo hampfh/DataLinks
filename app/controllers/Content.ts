@@ -1,12 +1,13 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createLink, createText, findGroupChildElementId, updateText, updateLink, createDeadline, updateDeadline } from "./schemas"
+import { createLink, createText, findGroupChildElementId, updateText, updateLink, createDeadline, updateDeadline, updateContentPosition } from "./schemas"
 import GroupModel from "../models/group.model"
 import Mongoose from "mongoose"
 import Log from "./Log"
 import { ContentType, OperationType } from "../models/log.model"
 import Moment from "moment"
 import RealTime from "../RealTime"
+import { indexify, rebaseInArray } from "../utilities/placement"
 
 export default class ContentController extends CrudController {
 
@@ -431,6 +432,55 @@ export default class ContentController extends CrudController {
 				deadline: req.body.deadline,
 				start: req.body.start
 			}
+		})
+	}
+
+	public async updateContentPosition(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = updateContentPosition.validate(req.body)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return
+		}
+
+		// Find group and sort it by placement
+		const group = await GroupModel.findOne({
+			_id: req.body.parentGroup,
+		})
+
+		if (group == null) {
+			res.json(404).json({
+				message: "Requested group doesn't exist"
+			})
+			return
+		}
+
+		// Sort group content (ASC)
+		group.content.sort((a, b) => a.placement - b.placement)
+
+		try {
+			rebaseInArray(group.content, req.body.id, req.body.position)
+		} catch(error) {
+			res.status(404).json({
+				message: "The specified element doesn't exist within the group"
+			})
+			return
+		}
+
+		// Re-create placements from array position
+		indexify(group.content)
+
+		try {
+			group.save()	
+		} catch (error) {
+			console.warn("Rebasing content:", error)
+			res.status(500).json({
+				message: "Internal error"
+			})
+			return
+		}
+
+		res.json({
+			message: "Successfully reordered content"
 		})
 	}
 
