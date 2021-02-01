@@ -2,6 +2,7 @@ import { StateForComponent as NewElement } from "components/templates/TemporaryF
 import { ContentType } from "components/utilities/contentTypes"
 import Moment from "moment"
 import Http from "functions/HttpRequest"
+import { IEditLocalObject } from "state/actions/local"
 
 // Take the virtual new element from the state and submit it to the database
 export async function onSubmitElement(newElementObject: NewElement, newElement: {
@@ -123,7 +124,7 @@ export async function deleteGroup(id: string, fingerprint: string) {
         method: "DELETE",
         data: {
             id,
-            fingerprint: fingerprint
+            fingerprint
         }
     })
 
@@ -131,24 +132,6 @@ export async function deleteGroup(id: string, fingerprint: string) {
         if (window.confirm("An error occured, would you like to reload the site?"))
             window.location.reload()
     }
-async function deleteGroup(id: string, fingerprint: string) {
-		if (!!!window.confirm("Are you sure you want to delete this group, all it's children will also be deleted")) 
-			return
-
-		const response = await Http({
-			url: "/api/v1/group",
-			method: "DELETE",
-			data: {
-				id,
-				fingerprint
-			}
-		})
-
-		if (response.status !== 200) {
-			if (window.confirm("An error occured, would you like to reload the site?"))
-				window.location.reload()
-		}
-	}
 }
 
 export async function updateGroup(id: string, setting: "split" | "column" | "placement", value: boolean | number, fingerprint: string) {
@@ -180,4 +163,75 @@ export async function updateGroup(id: string, setting: "split" | "column" | "pla
 
     // TODO this should seemsly update
     window.location.reload()
+}
+
+/**
+ * Remotely update a content object for either, text, link or deadline
+ * @param parentGroup 
+ * @param id 
+ * @param type 
+ * @param fieldOne 
+ * @param fieldTwo 
+ * @param fingerprint 
+ */
+export async function remoteUpdateElement(parentGroup: string, id: string, type: ContentType, fieldOne: string, fieldTwo: string, fingerprint: string) {
+    let append: IEditLocalObject = {
+        parentGroup: parentGroup.toString(),
+        id,
+    }
+
+    let urlPathPrefix = ""
+    switch(type) {
+        case ContentType.TEXT:
+            urlPathPrefix = "textcontent"
+            append.title = fieldOne.length <= 0 ? "-" : fieldOne
+            append.text = fieldTwo.length <= 0 ? "-" : fieldTwo
+            break
+        case ContentType.LINK:
+            urlPathPrefix = "linkcontent"
+            append.displayText = fieldOne.length <= 0 ? "-" : fieldOne
+            append.link = fieldTwo.length <= 0 ? "-" : fieldTwo
+            break
+        case ContentType.DEADLINE:
+            urlPathPrefix = "deadlinecontent"
+            append.displayText = fieldOne.length <= 0 ? "-" : fieldOne
+            append.deadline = fieldTwo.length <= 0 ? "-" : Moment(fieldTwo).toString()
+            break
+    }
+
+    const response = await Http({
+        url: `/api/v1/group/${urlPathPrefix}`,
+        method: "PATCH",
+        data: {
+            ...append,
+            fingerprint: fingerprint
+        }
+    })
+
+    if (response.status !== 200) {
+        if (window.confirm("The site encountered an error, reload the site?"))
+            window.location.reload()
+    }
+}
+
+export async function remoteDeleteElement(parentGroup: string, id: string, fingerprint: string) {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+        const response = await Http({
+            url: "/api/v1/group/content",
+            method: "DELETE",
+            data: {
+                parentGroupId: parentGroup,
+                id,
+                fingerprint
+            }
+        })
+
+        if (response.status !== 200) {
+            if (window.confirm("The site encountered an error, reload the site?"))
+                window.location.reload()
+        }
+
+        // Deletion is made with sockets
+        //this.props.deleteLocally(this.props.id)
+    }
 }

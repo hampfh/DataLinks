@@ -93,42 +93,76 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 			this.state.countdown.seconds === 0
 
 		return (
-			<div className="deadlineContainer">
-				{this.props.displayText ? 
-					<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
-				: null}
-					<div className={`deadlineProgressBarContainer ${!!!this.props.editMode ? "clickable" : ""}`}>
-						<progress
-							className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
-							value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
-							max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
-							onClick={() => this._toggleDone(!!!this.state.complete)}
-						/>
-						{this.state.complete ? 
-							<Checkmark hash={this.state.hash} unCompleteThisDeadline={() => this._toggleDone(false)} /> : null}
-					</div>
-					{deadlineReached || this.state.complete ?
-						<>
-							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{this.state.complete ? "Task done!" : "Deadline reached!"}</p> 
-							<p className="countdownText transparent">-</p>
-						</>:
-						<>
-							{this.isEmptyFirstRow() ? null : <p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
+			<>
+				{this.props.editMode ? 
+					// Edit mode
+					<div className="ButtonWrapper ButtonWrapperEditMode">
+						<div className="editModeField">
+							<label htmlFor="fieldOne" className="editLabel">Deadline description</label>
+							<input
+								className="editModeInputField"
+								disabled={this.props.id.toString().length === 0}
+								name="fieldOne"
+								value={this.props.displayText}
+								onChange={(event) => this.props.updateElement(event, "first")}
+							/>
+						</div>
+						<div className="editModeField">
+							<p style={{
+								color: this.props.fieldTwoValid ? "transparent" : "#fff",
+								textDecoration: "underline",
+								marginTop: "0",
+								marginBottom: "0.1rem"
+							}}>Deadline is not formatted correctly</p>
+							<label htmlFor="fieldTwo" className="editLabel">Deadline (YYYY-MM-DD HH:mm)</label>
+							<input
+								className="editModeInputField"
+								disabled={this.props.id.toString().length === 0}
+								name="fieldTwo"
+								value={this.props.deadline}
+								onChange={(event) => this.props.updateElement(event, "second")}
+								placeholder={"YYYY-MM-DD HH:mm"}
+							/>
+						</div>
+					</div> :
+					// Non-edit mode 
+					<div className="deadlineContainer">
+						{this.props.displayText ?
+							<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
+							: null}
+						<div className={`deadlineProgressBarContainer ${!!!this.props.editMode ? "clickable" : ""}`}>
+							<progress
+								className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
+								value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
+								max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
+								onClick={() => this._toggleDone(!!!this.state.complete)}
+							/>
+							{this.state.complete ?
+								<Checkmark hash={this.state.hash} unCompleteThisDeadline={() => this._toggleDone(false)} /> : null}
+						</div>
+						{deadlineReached || this.state.complete ?
+							<>
+								<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{this.state.complete ? "Task done!" : "Deadline reached!"}</p>
+								<p className="countdownText transparent">-</p>
+							</> :
+							<>
+								{this.isEmptyFirstRow() ? null : <p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
 								${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
 								${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
 								${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
 								`}
-							</p>}
-							
-							<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}</p>
-							{this.isEmptyFirstRow() ?
-								<p className="countdownText transparent">-</p> :
-								null
-							}
-						</>
-					}
-					
-			</div>
+								</p>}
+
+								<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}</p>
+								{this.isEmptyFirstRow() ?
+									<p className="countdownText transparent">-</p> :
+									null
+								}
+							</>
+						}
+					</div>
+				}
+			</>
 		)
 	}
 }
@@ -141,9 +175,11 @@ interface PropsForComponent {
 	accent?: boolean,
 	deadlines: IDeadlineState,
 	editMode: boolean,
+	fieldTwoValid: boolean,
 	addCompleteDeadline: IAddCompleteDeadline,
 	removeCompleteDeadline: IRemoveCompleteDeadline,
-	resetAnimatedDeadline: IResetAnimatedDeadline
+	resetAnimatedDeadline: IResetAnimatedDeadline,
+	updateElement: (event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") => void
 }
 
 interface StateForComponent {
@@ -165,19 +201,15 @@ interface StateForComponent {
 	mounted: boolean
 }
 
-const reduxSelect = (state: IReduxRootState) => {
-	return {
-		deadlines: state.deadlines,
-		editMode: state.app.flags.editMode
-	}
-}
+const reduxSelect = (state: IReduxRootState) => ({
+	deadlines: state.deadlines,
+	editMode: state.app.flags.editMode
+})
 
-const reduxDispatch = () => {
-	return {
-		addCompleteDeadline,
-		removeCompleteDeadline,
-		resetAnimatedDeadline
-	}
-}
+const reduxDispatch = () => ({
+	addCompleteDeadline,
+	removeCompleteDeadline,
+	resetAnimatedDeadline
+})
 
 export default connect(reduxSelect, reduxDispatch())(DeadlineObject)

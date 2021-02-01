@@ -8,7 +8,7 @@ import RenderContent from './RenderContent'
 import TemporaryFields from './TemporaryFields'
 import GroupForm from './GroupForm'
 import { v4 as uuid } from "uuid"
-import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functions/contentPublishing"
+import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functions/contentRequests"
 import { StateForComponent as NewElement } from "components/templates/TemporaryFields"
 import "./RenderData.css"
 

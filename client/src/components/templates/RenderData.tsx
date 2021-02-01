@@ -30,7 +30,7 @@ import {
 import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
 import RenderContent from './RenderContent'
-import { onSubmitGroup } from 'functions/contentPublishing'
+import { onSubmitGroup } from 'functions/contentRequests'
 
 function RenderData(props: PropsForComponent) {
 
