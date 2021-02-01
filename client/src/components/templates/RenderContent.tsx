@@ -1,4 +1,4 @@
-import ContentObject from "components/screens/Subject/components/ContentObject"
+import ContentObject from "components/templates/content_objects/ContentObject"
 import { ContentType } from "components/utilities/contentTypes"
 import Group from "./Group"
 

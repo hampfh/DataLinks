@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Moment from "moment"
 
-import ContentObject from "components/screens/Subject/components/ContentObject"
+import ContentObject from "components/templates/content_objects/ContentObject"
 import { SubjectData } from "components/screens/Subjects/Subjects"
 import "./DeadlineRenderer.css"
 import { IReduxRootState } from "state/reducers"
