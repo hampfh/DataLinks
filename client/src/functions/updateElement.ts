@@ -20,11 +20,9 @@ export const addElement = (subjects: SubjectData[], newElement: ContentObject, p
 			contentObject.group?.content.push(newElement)
 			return SearchStatus.ALL_OK
 		})) {
-			console.log("FOUND it")
 			return
 		}
 	}
-	console.log("DID NOT FIND")
 }
 
 /**

@@ -31,7 +31,6 @@ function Subscriptions(props: PropsForComponent) {
 			<Socket subscribeTo="newElement" callback={(data: ISocketNewElement) => {
 					const newSubjects = [ ...props.content.subjects ]
 
-					console.log("Add",data.parent)
 					switch(data.type) {
 						case ContentType.LINK:
 							addElement(newSubjects, {
@@ -70,7 +69,6 @@ function Subscriptions(props: PropsForComponent) {
 			/>
 			<Socket subscribeTo="updateElement" callback={(data: ISocketNewElement) => {
 
-					console.log("UPDATE")
 					const newSubjects = [ ...props.content.subjects ]
 					switch(data.type) {
 						case ContentType.LINK:
