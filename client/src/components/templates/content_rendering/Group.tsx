@@ -33,7 +33,6 @@ function Group(props: PropsForComponent) {
 
     const resetContent = () => {
         setContent(JSON.parse(JSON.stringify(initialContent)))
-        console.log("RESET ALL")
     }
 
     const insertDummyPositionIntoContent = (relativeIndex: number, element: string, realElement: ContentObject) => {
@@ -54,7 +53,6 @@ function Group(props: PropsForComponent) {
             // Insert dummy object
             newContent.splice(newDummyIndex < 0 ? 0 : newDummyIndex, 0, { _id: "" })
 
-        console.log(newContent)
         setContent(newContent)
     }
 
@@ -62,26 +60,19 @@ function Group(props: PropsForComponent) {
 
         // Find dummy element and delete it
         let dummyIndex = content.findIndex((current) => current._id.toString().length <= 0)
-        if (dummyIndex >= 0) {
+        if (dummyIndex >= 0)
             content.splice(dummyIndex, 1)
-            console.log("Deleted dummy")
-        }
-
-        console.log("INDEX", dummyIndex)
           
-        console.log(props.group._id, realElement._id)
-
-        const response = await Http({
+        await Http({
             url: "/api/v1/group/order",
             method: "PATCH",
             data: {
                 parentGroup: props.group._id,
                 id: realElement._id,
-                position: dummyIndex
+                position: dummyIndex,
+                fingerprint: props.app.fingerprint
             }
         })
-
-        console.log(response)
     }
 
     return (

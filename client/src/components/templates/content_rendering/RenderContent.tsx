@@ -48,7 +48,6 @@ function RenderContent(props: PropsForComponent) {
     }
 
     function grapGestureEnd(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-        console.log("GESTURE END")
         props.submitElementReorder(props.content)
         props.resetLocalContent()
         setDragging(false)

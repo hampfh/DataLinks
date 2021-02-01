@@ -2,9 +2,10 @@ import { IReduxRootState } from 'state/reducers'
 import { connect, useDispatch } from "react-redux"
 import Socket from "components/utilities/SocketManager"
 import { ContentType } from './contentTypes'
-import { addElement, deleteElement, updateElement } from 'functions/updateElement'
+import { addElement, deleteElement, reOrderElement, updateElement } from 'functions/updateElement'
 import { IContentState } from 'state/reducers/content'
 import moment from "moment"
+import { SubjectData } from 'components/screens/Subjects/Subjects'
 
 interface ISocketNewElement {
 	parent: string,
@@ -116,6 +117,16 @@ function Subscriptions(props: PropsForComponent) {
 					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects } })
 				}}
 			/>
+
+			<Socket subscribeTo="updatePosition" callback={(data: {
+				parentGroup: string,
+				id: string,
+				position: number
+			}) => {
+				const newSubjects: SubjectData[] = JSON.parse(JSON.stringify(props.content.subjects))
+				reOrderElement(newSubjects, data.id, data.position)	
+				dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
+			}} />
 		</>
 	)
 }

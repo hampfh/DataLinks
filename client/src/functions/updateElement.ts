@@ -4,7 +4,8 @@ import { formatTime, getCurrentTimeZone } from "components/utilities/time";
 export enum SearchStatus {
 	NONE_FOUND = 0,
 	ALL_OK = 1,
-	DELETE_THIS = 2
+	DELETE_THIS = 2,
+	UPDATE_POSITION = 3
 }
 
 /**
@@ -18,7 +19,7 @@ export const addElement = (subjects: SubjectData[], newElement: ContentObject, p
 		if (recursiveSearchElement(subjects[i], { _id: parentGroup }, (contentObject, searchObject) => {
 			// Add newElement to group
 			contentObject.group?.content.push(newElement)
-			return SearchStatus.ALL_OK
+			return { status: SearchStatus.ALL_OK }
 		})) {
 			return
 		}
@@ -41,8 +42,8 @@ export const updateElement = (subjects: SubjectData[], newElement: ContentObject
 			contentObject.text = newElement.text
 			contentObject.link = newElement.link
 			contentObject.deadline = newElement.deadline
-			return SearchStatus.ALL_OK
-		})) {
+			return { status: SearchStatus.ALL_OK }
+		}).status !== SearchStatus.NONE_FOUND) {
 			return
 		}
 	}
@@ -56,9 +57,21 @@ export const updateElement = (subjects: SubjectData[], newElement: ContentObject
 export const deleteElement = (subjects: SubjectData[], id: string) => {
 	for (let i = 0; i < subjects.length; i++) {
 		if (recursiveSearchElement(subjects[i], { _id: id }, () => {
-			return SearchStatus.DELETE_THIS
-		}) === SearchStatus.ALL_OK) {
+			return { status: SearchStatus.DELETE_THIS }
+		}).status === SearchStatus.ALL_OK) {
 			// Exit recursion
+			return
+		}
+	}
+}
+
+export const reOrderElement = (subjects: SubjectData[], id: string, newPosition: number) => {
+	for (let i = 0; i < subjects.length; i++) {
+		if (recursiveSearchElement(subjects[i], { _id: id }, () => {
+			return { status: SearchStatus.UPDATE_POSITION, value: newPosition }
+		}).status === SearchStatus.ALL_OK) {
+			// Exit recursion
+			console.log("Successfully updated position")
 			return
 		}
 	}
@@ -72,12 +85,13 @@ export const deleteElement = (subjects: SubjectData[], id: string) => {
  * @returns 0, no element found
  * @returns 1, all ok
  * @returns 2, delete this element
+ * @returns 3, change position of element
  */
 export const recursiveSearchElement = (
 	contentObject: ContentObject, 
 	newElement: ContentObject, 
-	action: (contentObject: ContentObject, newElement: ContentObject
-) => number): SearchStatus => {
+	action: (contentObject: ContentObject, newElement: ContentObject) => { status: SearchStatus, value?: number }
+): { status: SearchStatus, value?: number } => {
 
 	// Check if element is target
 	if (contentObject._id.toString() === newElement._id.toString() || 
@@ -86,18 +100,26 @@ export const recursiveSearchElement = (
 
 	if (contentObject.group != null) {
 		for (let i = 0; i < contentObject.group.content.length; i++) {
-			switch (recursiveSearchElement(contentObject.group.content[i], newElement, action)) {
+			const result = recursiveSearchElement(contentObject.group.content[i], newElement, action)
+			switch (result.status) {
 				case SearchStatus.ALL_OK: 
-					return SearchStatus.ALL_OK
+					return { status: SearchStatus.ALL_OK }
 				case SearchStatus.DELETE_THIS:
 					// Remove element in list
 					contentObject.group.content.splice(i, 1)
-					return SearchStatus.ALL_OK
+					return { status: SearchStatus.ALL_OK }
+				case SearchStatus.UPDATE_POSITION:
+					if (!result.value)
+						throw Error("Value must be defined for position update")
+						
+					const reOrderElement = contentObject.group.content.splice(i, 1)[0]
+					contentObject.group.content.splice(result.value, 0, reOrderElement)
+					return { status: SearchStatus.ALL_OK }
 				default:
 					break
 			}
 		}
 	}
 
-	return SearchStatus.NONE_FOUND
+	return { status: SearchStatus.NONE_FOUND }
 }
