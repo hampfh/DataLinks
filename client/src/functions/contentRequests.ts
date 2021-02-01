@@ -1,4 +1,4 @@
-import { StateForComponent as NewElement } from "components/templates/TemporaryFields"
+import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
 import { ContentType } from "components/utilities/contentTypes"
 import Moment from "moment"
 import Http from "functions/HttpRequest"

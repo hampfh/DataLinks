@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { IReduxRootState } from "state/reducers"
-import RenderData from "components/templates/RenderData"
+import RenderData from "components/templates/content_rendering/RenderData"
 import { SubjectData } from '../Subjects'
 
 import "./SneakPeak.css"

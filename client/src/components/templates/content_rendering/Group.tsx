@@ -9,7 +9,7 @@ import TemporaryFields from './TemporaryFields'
 import GroupForm from './GroupForm'
 import { v4 as uuid } from "uuid"
 import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functions/contentRequests"
-import { StateForComponent as NewElement } from "components/templates/TemporaryFields"
+import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
 import "./RenderData.css"
 import "./Group.css"
 
