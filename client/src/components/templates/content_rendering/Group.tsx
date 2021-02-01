@@ -12,6 +12,8 @@ import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functi
 import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
 import "./RenderData.css"
 import "./Group.css"
+import Dummy from '../content_objects/Dummy'
+import Http from 'functions/HttpRequest'
 
 function Group(props: PropsForComponent) {
 
@@ -25,6 +27,62 @@ function Group(props: PropsForComponent) {
         name: string,
         isSubGroup: boolean
     } | undefined>(undefined)
+    
+    const [content, setContent] = useState<ContentObject[]>(props.group.content)
+    const { content: initialContent } = props.group
+
+    const resetContent = () => {
+        setContent(JSON.parse(JSON.stringify(initialContent)))
+        console.log("RESET ALL")
+    }
+
+    const insertDummyPositionIntoContent = (relativeIndex: number, element: string, realElement: ContentObject) => {
+        resetContent()
+        let start = content.findIndex((current) => current._id.toString() === realElement._id.toString())
+        if (start < 0) {
+            console.warn("Eeee, this doesn't exist")
+            return
+        }
+
+        const newDummyIndex = start + relativeIndex
+
+        // Deep copy content
+        const newContent: ContentObject[] = JSON.parse(JSON.stringify(initialContent))
+        if (newDummyIndex >= newContent.length)
+            newContent.push({ _id: "" })
+        else
+            // Insert dummy object
+            newContent.splice(newDummyIndex < 0 ? 0 : newDummyIndex, 0, { _id: "" })
+
+        console.log(newContent)
+        setContent(newContent)
+    }
+
+    async function submitElementReorder(realElement: ContentObject) {
+
+        // Find dummy element and delete it
+        let dummyIndex = content.findIndex((current) => current._id.toString().length <= 0)
+        if (dummyIndex >= 0) {
+            content.splice(dummyIndex, 1)
+            console.log("Deleted dummy")
+        }
+
+        console.log("INDEX", dummyIndex)
+          
+        console.log(props.group._id, realElement._id)
+
+        const response = await Http({
+            url: "/api/v1/group/order",
+            method: "PATCH",
+            data: {
+                parentGroup: props.group._id,
+                id: realElement._id,
+                position: dummyIndex
+            }
+        })
+
+        console.log(response)
+    }
 
     return (
         <div
@@ -44,14 +102,20 @@ function Group(props: PropsForComponent) {
             }
 
             <div className={`GroupItemContainer${props.group.column ? " Column" : ""}`}>
-                { // Generate alla elements in group
-                    props.group.content.map((contentElement) => {
+                { // Generate all elements in group
+                    content.map((contentElement, index) => {
+                        // Dummy element
+                        if (contentElement._id.toString().length <= 0)
+                            return <Dummy key={uuid()} />
                         return <RenderContent 
                             key={contentElement._id}
                             parentGroup={props.group._id} 
                             content={contentElement} 
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
                             updateSubjects={props.updateSubjects}
+                            resetLocalContent={resetContent}
+                            insertDummyPositionIntoContent={insertDummyPositionIntoContent}
+                            submitElementReorder={submitElementReorder}
                         />                        
                     })
                 }

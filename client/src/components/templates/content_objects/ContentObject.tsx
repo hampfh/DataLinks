@@ -24,7 +24,6 @@ function ContentObject(props: PropsForComponent) {
 	const [fieldThree, setFieldThree] = useState<string>((props.contentObject as IDeadline).start ?? "")
 	const [fieldTwoValid, setFieldTwoValid] = useState(true)
 
-
 	function _updateField(event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") {
 
 		if (props.type === ContentType.DEADLINE && fieldNum === "second" && !!!Moment(event.target.value).isValid()) {
@@ -61,7 +60,7 @@ function ContentObject(props: PropsForComponent) {
 	}
 
 	return (
-		<div className="ContentObject">
+		<>
 			{
 				props.type === ContentType.TEXT ?
 					<TextObject id={props.id} title={fieldOne} text={fieldTwo} editMode={props.app.flags.editMode} updateElement={_updateField} /> :
@@ -91,7 +90,7 @@ function ContentObject(props: PropsForComponent) {
 					}
 				</div> : null
 			}	
-		</div>
+		</>
 	)
 }
 

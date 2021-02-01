@@ -48,6 +48,9 @@ function RenderData(props: PropsForComponent) {
 					parentGroup={props.group._id}
 					content={contentElement}
 					updateSubjects={props.updateSubjects}
+					resetLocalContent={() => console.log("Not implemented resetLocalContent")}
+					insertDummyPositionIntoContent={() => console.log("Not implemented inserDummyPositionIntoContent")}
+					submitElementReorder={async () => {}} // TODO
 				/>
 			})}
 			<GroupForm 

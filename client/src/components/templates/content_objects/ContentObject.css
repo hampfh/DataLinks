@@ -1,5 +1,16 @@
 @import "../../root.css";
 
+/* The draggable wrapper is only applied when
+    user initiates a dragging gesture 
+*/
+.DraggableWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
 .ButtonWrapperEditMode {
 	margin: 0.5rem;
 	background-color: var(--dark);

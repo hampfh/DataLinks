@@ -13,3 +13,7 @@
 .DataRendererWrapper {
 	width: 100%;
 }
+
+.ContentObject {
+	margin-top: 1rem;
+}
