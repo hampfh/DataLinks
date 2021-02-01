@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from "react-redux"
 import Moment from "moment"
 
-import DeadlineObject from './DeadlineObject'
+import DeadlineObject from 'components/templates/content_objects/DeadlineObject'
 import "./ContentObject.css"
 import { deleteLocally, editLocal, IDeleteLocally, IEditLocal } from "state/actions/local"
 import { IReduxRootState } from "state/reducers"

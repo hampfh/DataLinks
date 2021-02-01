@@ -1,4 +1,4 @@
-@import "../../../root.css";
+@import "../../root.css";
 .deadlineContainer {
     justify-self: center;
     display: grid;

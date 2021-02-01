@@ -13,7 +13,7 @@ import {
 } from "state/actions/deadlines"
 import { IReduxRootState } from "state/reducers"
 import { IDeadlineState } from "state/reducers/deadlines"
-import Checkmark from './Checkmark'
+import Checkmark from 'components/screens/Subject/components/Checkmark'
 
 class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 
