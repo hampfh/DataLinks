@@ -41,7 +41,7 @@ function RenderData(props: PropsForComponent) {
 	} | undefined>(undefined)
 
 	return (
-		<div>
+		<div className="DataRendererWrapper">
 			{props.group.content.map((contentElement) => {
 				return <RenderContent 
 					key={contentElement._id}

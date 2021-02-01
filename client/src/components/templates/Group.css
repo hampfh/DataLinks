@@ -1,0 +1,31 @@
+.GroupContainer {
+    width: calc(100% - 2rem);
+	display: block;
+    padding: 0.25rem;
+    border-top-style: solid;
+    border-top-color: white;
+    border-top-width: 3px;
+}
+
+.GroupContainer:not(.Nested) {
+	align-self: flex-start;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	flex-direction: row;
+	justify-content: center;
+	margin: 1rem;
+	min-width: 15rem;
+
+	border-top-style: solid;
+	border-top-color: white;
+	border-top-width: 2px;
+	padding-top: 1rem;
+}
+
+.NoBorder {
+	width: 100%;
+	padding-top: 0 !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	border: none !important;
+}

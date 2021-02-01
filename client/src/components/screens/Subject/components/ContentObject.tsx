@@ -61,7 +61,7 @@ function ContentObject(props: PropsForComponent) {
 	}
 
 	return (
-		<div>
+		<div className="ContentObject">
 			{
 				props.type === ContentType.TEXT ?
 					<TextObject id={props.id} title={fieldOne} text={fieldTwo} editMode={props.app.flags.editMode} updateElement={_updateField} /> :

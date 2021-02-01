@@ -11,6 +11,7 @@ import { v4 as uuid } from "uuid"
 import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functions/contentRequests"
 import { StateForComponent as NewElement } from "components/templates/TemporaryFields"
 import "./RenderData.css"
+import "./Group.css"
 
 function Group(props: PropsForComponent) {
 
