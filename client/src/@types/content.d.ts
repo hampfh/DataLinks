@@ -24,3 +24,8 @@ interface ContentObject {
     deadline?: IDeadline,
     group?: Group
 }
+
+interface IPosition {
+    x: number,
+    y: number
+}

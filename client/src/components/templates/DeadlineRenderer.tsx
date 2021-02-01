@@ -9,6 +9,11 @@ import { IReduxRootState } from "state/reducers"
 import { IDimensionState } from "state/reducers/dimensions"
 import { ContentType } from 'components/utilities/contentTypes'
 
+/**
+ * This is the deadline renderer for the homepage, 
+ * listing all current deadlines
+ */
+
 class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
