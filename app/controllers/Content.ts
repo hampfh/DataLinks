@@ -482,6 +482,21 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		// Notify logg			
+		Log(
+			req.body.fingerprint,
+			OperationType.UPDATE,
+			ContentType.NONE,		
+			["New position", `${req.body.position}`],
+			["", ""]
+		)
+
+		RealTime.emitToSockets("updatePosition", {
+			parent: req.body.parentGroupId,
+			id: req.body.id,
+			position: req.body.position
+		})
+
 		res.json({
 			message: "Successfully reordered content"
 		})

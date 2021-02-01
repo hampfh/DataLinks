@@ -7,6 +7,7 @@ export enum OperationType {
 }
 
 export enum ContentType {
+	NONE = "NONE",
 	GROUP = "GROUP",
 	TEXT = "TEXT",
 	LINK = "LINK",
