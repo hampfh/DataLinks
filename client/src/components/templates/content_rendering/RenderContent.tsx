@@ -18,14 +18,13 @@ function RenderContent(props: PropsForComponent) {
     const [initialCursor, setInitialCursor] = useState<IPosition>({ x: 0, y: 0 })
     const [lastRelativePosition, setLastRelativePosition] = useState<IPosition>({ x: 0, y: 0 })
 
-    const { resetLocalContent, insertDummyPositionIntoContent, content } = props
-    const { _id } = content
+    const { resetLocalContent, insertDummyPositionIntoContent } = props
 
     function setInitialCursorObject(position: IPosition) {
         setInitialCursor({ ...position })
         setCursor({ ...position })
         resetLocalContent()
-        insertDummyPositionIntoContent(0, _id.toString(), props.content)
+        insertDummyPositionIntoContent(0, props.content)
     }
     
     function grapGestureMove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -38,7 +37,7 @@ function RenderContent(props: PropsForComponent) {
         // Only update relative position if new tile is selected
         if (relX !== lastRelativePosition.x || relY !== lastRelativePosition.y) {
             setLastRelativePosition({ x: relX, y: relY })
-            props.insertDummyPositionIntoContent(relX + MAX_EDIT_ELEMENTS_PER_ROW * relY, props.content._id.toString(), props.content)
+            props.insertDummyPositionIntoContent(relX + MAX_EDIT_ELEMENTS_PER_ROW * relY, props.content)
         }
 
         setCursor({
@@ -117,7 +116,7 @@ interface PropsForComponent {
     app: IAppState,
     updateSubjects: () => void,
     resetLocalContent: () => void,
-    insertDummyPositionIntoContent: (index: number, element: string, realElement: ContentObject) => void,
+    insertDummyPositionIntoContent: (index: number, realElement: ContentObject) => void,
     submitElementReorder: (realElement: ContentObject) => Promise<void>
 }
 

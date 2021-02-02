@@ -13,7 +13,7 @@ import { StateForComponent as NewElement } from "components/templates/content_re
 import "./RenderData.css"
 import "./Group.css"
 import Dummy from '../content_objects/Dummy'
-import Http from 'functions/HttpRequest'
+import { insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
 
 function Group(props: PropsForComponent) {
 
@@ -33,46 +33,6 @@ function Group(props: PropsForComponent) {
 
     const resetContent = () => {
         setContent(JSON.parse(JSON.stringify(initialContent)))
-    }
-
-    const insertDummyPositionIntoContent = (relativeIndex: number, element: string, realElement: ContentObject) => {
-        resetContent()
-        let start = content.findIndex((current) => current._id.toString() === realElement._id.toString())
-        if (start < 0) {
-            console.warn("Eeee, this doesn't exist")
-            return
-        }
-
-        const newDummyIndex = start + relativeIndex
-
-        // Deep copy content
-        const newContent: ContentObject[] = JSON.parse(JSON.stringify(initialContent))
-        if (newDummyIndex >= newContent.length)
-            newContent.push({ _id: "" })
-        else
-            // Insert dummy object
-            newContent.splice(newDummyIndex < 0 ? 0 : newDummyIndex, 0, { _id: "" })
-
-        setContent(newContent)
-    }
-
-    async function submitElementReorder(realElement: ContentObject) {
-
-        // Find dummy element and delete it
-        let dummyIndex = content.findIndex((current) => current._id.toString().length <= 0)
-        if (dummyIndex >= 0)
-            content.splice(dummyIndex, 1)
-          
-        await Http({
-            url: "/api/v1/group/order",
-            method: "PATCH",
-            data: {
-                parentGroup: props.group._id,
-                id: realElement._id,
-                position: dummyIndex,
-                fingerprint: props.app.fingerprint
-            }
-        })
     }
 
     return (
@@ -105,8 +65,8 @@ function Group(props: PropsForComponent) {
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
                             updateSubjects={props.updateSubjects}
                             resetLocalContent={resetContent}
-                            insertDummyPositionIntoContent={insertDummyPositionIntoContent}
-                            submitElementReorder={submitElementReorder}
+                            insertDummyPositionIntoContent={(relativeIndex: number, realElement: ContentObject) => insertDummyPositionIntoContent(content, initialContent, relativeIndex, realElement, setContent, resetContent)}
+                            submitElementReorder={(realElement: ContentObject) => submitElementReorder(props.group._id, realElement, content, props.app.fingerprint!)}
                         />                        
                     })
                 }

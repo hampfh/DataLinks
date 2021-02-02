@@ -31,6 +31,7 @@ import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
 import RenderContent from './RenderContent'
 import { onSubmitGroup } from 'functions/contentRequests'
+import { insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
 
 function RenderData(props: PropsForComponent) {
 
@@ -40,6 +41,13 @@ function RenderData(props: PropsForComponent) {
 		isSubGroup: boolean
 	} | undefined>(undefined)
 
+	const [content, setContent] = useState<ContentObject[]>(props.group.content)
+	const { content: initialContent } = props.group
+
+	const resetContent = () => {
+		setContent(JSON.parse(JSON.stringify(initialContent)))
+	}
+
 	return (
 		<div className="DataRendererWrapper">
 			{props.group.content.map((contentElement) => {
@@ -48,9 +56,9 @@ function RenderData(props: PropsForComponent) {
 					parentGroup={props.group._id}
 					content={contentElement}
 					updateSubjects={props.updateSubjects}
-					resetLocalContent={() => console.log("Not implemented resetLocalContent")}
-					insertDummyPositionIntoContent={() => console.log("Not implemented inserDummyPositionIntoContent")}
-					submitElementReorder={async () => {}} // TODO
+					resetLocalContent={resetContent}
+					insertDummyPositionIntoContent={(relativeIndex: number, realElement: ContentObject) => insertDummyPositionIntoContent(content, initialContent, relativeIndex, realElement, setContent, resetContent)}
+					submitElementReorder={(realElement: ContentObject) => submitElementReorder(props.group._id, realElement, content, props.app.fingerprint!)}
 				/>
 			})}
 			<GroupForm 
