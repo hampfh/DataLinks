@@ -31,7 +31,6 @@ function Group(props: PropsForComponent) {
     } | undefined>(undefined)
     
     const [content, setContent] = useState<ContentObject[]>(props.group.content)
-    const { content: initialContent } = props.group
 
     // Dragging state
     const [dragging, setDragging] = useState(false)

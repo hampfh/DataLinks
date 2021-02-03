@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { connect } from "react-redux"
 import { Redirect } from "react-router-dom"
 
@@ -9,55 +9,24 @@ import RenderData from "components/templates/content_rendering/RenderData"
 import logoutIcon from "assets/icons/close.svg"
 import isMobile from "functions/isMobile"
 import { IReduxRootState } from "state/reducers"
-import { IAppState } from "state/reducers/app"
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from "state/actions/app"
 
 function SubjectView(props: PropsForComponent) {
 
-	const scrollRef = useRef(null)
-	let timeout: NodeJS.Timeout | undefined = undefined
+	const scrollRef = useRef<HTMLDivElement>(null)
 
 	const [shouldExitView, setShouldExitView] = useState(false)
 	const [editModeSwitchActive, setEditModeSwitchActive] = useState<boolean | undefined>(undefined)
-
-	useEffect(() => {
-		
-		return () => {
-			if (timeout)
-				clearTimeout(timeout)
-		}
-	}, [timeout])
-
-	/* getSnapshotBeforeUpdate(prevProps: PropsForComponent, prevState: StateForComponent) {
-		const scrollView = this.scrollRef.current
-		if (scrollView == null)
-			return null
-		return scrollView.scrollHeight - scrollView.scrollTop
-	} */
-
-	/* componentDidUpdate(prevProps: PropsForComponent, prevState: StateForComponent, snapshot: any) {
-		// Set scroll
-		if (snapshot !== null ) {
-			const scrollView = this.scrollRef.current
-			if (scrollView != null)
-				scrollView.scrollTop = scrollView?.scrollHeight - snapshot
-		}
-	} */
-
 	function _flickEditMode(event: React.ChangeEvent<HTMLInputElement>) {
 
 		const checked = event.target.checked
 
-		setEditModeSwitchActive(!!!props.app.flags.editMode)
-		if (timeout)
-			clearTimeout(timeout)
+		setEditModeSwitchActive(!!!props.editMode)
 
-		timeout = setTimeout(() => {
-			if (checked)
-				props.enableEditMode()
-			else
-				props.disableEditModeFlag()
-		}, 100)
+		if (checked)
+			props.enableEditMode()
+		else
+			props.disableEditModeFlag()
 	}
 
 	if (props.subject.group == null) {
@@ -77,7 +46,7 @@ function SubjectView(props: PropsForComponent) {
 						<div className="editModeContainer editModeCourse subjectViewEditMode">
 							<p>Default mode</p>
 							<label className="switch">
-								<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive ?? props.app.flags.editMode} type="checkbox" />
+								<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive ?? props.editMode} type="checkbox" />
 								<span className="slider round"></span>
 							</label>
 							<p>Edit mode</p>
@@ -106,7 +75,7 @@ export interface PropsForComponent {
 	disableEditModeFlag: IDisableEditModeFlag,
 	updateSubjects: () => void,
 	subject: SubjectData,
-	app: IAppState,
+	editMode: boolean,
 }
 
 export interface StateForComponent {
@@ -116,7 +85,7 @@ export interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => {
 	return {
-		app: state.app
+		editMode: state.app.flags.editMode
 	}
 }
 

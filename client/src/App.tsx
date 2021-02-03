@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Subjects from "components/screens/Subjects/Subjects"
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-import { v4 as uuid } from "uuid"
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -116,7 +115,7 @@ function App(props: PropsForComponent) {
 				</Route>
 				{props.content.subjects.map((subject) => {
 					return (
-						<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
+						<Route key={subject._id.toString()} exact path={`/D20/course/${subject.code}`}>
 							<Subscriptions />
 							<SubjectView
 								updateSubjects={fetchUpdatedSubjects}
