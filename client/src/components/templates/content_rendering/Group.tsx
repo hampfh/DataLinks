@@ -83,7 +83,7 @@ function Group(props: PropsForComponent) {
         const deepCopy = resetContent(content)!
 
         const { relX, relY } = calculateRelativePosition(event, initialCursor)
-        
+
         // Only update relative position if new tile is selected
         if ((relX !== lastRelativePosition.x || relY !== lastRelativePosition.y) && draggableElement) {
             setLastRelativePosition({ x: relX, y: relY })
@@ -98,7 +98,6 @@ function Group(props: PropsForComponent) {
 
     function grapGestureEnd(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         if (draggableElement) {
-            submitElementReorder(props.group._id, draggableElement, content, props.app.fingerprint!)
             resetContent()
             setDragging(false)
             setInitialIndex(0)
@@ -108,6 +107,11 @@ function Group(props: PropsForComponent) {
             const deepCopy = resetContent(content)!
             const { relX, relY } = calculateRelativePosition(event, initialCursor)
             const index = calculateIndexFromRelative(deepCopy, relX, relY, MAX_EDIT_ELEMENTS_PER_ROW, initialIndex)
+
+            // Only submit change if element has actually change position
+            if (index !== initialIndex)
+                submitElementReorder(props.group._id, draggableElement, content, props.app.fingerprint!)
+                
             deepCopy.splice(index, 0, draggableElement)
             setContent(deepCopy)
         }
