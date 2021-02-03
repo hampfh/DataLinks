@@ -94,7 +94,7 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 
 		return (
 			<>
-				{this.props.editMode ? 
+				{this.props.editMode && !!!this.props.noEditMode ? 
 					// Edit mode
 					<div className="ButtonWrapper ButtonWrapperEditMode">
 						<div className="editModeField">
@@ -176,6 +176,7 @@ interface PropsForComponent {
 	deadlines: IDeadlineState,
 	editMode: boolean,
 	fieldTwoValid: boolean,
+	noEditMode: boolean,
 	addCompleteDeadline: IAddCompleteDeadline,
 	removeCompleteDeadline: IRemoveCompleteDeadline,
 	resetAnimatedDeadline: IResetAnimatedDeadline,
