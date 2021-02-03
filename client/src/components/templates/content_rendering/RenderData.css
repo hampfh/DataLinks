@@ -1,15 +1,5 @@
 @import "../../root.css";
 
-.tempNewFieldsWrapper {
-	width: 100%;
-}
-
-.tempNewFieldsContainer {
-	display: grid;
-	margin: 0 auto;
-	width: 30rem;
-}
-
 .DataRendererWrapper {
 	width: 100%;
 }

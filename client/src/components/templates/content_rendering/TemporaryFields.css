@@ -1,0 +1,17 @@
+.tempNewFieldsWrapper {
+	width: 100%;
+}
+
+.tempNewFieldsContainer {
+	display: grid;
+	margin: 0 auto;
+	max-width: 10rem;
+}
+
+.temporaryLabel {
+    color: #fff;
+}
+
+.temporaryField::placeholder {
+    color: #fff;
+}

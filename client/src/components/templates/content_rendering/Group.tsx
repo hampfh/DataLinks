@@ -6,14 +6,14 @@ import { IAppState } from 'state/reducers/app'
 import RenderContent, { CONTENT_OBJECT_WIDTH } from './RenderContent'
 
 import TemporaryFields from './TemporaryFields'
-import GroupForm from './GroupForm'
 import { v4 as uuid } from "uuid"
-import { deleteGroup, onSubmitElement, onSubmitGroup, updateGroup } from "functions/contentRequests"
+import { onSubmitElement, updateGroup } from "functions/contentRequests"
 import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
 import "./RenderData.css"
 import "./Group.css"
 import Dummy from '../content_objects/Dummy'
 import { calculateIndexFromRelative, insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
+import GroupButtonPanel from './GroupButtonPanel'
 
 const MAX_EDIT_ELEMENTS_PER_ROW = 3
 
@@ -22,13 +22,13 @@ function Group(props: PropsForComponent) {
     const [newElement, setNewElement] = useState<{
         parentGroup: string,
         type: ContentType
-    } | undefined>(undefined)
+    }>()
 
     const [newGroup, setNewGroup] = useState<{
         parentGroup: string,
         name: string,
         isSubGroup: boolean
-    } | undefined>(undefined)
+    }>()
     
     const [content, setContent] = useState<ContentObject[]>(props.group.content)
 
@@ -196,7 +196,7 @@ function Group(props: PropsForComponent) {
                 : null}
 
                 { // Generate temporary elements
-                    newElement && props.group._id.toString() === newElement.parentGroup.toString() ?
+                    newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode ?
                     <TemporaryFields 
                         onSubmitElement={async (temporaryElement: NewElement) => {
                             onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) 
@@ -209,43 +209,14 @@ function Group(props: PropsForComponent) {
             </div>
             { // Control panel for group
                 props.app.flags.editMode ? 
-                    <>
-                        <button onClick={() => setNewElement({ parentGroup: props.group._id, type: ContentType.TEXT })}>Add text</button>
-                        <button onClick={() => setNewElement({ parentGroup: props.group._id, type: ContentType.LINK })}>Add link</button>
-                        <button onClick={() => setNewElement({ parentGroup: props.group._id, type: ContentType.DEADLINE })}>Add deadline</button>
-                        <GroupForm
-                            key={uuid()}
-                            forRoot={false}
-                            parentId={props.group._id}
-                            newGroup={newGroup}
-                            createGroup={(isSubGroup: boolean) => setNewGroup({
-                                parentGroup: props.group._id,
-                                name: "",
-                                isSubGroup: isSubGroup
-                            })}
-                            submitGroup={(name) => onSubmitGroup(name, newGroup!, props.app.fingerprint!)}
-                        />
-                        {props.group.depth > 1 ?
-                            <button onClick={() => deleteGroup(props.group._id, props.app.fingerprint!)}>Delete this group</button>
-                            : null
-                        }
-                        <div>
-                            <button onClick={() => 
-                                updateGroup(
-                                    props.group._id, 
-                                    "split", 
-                                    !props.group.split,
-                                    props.app.fingerprint!)}
-                                >{props.group.split ? "Disable" : "Enable"} split</button>
-                            <button onClick={() => 
-                                updateGroup(
-                                    props.group._id, 
-                                    "column", 
-                                    !props.group.column, 
-                                    props.app.fingerprint!)}
-                                >{props.group.column ? "Disable" : "Enable"} column</button>
-                        </div>
-                    </> : null
+                    <GroupButtonPanel 
+                        group={props.group}
+                        newGroup={newGroup}
+                        updateGroup={updateGroup}
+                        setNewGroup={setNewGroup}
+                        setNewElement={setNewElement}
+                        fingerprint={props.app.fingerprint!}
+                    /> : null
             }
         </div>
     )

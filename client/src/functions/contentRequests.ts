@@ -83,9 +83,9 @@ export async function onSubmitGroup(name: string, newGroup: {
     parentGroup: string,
     name: string,
     isSubGroup: boolean
-}, fingerprint: string) {
+} | undefined, fingerprint: string) {
 
-    if (!newGroup?.parentGroup)
+    if (!newGroup || !newGroup?.parentGroup)
         return
 
     let submitObject: {

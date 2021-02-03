@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Moment from "moment"
 import { ContentType } from 'components/utilities/contentTypes'
+import "./TemporaryFields.css"
 
 export default class TemporaryFields extends Component<PropsForComponent, StateForComponent> {
 
@@ -52,8 +53,9 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 		return (
 			<div className="tempNewFieldsWrapper">
 				<div className="tempNewFieldsContainer">
-					<label htmlFor="fieldOne">{this.state.type === "TEXT" ? "Title" : this.state.type === "LINK" ? "Link" : "Text"}</label>
+					<label className="temporaryLabel" htmlFor="fieldOne">{this.state.type === "TEXT" ? "Title" : this.state.type === "LINK" ? "Link" : "Text"}</label>
 					<input
+						className="editModeInputField temporaryField"
 						name="fieldOne"
 						placeholder={this.state.type === "TEXT" ? "New title" : "New display text"}
 						onChange={(event) => this._checkTemporaryField(event, "first")}
@@ -68,8 +70,9 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 						}}>Deadline is not formatted correctly</p>
 						: null
 					}
-					<label htmlFor="fieldTwo">{this.state.type === "TEXT" ? "Text" : this.state.type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
+					<label className="temporaryLabel" htmlFor="fieldTwo">{this.state.type === "TEXT" ? "Text" : this.state.type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
 					<input
+						className="editModeInputField temporaryField"
 						name="fieldTwo" placeholder={this.state.type === "TEXT" ? "New text" : this.state.type === "LINK" ? "New link" : "YYYY-MM-DD HH:mm"}
 						onChange={(event) => this._checkTemporaryField(event, "second")}
 						value={this.state.fieldTwo}
