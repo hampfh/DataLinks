@@ -27,8 +27,8 @@ export default function LinkObject(props: PropsForComponent) {
                     </div>
                 </div> :
                 <div className="ButtonWrapper">
-                    <a href={props.displayText} className="Button">
-                        {props.link}
+                    <a href={props.link} className="Button">
+                        {props.displayText}
                     </a>
                 </div>
             }
