@@ -21,3 +21,7 @@
 .RenderContentContainer {
 	margin-bottom: 1rem;
 }
+
+.RenderContentContainer.Group {
+	width: 100%;
+}
