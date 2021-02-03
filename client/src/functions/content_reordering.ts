@@ -4,8 +4,6 @@ export async function submitElementReorder(parentGroup: string, realElement: Con
 
     // Find dummy element and delete it
     let dummyIndex = content.findIndex((current) => current._id.toString().length <= 0)
-    if (dummyIndex >= 0)
-        content.splice(dummyIndex, 1)
 
     await Http({
         url: "/api/v1/group/order",
@@ -21,28 +19,21 @@ export async function submitElementReorder(parentGroup: string, realElement: Con
 
 export const insertDummyPositionIntoContent = (
     content: ContentObject[], 
-    initialContent: ContentObject[],
-    relativeIndex: number, 
-    realElement: ContentObject, 
+    newIndex: number, 
     setContent: React.Dispatch<React.SetStateAction<ContentObject[]>>,
-    resetContent: () => void
 ) => {
-    resetContent()
-    let start = content.findIndex((current) => current._id.toString() === realElement._id.toString())
-    if (start < 0) {
-        console.warn("Eeee, this doesn't exist")
-        return
-    }
-
-    const newDummyIndex = start + relativeIndex
 
     // Deep copy content
-    const newContent: ContentObject[] = JSON.parse(JSON.stringify(initialContent))
-    if (newDummyIndex >= newContent.length)
+    const newContent: ContentObject[] = JSON.parse(JSON.stringify(content))
+    if (newIndex >= newContent.length)
         newContent.push({ _id: "" })
     else
         // Insert dummy object
-        newContent.splice(newDummyIndex < 0 ? 0 : newDummyIndex, 0, { _id: "" })
+        newContent.splice(newIndex < 0 ? 0 : newIndex, 0, { _id: "" })
 
     setContent(newContent)
+}
+
+export const calculateIndexFromRelative = (content: ContentObject[], relX: number, relY: number, elementsPerRow: number, initialIndex: number) => {
+    return relX + elementsPerRow * relY + initialIndex
 }

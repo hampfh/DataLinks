@@ -24,6 +24,5 @@ export default function Dragable(props: PropsForComponent) {
 interface PropsForComponent {
     cursor: IPosition,
     setInitialCursor: (cursor: IPosition) => void,
-    dragging: boolean,
     setDragging: (state: boolean) => void
 }

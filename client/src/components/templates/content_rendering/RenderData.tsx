@@ -29,9 +29,9 @@ import {
 } from "state/actions/local"
 import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
-import RenderContent from './RenderContent'
 import { onSubmitGroup } from 'functions/contentRequests'
-import { insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
+import Group from './Group'
+import { fetchUpdatedSubjects } from 'functions/updateSubjects'
 
 function RenderData(props: PropsForComponent) {
 
@@ -41,26 +41,12 @@ function RenderData(props: PropsForComponent) {
 		isSubGroup: boolean
 	} | undefined>(undefined)
 
-	const [content, setContent] = useState<ContentObject[]>(props.group.content)
-	const { content: initialContent } = props.group
-
-	const resetContent = () => {
-		setContent(JSON.parse(JSON.stringify(initialContent)))
-	}
-
 	return (
 		<div className="DataRendererWrapper">
-			{props.group.content.map((contentElement) => {
-				return <RenderContent 
-					key={contentElement._id}
-					parentGroup={props.group._id}
-					content={contentElement}
-					updateSubjects={props.updateSubjects}
-					resetLocalContent={resetContent}
-					insertDummyPositionIntoContent={(relativeIndex: number, realElement: ContentObject) => insertDummyPositionIntoContent(content, initialContent, relativeIndex, realElement, setContent, resetContent)}
-					submitElementReorder={(realElement: ContentObject) => submitElementReorder(props.group._id, realElement, content, props.app.fingerprint!)}
-				/>
-			})}
+			<Group 
+				group={props.group}
+				updateSubjects={fetchUpdatedSubjects}
+			/>
 			<GroupForm 
 				forRoot
 				parentId={props.group._id}
