@@ -19,6 +19,17 @@
 	overflow-y: auto;
 	max-width: 50rem;
 	height: 95vh;
+	scrollbar-width: thin;
+}
+
+.Scrollable::-webkit-scrollbar {
+	width: 0.5rem;
+}
+
+.Scrollable::-webkit-scrollbar-thumb {
+	width: 0.5rem;
+	background-color: var(--complementary);
+	border-radius: 10px;
 }
 
 .HeaderSubjectView {
