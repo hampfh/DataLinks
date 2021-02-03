@@ -35,5 +35,17 @@ export const insertDummyPositionIntoContent = (
 }
 
 export const calculateIndexFromRelative = (content: ContentObject[], relX: number, relY: number, elementsPerRow: number, initialIndex: number) => {
+    const initialRelativeXPosition = initialIndex % elementsPerRow
+    if (initialRelativeXPosition + relX >= elementsPerRow - 1)
+        relX = (elementsPerRow - 1) - initialRelativeXPosition
+    else if (initialRelativeXPosition + relX < 0)
+        relX = initialRelativeXPosition * - 1
+
+    const initialRelativeYPosition = Math.floor(initialIndex / elementsPerRow)
+    if (initialRelativeYPosition + relY >= Math.floor(content.length / elementsPerRow))
+        relY = Math.floor(content.length / elementsPerRow) - initialRelativeYPosition
+    else if (initialRelativeYPosition + relY < 0)
+        relY = initialRelativeYPosition * - 1
+
     return relX + elementsPerRow * relY + initialIndex
 }

@@ -71,7 +71,6 @@ export const reOrderElement = (subjects: SubjectData[], id: string, newPosition:
 			return { status: SearchStatus.UPDATE_POSITION, value: newPosition }
 		}).status === SearchStatus.ALL_OK) {
 			// Exit recursion
-			console.log("Successfully updated position")
 			return
 		}
 	}
