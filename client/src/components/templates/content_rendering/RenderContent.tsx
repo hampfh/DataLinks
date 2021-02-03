@@ -4,7 +4,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { IReduxRootState } from "state/reducers"
 import { IAppState } from "state/reducers/app"
-import Dragable from "../content_objects/Dragable"
+import Draggable from "../content_objects/Draggable"
 import Group from "./Group"
 
 export const CONTENT_OBJECT_WIDTH = 190 // Each rem is one 16 pixels
@@ -21,7 +21,7 @@ function RenderContent(props: PropsForComponent) {
     return (
         <div className={`RenderContentContainer ${props.content.group ? "Group" : ""}`}>
             {props.app.flags.editMode ?
-                <Dragable
+                <Draggable
                     cursor={props.cursor}
                     setInitialCursor={setInitialCursorObject}
                     setDragging={props.setDragging}

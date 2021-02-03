@@ -1,4 +1,4 @@
-import "./Dragable.css"
+import "./Draggable.css"
 
 export default function Dragable(props: PropsForComponent) {
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function LinkObject(props: PropsForComponent) {
     return (
-        <div>
+        <div className="ContentObjectContentWrapper">
             {props.editMode ?
                 <div className="ButtonWrapper ButtonWrapperEditMode">
                     <div className="editModeField">
