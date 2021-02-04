@@ -55,3 +55,8 @@
 .Column > .textObjectWrapper {
 	margin-bottom: 0.5rem;
 }
+
+.ContentObjectContentWrapper {
+	display: flex;
+	justify-content: center;
+}
