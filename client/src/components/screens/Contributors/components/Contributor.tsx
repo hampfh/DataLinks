@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import Moment from "moment"
 import "./Contributor.css"
+import { IReduxRootState } from 'state/reducers'
+import { connect } from "react-redux"
 
-export default class Contributor extends Component<PropsForComponent, StateForComponent> {
+class Contributor extends Component<PropsForComponent, StateForComponent> {
 
 	fadeIn?: NodeJS.Timeout
 	constructor(props: PropsForComponent) {
@@ -46,7 +48,12 @@ export default class Contributor extends Component<PropsForComponent, StateForCo
 		return (
 			<div className={`${this.state.hidden ? "hidden" : "contributorElementWrapper"}`}>
 				<div className="contributor">
-					<p className="name">{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span></p>
+					<p className={`name`}>
+						{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span>
+						{this.props.contributor.identifier === this.props.fingerprint ?
+							<span className="contributorIsSelf">You</span> : null
+						}
+					</p>
 					<p className="score">{this.props.contributor.contributionCount}</p>
 					<p className="date">{this.displayDate()}</p>
 				</div>
@@ -85,9 +92,16 @@ export interface IContributor {
 
 interface PropsForComponent {
 	place: number,
-	contributor: IContributor
+	contributor: IContributor,
+	fingerprint?: string
 }
 
 interface StateForComponent {
 	hidden: boolean
 }
+
+const reduxSelect = (state: IReduxRootState) => ({
+	fingerprint: state.app.fingerprint
+})
+
+export default connect(reduxSelect)(Contributor)

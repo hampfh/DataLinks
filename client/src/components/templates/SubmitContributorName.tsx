@@ -6,6 +6,8 @@ import { IAddContributor, addContributor, disableEditModeFlag, IDisableEditModeF
 import { IAppState } from 'state/reducers/app'
 import "./SubmitContributorName.css"
 
+const NAME_MAX_LENGTH = 15
+
 class SubmitContributorName extends Component<PropsForComponent, StateForComponent> {
 
 	constructor(props: PropsForComponent) {
@@ -17,6 +19,10 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 	}
 
 	inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+		if (event.target.value.length > NAME_MAX_LENGTH)
+			return
+		
 		let newState = { ...this.state }
 		newState.nameInput = event.target.value
 		this.setState(newState)
@@ -50,7 +56,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 					<p>Hi! Thank you for contributing to DataLinks. As a contributor, all your changes are associated with you and for each edit you increase your contribution score. Enter your preferred display name as a contributor (leave empty for anonymous)</p>
 					<p>Note that a contributor is related to the browser, if you change device and/or browser you're considered another contributor</p>
 					<div className="contributorInteractive">
-						<input onChange={this.inputChange} placeholder="Display name" />
+						<input onChange={this.inputChange} placeholder="Display name" value={this.state.nameInput} />
 						<button onClick={this.submitName}>Submit name</button>
 					</div>
 					<button onClick={this.goBackToMainPage}>Go back to main page</button>
