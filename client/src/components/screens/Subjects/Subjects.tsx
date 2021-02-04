@@ -1,4 +1,4 @@
-import React, { Component, createRef } from "react"
+import React, { useEffect, useRef } from "react"
 import SubjectComponent from "./components/SubjectItem"
 import "./Subjects.css"
 import "./components/Switch.css"
@@ -37,55 +37,50 @@ const uiDistribution = {
 
 const desktopWidth = 800
 
-export class Subjects extends Component<PropsForComponent> {
+export function Subjects(props: PropsForComponent) {
 
-	debouncer?: NodeJS.Timeout
-	subjectContainerRef?: React.RefObject<HTMLDivElement>
+	const subjectContainerRef = useRef<HTMLDivElement>(null)
 
-	constructor(props: PropsForComponent) {
-		super(props)
-		this.subjectContainerRef = createRef()
-	}
+	useEffect(() => {
+		let debouncer: NodeJS.Timeout | undefined
+		function _onResize() {
+			if (debouncer)
+				clearTimeout(debouncer)
+			debouncer = setTimeout(performResize, 10)
+		}
 
-	componentDidMount() {
-		window.addEventListener("resize", this._onResize)
-	}
+		window.addEventListener("resize", _onResize)
 
-	componentDidUpdate() {
+		return () => {
+			window.removeEventListener("resize", _onResize)
+			if (debouncer)
+				clearTimeout(debouncer)
+			}
+	})
+
+	useEffect(() => {
 		// If heights does't match, resize page
-		if (this.subjectContainerRef && this.subjectContainerRef.current && this.subjectContainerRef.current.clientHeight !== this.props.dimensions.subjects.height)
-			this.performResize()
-	}
+		if (subjectContainerRef && subjectContainerRef.current && subjectContainerRef.current.clientHeight !== props.dimensions.subjects.height)
+			performResize()
+	})
 
-	componentWillUnmount() {
-		window.removeEventListener("resize", this._onResize)
-		if (this.debouncer)
-			clearTimeout(this.debouncer)
-	}
-
-	_onResize = () => {
-		if (this.debouncer)
-			clearTimeout(this.debouncer)
-		this.debouncer = setTimeout(this.performResize, 10)
-	}
-
-	performResize = () => {
+	function performResize() {
 		const windowHeightAfterStatic = window.innerHeight - uiDistribution.static.TOOLBAR
 
-		if (!this.subjectContainerRef || !this.subjectContainerRef.current)
+		if (!subjectContainerRef || !subjectContainerRef.current)
 			return
 
-		const contentHeight = windowHeightAfterStatic - this.subjectContainerRef.current?.clientHeight ?? windowHeightAfterStatic
+		const contentHeight = windowHeightAfterStatic - subjectContainerRef.current?.clientHeight ?? windowHeightAfterStatic
 
 		// Calculate and update dimensions
-		this.props.setTransforms({
+		props.setTransforms({
 			window: {
 				width: window.innerWidth,
 				height: window.innerHeight
 			},
 			subjects: {
 				width: window.innerWidth,
-				height: this.subjectContainerRef.current.clientHeight
+				height: subjectContainerRef.current?.clientHeight ?? null
 			},
 			content: {
 				width: window.innerWidth,
@@ -99,105 +94,103 @@ export class Subjects extends Component<PropsForComponent> {
 		})
 	}
 
-	_onflick = (event: React.ChangeEvent<HTMLInputElement>) => {
+	function _onflick(event: React.ChangeEvent<HTMLInputElement>) {
 		if (event.target.checked) 
-			this.props.enableEditMode()
+			props.enableEditMode()
 		else
-			this.props.disableEditModeFlag()
+			props.disableEditModeFlag()
 	}
 
-	_onExtendModeFlick = (event: React.ChangeEvent<HTMLInputElement>) => {
-		this.props.setExtendViewFlag(event.target.checked)
+	function _onExtendModeFlick(event: React.ChangeEvent<HTMLInputElement>) {
+		props.setExtendViewFlag(event.target.checked)
 	}
-	_onDeadlineViewFlick = (event: React.ChangeEvent<HTMLInputElement>) => {
-		this.props.setDeadlineViewFlag(event.target.checked)
+	function _onDeadlineViewFlick(event: React.ChangeEvent<HTMLInputElement>) {
+		props.setDeadlineViewFlag(event.target.checked)
 	}
 
-	render() {
-		return (
-			<section className="Master">
-				<div className="Uppercontainer" 
-					ref={this.subjectContainerRef}
-				>
-					{this.props.app.flags.extendedView ? null : 
-						<div>
-							<div className="feedbackWrapper">
-								<a href="https://github.com/hampfh/DataLinks/issues">
-									<div className="feedbackContainer">
-										Give Feedback
-									</div>
-								</a>
-							</div>
-							<h1 className="Title">D20 links</h1>
-							<h3 className="versionText">Version: {version}</h3>
-							<div className="leaderboardButtonWrapper">
-								<Link className="leaderboardLink" to="/D20/contributors">
-									<div className="leaderboardButton">
-										Contributor leaderboard
-									</div>
-								</Link>
-							</div>
+	return (
+		<section className="Master">
+			<div className="Uppercontainer" 
+				ref={subjectContainerRef}
+			>
+				{props.app.flags.extendedView ? null : 
+					<div>
+						<div className="feedbackWrapper">
+							<a href="https://github.com/hampfh/DataLinks/issues">
+								<div className="feedbackContainer">
+									Give Feedback
+								</div>
+							</a>
 						</div>
+						<h1 className="Title">D20 links</h1>
+						<h3 className="versionText">Version: {version}</h3>
+						<div className="leaderboardButtonWrapper">
+							<Link className="leaderboardLink" to="/D20/contributors">
+								<div className="leaderboardButton">
+									Contributor leaderboard
+								</div>
+							</Link>
+						</div>
+					</div>
+				}
+				<div className="SubjectContainer">
+					{
+						props.subjects.map((subject) => {
+							if (subject.group == null)
+								return null
+							else {
+								return <SubjectComponent
+									key={subject.code}
+									subject={subject}
+									updateSubjects={props.updateSubjects}
+								/>
+							}
+						})
 					}
-					<div className="SubjectContainer">
-						{
-							this.props.subjects.map((subject) => {
-								if (subject.group == null)
-									return null
-								else {
-									return <SubjectComponent
-										key={subject.code}
-										subject={subject}
-										updateSubjects={this.props.updateSubjects}
-									/>
-								}
-							})
-						}
+				</div>
+			</div>
+			{props.app.sneakPeak == null || props.dimensions.window.width < desktopWidth || props.dimensions.window.height < 600 || isMobile() ? null :
+				<SubjectSneakPeak
+					updateSubjects={props.updateSubjects}
+				/>
+			}
+			{props.app.flags.deadlineView && props.app.sneakPeakSelectionCount <= 0 && props.dimensions.window.width > desktopWidth ? 
+				<DeadlineRenderer
+					subjects={props.subjects}
+				/>: null
+			}
+
+			{isMobile() || props.dimensions.window.height < 500 || props.dimensions.window.width < desktopWidth ? null : 
+				<div className="bottomContainer"
+					style={{
+						height: props.dimensions.toolbar.height
+					}}
+				>
+					<div className="extendModeContainer  toolbarItem">
+						<p>Content view</p>
+						<label className="switch">
+							<input onChange={_onExtendModeFlick} checked={props.app.flags.extendedView} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
+					</div>
+					<div className="editModeContainer toolbarItem">
+						<p>Edit mode</p>
+						<label className="switch">
+							<input onChange={_onflick} checked={props.app.flags.editMode} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
+					</div>
+					<div className="editModeContainer toolbarItem">
+						<p>Deadline view</p>
+						<label className="switch">
+							<input onChange={_onDeadlineViewFlick} checked={props.app.flags.deadlineView} type="checkbox" />
+							<span className="slider round"></span>
+						</label>
 					</div>
 				</div>
-				{this.props.app.sneakPeak == null || this.props.dimensions.window.width < desktopWidth || this.props.dimensions.window.height < 600 || isMobile() ? null :
-					<SubjectSneakPeak
-						updateSubjects={this.props.updateSubjects}
-					/>
-				}
-				{this.props.app.flags.deadlineView && this.props.app.sneakPeakSelectionCount <= 0 && this.props.dimensions.window.width > desktopWidth ? 
-					<DeadlineRenderer
-						subjects={this.props.subjects}
-					/>: null
-				}
-
-				{isMobile() || this.props.dimensions.window.height < 500 || this.props.dimensions.window.width < desktopWidth ? null : 
-					<div className="bottomContainer"
-						style={{
-							height: this.props.dimensions.toolbar.height
-						}}
-					>
-						<div className="extendModeContainer  toolbarItem">
-							<p>Content view</p>
-							<label className="switch">
-								<input onChange={this._onExtendModeFlick} checked={this.props.app.flags.extendedView} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-						</div>
-						<div className="editModeContainer toolbarItem">
-							<p>Edit mode</p>
-							<label className="switch">
-								<input onChange={this._onflick} checked={this.props.app.flags.editMode} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-						</div>
-						<div className="editModeContainer toolbarItem">
-							<p>Deadline view</p>
-							<label className="switch">
-								<input onChange={this._onDeadlineViewFlick} checked={this.props.app.flags.deadlineView} type="checkbox" />
-								<span className="slider round"></span>
-							</label>
-						</div>
-					</div>
-				}
-			</section>
-		)
-	}
+			}
+		</section>
+	)
 }
 
 export interface SubjectData {
@@ -226,21 +219,17 @@ interface PropsForComponent {
 	setTransforms: ISetTransforms
 }
 
-const reduxSelect = (state: IReduxRootState) => {
-	return {
-		app: state.app,
-		dimensions: state.dimensions
-	}
-}
+const reduxSelect = (state: IReduxRootState) => ({
+	app: state.app,
+	dimensions: state.dimensions
+})
 
-const reduxDispatch = () => {
-	return {
-		enableEditMode,
-		disableEditModeFlag,
-		setExtendViewFlag,
-		setDeadlineViewFlag,
-		setTransforms
-	}
-}
+const reduxDispatch = () => ({
+	enableEditMode,
+	disableEditModeFlag,
+	setExtendViewFlag,
+	setDeadlineViewFlag,
+	setTransforms
+})
 
 export default connect(reduxSelect, reduxDispatch())(Subjects)

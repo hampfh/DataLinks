@@ -85,8 +85,6 @@ export class Subject extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	
-
 	render() {
 		return (
 			<div className="SubjectItemWrapper">
