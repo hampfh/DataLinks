@@ -4,7 +4,7 @@ import "./Subjects.css"
 import "./components/Switch.css"
 import isMobile from "functions/isMobile"
 import { version } from "components/../../package.json"
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import { IReduxRootState } from "state/reducers"
 import { IAppState } from "state/reducers/app"
 import { 
@@ -24,6 +24,8 @@ import { IDimensionState } from "state/reducers/dimensions"
 import { ISetTransforms, setTransforms} from "state/actions/dimensions"
 import { Link } from "react-router-dom"
 import { LOGO } from "components/utilities/logos"
+import { motion } from "framer-motion"
+import { animationActive, AnimationCategory, HomeAnimationId, IAnimationState } from "state/reducers/animations"
 
 const uiDistribution = {
 	dynamic: {
@@ -39,7 +41,11 @@ const desktopWidth = 800
 
 export function Subjects(props: PropsForComponent) {
 
+	const dispatch = useDispatch()
+
 	const subjectContainerRef = useRef<HTMLDivElement>(null)
+
+	/*  */
 
 	useEffect(() => {
 		let debouncer: NodeJS.Timeout | undefined
@@ -51,20 +57,27 @@ export function Subjects(props: PropsForComponent) {
 
 		window.addEventListener("resize", _onResize)
 
+		setTimeout(() => {
+			dispatch({ type: "SET_ANIMATION_STATUS", payload: { category: AnimationCategory.HOME, animation: HomeAnimationId.GIVE_FEEDBACK_DROP_DOWN, status: true }})
+		}, 200)
+
 		return () => {
 			window.removeEventListener("resize", _onResize)
 			if (debouncer)
 				clearTimeout(debouncer)
-			}
-	})
+		}
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	useEffect(() => {
 		// If heights does't match, resize page
 		if (subjectContainerRef && subjectContainerRef.current && subjectContainerRef.current.clientHeight !== props.dimensions.subjects.height)
 			performResize()
+
 	})
 
-	function performResize() {
+	const performResize = () => {
 		const windowHeightAfterStatic = window.innerHeight - uiDistribution.static.TOOLBAR
 
 		if (!subjectContainerRef || !subjectContainerRef.current)
@@ -115,13 +128,15 @@ export function Subjects(props: PropsForComponent) {
 			>
 				{props.app.flags.extendedView ? null : 
 					<div>
-						<div className="feedbackWrapper">
+						<motion.div className="feedbackWrapper" animate={animationActive(props.animations, AnimationCategory.HOME, HomeAnimationId.GIVE_FEEDBACK_DROP_DOWN) ? "" : {
+							y: [-100, 0]
+						}}>
 							<a href="https://github.com/hampfh/DataLinks/issues">
 								<div className="feedbackContainer">
 									Give Feedback
 								</div>
 							</a>
-						</div>
+						</motion.div>
 						<h1 className="Title">D20 links</h1>
 						<h3 className="versionText">Version: {version}</h3>
 						<div className="leaderboardButtonWrapper">
@@ -211,6 +226,7 @@ interface PropsForComponent {
 	subjects: SubjectData[],
 	app: IAppState,
 	dimensions: IDimensionState,
+	animations: IAnimationState,
 	updateSubjects: () => void,
 	enableEditMode: IEnableEditMode,
 	disableEditModeFlag: IDisableEditModeFlag,
@@ -221,7 +237,8 @@ interface PropsForComponent {
 
 const reduxSelect = (state: IReduxRootState) => ({
 	app: state.app,
-	dimensions: state.dimensions
+	dimensions: state.dimensions,
+	animations: state.animations
 })
 
 const reduxDispatch = () => ({
