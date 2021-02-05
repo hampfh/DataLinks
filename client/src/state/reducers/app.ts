@@ -2,6 +2,8 @@ import { ActionType } from ".";
 import { SubjectData } from "components/screens/Subjects/Subjects";
 
 export interface IAppState {
+	version: string,
+	lastVersion?: string,
 	sneakPeak?: SubjectData,
 	sneakPeakSelectionCount: number,
 	contributor?: string,
@@ -14,6 +16,7 @@ export interface IAppState {
 }
 
 const defaultState = {
+	version: "",
 	sneakPeak: undefined,
 	sneakPeakSelectionCount: 0,
 	flags: {
@@ -58,6 +61,12 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 			return newState
 		case 'SET_FINGERPRINT':
 			newState.fingerprint = action.payload.fingerprint
+			return newState
+		case 'SET_VERSION':
+			newState.version = action.payload.version
+			return newState
+		case 'SET_LAST_VERSION':
+			newState.lastVersion = action.payload.version
 			return newState
 		default:
 			return newState

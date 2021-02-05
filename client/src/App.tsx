@@ -34,6 +34,7 @@ import Contributors from 'components/screens/Contributors/Contributors';
 import { fetchUpdatedSubjects } from 'functions/updateSubjects';
 import { useDispatch } from "react-redux"
 import { IContentState } from 'state/reducers/content';
+import { version } from "../package.json"
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -46,6 +47,8 @@ function App(props: PropsForComponent) {
 	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint } = props
 
 	useEffect(() => {
+		manageVersion()
+
 		try {
 			fetchUpdatedSubjects().then((subjects) => {
 				// set state
@@ -83,12 +86,28 @@ function App(props: PropsForComponent) {
 			const result = await fp.get()
 			setFingerPrint(result.visitorId)
 		})();
-	}, [enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint, dispatch])
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	useEffect(() => {
 		if (props.app.flags.editMode && localStorage.getItem(APP_CONTRIBUTOR_KEY) == null && !!!showContributionOverlay)
 			setShowContributionOverlay(true)
 	}, [props.app.flags.editMode, showContributionOverlay])
+
+	function manageVersion() {
+		// Set current version
+		dispatch({ type: "SET_VERSION", payload: { version }})
+
+		const lastVersion = localStorage.getItem("version")
+		if (lastVersion == null)
+			localStorage.setItem("version", version)
+		// If last version doesn't equal the current version the assign the last version to state
+		else if (version !== lastVersion) {
+			localStorage.setItem("version", version)
+			dispatch({ type: "SET_LAST_VERSION", payload: { version: lastVersion }})
+		}
+	}
 	
 	// Render contribution form if contributor isn't set
 	if (showContributionOverlay && props.app.flags.editMode)
