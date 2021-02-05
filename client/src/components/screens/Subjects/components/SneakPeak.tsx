@@ -21,11 +21,11 @@ class SneakPeak extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	_mouseEnter = () => {
-		this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount + 1)
+		this.props.setSneakPeakSelectionCount(1)
 	}
 
 	_mouseLeave = () => {
-		this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount - 1)
+		this.props.setSneakPeakSelectionCount(-1)
 	}
 
 	render() {

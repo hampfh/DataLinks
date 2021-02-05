@@ -44,8 +44,8 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 			newState.sneakPeakSelectionCount = 0
 			return newState
 		case 'SET_SNEAK_PEAK_SELECTION_COUNT':
-			newState.sneakPeakSelectionCount = action.payload.newCount
-			if (action.payload.newCount <= 0) {
+			newState.sneakPeakSelectionCount += action.payload.newCount
+			if (newState.sneakPeakSelectionCount <= 0) {
 				newState.sneakPeak = undefined
 				newState.sneakPeakSelectionCount = 0
 			}

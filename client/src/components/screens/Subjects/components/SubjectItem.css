@@ -11,6 +11,7 @@
 }
 
 .Subject {
+	cursor: pointer;
 	justify-content: center;
 	align-items: center;
 
@@ -69,7 +70,7 @@
 .Header:hover {
 	cursor: pointer;
 	text-decoration: underline;
-}.
+}
 
 .expandable {
 	transition-duration: 1s;

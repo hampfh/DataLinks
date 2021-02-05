@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { useEffect, useState } from 'react'
 import "./SubjectItem.css"
 import "./Animation.css"
 import { SubjectData } from '../Subjects'
@@ -16,103 +16,94 @@ import {
 	showSneakPeak 
 } from "state/actions/app"
 import { getSubjectIcon } from 'components/utilities/logos'
+import { motion } from 'framer-motion'
 
-export class Subject extends Component<PropsForComponent, StateForComponent> {
+function Subject(props: PropsForComponent) {
 
-	collapseStateTimeout?: NodeJS.Timeout
-	mouseLeaveLock?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props)
+	let collapseStateTimeout: NodeJS.Timeout
+	let mouseLeaveLock: NodeJS.Timeout
 
-		this.state = {
-			collapsState: 0,
-			timeoutDone: false
-		}
-	}
+	const [collapsState, setCollapsState] = useState(0)
 
-	shouldComponentUpdate(newProps: PropsForComponent, newState: StateForComponent) {
+	/* shouldComponentUpdate(newProps: PropsForComponent, newState: StateForComponent) {
 		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString() && 
 		newState.collapsState === this.state.collapsState)
 			return false
 
 		return true;
-	}
+	} */
 
-	componentWillUnmount() {
-		if (this.collapseStateTimeout)
-			clearTimeout(this.collapseStateTimeout)
-		if (this.mouseLeaveLock)
-			clearTimeout(this.mouseLeaveLock)
-	}
+	useEffect(() => {
+		return () => {
+			if (collapseStateTimeout)
+				clearTimeout(collapseStateTimeout)
+			if (mouseLeaveLock)
+				clearTimeout(mouseLeaveLock)
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-	_onClick = () => {
+	function _onClick() {
 		// Extend the subject container
-		if (this.state.collapsState === 0) {
-			const newState = { ...this.state }
-			newState.collapsState = 2
-			this.setState(newState)
+		if (collapsState === 0) {
+			setCollapsState(2)
 
-			this.collapseStateTimeout = setTimeout(() => {
-				const newState = { ...this.state }
-				newState.collapsState = 3
-				this.setState(newState)
+			collapseStateTimeout = setTimeout(() => {
+				setCollapsState(3)
 			}, 100)
-			this.props.hideSneakPeak()
+			props.hideSneakPeak()
 		}
 	}
 
-	_mouseEnter = () => {
+	function _mouseEnter() {
 
 		// We don't need to set it again
-		if (this.props.subject._id.toString() === this.props.app.sneakPeak?._id.toString()) {
-			this.props.showSneakPeak(this.props.subject)
+		if (props.subject._id.toString() === props.app.sneakPeak?._id.toString()) {
+			props.showSneakPeak(props.subject)
 			return
 		}
 
-		let newState = { ...this.state }
-		newState.timeoutDone = false;
-		this.setState(newState)
-
-		this.props.showSneakPeak(this.props.subject)
+		props.showSneakPeak(props.subject)
 	}
 
-	_mouseLeave = () => {
-		if (this.props.subject._id.toString() === this.props.app.sneakPeak?._id.toString()) {
-			this.mouseLeaveLock = setTimeout(() => {
+	function _mouseLeave() {
+		if (props.subject._id.toString() === props.app.sneakPeak?._id.toString()) {
+			mouseLeaveLock = setTimeout(() => {
 				// Lower selection score
-				this.props.setSneakPeakSelectionCount(this.props.app.sneakPeakSelectionCount - 1)
+				props.setSneakPeakSelectionCount(-1)
 			}, 10)
 		}
 	}
 
-	render() {
-		return (
-			<div className="SubjectItemWrapper">
-				{this.state.collapsState !== 3 ? 
-					<div className="Subject" 
-						onClick={this._onClick} 
-						onMouseLeave={this._mouseLeave}
-					>
-						<img alt="Subject icon" 
-							onMouseEnter={this._mouseEnter}
-							className={`${this.state.collapsState === 0 ? "collapsed" : this.state.collapsState === 2 ? "expanding" : ""}`} 
-							src={getSubjectIcon(this.props.subject.logo)} 
-						/>
-						<h4 className="Header">{this.props.subject.code}</h4>
-					</div>
-					: null
-				}
-				{this.state.collapsState === 3 ? 
-					<Redirect to={`/D20/course/${this.props.subject.code}`} /> : null
-				}
-			</div>
-		)
-	}
+	return (
+		<div className="SubjectItemWrapper">
+			{collapsState !== 3 ? 
+				<motion.div className="Subject" 
+					onClick={_onClick} 
+					onMouseLeave={_mouseLeave}
+					whileHover={{
+						boxShadow: "0px 0px 20px -9px #000000"
+					}}
+					transition={{ duration: 0.05 }}
+				>
+					<img alt="Subject icon"
+						onMouseEnter={_mouseEnter}
+						className={`${collapsState === 0 ? "collapsed" : ""}`} 
+						src={getSubjectIcon(props.subject.logo)} 
+					/>
+					<h4 className="Header">{props.subject.code}</h4>
+				</motion.div>
+				: null
+			}
+			{collapsState === 3 ? 
+				<Redirect to={`/D20/course/${props.subject.code}`} /> : null
+			}
+		</div>
+	)
 }
 
 export interface StateForComponent {
 	collapsState: number,
-	timeoutDone: boolean
 }
 
 export interface PropsForComponent {
