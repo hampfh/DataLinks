@@ -24,6 +24,7 @@ function Subject(props: PropsForComponent) {
 	let mouseLeaveLock: NodeJS.Timeout
 
 	const [collapsState, setCollapsState] = useState(0)
+	const [hovering, setHovering] = useState(false)
 
 	/* shouldComponentUpdate(newProps: PropsForComponent, newState: StateForComponent) {
 		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString() && 
@@ -81,12 +82,19 @@ function Subject(props: PropsForComponent) {
 				<motion.div className="Subject" 
 					onClick={_onClick} 
 					onMouseLeave={_mouseLeave}
-					whileHover={{
-						boxShadow: "0px 0px 20px -9px #000000"
+					initial={{
+						boxShadow: "none"
 					}}
-					transition={{ duration: 0.05 }}
+					animate={hovering ? {
+						boxShadow: "0px 0px 20px -8px #000000"
+					} : {
+						boxShadow: "0px 0px 0px 0px #000000"
+					}}
+					transition={{ duration: hovering ? 0.05 : 0 }}
 				>
-					<img alt="Subject icon"
+					<motion.img alt="Subject icon"
+						onHoverStart={() => setHovering(true)}
+						onHoverEnd={() => setHovering(false)}
 						onMouseEnter={_mouseEnter}
 						className={`${collapsState === 0 ? "collapsed" : ""}`} 
 						src={getSubjectIcon(props.subject.logo)} 
