@@ -113,3 +113,8 @@ export const updateContentPosition = Joi.object({
 	position: Joi.number().required().min(0),
 	fingerprint: Joi.string().required()
 })
+
+export const mergeContributors = Joi.object({
+	fingerprint: Joi.string().required(),
+	otherFingerprint: Joi.string().required()
+})
