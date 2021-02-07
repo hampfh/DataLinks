@@ -30,6 +30,7 @@ router.patch("/group/order", Content.updateContentPosition)
 router.get("/group/content", Content.read)
 router.delete("/group/content", Content.delete)
 router.post("/contributor/name", Contributors.nameContributor)
+router.patch("/contributors/merge", Contributors.mergeContributors)
 router.get("/contributors", Contributors.getContributors)
 
 export default router

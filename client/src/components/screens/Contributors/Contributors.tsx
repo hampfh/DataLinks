@@ -39,8 +39,13 @@ export default class Contributors extends Component<{}, StateForComponent> {
 	}
 
 	_onContribution = (data: INewContribution) => {
-		const newState = { ...this.state }
-		const contributor = newState.contributors.find((contributor) => contributor.identifier === data.identifier)
+
+		const newState: StateForComponent = JSON.parse(JSON.stringify(this.state))
+		const contributor = newState.contributors.find((contributor) => {
+			const target = contributor.identifier.find((current) => current === data.identifier)
+			return (target != null)
+		})
+
 		if (contributor == null) {
 			// Create new local contributor
 			newState.contributors.push({
@@ -53,7 +58,7 @@ export default class Contributors extends Component<{}, StateForComponent> {
 					},
 				},
 				contributionCount: 1,
-				identifier: data.identifier,
+				identifier: [data.identifier],
 				updatedAt: Moment().toString()
 			})
 		} else {
@@ -80,7 +85,6 @@ export default class Contributors extends Component<{}, StateForComponent> {
 
 		// Sort contributions
 		newState.contributors.sort((a, b) => b.contributionCount - a.contributionCount)
-
 		this.setState(newState)
 	}
 
@@ -106,7 +110,7 @@ export default class Contributors extends Component<{}, StateForComponent> {
 								<h3 className="score">Contributions</h3>
 								<h3 className="date">Last edit</h3>
 							</div>
-							{this.state.contributors.map((contributor, index) => <Contributor key={contributor.identifier} place={index + 1} contributor={contributor} />)}
+							{this.state.contributors.map((contributor, index) => <Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} />)}
 						</section>
 					</div>
 				</section>

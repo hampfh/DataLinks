@@ -47,8 +47,8 @@ class Contributor {
 	@prop({ required: true })
 	public contributions!: Contribution
 
-	@prop({ required: true })
-	public identifier!: string 
+	@prop({ required: true, type: [String] })
+	public identifier!: string[]
 }
 
 export default getModelForClass(Contributor)

@@ -50,7 +50,7 @@ class Contributor extends Component<PropsForComponent, StateForComponent> {
 				<div className="contributor">
 					<p className={`name`}>
 						{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span>
-						{this.props.contributor.identifier === this.props.fingerprint ?
+						{this.props.contributor.identifier.findIndex((current) => current === this.props.fingerprint) >= 0 ?
 							<span className="contributorIsSelf">You</span> : null
 						}
 					</p>
@@ -86,7 +86,7 @@ export interface IContributor {
 		},
 	},
 	contributionCount: number,
-	identifier: string,
+	identifier: string[],
 	updatedAt: string
 }
 
