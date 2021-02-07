@@ -482,11 +482,17 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		// Find content in group
+		const content = group.content.find((current) => current._id.toString() === req.body.id)
+
 		// Notify logg			
 		Log(
 			req.body.fingerprint,
 			OperationType.UPDATE,
-			ContentType.NONE,		
+			content?.text ? ContentType.TEXT : 
+				content?.link ? ContentType.LINK :
+					content?.deadline ? ContentType.DEADLINE :
+						content?.group ? ContentType.GROUP : ContentType.NONE,		
 			["New position", `${req.body.position}`],
 			["", ""]
 		)
