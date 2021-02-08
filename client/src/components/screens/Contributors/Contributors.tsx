@@ -8,6 +8,9 @@ import Moment from "moment"
 import logoutIcon from "assets/icons/close.svg"
 import { Redirect } from 'react-router-dom'
 import { ContentType } from 'components/utilities/contentTypes'
+import { connect } from 'react-redux'
+import { IReduxRootState } from 'state/reducers'
+import { IAppState } from 'state/reducers/app'
 
 interface INewContribution {
 	name?: string,
@@ -16,9 +19,9 @@ interface INewContribution {
 	type: ContentType // Should have correct ContentType from
 }
 
-export default class Contributors extends Component<{}, StateForComponent> {
+class Contributors extends Component<PropsForComponent, StateForComponent> {
 
-	constructor(props: {}) {
+	constructor(props: PropsForComponent) {
 		super(props)
 
 		this.state = {
@@ -110,7 +113,13 @@ export default class Contributors extends Component<{}, StateForComponent> {
 								<h3 className="score">Contributions</h3>
 								<h3 className="date">Last edit</h3>
 							</div>
-							{this.state.contributors.map((contributor, index) => <Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} />)}
+							{this.state.contributors.map((contributor, index) => 
+								// Only show contributor if it is yourself OR you have more than 0 contributions
+								contributor.contributionCount > 0 || contributor.identifier.findIndex((current) => current === this.props.app.fingerprint) >= 0 ?
+									<Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} /> :
+									null
+								)
+							}
 						</section>
 					</div>
 				</section>
@@ -119,8 +128,17 @@ export default class Contributors extends Component<{}, StateForComponent> {
 	}
 }
 
+interface PropsForComponent {
+	app: IAppState
+}
 
 interface StateForComponent {
 	contributors: IContributor[],
 	shouldExitView: boolean
 }
+
+const reduxSelect = (state: IReduxRootState) => ({
+	app: state.app
+})
+
+export default connect(reduxSelect)(Contributors)
