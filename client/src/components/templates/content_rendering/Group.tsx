@@ -120,7 +120,7 @@ function Group(props: PropsForComponent) {
         <div
             className={`GroupContainer${props.group.column ? " Column" : ""}
 					${props.group.depth !== undefined && props.group.depth > 0 ? " Nested" : ""}
-                    ${props.group.split !== undefined && props.group.split === false && !!!props.app.flags.editMode ? " NoBorder" : ""}`}
+                    ${!props.group.split && !!!props.app.flags.editMode ? " NoBorder" : ""}`}
             style={props.app.flags.editMode ? {
                 margin: "1rem",
                 borderStyle: "solid",
