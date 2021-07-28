@@ -9,6 +9,10 @@ export const createSubject = Joi.object({
 	fingerprint: Joi.string().required()
 })
 
+export const readSubject = Joi.object({
+	archived: Joi.bool().optional()
+})
+
 export const updateSubject = Joi.object({
 	id: Joi.string().required(),
 	name: Joi.string(),

@@ -1,6 +1,6 @@
 import express from "express"
 import { CrudController } from "./CrudController"
-import { createSubject, findElementWithIdFingerPrint, updateSubject } from "./schemas"
+import { createSubject, findElementWithIdFingerPrint, readSubject, updateSubject } from "./schemas"
 import SubjectModel from "../models/subjects.model"
 import GroupModel from "../models/group.model"
 import { Document } from "mongoose"
@@ -58,12 +58,23 @@ export default class SubjectController extends CrudController {
 			res.status(201).json(newSubject)
 		next()
 	}
-	public async read(req: express.Request, res: express.Response): Promise<void> {
+	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+		const { error } = readSubject.validate(req.query)
+		if (error) {
+			super.fail(res, error.message, 400, next)
+			return 
+		}
+
+		const queryObject: {
+			archived?: boolean
+		} = {}
+
+		if (req.query.archived != null) {
+			queryObject.archived = (req.query.archived === "true")
+		}
 
 		// Max depth is 5
-		const response = await SubjectModel.find({
-			archived: false
-		}).populate({
+		const response = await SubjectModel.find(queryObject).populate({
 			path: "group",
 			populate: {
 				path: "content.group",
