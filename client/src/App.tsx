@@ -35,6 +35,7 @@ import { fetchUpdatedSubjects } from 'functions/updateSubjects';
 import { useDispatch } from "react-redux"
 import { IContentState } from 'state/reducers/content';
 import { version } from "../package.json"
+import Archive from 'components/screens/Archive/Archive';
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -131,6 +132,9 @@ function App(props: PropsForComponent) {
 				</Route>
 				<Route exact path="/D20/contributors">
 					<Contributors />
+				</Route>
+				<Route exact path="/D20/archive">
+					<Archive subjects={props.content.subjects} />
 				</Route>
 				{props.content.subjects.map((subject) => {
 					return (

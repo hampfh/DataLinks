@@ -147,9 +147,15 @@ body {
 }
 
 .leaderboardButtonWrapper {
-	display: grid;
+	display: flex;
+	flex-direction: row;
 	justify-content: center;
 	margin: 1rem 0;
+}
+
+.leaderboardButtonWrapper * {
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
 }
 
 .leaderboardLink {

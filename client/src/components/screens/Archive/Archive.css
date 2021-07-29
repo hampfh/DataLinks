@@ -1,0 +1,110 @@
+@import url("../../root.css");
+
+.exitButtonContainer {
+    width: 35rem;
+    justify-content: start;
+}
+
+.archiveLogoutIconBackground {
+    position: relative;
+    left: 2rem;
+    top: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--primary);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.archiveLogoutIcon {
+    cursor: pointer;
+	width: 1.5rem;
+	transition-property: transform;
+	transition-duration: 0.1s;
+}
+
+.archiveLogoutIcon:hover {
+	transform: scale(1.05);
+}
+
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    color: var(--primary);
+}
+
+.searchInput {
+    color: var(--primary);
+    background-color: transparent;
+    border: none;
+}
+
+.searchInput::placeholder {
+    color: var(--primary);
+    opacity: 0.75;
+}
+
+.searchInput,
+.searchInput:hover,
+.searchInput:focus,
+.searchInput:active {
+    border-radius: 0;
+    border: none;
+    outline: none;
+    border-bottom-color: var(--complementary);
+    border-bottom-width: 0.2rem;
+    border-bottom-style: solid;
+}
+
+.courseList {
+    width: 35rem;
+    overflow: hidden;
+}
+
+.archivedLink {
+    text-decoration: none;
+}
+
+.archivedItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 1rem;
+    
+    transition-property: background-color;
+    transition-duration: 0.25s;
+
+    border-radius: 5px;
+}
+
+.archivedItem:hover {
+    background-color: var(--dark);
+}
+
+.archivedItem p {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: var(--primary);
+}
+
+.archivedItem:hover p {
+    color: white;
+}
+
+.archivedItemCode {
+    max-width: 10rem;
+    text-align: left;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.archivedItemName {
+    text-align: right;
+}

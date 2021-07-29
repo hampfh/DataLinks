@@ -145,13 +145,18 @@ export function Subjects(props: PropsForComponent) {
 									Contributor leaderboard
 								</div>
 							</Link>
+							<Link className="leaderboardLink" to="/D20/archive">
+								<div className="leaderboardButton">
+									Course archive
+								</div>
+							</Link>
 						</div>
 					</div>
 				}
 				<div className="SubjectContainer">
 					{
 						props.subjects.map((subject) => {
-							if (subject.group == null)
+							if (subject.group == null || subject.archived)
 								return null
 							else {
 								return <SubjectComponent
