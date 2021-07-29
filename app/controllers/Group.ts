@@ -78,6 +78,7 @@ export default class GroupController extends CrudController {
 	}
 	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 
+		// ? req.body is probably wrong since this is a get request it should be req.query right?
 		const { error } = findElementWithId.validate(req.body)
 		if (error) {
 			super.fail(res, error.message, 400, next)

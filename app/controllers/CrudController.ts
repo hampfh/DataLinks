@@ -15,7 +15,7 @@ export abstract class CrudController {
 	public fail(res: Response, error: string | ErrorPackage, status: number, next: express.NextFunction): void {
 		res.status(status).json({
 			message: typeof error === "string" ? error : error.message,
-			code: error === "string" ? undefined : (error as ErrorPackage).code
+			code: typeof error === "string" ? undefined : (error as ErrorPackage).code
 		})
 		next()
 	}

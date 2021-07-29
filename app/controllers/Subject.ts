@@ -58,10 +58,12 @@ export default class SubjectController extends CrudController {
 			res.status(201).json(newSubject)
 		next()
 	}
-	public async read(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+	public async read(req: express.Request, res: express.Response): Promise<void> {
 		const { error } = readSubject.validate(req.query)
 		if (error) {
-			super.fail(res, error.message, 400, next)
+			super.fail(res, error.message, 400, () => {
+				return
+			})
 			return 
 		}
 
