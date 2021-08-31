@@ -20,12 +20,12 @@ import {
 import SubjectSneakPeak from "components/screens/Subjects/components/SneakPeak"
 import DeadlineRenderer from "components/templates/DeadlineRenderer"
 import { IDimensionState } from "state/reducers/dimensions"
-//import { ISetTransforms, setTransforms } from '../../../state/actions/dimensions'
 import { ISetTransforms, setTransforms} from "state/actions/dimensions"
 import { Link } from "react-router-dom"
 import { LOGO } from "components/utilities/logos"
 import { motion } from "framer-motion"
 import { animationActive, AnimationCategory, HomeAnimationId, IAnimationState } from "state/reducers/animations"
+import { IContentState } from "state/reducers/content"
 
 const uiDistribution = {
 	dynamic: {
@@ -39,13 +39,11 @@ const uiDistribution = {
 
 const desktopWidth = 800
 
-export function Subjects(props: PropsForComponent) {
+function Subjects(props: PropsForComponent) {
 
 	const dispatch = useDispatch()
 
 	const subjectContainerRef = useRef<HTMLDivElement>(null)
-
-	/*  */
 
 	useEffect(() => {
 		let debouncer: NodeJS.Timeout | undefined
@@ -74,7 +72,6 @@ export function Subjects(props: PropsForComponent) {
 		// If heights does't match, resize page
 		if (subjectContainerRef && subjectContainerRef.current && subjectContainerRef.current.clientHeight !== props.dimensions.subjects.height)
 			performResize()
-
 	})
 
 	const performResize = () => {
@@ -155,7 +152,7 @@ export function Subjects(props: PropsForComponent) {
 				}
 				<div className="SubjectContainer">
 					{
-						props.subjects.map((subject) => {
+						props.content.subjects.map((subject) => {
 							if (subject.group == null || subject.archived)
 								return null
 							else {
@@ -176,7 +173,7 @@ export function Subjects(props: PropsForComponent) {
 			}
 			{props.app.flags.deadlineView && props.app.sneakPeakSelectionCount <= 0 && props.dimensions.window.width > desktopWidth ? 
 				<DeadlineRenderer
-					subjects={props.subjects}
+					subjects={props.content.subjects}
 				/>: null
 			}
 
@@ -228,7 +225,7 @@ export interface SubjectData {
 }
 
 interface PropsForComponent {
-	subjects: SubjectData[],
+	content: IContentState,
 	app: IAppState,
 	dimensions: IDimensionState,
 	animations: IAnimationState,
@@ -243,7 +240,8 @@ interface PropsForComponent {
 const reduxSelect = (state: IReduxRootState) => ({
 	app: state.app,
 	dimensions: state.dimensions,
-	animations: state.animations
+	animations: state.animations,
+	content: state.content
 })
 
 const reduxDispatch = () => ({

@@ -7,15 +7,12 @@ import App from "App";
 import * as serviceWorker from "./serviceWorker"
 import rootReducer from "state/reducers"
 
-let store
 declare global {interface Window {__REDUX_DEVTOOLS_EXTENSION__: any;}}
-if (process.env.NODE_ENV === 'production') {
-	store = createStore(rootReducer);
-} else {
-	store = createStore(rootReducer,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-	);
-}
+
+
+const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer) : createStore(rootReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
 ReactDOM.render(
 	<Provider store={store}>

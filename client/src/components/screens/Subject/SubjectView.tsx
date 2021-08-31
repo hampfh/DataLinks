@@ -41,6 +41,7 @@ function SubjectView(props: PropsForComponent) {
 		return (
 			<div>
 				<h2>This page is not working correctly</h2>
+				<p>Course code: {props.subject.code}</p>
 				<p>Please contact admin...</p>
 			</div>
 		)
@@ -78,29 +79,20 @@ function SubjectView(props: PropsForComponent) {
 }
 
 export interface PropsForComponent {
-	enableEditMode: IEnableEditMode,
-	disableEditModeFlag: IDisableEditModeFlag,
-	updateSubjects: () => void,
 	subject: SubjectData,
 	editMode: boolean,
+	enableEditMode: IEnableEditMode,
+	disableEditModeFlag: IDisableEditModeFlag,
+	updateSubjects: () => void
 }
 
-export interface StateForComponent {
-	shouldExitView: boolean,
-	checked?: boolean
-}
+const reduxSelect = (state: IReduxRootState) => ({
+	editMode: state.app.flags.editMode
+})
 
-const reduxSelect = (state: IReduxRootState) => {
-	return {
-		editMode: state.app.flags.editMode
-	}
-}
-
-const reduxDispatch = () => {
-	return {
-		enableEditMode,
-		disableEditModeFlag
-	}
-}
+const reduxDispatch = () => ({
+	enableEditMode,
+	disableEditModeFlag
+})
 
 export default connect(reduxSelect, reduxDispatch())(SubjectView)

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Subjects from "components/screens/Subjects/Subjects"
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import './App.css';
-import { SubjectData } from "components/screens/Subjects/Subjects"
 import SubjectView from "components/screens/Subject/SubjectView"
 import { IReduxRootState } from 'state/reducers';
 import { IAppState } from 'state/reducers/app';
@@ -36,6 +35,7 @@ import { useDispatch } from "react-redux"
 import { IContentState } from 'state/reducers/content';
 import { version } from "../package.json"
 import Archive from 'components/screens/Archive/Archive';
+import { v4 as uuid } from "uuid"
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -113,6 +113,8 @@ function App(props: PropsForComponent) {
 	// Render contribution form if contributor isn't set
 	if (showContributionOverlay && props.app.flags.editMode)
 		return <SubmitContributorName toggleView={setShowContributionOverlay} />
+
+	// ? When no content is provided we don't show a site at all
 	if (props.content.subjects.length <= 0)
 		return null
 
@@ -126,7 +128,6 @@ function App(props: PropsForComponent) {
 					<Subscriptions />
 					
 					<Subjects 
-						subjects={props.content.subjects} 
 						updateSubjects={fetchUpdatedSubjects}
 					/>
 				</Route>
@@ -138,11 +139,12 @@ function App(props: PropsForComponent) {
 				</Route>
 				{props.content.subjects.map((subject) => {
 					return (
-						<Route key={subject._id.toString()} exact path={`/D20/course/${subject.code}`}>
+						// ? Here are optimization potential, istead of uuid() React.memo() could be used
+						<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
 							<Subscriptions />
 							<SubjectView
-								updateSubjects={fetchUpdatedSubjects}
 								subject={subject}
+								updateSubjects={fetchUpdatedSubjects}
 							/>
 						</Route>
 					)
@@ -170,12 +172,6 @@ export interface PropsForComponent {
 	setCompletedDeadlines: ISetCompletedDeadlines,
 	setContributor: ISetContributor,
 	setFingerPrint: ISetFingerPrint
-}
-
-export interface StateForComponent {
-	subjects: SubjectData[],
-	hasLoaded: boolean,
-	showContributorOverlay: boolean
 }
 
 const reduxSelect = (state: IReduxRootState) => ({

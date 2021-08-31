@@ -10,9 +10,9 @@ const defaultState = {
 }
 
 const content = (state: IContentState = defaultState, action: ActionType<any>) => {
-    let newState = { ...state };
+    const newState = { ...state };
     switch (action.type) {
-        case 'SET_ALL_SUBJECTS':
+        case "SET_ALL_SUBJECTS":
             newState.subjects = action.payload.subjects
             return newState
         default:

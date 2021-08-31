@@ -70,41 +70,41 @@ function Subscriptions(props: PropsForComponent) {
 			/>
 			<Socket subscribeTo="updateElement" callback={(data: ISocketNewElement) => {
 
-					const newSubjects = [ ...props.content.subjects ]
-					switch(data.type) {
-						case ContentType.LINK:
-							updateElement(newSubjects, {
-								_id: data.id,
-								link: {
-									_id: "",
-									displayText: data.fieldOne,
-									link: data.fieldTwo
-								}
-							})
-							break
+				const newSubjects = [ ...props.content.subjects ]
+				switch(data.type) {
+					case ContentType.LINK:
+						updateElement(newSubjects, {
+							_id: data.id,
+							link: {
+								_id: "",
+								displayText: data.fieldOne,
+								link: data.fieldTwo
+							}
+						})
+						break
 
-						case ContentType.TEXT:
-							updateElement(newSubjects, {
-								_id: data.id,
-								text: {
-									_id: "",
-									title: data.fieldOne,
-									text: data.fieldTwo
-								}
-							})
-							break
+					case ContentType.TEXT:
+						updateElement(newSubjects, {
+							_id: data.id,
+							text: {
+								_id: "",
+								title: data.fieldOne,
+								text: data.fieldTwo
+							}
+						})
+						break
 
-						case ContentType.DEADLINE:
-							updateElement(newSubjects, {
-								_id: data.id,
-								deadline: {
-									_id: "",
-									displayText: data.fieldOne,
-									deadline: data.fieldTwo,
-									start: data.fieldThree!
-								}
-							})
-							break
+					case ContentType.DEADLINE:
+						updateElement(newSubjects, {
+							_id: data.id,
+							deadline: {
+								_id: "",
+								displayText: data.fieldOne,
+								deadline: data.fieldTwo,
+								start: data.fieldThree!
+							}
+						})
+						break
 					}
 					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects } })
 				}} 

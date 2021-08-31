@@ -20,7 +20,7 @@ export const addElement = (subjects: SubjectData[], newElement: ContentObject, p
 			// Add newElement to group
 			contentObject.group?.content.push(newElement)
 			return { status: SearchStatus.ALL_OK }
-		})) {
+		}).status !== SearchStatus.NONE_FOUND) {
 			return
 		}
 	}
