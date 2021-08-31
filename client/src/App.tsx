@@ -36,6 +36,7 @@ import { IContentState } from 'state/reducers/content';
 import { version } from "../package.json"
 import Archive from 'components/screens/Archive/Archive';
 import { v4 as uuid } from "uuid"
+import Home from 'components/screens/Home/Home';
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -122,7 +123,7 @@ function App(props: PropsForComponent) {
 		<Router>
 			<Switch>
 				<Route exact path="/">
-					<Redirect to="/D20"/>
+					<Home />
 				</Route>
 				<Route exact path="/D20">
 					<Subscriptions />
