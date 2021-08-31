@@ -1,8 +1,10 @@
 import { Request, Response } from "express"
 import ContributorModel from "../models/contributions.model"
 import { ContentType, OperationType } from "../models/log.model"
-import { mergeContributors, nameContributor } from "./schemas"
+import { getContributors, mergeContributors, nameContributor } from "./schemas"
 import RealTime from "../RealTime"
+import ProgramModel from "../models/program.model"
+import { mongoose } from "@typegoose/typegoose"
 
 export default class Contributors {
 
@@ -95,49 +97,108 @@ export default class Contributors {
 	}
 
 	async getContributors(req: Request, res: Response): Promise<void> {
-		// TODO make the db perform this operations instead of the client
-		const contributors = await ContributorModel.aggregate([
-			{
-				"$project": {
-					"name": 1,
-					"contributions": 1,
-					"updatedAt": 1,
-					"identifier": 1
-				}
-			}, {
-				"$addFields": {
-					"contributionCount": {
-						"$sum": [
-							"$contributions.operations.creates", "$contributions.operations.updates", "$contributions.operations.deletes"
-						]
+		const { error } = getContributors.validate(req.body)
+		if (error) {
+			res.status(400).json({
+				message: error.message
+			})
+			return
+		}
+
+		async function getContributorsSpecificallyForProgram() {
+			return await ProgramModel.aggregate([
+				{
+					"$match": {
+						"_id": mongoose.Types.ObjectId(req.body.program)
 					}
+				}, {
+					"$lookup": {
+						"from": "contributors",
+						"localField": "contributors",
+						"foreignField": "_id",
+						"as": "contributors"
+					}
+				}, {
+					"$project": {
+						"_id": 0,
+						"contributors": {
+							"contributions": {
+								"operations": 1
+							},
+							"name": 1,
+							"identifier": 1,
+							"createdAt": 1,
+							"updatedAt": 1
+						}
+					}
+				}, {
+					"$unwind": "$contributors"
+				}, {
+					"$replaceWith": "$contributors"
+				}, {
+					"$addFields": {
+						"contributionCount": {
+							"$sum": [
+								"$contributions.operations.creates", "$contributions.operations.updates", "$contributions.operations.deletes"
+							]
+						}
+					}
+				}, {
+					"$sort": {
+						"contributionCount": -1
+					}
+				}, {
+					"$limit": 1000
 				}
-			}, {
-				"$project": {
-					"_id": 0,
-					"name": 1,
-					"contributions": {
-						"operations": 1
-					},
-					"contributionCount": 1,
-					"updatedAt": 1,
-					"identifier": 1
+			])
+		}
+
+		async function getAllContributors() {
+			return await ContributorModel.aggregate([
+				{
+					"$project": {
+						"name": 1,
+						"contributions": 1,
+						"updatedAt": 1,
+						"identifier": 1
+					}
+				}, {
+					"$addFields": {
+						"contributionCount": {
+							"$sum": [
+								"$contributions.operations.creates", "$contributions.operations.updates", "$contributions.operations.deletes"
+							]
+						}
+					}
+				}, {
+					"$project": {
+						"_id": 0,
+						"name": 1,
+						"contributions": {
+							"operations": 1
+						},
+						"contributionCount": 1,
+						"updatedAt": 1,
+						"identifier": 1
+					}
+				},{
+					"$sort": {
+						"contributionCount": -1
+					}
+				}, {
+					"$limit": 1000
 				}
-			},{
-				"$sort": {
-					"contributionCount": -1
-				}
-			}, {
-				"$limit": 1000
-			}
-		])
+			])
+		}
 
 		res.json({
 			message: "Successfully fetched contributors",
-			contributors
+			contributors: req.body.program != null ?
+				await getContributorsSpecificallyForProgram() :
+				await getAllContributors()
 		})
 	}
-	
+
 	async contribute(fingerprint: string, operation: OperationType, type: ContentType): Promise<void> {
 		// Check if user exists
 		const response = await ContributorModel.findOne({
@@ -151,42 +212,42 @@ export default class Contributors {
 		}
 
 		switch (operation) {
-		case "CREATE":
-			response.contributions.operations.creates++
-			break
-		case "UPDATE":
-			response.contributions.operations.updates++
-			break
-		case "DELETE":
-			response.contributions.operations.deletes++
-			break
+			case "CREATE":
+				response.contributions.operations.creates++
+				break
+			case "UPDATE":
+				response.contributions.operations.updates++
+				break
+			case "DELETE":
+				response.contributions.operations.deletes++
+				break
 		}
 
 		switch (type) {
-		case "GROUP":
-			response.contributions.targets.groups++
-			break
-		case "TEXT":
-			response.contributions.targets.texts++
-			break
-		case "LINK":
-			response.contributions.targets.links++
-			break
-		case "DEADLINE":
-			response.contributions.targets.deadlines++
-			break
-		case "SUBJECT":
-			response.contributions.targets.subjects++
-			break
+			case "GROUP":
+				response.contributions.targets.groups++
+				break
+			case "TEXT":
+				response.contributions.targets.texts++
+				break
+			case "LINK":
+				response.contributions.targets.links++
+				break
+			case "DEADLINE":
+				response.contributions.targets.deadlines++
+				break
+			case "SUBJECT":
+				response.contributions.targets.subjects++
+				break
 		}
 
 		// Update contributor
 		response.save()
 
 		// TODO only emit to users on the /contributors page
-		RealTime.emitToSockets("contribution", { 
+		RealTime.emitToSockets("contribution", {
 			name: response.name ?? "Anonymous",
-			identifier: fingerprint, 
+			identifier: fingerprint,
 			operation,
 			type
 		})

@@ -1,5 +1,5 @@
 import express from "express"
-import { Content, Group, Subject, Contributors } from "../controllers"
+import { Content, Group, Subject, Contributors, Program } from "../controllers"
 
 const router = express.Router({
 	strict: true
@@ -11,6 +11,10 @@ router.all("/", (req: express.Request, res: express.Response) => {
 	})
 })
 
+router.post("/program", Program.create)
+router.get("/program", Program.read)
+router.post("/program/subject", Program.addSubject)
+router.post("/program/contributor", Program.addContributor)
 router.post("/subject", Subject.create)
 router.get("/subject", Subject.read)
 router.patch("/subject", Subject.update)

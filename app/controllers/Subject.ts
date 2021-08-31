@@ -6,6 +6,7 @@ import GroupModel from "../models/group.model"
 import GroupController from "./Group"
 import Log from "../controllers/Log"
 import { ContentType, OperationType } from "../models/log.model"
+import ProgramModel from "../models/program.model"
 
 export default class SubjectController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -74,6 +75,43 @@ export default class SubjectController extends CrudController {
 			queryObject.archived = (req.query.archived === "true")
 		}
 
+		// ? Fetch subjects specifically related to a program
+		if (req.query.program != null) {
+			const result = await ProgramModel.findOne({
+				_id: req.query.program
+			}, {
+				subjects: true
+			}).populate({
+				path: "subjects",
+				match: queryObject,
+				populate: {
+					path: "group",
+					populate: {
+						path: "content.group",
+						populate: {
+							path: "content.group",
+							populate: {
+								path: "content.group",
+								populate: {
+									path: "content.group",
+									populate: {
+										path: "content.group"
+									}
+								}
+							}
+						}
+					}
+				}
+			})
+
+			res.status(200).json({
+				message: "Successfully fetched subjects from program",
+				program: result?.name,
+				subjects: result?.subjects
+			})
+			return
+		}
+
 		// Max depth is 5
 		const response = await SubjectModel.find(queryObject).populate({
 			path: "group",
@@ -93,16 +131,18 @@ export default class SubjectController extends CrudController {
 				}
 			}
 		})
-		
-		if (response == null)
+
+		if (response == null) {
 			res.status(404).json({
 				message: "No subjects were found"
 			})
-		else
+		}
+		else {
 			res.status(200).json({
 				message: "Successfully fetched subjects",
 				result: response
 			})
+		}
 	}
 	public async update(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 		const { error } = updateSubject.validate(req.body)

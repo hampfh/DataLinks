@@ -1,5 +1,24 @@
 import Joi from "joi"
 
+export const createProgram = Joi.object({
+	name: Joi.string().required()
+})
+
+export const readProgram = Joi.object({
+	id: Joi.string(),
+	name: Joi.string()
+}).xor("id", "name")
+
+export const addSubjectToProgram = Joi.object({
+	id: Joi.string().required(),
+	subject: Joi.string().required() 				// ? The id of the subject
+})
+
+export const addContributorToProgram = Joi.object({
+	id: Joi.string().required(),
+	contributor: Joi.string().required() 			// ? The id of the contributor
+})
+
 export const createSubject = Joi.object({
 	name: Joi.string().required(),
 	code: Joi.string().required(),
@@ -10,6 +29,7 @@ export const createSubject = Joi.object({
 })
 
 export const readSubject = Joi.object({
+	program: Joi.string().optional(),
 	archived: Joi.bool().optional()
 })
 
@@ -121,4 +141,8 @@ export const updateContentPosition = Joi.object({
 export const mergeContributors = Joi.object({
 	fingerprint: Joi.string().required(),
 	otherFingerprint: Joi.string().required()
+})
+
+export const getContributors = Joi.object({
+	program: Joi.string().optional()
 })
