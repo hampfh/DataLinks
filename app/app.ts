@@ -27,7 +27,8 @@ app.use("/api/v1", apiRoute)
 
 // Serve to react
 app.get("*", (req: express.Request, res: express.Response) => {
-	res.sendFile(path.join(path.resolve() + "/client/build/index.html"))
+	if (process.env.NODE_ENV === "production")
+		res.sendFile(path.join(path.resolve() + "/client/build/index.html"))
 })
 
 /// Error handler

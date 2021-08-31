@@ -3,7 +3,6 @@ import { CrudController } from "./CrudController"
 import { createSubject, findElementWithIdFingerPrint, readSubject, updateSubject } from "./schemas"
 import SubjectModel from "../models/subjects.model"
 import GroupModel from "../models/group.model"
-import { Document } from "mongoose"
 import GroupController from "./Group"
 import Log from "../controllers/Log"
 import { ContentType, OperationType } from "../models/log.model"
@@ -134,7 +133,7 @@ export default class SubjectController extends CrudController {
 		try {
 			await SubjectModel.updateOne({
 				_id: req.body.id
-			}, appendObject) as Document
+			}, appendObject)
 
 			res.status(200).json({
 				message: "Successfully updated subject"
