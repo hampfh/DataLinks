@@ -164,18 +164,26 @@ export default class ProgramController extends CrudController {
 			_id: req.body.id
 		})
 
-		const contributorExists = await ContributorModel.exists({
-			_id: req.body.contributor
-		})
+		async function getContributorId(): Promise<string | undefined> {
+			if (req.body.contributor) {
+				return req.body.contributor as string
+			}
 
-		if (program == null || !contributorExists) {
+			return (await ContributorModel.findOne({
+				identifier: req.body.fingerprint
+			}))?._id.toString()
+		} 
+
+		const contributorId = await getContributorId()
+
+		if (program == null || contributorId == null) {
 			res.status(404).json({
 				message: "Resource not found"
 			})
 			return
 		}
 
-		if (program.contributors.find(current => current?.toString() === req.body.contributor)) {
+		if (program.contributors.find(current => current?.toString() === contributorId)) {
 			res.status(400).json({
 				message: "This contributor is already a part of this program"
 			})

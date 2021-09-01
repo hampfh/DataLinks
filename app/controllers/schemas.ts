@@ -19,7 +19,7 @@ export const addSubjectToProgram = Joi.object({
 export const addContributorToProgram = Joi.object({
 	fingerprint: Joi.string().required(),
 	id: Joi.string().required(),
-	contributor: Joi.string().required() 			// ? The id of the contributor
+	contributor: Joi.string().optional() 			// ? The id of the contributor
 })
 
 export const createSubject = Joi.object({
