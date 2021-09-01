@@ -61,17 +61,14 @@ function SubjectView(props: PropsForComponent) {
 	}
 
 	if (subject == null && hasLoaded) {
-		console.log(1)
 		return <NotFoundPage />
 	}
 
 	if (subject == null) {
-		console.log(2)
 		return null
 	}
 
 	if (subject.group == null) {
-		console.log(3)
 		console.warn("Subject " + subject.name + " has no root")
 		return (
 			<div>

@@ -86,7 +86,6 @@ export class DataLoader {
             }
         }
 
-        console.log("SET ACTIVE PROGRAM", payload)
         store.dispatch({
             type: "SET_ACTIVE_PROGRAM",
             payload
