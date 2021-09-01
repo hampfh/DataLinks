@@ -34,7 +34,7 @@ export default class ProgramController extends CrudController {
 			OperationType.CREATE,
 			ContentType.PROGRAM,
 			[newProgram._id, req.body.name],
-			[]
+			["", ""]
 		)
 
 		res.status(201).json({
@@ -145,7 +145,7 @@ export default class ProgramController extends CrudController {
 			OperationType.UPDATE,
 			ContentType.PROGRAM,
 			[req.body.id, req.body.subject],
-			[]
+			["", ""]
 		)
 
 		res.status(201).json({
@@ -195,7 +195,7 @@ export default class ProgramController extends CrudController {
 				_id: req.body.id
 			}, {
 				$push: {
-					contributors: req.body.contributor
+					contributors: contributorId
 				}
 			})
 		} catch (error) {
@@ -211,7 +211,7 @@ export default class ProgramController extends CrudController {
 			OperationType.UPDATE,
 			ContentType.PROGRAM,
 			[req.body.id, req.body.contributor],
-			[]
+			["", ""]
 		)
 
 		res.status(201).json({
