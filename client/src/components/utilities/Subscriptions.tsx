@@ -30,7 +30,7 @@ function Subscriptions(props: PropsForComponent) {
 	return (
 		<>
 			<Socket subscribeTo="newElement" callback={(data: ISocketNewElement) => {
-					const newSubjects = [ ...props.content.subjects ]
+					const newSubjects = [ ...props.content.activeProgramSubjects ]
 
 					switch(data.type) {
 						case ContentType.LINK:
@@ -70,7 +70,7 @@ function Subscriptions(props: PropsForComponent) {
 			/>
 			<Socket subscribeTo="updateElement" callback={(data: ISocketNewElement) => {
 
-				const newSubjects = [ ...props.content.subjects ]
+				const newSubjects = [ ...props.content.activeProgramSubjects ]
 				switch(data.type) {
 					case ContentType.LINK:
 						updateElement(newSubjects, {
@@ -111,7 +111,7 @@ function Subscriptions(props: PropsForComponent) {
 			/>
 			<Socket subscribeTo="deleteElement" callback={(data: ISocketDeleteElement) => {
 					
-					const newSubjects = [ ...props.content.subjects ]
+					const newSubjects = [ ...props.content.activeProgramSubjects ]
 					deleteElement(newSubjects, data.id)
 
 					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects } })
@@ -123,7 +123,7 @@ function Subscriptions(props: PropsForComponent) {
 				id: string,
 				position: number
 			}) => {
-				const newSubjects: SubjectData[] = JSON.parse(JSON.stringify(props.content.subjects))
+				const newSubjects: SubjectData[] = JSON.parse(JSON.stringify(props.content.activeProgramSubjects))
 				reOrderElement(newSubjects, data.id, data.position)	
 				dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
 			}} />

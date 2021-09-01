@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import Contributor, { IContributor } from './components/Contributor'
 import Http from 'functions/HttpRequest'
 import "./Contributors.css"
@@ -6,11 +6,12 @@ import SocketManager from 'components/utilities/SocketManager'
 import { OperationType } from 'App'
 import Moment from "moment"
 import logoutIcon from "assets/icons/close.svg"
-import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ContentType } from 'components/utilities/contentTypes'
 import { connect } from 'react-redux'
 import { IReduxRootState } from 'state/reducers'
 import { IAppState } from 'state/reducers/app'
+import { DataLoader } from 'functions/DataLoader'
 
 interface INewContribution {
 	name?: string,
@@ -26,14 +27,20 @@ class Contributors extends Component<PropsForComponent, StateForComponent> {
 
 		this.state = {
 			contributors: [],
-			shouldExitView: false
 		}
 	}
 
 	componentDidMount = async () => {
+		const program = DataLoader.getActiveProgram()
+		if (program == null) 
+			return
+
 		const response = await Http({
 			url: "/api/v1/contributors",
-			method: "GET"
+			method: "GET",
+			data: {
+				program: program.id
+			}
 		})
 
 		let newState = { ...this.state }
@@ -91,21 +98,15 @@ class Contributors extends Component<PropsForComponent, StateForComponent> {
 		this.setState(newState)
 	}
 
-	_onExitView = () => {
-		let newState = { ...this.state }
-		newState.shouldExitView = true
-		this.setState(newState)
-	}
-
 	render() {
-		if (this.state.shouldExitView)
-			return <Redirect to="/" />
 		return (
 			<>
 				<SocketManager subscribeTo="contribution" callback={this._onContribution} />
 				<section className="contributorsWrapper">
 					<div className="contributorsContainer">
-						<img className="logoutIcon" alt="Exit view" onClick={this._onExitView} src={logoutIcon} />
+						<Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}`}>
+							<img className="logoutIcon" alt="Exit view" src={logoutIcon} />
+						</Link>
 						<h1>Top contributors</h1>
 						<section className="contributorList">
 							<div className="contributor header">
@@ -133,8 +134,7 @@ interface PropsForComponent {
 }
 
 interface StateForComponent {
-	contributors: IContributor[],
-	shouldExitView: boolean
+	contributors: IContributor[]
 }
 
 const reduxSelect = (state: IReduxRootState) => ({

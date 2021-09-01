@@ -7,6 +7,10 @@ export interface IDeadlineState {
 
 const defaultState = {
 	completed: [],
+	/*
+		"Animated" is the checkmark that appears
+		on completed deadlines
+	*/
 	hasAnimated: []
 }
 

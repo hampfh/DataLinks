@@ -17,6 +17,7 @@ import {
 } from "state/actions/app"
 import { getSubjectIcon } from 'components/utilities/logos'
 import { motion } from 'framer-motion'
+import { DataLoader } from 'functions/DataLoader'
 
 function Subject(props: PropsForComponent) {
 
@@ -104,7 +105,7 @@ function Subject(props: PropsForComponent) {
 				: null
 			}
 			{collapsState === 3 ? 
-				<Redirect to={`/D20/course/${props.subject.code}`} /> : null
+				<Redirect to={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${props.subject.code}`} /> : null
 			}
 		</div>
 	)

@@ -1,9 +1,9 @@
 export const COMPLETED_DEADLINES_KEY = "completedDeadlines"
 export type LOCALSTORAGE_OPERATION = "ADD" | "REMOVE"
 
-function saveCompletedDeadlines(opeartion: LOCALSTORAGE_OPERATION, hash: string) {
+function saveCompletedDeadlines(operation: LOCALSTORAGE_OPERATION, hash: string) {
 
-	function setId(hash: string) {
+	function initializeDeadlineStorage(hash: string) {
 		localStorage.setItem(COMPLETED_DEADLINES_KEY, JSON.stringify([
 			hash
 		]))
@@ -12,7 +12,8 @@ function saveCompletedDeadlines(opeartion: LOCALSTORAGE_OPERATION, hash: string)
 	// Check if flag target exists
 	const target = localStorage.getItem(COMPLETED_DEADLINES_KEY)
 	if (target == null) {
-		setId(hash)
+		if (operation === "ADD")
+			initializeDeadlineStorage(hash)
 		return
 	}
 	else {
@@ -20,7 +21,7 @@ function saveCompletedDeadlines(opeartion: LOCALSTORAGE_OPERATION, hash: string)
 			// Add the new flag to the already existing ones
 			let completed = JSON.parse(target) as string[]
 			// If mode is false then remove the flag from the object
-			if (opeartion === "REMOVE") {
+			if (operation === "REMOVE") {
 				const index = completed.findIndex((completedId) => completedId === hash)
 				completed.splice(index, 1)
 			} else
@@ -28,7 +29,8 @@ function saveCompletedDeadlines(opeartion: LOCALSTORAGE_OPERATION, hash: string)
 			localStorage.setItem(COMPLETED_DEADLINES_KEY, JSON.stringify(completed))
 		} catch (error) {
 			// If fail the override localstorage with the new setting
-			setId(hash)
+			if (operation === "ADD")
+				initializeDeadlineStorage(hash)
 		}
 	}
 }

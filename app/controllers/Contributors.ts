@@ -97,7 +97,7 @@ export default class Contributors {
 	}
 
 	async getContributors(req: Request, res: Response): Promise<void> {
-		const { error } = getContributors.validate(req.body)
+		const { error } = getContributors.validate(req.query)
 		if (error) {
 			res.status(400).json({
 				message: error.message
@@ -109,7 +109,7 @@ export default class Contributors {
 			return await ProgramModel.aggregate([
 				{
 					"$match": {
-						"_id": mongoose.Types.ObjectId(req.body.program)
+						"_id": mongoose.Types.ObjectId(req.query.program as string)
 					}
 				}, {
 					"$lookup": {
@@ -193,7 +193,7 @@ export default class Contributors {
 
 		res.json({
 			message: "Successfully fetched contributors",
-			contributors: req.body.program != null ?
+			contributors: req.query.program != null ?
 				await getContributorsSpecificallyForProgram() :
 				await getAllContributors()
 		})

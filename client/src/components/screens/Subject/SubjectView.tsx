@@ -10,6 +10,7 @@ import logoutIcon from "assets/icons/close.svg"
 import isMobile from "functions/isMobile"
 import { IReduxRootState } from "state/reducers"
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from "state/actions/app"
+import { DataLoader } from 'functions/DataLoader'
 
 function SubjectView(props: PropsForComponent) {
 
@@ -61,7 +62,7 @@ function SubjectView(props: PropsForComponent) {
 					</div>
 				}
 				<div className="Scrollable" ref={scrollRef}>
-					<Link to={`/D20${props.subject.archived ? "/archive" : ""}`}>
+					<Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}${props.subject.archived ? "/archive" : ""}`}>
 						<img className="logoutIcon" alt="Exit view" src={logoutIcon} />
 					</Link>
 					<h2 className="HeaderSubjectView">{props.subject.name}</h2>

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers, createStore } from 'redux'
 import local, { ILocalState } from './local';
 import app, { IAppState } from './app'
 import deadlines, { IDeadlineState } from './deadlines'
@@ -29,4 +29,6 @@ const rootReducer = combineReducers({
 	animations
 });
 
-export default rootReducer;
+export const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer) : createStore(rootReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
