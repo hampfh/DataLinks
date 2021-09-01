@@ -33,10 +33,7 @@ function Contributors(props: PropsForComponent) {
 
 				const response = await Http({
 					url: "/api/v1/contributors",
-					method: "GET",
-					data: {
-						program: program.id
-					}
+					method: "GET"
 				})
 
 				setContributors(response.contributors)
