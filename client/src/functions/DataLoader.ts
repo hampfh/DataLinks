@@ -1,3 +1,4 @@
+import { SubjectData } from "components/screens/Subjects/Subjects"
 import { store } from "state/reducers"
 import http from "./HttpRequest"
 
@@ -21,7 +22,6 @@ export class DataLoader {
                 name: programName
             }
         })
-
         if (response.programs.length <= 0)
             return
 
@@ -37,10 +37,24 @@ export class DataLoader {
      * @param programName 
      * @returns Returns status code, 0 means no error
      */
-    static async manageProgramContentData(programName: string): Promise<number> {
-
+    static async manageProgramContentData(programName: string): Promise<{
+        status: number
+        program: {
+            id: string
+            name: string
+            subjects: SubjectData[]
+        }
+    }> {
         if (this.programLoaded(programName)) {
-            return 0
+            const program = store.getState().content
+            return {
+                status: 2,
+                program: {
+                    id: program.activeProgramId!,
+                    name: program.activeProgramName!,
+                    subjects: program.activeProgramSubjects
+                }
+            }
         }
 
         const program = await this.loadProgramData(programName)
@@ -72,6 +86,7 @@ export class DataLoader {
             }
         }
 
+        console.log("SET ACTIVE PROGRAM", payload)
         store.dispatch({
             type: "SET_ACTIVE_PROGRAM",
             payload
@@ -84,7 +99,14 @@ export class DataLoader {
             }
         })
 
-        return status
+        return {
+            status,
+            program: {
+                id: payload.id!,
+                name: payload.name!,
+                subjects: payload.subjects! as unknown as SubjectData[]
+            }
+        }
     }
 
     static getActiveProgram() {

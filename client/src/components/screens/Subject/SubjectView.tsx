@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { connect } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import "./SubjectView.css"
 import "components/screens/Subjects/components/Switch.css"
@@ -11,19 +11,42 @@ import isMobile from "functions/isMobile"
 import { IReduxRootState } from "state/reducers"
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from "state/actions/app"
 import { DataLoader } from 'functions/DataLoader'
+import { IContentState } from 'state/reducers/content'
+import NotFoundPage from '../404/404'
 
 function SubjectView(props: PropsForComponent) {
 
 	const scrollRef = useRef<HTMLDivElement>(null)
 
+	const [hasLoaded, setHasLoaded] = useState(false)
+	const [subject, setSubject] = useState<SubjectData>()
 	const [editModeSwitchActive, setEditModeSwitchActive] = useState<boolean | undefined>(undefined)
+	const { program, subjectCode } = useParams<IRouterParams>()
+
+	useEffect(() => {
+		DataLoader.manageProgramContentData(program).then((result) => {
+			if (result.status === 1) {
+				setHasLoaded(true)
+				return
+			}
+
+			const subject = result.program.subjects.find(current => current.code === subjectCode)
+			if (subject == null) {
+				console.warn("Subject doesn't exist")
+			}
+			
+			setSubject(subject)
+			setHasLoaded(true)
+		})
+
+	}, [program, subjectCode])
 
 	useEffect(() => {
 
 		// Don't show edit mode for archived subjects
-		if (props.editMode && props.subject.archived)
+		if (props.editMode && subject?.archived)
 			props.disableEditModeFlag()
-	}, [props])
+	}, [props, subject])
 
 	function _flickEditMode(event: React.ChangeEvent<HTMLInputElement>) {
 
@@ -37,12 +60,23 @@ function SubjectView(props: PropsForComponent) {
 			props.disableEditModeFlag()
 	}
 
-	if (props.subject.group == null) {
-		console.warn("Subject " + props.subject.name + " has no root")
+	if (subject == null && hasLoaded) {
+		console.log(1)
+		return <NotFoundPage />
+	}
+
+	if (subject == null) {
+		console.log(2)
+		return null
+	}
+
+	if (subject.group == null) {
+		console.log(3)
+		console.warn("Subject " + subject.name + " has no root")
 		return (
 			<div>
 				<h2>This page is not working correctly</h2>
-				<p>Course code: {props.subject.code}</p>
+				<p>Course code: {subject.code}</p>
 				<p>Please contact admin...</p>
 			</div>
 		)
@@ -51,7 +85,7 @@ function SubjectView(props: PropsForComponent) {
 	return (
 		<section className="SubjectViewMaster">
 			<div className="SubjectWrapper">
-				{isMobile() || props.subject.archived ? null :
+				{isMobile() || subject.archived ? null :
 					<div className="editModeContainer editModeCourse subjectViewEditMode">
 						<p>Default mode</p>
 						<label className="switch">
@@ -62,15 +96,15 @@ function SubjectView(props: PropsForComponent) {
 					</div>
 				}
 				<div className="Scrollable" ref={scrollRef}>
-					<Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}${props.subject.archived ? "/archive" : ""}`}>
+					<Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}${subject.archived ? "/archive" : ""}`}>
 						<img className="logoutIcon" alt="Exit view" src={logoutIcon} />
 					</Link>
-					<h2 className="HeaderSubjectView">{props.subject.name}</h2>
-					<p className="Description">{props.subject.description}</p>
+					<h2 className="HeaderSubjectView">{subject.name}</h2>
+					<p className="Description">{subject.description}</p>
 					<div className="LinkContainer">
 						<RenderData 
 							updateSubjects={props.updateSubjects}
-							group={props.subject.group}
+							group={subject.group}
 						/>
 					</div>
 				</div>
@@ -80,7 +114,7 @@ function SubjectView(props: PropsForComponent) {
 }
 
 export interface PropsForComponent {
-	subject: SubjectData,
+	content: IContentState
 	editMode: boolean,
 	enableEditMode: IEnableEditMode,
 	disableEditModeFlag: IDisableEditModeFlag,
@@ -88,6 +122,7 @@ export interface PropsForComponent {
 }
 
 const reduxSelect = (state: IReduxRootState) => ({
+	content: state.content,
 	editMode: state.app.flags.editMode
 })
 

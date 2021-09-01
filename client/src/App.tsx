@@ -35,10 +35,8 @@ import { useDispatch } from "react-redux"
 import { IContentState } from 'state/reducers/content';
 import { version } from "../package.json"
 import Archive from 'components/screens/Archive/Archive';
-import { v4 as uuid } from "uuid"
 import Home from 'components/screens/Home/Home';
 import NotFoundPage from 'components/screens/404/404';
-import { DataLoader } from 'functions/DataLoader';
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -129,18 +127,12 @@ function App(props: PropsForComponent) {
 				<Route exact path="/:program/archive">
 					<Archive subjects={props.content.activeProgramSubjects} />
 				</Route>
-				{props.content.activeProgramSubjects.map((subject) => {
-					return (
-						// ? Here are optimization potential, istead of uuid() React.memo() could be used
-						<Route key={uuid()} exact path={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${subject.code}`}>
-							<Subscriptions />
-							<SubjectView
-								subject={subject}
-								updateSubjects={fetchUpdatedSubjects}
-							/>
-						</Route>
-					)
-				})}
+				<Route exact path={`/:program/course/:subjectCode`}>
+					<Subscriptions />
+					<SubjectView
+						updateSubjects={fetchUpdatedSubjects}
+					/>
+				</Route>
 				{props.content.hasLoaded ? 
 					<Route>
 						<NotFoundPage />
