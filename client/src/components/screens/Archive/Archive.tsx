@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { SubjectData } from '../Subjects/Subjects'
 import "./Archive.css"
 import logoutIcon from "assets/icons/close.svg"
@@ -7,6 +7,11 @@ import { DataLoader } from 'functions/DataLoader'
 
 export default function Archive(props: PropsForComponent) {
     const [search, setSearch] = useState<string>()
+    const { program } = useParams<IRouterParams>()
+
+    useEffect(() => {
+        DataLoader.manageProgramContentData(program)
+    }, [program])
 
     function matchesSearch(subject: SubjectData) {
         if (search == null)
