@@ -27,6 +27,7 @@ export default class ProgramController extends CrudController {
 			res.status(500).json({
 				message: "Internal server error"
 			})
+			return
 		}
 
 		await Log(
