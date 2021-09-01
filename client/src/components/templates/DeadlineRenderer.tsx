@@ -19,7 +19,7 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 	constructor(props: PropsForComponent) {
 		super(props)
 
-		let deadlines: IDeadline[] | undefined = undefined
+		let deadlines: ContentObject[] | undefined = undefined
 		if (this.props.subjects)
 			deadlines = this.sortDeadlines(this.compileDeadlines())
 
@@ -28,9 +28,9 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 		}
 	}
 
-	sortDeadlines(deadlines: IDeadline[]) {
+	sortDeadlines(deadlines: ContentObject[]) {
 		deadlines.sort((a, b) => {
-			return Moment(a.deadline).diff(b.deadline, "second")
+			return Moment(a.deadline!.deadline).diff(b.deadline!.deadline, "second")
 		})
 		return deadlines
 	}
@@ -45,8 +45,8 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 			this.setState(newState)
 	}
 
-	compileDeadlines(): IDeadline[] {
-		let deadlines: IDeadline[] = []
+	compileDeadlines(): ContentObject[] {
+		let deadlines: ContentObject[] = []
 		// Itterate through all subjects
 		for (let i = 0; i < this.props.subjects.length; i++) {
 			let strippedDeadlines = this.recursiveCompilation(this.props.subjects[i].group)
@@ -58,11 +58,11 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 		return deadlines
 	}
 
-	recursiveCompilation(group: Group, depth?: number): IDeadline[] {
+	recursiveCompilation(group: Group, depth?: number): ContentObject[] {
 		if (group == null || (depth !== undefined && depth > 5))
 			return []
 
-		let content: IDeadline[] = []
+		let content: ContentObject[] = []
 		for (let i = 0; i < group.content.length; i++) {
 			if (group.content[i].group != null) {
 				let response = this.recursiveCompilation(group.content[i].group as Group, depth === undefined ? 1 : depth + 1)
@@ -73,7 +73,7 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 						content = content.concat(response)
 				}
 			} else if (group.content[i].deadline?.deadline != null)
-				content.push(group.content[i].deadline as IDeadline)
+				content.push(group.content[i])
 		}
 		return content
 	}
@@ -89,12 +89,12 @@ class DeadlineRenderer extends Component<PropsForComponent, StateForComponent> {
 			>
 				<h3 className="deadlineWrapperTitle">Deadlines</h3>
 				<div className="deadlineWrapper">
-					{this.state.deadlines.map((deadline) => <ContentObject
-						key={deadline._id + "_NOEDIT"}
+					{this.state.deadlines.map((deadlineWrapper) => <ContentObject
+						key={deadlineWrapper._id + "_NOEDIT"}
 						type={ContentType.DEADLINE}
 						parentId={"0"}
-						id={deadline._id}
-						contentObject={deadline}
+						id={deadlineWrapper._id}
+						contentObject={deadlineWrapper.deadline!}
 						noEditMode
 						accent
 					/>)}
@@ -110,7 +110,7 @@ interface PropsForComponent {
 }
 
 interface StateForComponent {
-	deadlines: IDeadline[]
+	deadlines: ContentObject[]
 }
 
 const reduxSelect = (state: IReduxRootState) => {

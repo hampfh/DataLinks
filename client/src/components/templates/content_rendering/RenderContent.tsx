@@ -45,7 +45,7 @@ function RenderContent(props: PropsForComponent) {
                                     ContentType.DEADLINE
                         }
                         parentId={props.parentGroup}
-                        id={props.content.deadline != null ? props.content.deadline._id : props.content._id}
+                        id={props.content._id}
                         contentObject={
                             props.content.link ?
                                 props.content.link :
