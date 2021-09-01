@@ -1,9 +1,11 @@
 import { mongoose } from "@typegoose/typegoose"
 import express from "express"
 import ContributorModel from "../models/contributions.model"
+import { ContentType, OperationType } from "../models/log.model"
 import ProgramModel from "../models/program.model"
 import SubjectModel from "../models/subjects.model"
 import { CrudController } from "./CrudController"
+import Log from "./Log"
 import { addContributorToProgram, addSubjectToProgram, createProgram, readProgram } from "./schemas"
 
 export default class ProgramController extends CrudController {
@@ -26,6 +28,14 @@ export default class ProgramController extends CrudController {
 				message: "Internal server error"
 			})
 		}
+
+		await Log(
+			req.body.fingerprint,
+			OperationType.CREATE,
+			ContentType.PROGRAM,
+			[newProgram._id, req.body.name],
+			[]
+		)
 
 		res.status(201).json({
 			message: "Successfully created program",
@@ -99,39 +109,48 @@ export default class ProgramController extends CrudController {
 			_id: req.body.subject
 		})
 
-		if (program != null && subjectExists) {
+		if (program == null || !subjectExists) {
 
-			if (program.subjects.find(current => current?.toString() === req.body.subject) != null) {
-				res.status(400).json({
-					message: "This subject is already a part of this program"
-				})
-				return
-			}
-
-			try {
-				await ProgramModel.updateOne({
-					_id: req.body.id
-				}, {
-					$push: {
-						subjects: req.body.subject
-					}
-				})
-			} catch (error) {
-				console.warn("Internal server error when adding subject to program", error)
-				res.status(500).json({
-					message: "Internal server error"
-				})
-				return
-			}
-
-			res.status(201).json({
-				message: "Successfully added subject to program"
-			})
-		} else {
 			res.status(404).json({
 				message: "Resource not found"
 			})
+			return
 		}
+
+		if (program.subjects.find(current => current?.toString() === req.body.subject) != null) {
+			res.status(400).json({
+				message: "This subject is already a part of this program"
+			})
+			return
+		}
+
+		try {
+			await ProgramModel.updateOne({
+				_id: req.body.id
+			}, {
+				$push: {
+					subjects: req.body.subject
+				}
+			})
+		} catch (error) {
+			console.warn("Internal server error when adding subject to program", error)
+			res.status(500).json({
+				message: "Internal server error"
+			})
+			return
+		}
+
+		await Log(
+			req.body.fingerprint,
+			OperationType.UPDATE,
+			ContentType.PROGRAM,
+			[req.body.id, req.body.subject],
+			[]
+		)
+
+		res.status(201).json({
+			message: "Successfully added subject to program"
+		})
 	}
 
 	public async addContributor(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -149,39 +168,47 @@ export default class ProgramController extends CrudController {
 			_id: req.body.contributor
 		})
 
-		if (program != null && contributorExists) {
-
-			if (program.contributors.find(current => current?.toString() === req.body.contributor)) {
-				res.status(400).json({
-					message: "This contributor is already a part of this program"
-				})
-				return
-			}
-
-			try {
-				await ProgramModel.updateOne({
-					_id: req.body.id
-				}, {
-					$push: {
-						contributors: req.body.contributor
-					}
-				})
-			} catch (error) {
-				console.warn("Internal server error when adding subject to program", error)
-				res.status(500).json({
-					message: "Internal server error"
-				})
-				return
-			}
-
-			res.status(201).json({
-				message: "Successfully added contributor to program"
-			})
-		} else {
+		if (program == null || !contributorExists) {
 			res.status(404).json({
 				message: "Resource not found"
 			})
+			return
 		}
+
+		if (program.contributors.find(current => current?.toString() === req.body.contributor)) {
+			res.status(400).json({
+				message: "This contributor is already a part of this program"
+			})
+			return
+		}
+
+		try {
+			await ProgramModel.updateOne({
+				_id: req.body.id
+			}, {
+				$push: {
+					contributors: req.body.contributor
+				}
+			})
+		} catch (error) {
+			console.warn("Internal server error when adding subject to program", error)
+			res.status(500).json({
+				message: "Internal server error"
+			})
+			return
+		}
+
+		await Log(
+			req.body.fingerprint,
+			OperationType.UPDATE,
+			ContentType.PROGRAM,
+			[req.body.id, req.body.contributor],
+			[]
+		)
+
+		res.status(201).json({
+			message: "Successfully added contributor to program"
+		})
 	}
 
 	public async delete() {
