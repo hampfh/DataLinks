@@ -140,7 +140,8 @@ function Group(props: PropsForComponent) {
                         if (contentElement._id.toString().length <= 0)
                             return <Dummy key={uuid()} />
                         return <RenderContent 
-                            key={contentElement._id}
+                            // ? Optimization possibility here detect if field changes instead of using uuid (and forcibly updating every time)
+                            key={uuid()}
                             parentGroup={props.group._id} 
                             content={contentElement} 
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
