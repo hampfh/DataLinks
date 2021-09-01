@@ -145,7 +145,7 @@ function Subjects(props: PropsForComponent) {
 								</div>
 							</a>
 						</motion.div>
-						<h1 className="Title">Data links</h1>
+						<h1 className="Title">{DataLoader.getActiveProgram()?.name} links</h1>
 						<h3 className="versionText">Version: {version}</h3>
 						<div className="leaderboardButtonWrapper">
 							<Link className="leaderboardLink" to={`/${DataLoader.getActiveProgram()?.name ?? 404}/contributors`}>
