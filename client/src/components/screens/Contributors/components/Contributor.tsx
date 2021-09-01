@@ -7,6 +7,7 @@ import { connect } from "react-redux"
 class Contributor extends Component<PropsForComponent, StateForComponent> {
 
 	fadeIn?: NodeJS.Timeout
+	timeout?: NodeJS.Timeout
 	constructor(props: PropsForComponent) {
 		super(props)
 
@@ -16,11 +17,16 @@ class Contributor extends Component<PropsForComponent, StateForComponent> {
 	}
 
 	componentDidMount = () => {
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			let newState = { ...this.state }
 			newState.hidden = false
 			this.setState(newState)
 		}, this.props.place * 100)
+	}
+
+	componentWillUnmount() {
+		if (this.timeout)
+			clearTimeout(this.timeout)
 	}
 
 	displayDate() {

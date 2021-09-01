@@ -3,7 +3,7 @@ import { Schema } from "mongoose"
 import { Group } from "./group.model"
 
 @modelOptions({ schemaOptions: { timestamps: true }})
-class Subject {
+export class Subject {
 	@prop({ required: true })
 	public name!: string
 

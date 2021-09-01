@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { SubjectData } from '../Subjects/Subjects'
 import "./Archive.css"
 import logoutIcon from "assets/icons/close.svg"
+import { DataLoader } from 'functions/DataLoader'
 
 export default function Archive(props: PropsForComponent) {
     const [search, setSearch] = useState<string>()
+    const { program } = useParams<IRouterParams>()
+
+    useEffect(() => {
+        DataLoader.manageProgramContentData(program)
+    }, [program])
 
     function matchesSearch(subject: SubjectData) {
         if (search == null)
@@ -35,14 +41,14 @@ export default function Archive(props: PropsForComponent) {
         <div className="pageWrapper">
             <div className="archiveContainer">
                 <div className="exitButtonContainer">
-                    <Link to="/D20">
+                    <Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}`}>
                         <div className="archiveLogoutIconBackground">
                             <img className="archiveLogoutIcon" alt="Exit view" src={logoutIcon} />
                         </div>
                     </Link>
                 </div>
                 <h1>Course archive</h1>
-                <h3>Here are all completed courses for D20</h3>
+                <h3>Here are all completed courses for {DataLoader.getActiveProgram()?.name ?? "the data program"}</h3>
                 <div>
                     <input className="searchInput" placeholder="Search course code" onChange={onSearchChange}/>
                 </div>
@@ -52,8 +58,8 @@ export default function Archive(props: PropsForComponent) {
                             return null
                         }
                         return (
-                            <div>
-                                <Link key={current.code} to={`/D20/course/${current.code}`} className="archivedLink">
+                            <div key={current.code}>
+                                <Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${current.code}`} className="archivedLink">
                                     <div className="archivedItem">
                                         <p className="archivedItemCode">{current.code}</p>
                                         <p className="archivedItemName">{current.name}</p>

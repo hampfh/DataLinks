@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Subjects from "components/screens/Subjects/Subjects"
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -35,30 +35,20 @@ import { useDispatch } from "react-redux"
 import { IContentState } from 'state/reducers/content';
 import { version } from "../package.json"
 import Archive from 'components/screens/Archive/Archive';
-import { v4 as uuid } from "uuid"
+import Home from 'components/screens/Home/Home';
+import NotFoundPage from 'components/screens/404/404';
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
 function App(props: PropsForComponent) {
 
 	const dispatch = useDispatch()
-	const [hasLoaded, setHasLoaded] = useState(false)
 	const [showContributionOverlay, setShowContributionOverlay] = useState(false)
 
 	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint } = props
 
 	useEffect(() => {
 		manageVersion()
-
-		try {
-			fetchUpdatedSubjects().then((subjects) => {
-				// set state
-				setHasLoaded(true)
-				dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects } })
-			})
-		} catch(error) {
-			// TODO manage this
-		}
 
 		// Load setting flags from localstorage
 		const flags = loadFlags()
@@ -115,47 +105,37 @@ function App(props: PropsForComponent) {
 		return <SubmitContributorName toggleView={setShowContributionOverlay} />
 
 	// ? When no content is provided we don't show a site at all
-	if (props.content.subjects.length <= 0)
-		return null
+	if (props.content.hasLoaded && props.content.activeProgramSubjects.length <= 0)
+		return <NotFoundPage />
 
 	return (
 		<Router>
 			<Switch>
 				<Route exact path="/">
-					<Redirect to="/D20"/>
+					<Home />
 				</Route>
-				<Route exact path="/D20">
+				<Route exact path="/:program">
 					<Subscriptions />
 					
 					<Subjects 
 						updateSubjects={fetchUpdatedSubjects}
 					/>
 				</Route>
-				<Route exact path="/D20/contributors">
+				<Route exact path="/:program/contributors">
 					<Contributors />
 				</Route>
-				<Route exact path="/D20/archive">
-					<Archive subjects={props.content.subjects} />
+				<Route exact path="/:program/archive">
+					<Archive subjects={props.content.activeProgramSubjects} />
 				</Route>
-				{props.content.subjects.map((subject) => {
-					return (
-						// ? Here are optimization potential, istead of uuid() React.memo() could be used
-						<Route key={uuid()} exact path={`/D20/course/${subject.code}`}>
-							<Subscriptions />
-							<SubjectView
-								subject={subject}
-								updateSubjects={fetchUpdatedSubjects}
-							/>
-						</Route>
-					)
-				})}
-				{hasLoaded ? 
+				<Route exact path={`/:program/course/:subjectCode`}>
+					<Subscriptions />
+					<SubjectView
+						updateSubjects={fetchUpdatedSubjects}
+					/>
+				</Route>
+				{props.content.hasLoaded ? 
 					<Route>
-						<div className="404Container">
-							<h1>404</h1>
-							<h2>Oups, page not found</h2>
-							<p>Return back to the <a href="/">home</a> page</p>
-						</div>
+						<NotFoundPage />
 					</Route> : null
 				}
 			</Switch>

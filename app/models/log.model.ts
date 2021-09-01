@@ -12,7 +12,8 @@ export enum ContentType {
 	TEXT = "TEXT",
 	LINK = "LINK",
 	DEADLINE = "DEADLINE",
-	SUBJECT = "SUBJECT"
+	SUBJECT = "SUBJECT",
+	PROGRAM = "PROGRAM"
 }
 
 @modelOptions({ schemaOptions: { timestamps: true }})

@@ -33,8 +33,10 @@ class RealTime {
 		this.attached && this.io.emit(event, data)
 	}
 	emitToSockets = (event: string, data: unknown) => {
-		console.log("EMITTED TO SOCKETS", data)
 		this.attached && this.io.sockets.emit(event, data)
+	}
+	emitToRoom = (event: string, room: string, data: unknown) => {
+		this.attached && this.io.to(room).emit(event, data)
 	}
 }
 

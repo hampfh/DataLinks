@@ -2,7 +2,9 @@ import SubjectController from "./Subject"
 import ContentController from "./Content"
 import GroupController from "./Group"
 import ContributorsController from "./Contributors"
+import ProgramController from "./Program"
 
+export const Program = new ProgramController()
 export const Subject = new SubjectController()
 export const Content = new ContentController()
 export const Group = new GroupController()

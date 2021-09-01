@@ -21,11 +21,13 @@ import SubjectSneakPeak from "components/screens/Subjects/components/SneakPeak"
 import DeadlineRenderer from "components/templates/DeadlineRenderer"
 import { IDimensionState } from "state/reducers/dimensions"
 import { ISetTransforms, setTransforms} from "state/actions/dimensions"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { LOGO } from "components/utilities/logos"
 import { motion } from "framer-motion"
 import { animationActive, AnimationCategory, HomeAnimationId, IAnimationState } from "state/reducers/animations"
 import { IContentState } from "state/reducers/content"
+import { DataLoader } from "functions/DataLoader"
+import NotFoundPage from "../404/404"
 
 const uiDistribution = {
 	dynamic: {
@@ -42,10 +44,13 @@ const desktopWidth = 800
 function Subjects(props: PropsForComponent) {
 
 	const dispatch = useDispatch()
+	const { program } = useParams<IRouterParams>()
 
 	const subjectContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
+		DataLoader.manageProgramContentData(program)
+
 		let debouncer: NodeJS.Timeout | undefined
 		function _onResize() {
 			if (debouncer)
@@ -118,6 +123,12 @@ function Subjects(props: PropsForComponent) {
 		props.setDeadlineViewFlag(event.target.checked)
 	}
 
+	if (!props.content.hasLoaded)
+		return null
+
+	if (props.content.hasLoaded && props.content.activeProgramId == null)
+		return <NotFoundPage />
+
 	return (
 		<section className="Master">
 			<div className="Uppercontainer" 
@@ -134,15 +145,15 @@ function Subjects(props: PropsForComponent) {
 								</div>
 							</a>
 						</motion.div>
-						<h1 className="Title">D20 links</h1>
+						<h1 className="Title">{DataLoader.getActiveProgram()?.name} links</h1>
 						<h3 className="versionText">Version: {version}</h3>
 						<div className="leaderboardButtonWrapper">
-							<Link className="leaderboardLink" to="/D20/contributors">
+							<Link className="leaderboardLink" to={`/${DataLoader.getActiveProgram()?.name ?? 404}/contributors`}>
 								<div className="leaderboardButton">
 									Contributor leaderboard
 								</div>
 							</Link>
-							<Link className="leaderboardLink" to="/D20/archive">
+							<Link className="leaderboardLink" to={`/${DataLoader.getActiveProgram()?.name ?? 404}/archive`}>
 								<div className="leaderboardButton">
 									Course archive
 								</div>
@@ -152,7 +163,7 @@ function Subjects(props: PropsForComponent) {
 				}
 				<div className="SubjectContainer">
 					{
-						props.content.subjects.map((subject) => {
+						props.content.activeProgramSubjects.map((subject) => {
 							if (subject.group == null || subject.archived)
 								return null
 							else {
@@ -173,7 +184,7 @@ function Subjects(props: PropsForComponent) {
 			}
 			{props.app.flags.deadlineView && props.app.sneakPeakSelectionCount <= 0 && props.dimensions.window.width > desktopWidth ? 
 				<DeadlineRenderer
-					subjects={props.content.subjects}
+					subjects={props.content.activeProgramSubjects}
 				/>: null
 			}
 

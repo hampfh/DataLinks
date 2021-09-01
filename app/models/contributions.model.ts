@@ -40,7 +40,7 @@ class Contribution {
 }
 
 @modelOptions({ schemaOptions: { timestamps: true }})
-class Contributor {
+export class Contributor {
 	@prop()
 	public name?: string
 
