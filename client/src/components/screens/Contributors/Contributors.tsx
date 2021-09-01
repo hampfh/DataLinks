@@ -28,19 +28,20 @@ function Contributors(props: PropsForComponent) {
 	useEffect(() => {
 		DataLoader.manageProgramContentData(programName).then(async () => {
 			const program = DataLoader.getActiveProgram()
-		if (program == null) 
-			return
+			if (program == null) 
+				return
 
-			const response = await Http({
-				url: "/api/v1/contributors",
-				method: "GET",
-				data: {
-					program: program.id
-				}
-			})
+				const response = await Http({
+					url: "/api/v1/contributors",
+					method: "GET",
+					data: {
+						program: program.id
+					}
+				})
 
-			setContributors(response.contributors)
-		})
+				setContributors(response.contributors)
+			}
+		)
 	}, [programName])
 
 	function _onContribution(data: INewContribution) {
@@ -110,9 +111,8 @@ function Contributors(props: PropsForComponent) {
 						</div>
 						{contributors.map((contributor, index) => 
 							// Only show contributor if it is yourself OR you have more than 0 contributions
-							contributor.contributionCount > 0 || contributor.identifier.findIndex((current) => current === props.app.fingerprint) >= 0 ?
-								<Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} /> :
-								null
+							(contributor.contributionCount > 0 || contributor.identifier.findIndex((current) => current === props.app.fingerprint) >= 0) &&
+								<Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} />
 							)
 						}
 					</section>
