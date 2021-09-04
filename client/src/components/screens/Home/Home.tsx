@@ -36,11 +36,13 @@ export default function Home() {
                             <Collaborate className="info-image" />
                             <p>Create a space together with everyone else in your program where all data is neatly organized</p>
                         </div>
+                        <span className="info-container-vertical-separator" />
                         <div className="info-container">
                             <h3>Crowdsourced</h3>
                             <CrowdSource className="info-image" />
                             <p>Let anyone perform edits to your board. Fast accessibility leads to more contributions!</p>
                         </div>
+                        <span className="info-container-vertical-separator" />
                         <div className="info-container">
                             <h3>Clear deadlines</h3>
                             <Deadline className="info-image" />
