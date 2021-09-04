@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="168" height="168" viewBox="0 0 168 168">
+  <defs>
+    <filter id="Rectangle_4" x="0" y="0" width="168" height="168" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Floatingbox_1" data-name="Floatingbox #1" transform="translate(9 6)">
+    <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Rectangle_4)">
+      <rect id="Rectangle_4-2" data-name="Rectangle 4" width="150" height="150" rx="31" transform="translate(9 6)" fill="#fff"/>
+    </g>
+    <rect id="Rectangle_5" data-name="Rectangle 5" width="68" height="17" rx="8.5" transform="translate(16 14)" fill="#ec5f99"/>
+    <rect id="Rectangle_6" data-name="Rectangle 6" width="105" height="17" rx="8.5" transform="translate(16 40)" fill="#ec5f99"/>
+    <rect id="Rectangle_7" data-name="Rectangle 7" width="87" height="17" rx="8.5" transform="translate(16 66)" fill="#ec5f99"/>
+    <rect id="Rectangle_9" data-name="Rectangle 9" width="112" height="17" rx="8.5" transform="translate(16 92)" fill="#ec5f99"/>
+    <rect id="Rectangle_10" data-name="Rectangle 10" width="44" height="17" rx="8.5" transform="translate(16 118)" fill="#ec5f99"/>
+  </g>
+</svg>

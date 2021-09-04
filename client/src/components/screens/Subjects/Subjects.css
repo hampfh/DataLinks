@@ -2,8 +2,6 @@
 
 body {
 	background-color: var(--primary-background);
-	overflow-x: hidden;
-	overflow-y: hidden;
 }
 
 .Master {
@@ -13,6 +11,9 @@ body {
 	background-color: var(--primary-background);
 	scrollbar-width: thin;
 	justify-content: center;
+
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
 @media (max-width: 35rem) {

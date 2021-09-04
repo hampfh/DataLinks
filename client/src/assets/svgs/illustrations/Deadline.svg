@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="230" height="79" viewBox="0 0 230 79">
+  <defs>
+    <filter id="Ellipse_8" x="76" y="0" width="79" height="79" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Deadline" transform="translate(-1260 -676)">
+    <rect id="Rectangle_29" data-name="Rectangle 29" width="230" height="35" rx="17.5" transform="translate(1260 695)" fill="rgba(95,220,137,0.97)"/>
+    <g transform="matrix(1, 0, 0, 1, 1260, 676)" filter="url(#Ellipse_8)">
+      <circle id="Ellipse_8-2" data-name="Ellipse 8" cx="30.5" cy="30.5" r="30.5" transform="translate(85 6)" fill="#fff"/>
+    </g>
+    <path id="Path_99" data-name="Path 99" d="M956.973,696.01l-15.109,23.156-6.405-4.6-3.12,4.6L944,727.378l19.051-30.547-4.6-3.12Z" transform="translate(427.306 1.955)" fill="#5fdc89"/>
+  </g>
+</svg>
