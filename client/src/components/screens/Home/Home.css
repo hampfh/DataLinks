@@ -68,6 +68,12 @@
     justify-content: center;
 }
 
+@media (max-height: 850px) {
+    .box-container {
+        display: none;
+    }
+}
+
 .box {
     width: 20vw;
     max-width: 10rem;
