@@ -47,7 +47,7 @@ export default function Home() {
                             <p>All deadlines are easily accessible and sorted by urgency</p>
                         </div>
                     </div>
-                    <div className=".path-wrapper">
+                    <div className="path-container">
                         <PathOne className="path-one path" />
                         <PathTwo className="path-two path" />
                         <PathThree className="path-three path" />
