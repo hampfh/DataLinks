@@ -3,6 +3,7 @@ import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
 import apiRoute from "./routes/api"
+import apiPublic from "./routes/public"
 
 const app = express()
 
@@ -14,6 +15,10 @@ else
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(process.env.COOKIE_SECRET))
+
+app.use("/api/v1", apiRoute)
+app.use("/", apiPublic)
+
 app.use(express.static(path.join(path.resolve(), "client/build")))
 
 // Redirect www to non-www
@@ -23,13 +28,6 @@ app.use(function (req: Request, res: Response, next: express.NextFunction) {
 	next()
 })
 
-app.use("/api/v1", apiRoute)
-
-// Serve to react
-app.get("*", (req: express.Request, res: express.Response) => {
-	if (process.env.NODE_ENV === "production")
-		res.sendFile(path.join(path.resolve() + "/client/build/index.html"))
-})
 
 /// Error handler
 app.use(function (error: express.ErrorRequestHandler, req: express.Request, res: express.Response, next: express.NextFunction) {
