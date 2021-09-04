@@ -197,8 +197,10 @@
     background-color: white;
 }
 
-.join-too-content-container {
-    
+.join-too-content-container h3 {
+    text-align: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .join-too-program-wrapper {
