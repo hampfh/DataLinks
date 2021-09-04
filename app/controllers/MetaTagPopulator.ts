@@ -76,7 +76,7 @@ export default class MetaTagPopulator {
 			
 			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
 				title: `DataLinks - ${program}`,
-				description: `${program}'s own subject board'`,
+				description: `${program}'s own subject board`,
 				thumbnail: MetaTagPopulator.getDisplayLogo("PNG", program),
 				favicon: MetaTagPopulator.getDisplayLogo("ICO", program)
 			})
