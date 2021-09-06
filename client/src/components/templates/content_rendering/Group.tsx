@@ -200,8 +200,8 @@ function Group(props: PropsForComponent) {
                     newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode ?
                     <TemporaryFields 
                         onSubmitElement={async (temporaryElement: NewElement) => {
-                            onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) 
-                            && setNewElement(undefined)
+                            if (await onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) === 0)
+                                setNewElement(undefined)
                         }}
                         type={newElement?.type}
                         parentId={props.group._id}

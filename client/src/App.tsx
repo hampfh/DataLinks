@@ -19,7 +19,9 @@ import {
 	ISetContributor,
 	APP_CONTRIBUTOR_KEY,
 	setFingerPrint,
-	ISetFingerPrint
+	ISetFingerPrint,
+	setReplaceCountdownWithDateFlag,
+	ISetReplaceCountdownWithDateFlag
 } from 'state/actions/app'
 import { 
 	ISetCompletedDeadlines, 
@@ -45,7 +47,7 @@ function App(props: PropsForComponent) {
 	const dispatch = useDispatch()
 	const [showContributionOverlay, setShowContributionOverlay] = useState(false)
 
-	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint } = props
+	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint, setReplaceCountdownWithDateFlag } = props
 
 	useEffect(() => {
 		manageVersion()
@@ -59,6 +61,8 @@ function App(props: PropsForComponent) {
 				setExtendViewFlag(true)
 			if (flags.deadlineView)
 				setDeadlineViewFlag(true)
+			if (flags.replaceCountdownWithDate)
+				setReplaceCountdownWithDateFlag(true)
 		}
 
 		// Load completed deadlines from localstorage
@@ -144,13 +148,14 @@ function App(props: PropsForComponent) {
 }
 
 export interface PropsForComponent {
-	app: IAppState,
-	content: IContentState,
-	enableEditMode: IEnableEditMode,
-	setExtendViewFlag: ISetExtendViewFlag,
-	setDeadlineViewFlag: ISetDeadlineViewFlag,
-	setCompletedDeadlines: ISetCompletedDeadlines,
-	setContributor: ISetContributor,
+	app: IAppState
+	content: IContentState
+	enableEditMode: IEnableEditMode
+	setExtendViewFlag: ISetExtendViewFlag
+	setDeadlineViewFlag: ISetDeadlineViewFlag
+	setReplaceCountdownWithDateFlag: ISetReplaceCountdownWithDateFlag
+	setCompletedDeadlines: ISetCompletedDeadlines
+	setContributor: ISetContributor
 	setFingerPrint: ISetFingerPrint
 }
 
@@ -163,6 +168,7 @@ const reduxDispatch = () => ({
 	enableEditMode,
 	setExtendViewFlag,
 	setDeadlineViewFlag,
+	setReplaceCountdownWithDateFlag,
 	setCompletedDeadlines,
 	setContributor,
 	setFingerPrint

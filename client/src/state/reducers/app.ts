@@ -1,18 +1,15 @@
 import { ActionType } from ".";
 import { SubjectData } from "components/screens/Subjects/Subjects";
+import { IFlagInterface } from "state/actions/app";
 
 export interface IAppState {
-	version: string,
-	lastVersion?: string,
-	sneakPeak?: SubjectData,
-	sneakPeakSelectionCount: number,
-	contributor?: string,
-	fingerprint?: string,
-	flags: {
-		editMode: boolean,
-		extendedView: boolean,
-		deadlineView: boolean
-	}
+	version: string
+	lastVersion?: string
+	sneakPeak?: SubjectData
+	sneakPeakSelectionCount: number
+	contributor?: string
+	fingerprint?: string
+	flags: IFlagInterface
 }
 
 const defaultState = {
@@ -23,6 +20,7 @@ const defaultState = {
 		editMode: false,
 		extendedView: false,
 		deadlineView: false,
+		replaceCountdownWithDate: false
 	}
 }
 
@@ -58,6 +56,9 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 			return newState
 		case 'SET_DEADLINE_VIEW_FLAG':
 			newState.flags.deadlineView = action.payload.mode
+			return newState
+		case "SET_REPLACE_COUNTDOWN_WITH_DATE_FLAG":
+			newState.flags.replaceCountdownWithDate = action.payload.value
 			return newState
 		case 'SET_FINGERPRINT':
 			newState.fingerprint = action.payload.fingerprint

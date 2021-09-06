@@ -117,3 +117,23 @@
         opacity: 1;
     }
 }
+
+.deadline-text-content-container {
+    margin-top: 1rem;
+
+    /* Prevent user select in this div */
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.deadline-text-content-container:hover {
+    background-color: var(--primary);
+    border-radius: 5px;
+    cursor: pointer;    
+}
+
+.deadline-text-content-container:hover p {
+    color: white;
+}

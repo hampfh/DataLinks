@@ -14,6 +14,8 @@ import {
 import { IReduxRootState } from "state/reducers"
 import { IDeadlineState } from "state/reducers/deadlines"
 import Checkmark from 'components/screens/Subject/components/Checkmark'
+import moment from 'moment'
+import { ISetReplaceCountdownWithDateFlag, setReplaceCountdownWithDateFlag } from 'state/actions/app'
 
 class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 
@@ -62,7 +64,7 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 			clearInterval(this.state.interval)
 	}
 
-	isEmptyFirstRow() {
+	firstRowIsEmpty() {
 		return !!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days
 	}
 
@@ -81,6 +83,12 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 		let newState = { ...this.state }
 		newState.complete = !!!newState.complete
 		this.setState(newState)
+	}
+	
+	_toggleDeadlineContent = () => {
+		console.log("CLICKEd")
+		console.log(this.props.replaceCountdownWithDate)
+		this.props.setReplaceCountdownWithDateFlag(!this.props.replaceCountdownWithDate)
 	}
 
 	render() {
@@ -131,7 +139,7 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 							<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
 							: null}
 						<div className={`deadlineProgressBarContainer ${!!!this.props.editMode ? "clickable" : ""}`}>
-							<progress
+							<progress title="Mark this deadline as done"
 								className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
 								value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
 								max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
@@ -145,20 +153,35 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 								<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{this.state.complete ? "Task done!" : "Deadline reached!"}</p>
 								<p className="countdownText transparent">-</p>
 							</> :
-							<>
-								{this.isEmptyFirstRow() ? null : <p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
-								${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
-								${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
-								${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
-								`}
-								</p>}
+							<div title="Toggle display type" className="deadline-text-content-container" onClick={this._toggleDeadlineContent}>
+								{this.props.replaceCountdownWithDate ? 
+									<> 
+										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
+											{moment(this.props.deadline).format("DD/MM/YYYY")}
+										</p>
+										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
+											{moment(this.props.deadline).format("HH:mm")}
+										</p>
+									</> :
+									<> 
+										{!this.firstRowIsEmpty() && 
+											<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
+													${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
+													${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
+													${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
+												`}
+											</p>
+										}
 
-								<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}</p>
-								{this.isEmptyFirstRow() ?
-									<p className="countdownText transparent">-</p> :
-									null
+										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
+											{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}
+										</p>
+										{this.firstRowIsEmpty() &&
+											<p className="countdownText transparent">-</p>
+										}
+									</>
 								}
-							</>
+							</div>
 						}
 					</div>
 				}
@@ -168,30 +191,32 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 }
 
 interface PropsForComponent {
-	id: string,
-	displayText?: string,
-	deadline: string,
-	start: string,
-	accent?: boolean,
-	deadlines: IDeadlineState,
-	editMode: boolean,
-	fieldTwoValid: boolean,
-	noEditMode: boolean,
-	addCompleteDeadline: IAddCompleteDeadline,
-	removeCompleteDeadline: IRemoveCompleteDeadline,
-	resetAnimatedDeadline: IResetAnimatedDeadline,
+	id: string
+	displayText?: string
+	deadline: string
+	start: string
+	accent?: boolean
+	deadlines: IDeadlineState
+	editMode: boolean
+	fieldTwoValid: boolean
+	noEditMode: boolean
+	replaceCountdownWithDate: boolean
+	addCompleteDeadline: IAddCompleteDeadline
+	removeCompleteDeadline: IRemoveCompleteDeadline
+	resetAnimatedDeadline: IResetAnimatedDeadline
+	setReplaceCountdownWithDateFlag: ISetReplaceCountdownWithDateFlag
 	updateElement: (event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") => void
 }
 
 interface StateForComponent {
-	hash: string,
-	complete: boolean,
+	hash: string
+	complete: boolean
 	countdown: {
-		months: number,
-		weeks: number,
-		days: number,
-		hours: number,
-		minutes: number,
+		months: number
+		weeks: number
+		days: number
+		hours: number
+		minutes: number
 		seconds: number
 	}, 
 	bar: {
@@ -204,13 +229,15 @@ interface StateForComponent {
 
 const reduxSelect = (state: IReduxRootState) => ({
 	deadlines: state.deadlines,
-	editMode: state.app.flags.editMode
+	editMode: state.app.flags.editMode,
+	replaceCountdownWithDate: state.app.flags.replaceCountdownWithDate
 })
 
 const reduxDispatch = () => ({
 	addCompleteDeadline,
 	removeCompleteDeadline,
-	resetAnimatedDeadline
+	resetAnimatedDeadline,
+	setReplaceCountdownWithDateFlag
 })
 
 export default connect(reduxSelect, reduxDispatch())(DeadlineObject)

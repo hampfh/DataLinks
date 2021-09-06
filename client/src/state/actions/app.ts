@@ -4,9 +4,10 @@ export const APP_FLAG_KEY = "flags"
 export const APP_CONTRIBUTOR_KEY = "contributor"
 
 export interface IFlagInterface {
-	editMode: boolean,
-	extendedView: boolean,
+	editMode: boolean
+	extendedView: boolean
 	deadlineView: boolean
+	replaceCountdownWithDate: boolean
 }
 
 /**
@@ -177,6 +178,16 @@ export const setDeadlineViewFlag = (deadlineViewMode: boolean) => {
 		type: "SET_DEADLINE_VIEW_FLAG",
 		payload: {
 			mode: deadlineViewMode
+		}
+	}
+}
+export interface ISetReplaceCountdownWithDateFlag { (replace: boolean): void }
+export const setReplaceCountdownWithDateFlag = (replace: boolean) => {
+	saveFlags("replaceCountdownWithDate", replace)
+	return {
+		type: "SET_REPLACE_COUNTDOWN_WITH_DATE_FLAG",
+		payload: {
+			value: replace
 		}
 	}
 }
