@@ -41,7 +41,6 @@ export default function Background() {
                 dots[y].push(dotInitialAlpha)               
             }
         }
-        console.log("GNERATTING NEW ARRAY", dots[0].length, dots.length)
         return dots
     }
 
@@ -62,7 +61,6 @@ export default function Background() {
     }
 
     function draw() {
-        console.log("DRAW")
         const canvas = canvasRef.current as HTMLCanvasElement | null
         const context = canvas?.getContext('2d')
 

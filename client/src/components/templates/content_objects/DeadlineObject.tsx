@@ -86,8 +86,6 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 	}
 	
 	_toggleDeadlineContent = () => {
-		console.log("CLICKEd")
-		console.log(this.props.replaceCountdownWithDate)
 		this.props.setReplaceCountdownWithDateFlag(!this.props.replaceCountdownWithDate)
 	}
 
