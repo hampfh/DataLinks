@@ -17,6 +17,8 @@
 	--color-gray-9: #cdd9e5;
 
 	/* Element specific variables */
+	--color-text: var(--color-gray-8);
+
 	--color-canvas-default: #1c2128;
 	--color-canvas-layer: var(--color-gray-0);
 	--color-canvas-nested-layer: var(--color-gray-1);
@@ -34,4 +36,16 @@
 	--addition: #FCDA04;
 	--modification: #64b5f6;
 	--deletion: #e57373;
+}
+
+body {
+	background-color: var(--color-canvas-default);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+	color: var(--color-text);
 }
