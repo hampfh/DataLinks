@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
 :root {
 	--primary: #E83D84;
 	--primary-light: #EC5F99;
@@ -36,6 +36,10 @@
 	--addition: #FCDA04;
 	--modification: #64b5f6;
 	--deletion: #e57373;
+
+	/* Size values */
+	--default-header-height: 10rem;
+	--default-border-width: 1px;
 }
 
 body {
@@ -47,5 +51,19 @@ h2,
 h3,
 h4,
 p {
+	font-family: 'Roboto', sans-serif;
 	color: var(--color-text);
+}
+
+.default-box-container {
+	background-color: var(--color-canvas-layer);
+	border-radius: 10px;
+	border-color: var(--color-border-default);
+	border-width: var(--default-border-width);
+	border-style: solid;
+}
+
+.default-expanded {
+	width: 100%;
+	height: 100%;
 }
