@@ -124,6 +124,9 @@ function Subscriptions(props: PropsForComponent) {
 				position: number
 			}) => {
 				const newSubjects: SubjectData[] = JSON.parse(JSON.stringify(props.content.activeProgramSubjects))
+
+				// TODO optiize to directly find the correct parent group instead
+				// TODO of brute-forcing over all subjects until the correct element is found
 				reOrderElement(newSubjects, data.id, data.position)	
 				dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
 			}} />

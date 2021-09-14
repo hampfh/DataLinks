@@ -79,7 +79,7 @@ export const reOrderElement = (subjects: SubjectData[], id: string, newPosition:
 /**
  * 
  * @param contentObject 
- * @param newElement 
+ * @param searchElement 
  * @param action 
  * @returns 0, no element found
  * @returns 1, all ok
@@ -88,18 +88,18 @@ export const reOrderElement = (subjects: SubjectData[], id: string, newPosition:
  */
 export const recursiveSearchElement = (
 	contentObject: ContentObject, 
-	newElement: ContentObject, 
-	action: (contentObject: ContentObject, newElement: ContentObject) => { status: SearchStatus, value?: number }
+	searchElement: ContentObject, 
+	action: (contentObject: ContentObject, searchElement: ContentObject) => { status: SearchStatus, value?: number }
 ): { status: SearchStatus, value?: number } => {
 
 	// Check if element is target
-	if (contentObject._id.toString() === newElement._id.toString() || 
-	(contentObject.group && contentObject.group._id.toString() === newElement._id.toString()))
-		return action(contentObject, newElement)
+	if (contentObject._id.toString() === searchElement._id.toString() || 
+	(contentObject.group && contentObject.group._id.toString() === searchElement._id.toString()))
+		return action(contentObject, searchElement)
 
 	if (contentObject.group != null) {
 		for (let i = 0; i < contentObject.group.content.length; i++) {
-			const result = recursiveSearchElement(contentObject.group.content[i], newElement, action)
+			const result = recursiveSearchElement(contentObject.group.content[i], searchElement, action)
 			switch (result.status) {
 				case SearchStatus.ALL_OK: 
 					return { status: SearchStatus.ALL_OK }
