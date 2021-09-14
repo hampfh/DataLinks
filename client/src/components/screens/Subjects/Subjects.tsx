@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react"
 import SubjectComponent from "./components/SubjectItem"
-import "./Subjects.css"
 import "./components/Switch.css"
 import isMobile from "functions/isMobile"
 import { version } from "components/../../package.json"
@@ -28,6 +27,8 @@ import { animationActive, AnimationCategory, HomeAnimationId, IAnimationState } 
 import { IContentState } from "state/reducers/content"
 import { DataLoader } from "functions/DataLoader"
 import NotFoundPage from "../404/404"
+import DefaultHeader from "components/templates/headers/DefaultHeader"
+import SubjectsLayout from "./components/SubjectsLayout"
 
 const uiDistribution = {
 	dynamic: {
@@ -43,7 +44,14 @@ const desktopWidth = 800
 
 function Subjects(props: PropsForComponent) {
 
-	const dispatch = useDispatch()
+	return (
+		<div>
+			<DefaultHeader />
+			<SubjectsLayout />
+		</div>
+	)
+
+	/* const dispatch = useDispatch()
 	const { program } = useParams<IRouterParams>()
 
 	const subjectContainerRef = useRef<HTMLDivElement>(null)
@@ -218,7 +226,7 @@ function Subjects(props: PropsForComponent) {
 				</div>
 			}
 		</section>
-	)
+	) */
 }
 
 export interface SubjectData {

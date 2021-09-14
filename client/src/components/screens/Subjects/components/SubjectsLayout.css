@@ -1,0 +1,80 @@
+.subjects-layout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    --box-container-text-height: 2.5rem;
+    --box-container-text-underline-height: 4px;
+    --margin-between-into-and-box: 1rem;
+}
+
+.subjects-layout-grid-container {
+    display: grid;
+    grid-template-areas: 
+    "preview preview preview deadline"
+    "courses courses courses deadline"
+    "courses courses courses deadline";
+
+    width: 80vw;
+    max-height: calc(100vh - var(--default-header-height) - 2rem);
+    height: 80vh;
+
+    column-gap: 3rem;
+    row-gap: 1rem;
+}
+
+.subjects-layout-box-container-intro {
+       
+    height: var(--layout-box-container-intro-height);
+}
+
+.subjects-layout-box-container-intro h3 {
+    font-size: var(--box-container-text-height);
+    line-height: var(--box-container-text-height);
+    margin: 0;
+    margin-bottom: calc(var(--margin-between-into-and-box) + var(--box-container-text-underline-height));
+    color: var(--primary);
+    font-weight: 400;
+}
+
+.subjects-layout-box-container-intro h3::after {
+    position: relative;
+    top: 0.25rem;
+
+    display: block;
+    content: "";
+    background-color: var(--primary);
+    width: 4rem;
+    height: var(--box-container-text-underline-height);
+}
+
+.subjects-layout-box-container-course {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.subjects-layout-box-container-course p {
+    margin: 0;
+    font-style: italic;
+    opacity: 0.4;
+}
+
+.subjects-layout-preview-box {
+    grid-area: preview;
+    width: calc(100% - 2 * var(--default-border-width));
+    height: calc(100% - 2 * var(--default-border-width));
+}
+.subjects-layout-deadline-box {
+    grid-area: deadline;
+    width: calc(100% - 2 * var(--default-border-width));
+    height: calc(100% - 2 * var(--default-border-width));
+}
+.subjects-layout-courses-box {
+    grid-area: courses;
+    width: calc(100% - 2 * var(--default-border-width));
+    height: calc(100% - 2 * var(--default-border-width));
+}
+
+.subjects-layout-box-container {
+    height: calc(100% - 2 * var(--default-border-width) - var(--box-container-text-height) - var(--box-container-text-underline-height) - var(--margin-between-into-and-box));
+}

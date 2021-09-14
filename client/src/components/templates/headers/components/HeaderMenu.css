@@ -1,0 +1,33 @@
+@import "/src/components/root.css";
+
+.header-menu-container {
+    display: flex;
+}
+
+.header-menu-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 1rem;
+}
+
+.header-menu-item-text {
+    margin: 0;
+}
+
+.header-menu-item-text.selected::after {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0.25rem;
+
+    display: block;
+    content: "";
+    background-color: var(--color-text);
+    width: 3rem;
+    height: 4px;
+
+    border-radius: 5px;
+}
