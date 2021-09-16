@@ -43,11 +43,16 @@ const uiDistribution = {
 const desktopWidth = 800
 
 function Subjects(props: PropsForComponent) {
+	const { program } = useParams<IRouterParams>()
+
+	useEffect(() => {
+		DataLoader.manageProgramContentData(program)
+	})
 
 	return (
 		<div>
 			<DefaultHeader />
-			<SubjectsLayout />
+			<SubjectsLayout subjects={props.content.activeProgramSubjects} updateSubjects={props.updateSubjects} />
 		</div>
 	)
 

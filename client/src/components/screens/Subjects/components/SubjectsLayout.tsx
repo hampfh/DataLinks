@@ -1,7 +1,9 @@
 import React from 'react'
+import { SubjectData } from "components/screens/Subjects/Subjects"
 import "./SubjectsLayout.css"
+import SubjectItem from './SubjectItem'
 
-export default function SubjectsLayout() {
+export default function SubjectsLayout(props: PropsForComponent) {
     return (
         <div className="subjects-layout-container">
             <div className="subjects-layout-grid-container">
@@ -23,9 +25,18 @@ export default function SubjectsLayout() {
                     <div className="subjects-layout-box-container-intro">
                         <h3>Courses</h3>
                     </div>
-                    <div className="default-box-container subjects-layout-box-container"></div>
+                    <div className="default-box-container subjects-layout-box-container subjects-layout-box-container-courses">
+                        <div className="subjects-layout-box-container-courses-container">
+                            {props.subjects.map(current => !current.archived && <SubjectItem subject={current} updateSubjects={props.updateSubjects} />)}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     )
+}
+
+interface PropsForComponent {
+    subjects: SubjectData[]
+    updateSubjects: () => void
 }
