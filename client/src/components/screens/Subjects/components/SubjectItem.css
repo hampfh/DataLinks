@@ -1,142 +1,26 @@
-@import url("./Animation.css");
 @import url("../../../root.css");
 
-* {
-	font-family: 'Roboto', sans-serif;
+.subject-item-wrapper {
+	flex: 1;
+	margin: 0.5rem;
+
+	min-width: 15rem;
 }
 
-.SubjectItemWrapper {
-	position: relative;
-	overflow: visible;
+.subject-item-container {
+	min-height: 5rem;
+	margin: 1rem;
 }
 
-.Subject {
-	cursor: pointer;
-	justify-content: center;
-	align-items: center;
-
-	width: 50%;
-	height: min-content;
-	max-width: 6rem;
-	max-height: 120rem;
-	margin: 0 2rem;
-	border-radius: 1rem;
-	transition-duration: 0.15s;
-	transition-property: all;
-	transition-timing-function: ease-in;
-	padding: 0.5rem;
-
-	user-select: none;
-	-webkit-tap-highlight-color:transparent;
-    -moz-tap-highlight-color:transparent;
-	-o-tap-highlight-color:transparent;
-
-	/* This animation will play whenever an element is loaded for the first time*/
-	animation-name: ToggleSubjectRise;
-	animation-duration: 0.75s;
-}
-
-.collapsed {
-	cursor: pointer;
-	transition-property: transform;
-	transition-duration: 0.15s;
-	width: 5rem;
-}
-
-.collapsed:hover {
-	transform: scale(1.05);
-}
-
-.collapsed:active {
-	transition-duration: 0.1s;
-	transform: scale(0.95);
-}
-
-.expanding {
-	animation-name: Expand;
-	animation-duration: 0.45s;
-}
-
-.Header {
-	color: var(--primary);
-	text-align: center;
-	user-select: none;
-	width: min-content;
-
-	margin: auto;
-	margin-top: 0.9rem;
-	padding: 0.5rem 0rem;
-}
-.Header:hover {
-	cursor: pointer;
-	text-decoration: underline;
-}
-
-.expandable {
-	transition-duration: 1s;
-	transition-property: all;
-	transition-timing-function: ease-in;
-}
-
-.Description {
-	margin: 1rem 0.75rem;
-	margin-top: 0;
-	color: white;
-	font-size: 0.8rem;
-	text-align: center;
-}
-
-.LinkContainer {
-	margin: 0 1rem;
+.subject-item-header-container {
 	display: flex;
-	flex: 1 1 0px;
-	flex-wrap: wrap;
-	justify-content: center;
+	flex-direction: row;
 	align-items: center;
-	padding-bottom: 1rem;
 }
 
-.Button {
-	display: inline-block;
-	height: max-content;
-	width: fit-content;
-	color: white;
-	text-decoration: none;
-	padding: 0.5rem 1rem;
-	background-color: var(--complementary);
-	border-radius: 1rem;
-	font-size: 0.75rem;
-	max-width: 12rem;
-
-	transition-property: all;
-	transition-duration: 0.25s;
-
-	-webkit-box-shadow: 0px 0px 35px -5px rgba(0,0,0,1);
-	-moz-box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
-	box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.1);
-}
-
-.Button:hover {
-	filter: brightness(0.9);
-}
-
-.subTitle {
-	color: white;
-	text-align: center;
+.subject-item-header-container h4 {
 	margin: 0;
-	padding-bottom: 0.5rem;
-}
-
-.textObjectTitle, 
-.textObject {
-	margin: 0;
-	color: white;
-	text-align: center;
-}
-.textObjectTitle {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-.textObject {
-	font-size: 0.8rem;
+	margin-left: 1rem;
+	color: var(--primary);
+	font-size: 1.25rem;
 }

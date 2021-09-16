@@ -65,6 +65,19 @@ p {
 	border-style: solid;
 }
 
+.default-nested-box-container {
+	background-color: var(--color-canvas-nested-layer);
+	border-radius: 10px;
+	border-color: var(--color-border-nested);
+	border-width: var(--default-border-width);
+	border-style: solid;
+}
+
+.default-nested-box-container-hover:hover {
+	cursor: pointer;
+	background-color: var(--color-gray-2);
+}
+
 .default-expanded {
 	width: 100%;
 	height: 100%;

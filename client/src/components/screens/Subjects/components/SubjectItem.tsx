@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import "./SubjectItem.css"
 import "./Animation.css"
 import { SubjectData } from '../Subjects'
-import { Redirect } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 
 import { IReduxRootState } from "state/reducers"
 import { connect } from "react-redux"
@@ -18,6 +18,7 @@ import {
 import { getSubjectIcon } from 'components/utilities/logos'
 import { motion } from 'framer-motion'
 import { DataLoader } from 'functions/DataLoader'
+import SubjectItemColorBlob from './SubjectItemColorBlob'
 
 function Subject(props: PropsForComponent) {
 
@@ -27,13 +28,7 @@ function Subject(props: PropsForComponent) {
 	const [collapsState, setCollapsState] = useState(0)
 	const [hovering, setHovering] = useState(false)
 
-	/* shouldComponentUpdate(newProps: PropsForComponent, newState: StateForComponent) {
-		if (newProps.app.sneakPeak?._id.toString() === this.props.app.sneakPeak?._id.toString() && 
-		newState.collapsState === this.state.collapsState)
-			return false
-
-		return true;
-	} */
+	const history = useHistory()
 
 	useEffect(() => {
 		return () => {
@@ -51,20 +46,13 @@ function Subject(props: PropsForComponent) {
 			setCollapsState(2)
 
 			collapseStateTimeout = setTimeout(() => {
-				setCollapsState(3)
+				history.push(`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${props.subject.code}`)
 			}, 100)
 			props.hideSneakPeak()
 		}
 	}
 
 	function _mouseEnter() {
-
-		// We don't need to set it again
-		if (props.subject._id.toString() === props.app.sneakPeak?._id.toString()) {
-			props.showSneakPeak(props.subject)
-			return
-		}
-
 		props.showSneakPeak(props.subject)
 	}
 
@@ -78,36 +66,19 @@ function Subject(props: PropsForComponent) {
 	}
 
 	return (
-		<div className="SubjectItemWrapper">
-			{collapsState !== 3 ? 
-				<motion.div className="Subject" 
-					onClick={_onClick} 
-					onMouseLeave={_mouseLeave}
-					initial={{
-						boxShadow: "none"
-					}}
-					animate={hovering ? {
-						boxShadow: "0px 0px 20px -8px #000000"
-					} : {
-						boxShadow: "0px 0px 0px 0px #000000"
-					}}
-					transition={{ duration: hovering ? 0.05 : 0 }}
-				>
-					<motion.img alt="Subject icon"
-						onHoverStart={() => setHovering(true)}
-						onHoverEnd={() => setHovering(false)}
-						onMouseEnter={_mouseEnter}
-						className={`${collapsState === 0 ? "collapsed" : ""}`} 
-						src={getSubjectIcon(props.subject.logo)} 
-					/>
-					<h4 className="Header">{props.subject.code}</h4>
-				</motion.div>
-				: null
-			}
-			{collapsState === 3 ? 
-				<Redirect to={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${props.subject.code}`} /> : null
-			}
-		</div>
+		<motion.div 
+			onHoverStart={_mouseEnter}
+			onHoverEnd={_mouseLeave}
+			className="default-nested-box-container default-nested-box-container-hover subject-item-wrapper"
+		>
+			<div className="subject-item-container">
+				<div className="subject-item-header-container">
+					<SubjectItemColorBlob />
+					<h4>{props.subject.code}</h4>
+				</div>
+				<p>{props.subject.name}</p>
+			</div>
+		</motion.div>
 	)
 }
 
