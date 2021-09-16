@@ -20,9 +20,11 @@
 .subjects-layout-grid-container {
     display: grid;
     grid-template-areas: 
-    "preview preview preview deadline"
-    "courses courses courses deadline"
-    "courses courses courses deadline";
+        "preview preview preview deadline"
+        "courses courses courses deadline"
+        "courses courses courses deadline";
+
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
     width: 80vw;
     max-height: calc(100vh - var(--default-header-height) - 2rem);
@@ -32,12 +34,25 @@
     row-gap: 1rem;
 }
 
+@media (max-width: 1600px) {
+    .subjects-layout-grid-container {
+        grid-template-areas: 
+            "preview preview deadline"
+            "courses courses deadline"
+            "courses courses deadline";
+
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 @media (max-width: 1100px) {
     .subjects-layout-grid-container {
         grid-template-areas: 
-        "preview"
-        "courses"
-        "deadline";
+            "preview"
+            "courses"
+            "deadline";
+
+        grid-template-columns: 1fr;
 
         min-height: 80vh;
     }
@@ -77,9 +92,6 @@
     margin: 0;
     font-style: italic;
     opacity: 0.4;
-}
-
-.subjects-layout-box-container-courses {
 }
 
 .subjects-layout-box-container-courses-container {
