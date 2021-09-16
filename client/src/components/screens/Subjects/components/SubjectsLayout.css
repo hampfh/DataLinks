@@ -6,6 +6,15 @@
     --box-container-text-height: 2.5rem;
     --box-container-text-underline-height: 4px;
     --margin-between-into-and-box: 1rem;
+
+    transition-property: margin-top;
+    transition-duration: var(--default-transition-duration);
+}
+
+@media (max-width: 1000px) {
+    .subjects-layout-container {
+        margin-top: 2rem;
+    }
 }
 
 .subjects-layout-grid-container {
@@ -21,6 +30,17 @@
 
     column-gap: 3rem;
     row-gap: 1rem;
+}
+
+@media (max-width: 1080px) {
+    .subjects-layout-grid-container {
+        grid-template-areas: 
+        "preview"
+        "courses"
+        "deadline";
+
+        min-height: 80vh;
+    }
 }
 
 .subjects-layout-box-container-intro {

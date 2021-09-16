@@ -8,8 +8,14 @@ import "./DefaultHeader.css"
 export default function DefaultHeader() {
     return (
         <div className="default-header-container">
-            <HeaderPagePresenter />
-            <HeaderMenu selected={0} />
+            <div style={{
+                gridArea: "HeaderPagePresenter"
+            }}>
+                <HeaderPagePresenter />
+            </div>
+            <div className="default-header-menu">
+                <HeaderMenu selected={0} />
+            </div>
             <div className="default-header-version-container">
                 <p className="default-header-version-number">v{version}</p>
             </div>

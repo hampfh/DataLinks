@@ -40,6 +40,8 @@
 	/* Size values */
 	--default-header-height: 10rem;
 	--default-border-width: 1px;
+
+	--default-transition-duration: 0.5s;
 }
 
 body {

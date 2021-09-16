@@ -1,7 +1,7 @@
 @import "/src/components/root.css";
 
 .header-page-presenter-container {
-    margin: 2rem;
+    margin-left: 2rem;
     margin-top: 1rem;
     height: calc(100% - 3rem);
 }
@@ -12,6 +12,9 @@
     color: var(--primary);
 
     margin: 0;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
 }
 
 .header-page-presenter-secondary {
@@ -19,4 +22,20 @@
     font-weight: 100;
     color: var(--primary);
     margin: 0;
+
+   
+}
+
+@media (max-width: 700px) {
+    .header-page-presenter-container {
+        height: calc(50% - 3rem);
+    }
+
+    .header-page-presenter-primary {
+        font-size: 1.5rem;
+    }
+    
+    .header-page-presenter-secondary {
+        font-size: 1rem;
+    }
 }
