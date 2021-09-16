@@ -92,6 +92,22 @@
     margin: 0;
     font-style: italic;
     opacity: 0.4;
+
+    font-size: 2rem;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
+}
+
+@media (max-width: 1300px) {
+    .subjects-layout-box-container-course p {
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 700px) {
+    .subjects-layout-box-container-course p {
+        font-size: 1rem;
+    }
 }
 
 .subjects-layout-box-container-courses-container {

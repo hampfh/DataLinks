@@ -2,8 +2,11 @@ import React from 'react'
 import { SubjectData } from "components/screens/Subjects/Subjects"
 import "./SubjectsLayout.css"
 import SubjectItem from './SubjectItem'
+import SubjectSneakPeak from "components/screens/Subjects/components/SneakPeak"
+import { connect } from "react-redux"
+import { IReduxRootState } from 'state/reducers'
 
-export default function SubjectsLayout(props: PropsForComponent) {
+function SubjectsLayout(props: PropsForComponent) {
     return (
         <div className="subjects-layout-container">
             <div className="subjects-layout-grid-container">
@@ -12,7 +15,12 @@ export default function SubjectsLayout(props: PropsForComponent) {
                         <h3>Course preview</h3>
                     </div>
                     <div className="default-box-container subjects-layout-box-container subjects-layout-box-container-course">
-                        <p>Hover over a course to preview it here</p>
+                        {props.sneakPeak == null ?
+                            <p>Hover over a course to preview it here</p> :
+                            <SubjectSneakPeak
+                                updateSubjects={props.updateSubjects}
+                            />
+                        }
                     </div>
                 </div>
                 <div className="subjects-layout-deadline-box">
@@ -38,5 +46,12 @@ export default function SubjectsLayout(props: PropsForComponent) {
 
 interface PropsForComponent {
     subjects: SubjectData[]
+    sneakPeak?: SubjectData
     updateSubjects: () => void
 }
+
+const reduxSelect = (state: IReduxRootState) => ({
+    sneakPeak: state.app.sneakPeak
+})
+
+export default connect(reduxSelect)(SubjectsLayout)
