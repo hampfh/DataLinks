@@ -53,7 +53,6 @@ export default class MetaTagPopulator {
 
 	populateLandingPage = (req: express.Request, res: express.Response): void => {
 
-		console.log("#1 PARAMS", req.params)
 		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
 			
 			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
@@ -69,7 +68,6 @@ export default class MetaTagPopulator {
 
 	
 	populateProgram(req: express.Request, res: express.Response): void {
-		console.log("#2 PARAMS", req.params)
 		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
 			
 			const program = req.params.program
@@ -86,7 +84,6 @@ export default class MetaTagPopulator {
 	}
 
 	populateSubject = (req: express.Request, res: express.Response): void => {
-		console.log("#3 PARAMS", req.params)
 		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
 			
 			const program = req.params.program
