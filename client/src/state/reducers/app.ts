@@ -6,7 +6,6 @@ export interface IAppState {
 	version: string
 	lastVersion?: string
 	sneakPeak?: SubjectData
-	sneakPeakSelectionCount: number
 	contributor?: string
 	fingerprint?: string
 	flags: IFlagInterface
@@ -15,7 +14,6 @@ export interface IAppState {
 const defaultState = {
 	version: "",
 	sneakPeak: undefined,
-	sneakPeakSelectionCount: 0,
 	flags: {
 		editMode: false,
 		extendedView: false,
@@ -35,18 +33,9 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 			return newState
 		case 'SHOW_SNEAK_PEAK':
 			newState.sneakPeak = action.payload.subject
-			newState.sneakPeakSelectionCount = 1
 			return newState
 		case 'HIDE_SNEAK_PEAK':
 			newState.sneakPeak = undefined
-			newState.sneakPeakSelectionCount = 0
-			return newState
-		case 'SET_SNEAK_PEAK_SELECTION_COUNT':
-			newState.sneakPeakSelectionCount += action.payload.newCount
-			if (newState.sneakPeakSelectionCount <= 0) {
-				newState.sneakPeak = undefined
-				newState.sneakPeakSelectionCount = 0
-			}
 			return newState
 		case 'SET_CONTRIBUTOR':
 			newState.contributor = action.payload.name

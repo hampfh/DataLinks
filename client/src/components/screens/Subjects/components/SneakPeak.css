@@ -1,35 +1,43 @@
 @import url("../../../root.css");
-@import url("./Animation.css");
 
+.sneakpeak-box-wrapper {
 
-.SneakPeakContainer {
+	--sneakpeak-box-margin: 2rem;
+
+	margin: var(--sneakpeak-box-margin);
+
+	width: calc(100% - 2 * var(--sneakpeak-box-margin));
+	height: calc(100% - 2 * var(--sneakpeak-box-margin));
+
 	display: grid;
+	grid-template-columns: 1fr 2fr;
 }
 
-.SneakPeakWrapper {
-	justify-self: center;
-	align-self: flex-start;
-
-	animation: SneakPeakSummon;
-	animation-duration: 0.25s;
-	z-index: 10;
+.sneakpeak-box-about-container {
 }
 
-.ContentContainer {
-	padding: 0 15px;
-	width: 40rem;
-	background-color: var(--primary);
-	overflow-y: auto;
-
-	border-radius: 20px;
+.sneakpeak-box-code-title {
+	color: var(--primary);
+	font-size: 3.5rem;
+	margin: 0;
 }
 
-.ContentContainer::-webkit-scrollbar {
-	width: 0.5rem;
-	background-color: transparent;
+.sneakpeak-box-name-text {
+	margin: 0;
 }
 
-.ContentContainer::-webkit-scrollbar-thumb {
-	background-color: var(--complementary);
-	border-radius: 10px;
+.sneakpeak-box-description-text {
+	margin: 0;
+	height: max-content;
+}
+
+.sneakpeak-box-separator {
+	width: 6rem;
+	height: 5px;
+
+	background-color: var(--color-text);
+	margin: 0;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: none;
 }

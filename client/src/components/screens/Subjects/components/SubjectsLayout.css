@@ -1,3 +1,5 @@
+@import url("/src/components/root.css");
+
 .subjects-layout-container {
     display: flex;
     justify-content: center;
@@ -88,7 +90,7 @@
     justify-content: center;
     align-items: center;
 }
-.subjects-layout-box-container-course p {
+.empty-preview-box-title {
     margin: 0;
     font-style: italic;
     opacity: 0.4;
@@ -100,12 +102,12 @@
 }
 
 @media (max-width: 1300px) {
-    .subjects-layout-box-container-course p {
+    .empty-preview-box-title {
         font-size: 1.5rem;
     }
 }
 @media (max-width: 700px) {
-    .subjects-layout-box-container-course p {
+    .empty-preview-box-title {
         font-size: 1rem;
     }
 }

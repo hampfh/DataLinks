@@ -128,16 +128,6 @@ export const hideSneakPeak = () => {
 	}
 }
 
-export interface ISetSneakPeakSelectionCount { (count: number): void }
-export const setSneakPeakSelectionCount = (count: number) => {
-	return {
-		type: "SET_SNEAK_PEAK_SELECTION_COUNT",
-		payload: {
-			newCount: count
-		}
-	}
-}
-
 // Same as setContributor but also saves localstorage
 export interface IAddContributor { (name: string): void }
 export const addContributor = (name: string) => {

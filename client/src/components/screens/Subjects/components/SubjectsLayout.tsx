@@ -16,8 +16,9 @@ function SubjectsLayout(props: PropsForComponent) {
                     </div>
                     <div className="default-box-container subjects-layout-box-container subjects-layout-box-container-course">
                         {props.sneakPeak == null ?
-                            <p>Hover over a course to preview it here</p> :
+                            <p className="empty-preview-box-title">Hover over a course to preview it here</p> :
                             <SubjectSneakPeak
+                                sneakPeakSubject={props.sneakPeak}
                                 updateSubjects={props.updateSubjects}
                             />
                         }
@@ -35,7 +36,7 @@ function SubjectsLayout(props: PropsForComponent) {
                     </div>
                     <div className="default-box-container subjects-layout-box-container subjects-layout-box-container-courses">
                         <div className="subjects-layout-box-container-courses-container">
-                            {props.subjects.map(current => !current.archived && <SubjectItem subject={current} updateSubjects={props.updateSubjects} />)}
+                            {props.subjects.map(current => !current.archived && <SubjectItem key={current._id} subject={current} updateSubjects={props.updateSubjects} />)}
                         </div>
                     </div>
                 </div>
