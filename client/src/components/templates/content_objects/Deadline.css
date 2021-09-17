@@ -1,139 +1,47 @@
 @import "../../root.css";
-.deadlineContainer {
-    justify-self: center;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    margin: 0 1rem;
-    margin-bottom: 1rem;
-    width: 10rem;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
+@import url("https://fonts.googleapis.com/css2?family=Quantico&display=swap");
 
-.deadlineWrapper>.deadlineContainer {
-    height: 9rem;
-}
-
-.countdownText {
-    text-align: center;
-    color: white;
-    margin: 0.2rem 0;
-}
-
-.countdownText:nth-of-type(2) {
-    margin-top: 1rem;
-}
-
-.deadlineTitleText {
-    text-align: center;
-    color: white
-}
-
-.deadlineWrapper>.deadlineContainer>.deadlineTitleText {
-    overflow-x: hidden;
-    width: 10rem;
-    word-wrap: none;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.deadlineProgressBarContainer {
-    display: grid;
+.deadline-container {
     position: relative;
+
+    padding: 1rem;
+    min-width: 15rem;
 }
 
-.clickable:hover {
-    opacity: 0.7;
-    cursor: pointer;
+.deadline-content-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
 
-.deadLineProgressBar::-webkit-progress-bar,
-.deadLineProgressBar {
-    width: 10rem;
-    margin: 0 auto;
-    /* Reset the default appearance */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    border-radius: 10px;
-    background-color: var(--complementary);
-    -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.25);
-    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.25);
-    transition-duration: 0.25s;
-    transition-property: opacity background-color;
+.deadline-content-container-no-date {
+    grid-template-columns: 1fr;
 }
 
-.deadLineProgressBar::-webkit-progress-value,
-.deadLineProgressBar::-webkit-progress-inner-element {
-    background-color: var(--dark);
-    border-radius: 10px;
+.deadline-title-text {
+  text-align: center;
 }
 
-.deadLineProgressBar::-moz-progress-bar {
-    border-radius: 10px;
+.deadline-progress-bar {
 }
 
-.deadLineProgressBar:not(.complete)::-moz-progress-bar {
-    animation-name: deadlineFlash;
-    animation-duration: 7s;
-    animation-timing-function: ease-out;
-    animation-iteration-count: infinite;
-    background-color: var(--dark);
+.date-countdown-container {
+    height: min-content;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
 }
 
-.complete,
-.complete::-webkit-progress-bar,
-.complete::-webkit-progress-value,
-.complete::-webkit-progress-inner-element {
-    background-color: #5f9a32;
+.date-countdown-container p {
+    margin: 0;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+
+    text-align: end;
 }
 
-.complete::-moz-progress-bar {
-    background-color: #5f9a32;
-}
+.progress-wheel-container {
+    align-self: center;
 
-.transparent {
-    color: transparent;
-}
-
-.accent {
-    color: var(--primary);
-}
-
-@keyframes deadlineFlash {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 1;
-    }
-    55% {
-        opacity: 0.25;
-    }
-    65% {
-        opacity: 1;
-    }
-}
-
-.deadline-text-content-container {
-    margin-top: 1rem;
-
-    /* Prevent user select in this div */
-    -webkit-user-select: none; /* Safari */        
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-}
-
-.deadline-text-content-container:hover {
-    background-color: var(--primary);
-    border-radius: 5px;
-    cursor: pointer;    
-}
-
-.deadline-text-content-container:hover p {
-    color: white;
+    width: 8rem;
+    height: 8rem;
 }

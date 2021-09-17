@@ -13,9 +13,9 @@ import {
 } from "state/actions/deadlines"
 import { IReduxRootState } from "state/reducers"
 import { IDeadlineState } from "state/reducers/deadlines"
-import Checkmark from 'components/screens/Subject/components/Checkmark'
-import moment from 'moment'
 import { ISetReplaceCountdownWithDateFlag, setReplaceCountdownWithDateFlag } from 'state/actions/app'
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 
@@ -132,55 +132,55 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 						</div>
 					</div> :
 					// Non-edit mode 
-					<div className="deadlineContainer">
-						{this.props.displayText ?
-							<p className={`deadlineTitleText ${this.props.accent ? "accent" : ""}`}>{this.props.displayText}</p>
-							: null}
-						<div className={`deadlineProgressBarContainer ${!!!this.props.editMode ? "clickable" : ""}`}>
-							<progress title="Mark this deadline as done"
-								className={`deadLineProgressBar ${this.state.complete ? "complete" : ""}`}
-								value={deadlineReached || this.state.complete ? 1 : this.state.bar.value.toString()}
-								max={deadlineReached || this.state.complete ? 1 : this.state.bar.max.toString()}
-								onClick={() => this._toggleDone(!!!this.state.complete)}
-							/>
-							{this.state.complete ?
-								<Checkmark hash={this.state.hash} unCompleteThisDeadline={() => this._toggleDone(false)} /> : null}
-						</div>
-						{deadlineReached || this.state.complete ?
-							<>
-								<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{this.state.complete ? "Task done!" : "Deadline reached!"}</p>
-								<p className="countdownText transparent">-</p>
-							</> :
-							<div title="Toggle display type" className="deadline-text-content-container" onClick={this._toggleDeadlineContent}>
-								{this.props.replaceCountdownWithDate ? 
-									<> 
-										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
-											{moment(this.props.deadline).format("DD/MM/YYYY")}
-										</p>
-										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
-											{moment(this.props.deadline).format("HH:mm")}
-										</p>
-									</> :
-									<> 
-										{!this.firstRowIsEmpty() && 
-											<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>{`
-													${this.state.countdown.months ? this.state.countdown.months + " Month(s)" : ""}
-													${this.state.countdown.weeks ? this.state.countdown.weeks + " Week(s) " : ""}
-													${this.state.countdown.days ? this.state.countdown.days + " Day(s) " : ""}
-												`}
-											</p>
-										}
-
-										<p className={`countdownText ${this.props.accent ? "accent" : ""}`}>
-											{`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`}
-										</p>
-										{this.firstRowIsEmpty() &&
-											<p className="countdownText transparent">-</p>
-										}
-									</>
-								}
-							</div>
+					<div className="default-nested-box-container deadline-container">
+						{this.props.displayText &&
+							<p className="deadline-title-text">{this.props.displayText}</p>
 						}
+						<div className={`deadline-content-container ${this.firstRowIsEmpty() ? "deadline-content-container-no-date" : ""}`}>
+							{!this.firstRowIsEmpty() &&
+								<div className="date-countdown-container">
+									{this.state.countdown.months != null && this.state.countdown.months > 0 &&
+										<p>{`${this.state.countdown.months} Month${this.state.countdown.months > 1 ? "s" : ""}`}</p>
+									}
+									{this.state.countdown.weeks != null && this.state.countdown.weeks > 0 &&
+										<p>{`${this.state.countdown.weeks} Week${this.state.countdown.weeks > 1 ? "s" : ""}`}</p>
+									}
+									{this.state.countdown.days != null && this.state.countdown.days > 0 &&
+										<p>{`${this.state.countdown.days} Day${this.state.countdown.days > 1 ? "s" : ""}`}</p>
+									}
+								</div>
+							}
+							<div className="progress-wheel-container" style={{
+								justifySelf: this.firstRowIsEmpty() ? "center" : "start"
+							}}>
+								<CircularProgressbar 
+									value={this.state.bar.value}
+									maxValue={this.state.bar.max}
+									text={
+										deadlineReached ?
+										"Reached" :
+										`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`
+									} 
+									styles={{
+										background: {
+											backgroundColor: "transparent",
+											fill: "transparent"
+										},
+										text: {
+											fontSize: "0.7rem",
+											fontFamily: "'Quantico', sans-serif",
+											fill: "#E83D84"
+										},
+										path: {
+											stroke: "#E83D84"
+										},
+										trail: {
+											stroke: "transparent"
+										}
+									}}
+								/>
+							</div>
+						</div>
 					</div>
 				}
 			</>
