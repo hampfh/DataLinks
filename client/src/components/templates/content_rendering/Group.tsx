@@ -133,7 +133,7 @@ function Group(props: PropsForComponent) {
                 null
             }
 
-            <div className={`GroupItemContainer${props.group.column ? " Column" : ""}`}>
+            <div className={`group-item-container ${props.group.column ? "Column" : ""}`}>
                 { // Generate all elements in group
                     content.map((contentElement) => {
                         // Dummy element
@@ -147,6 +147,7 @@ function Group(props: PropsForComponent) {
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
                             updateSubjects={props.updateSubjects}
                             resetLocalContent={resetContent}
+                            ignoreGroups={props.ignoreGroups}
 
                             setDragging={setDragging}
                             cursor={cursor}
@@ -224,6 +225,7 @@ function Group(props: PropsForComponent) {
 }
 
 interface PropsForComponent {
+    ignoreGroups?: boolean
     group: Group,
     app: IAppState,
     updateSubjects: () => void

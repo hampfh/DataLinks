@@ -1,3 +1,10 @@
+.group-item-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
 .GroupContainer {
 	display: block;
     padding: 0.25rem;

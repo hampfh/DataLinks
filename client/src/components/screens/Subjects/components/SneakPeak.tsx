@@ -17,10 +17,11 @@ export default function SneakPeak(props: PropsForComponent) {
 				<hr className="sneakpeak-box-separator" />
 				<p className="sneakpeak-box-description-text">{props.sneakPeakSubject.description}</p>
 			</div>
-			{/* <RenderData 
+			<RenderData 
+				ignoreGroups
 				updateSubjects={props.updateSubjects}
 				group={(props.sneakPeakSubject as SubjectData).group}
-			/> */}
+			/>
 		</div>
 	)
 }
