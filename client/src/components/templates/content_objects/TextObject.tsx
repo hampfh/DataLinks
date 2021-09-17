@@ -1,10 +1,11 @@
 import React from 'react'
+import "./TextObject.css"
 
 export default function TextObject(props: PropsForComponent) {
     return (
-        <div className="ContentObjectContentWrapper">
+        <>
             {props.editMode ? 
-                <div className="ButtonWrapper ButtonWrapperEditMode">
+                <div className="text-object-wrapper ButtonWrapperEditMode">
                     <div className="editModeField">
                         <label htmlFor="fieldOne" className="editLabel">Title</label>
                         <input
@@ -26,16 +27,17 @@ export default function TextObject(props: PropsForComponent) {
                         />
                     </div>
                 </div> :
-                <div className="textObjectWrapper">
+
+                <div className="text-object-wrapper default-nested-box-container">
                     {props.title === undefined ? null :
-                        <h5 className="textObjectTitle">{props.title}</h5>
+                        <h5 className="text-object-title">{props.title}</h5>
                     }
                     {props.text === undefined ? null :
-                        <p className="textObject">{props.text}</p>
+                        <p className="text-object-text">{props.text}</p>
                     }
                 </div>
             }
-        </div>
+        </>
     )
 }
 

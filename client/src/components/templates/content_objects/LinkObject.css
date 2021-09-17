@@ -1,0 +1,32 @@
+.link-button-wrapper {
+    display: inline-block;
+    min-width: 2rem;
+
+    margin: 1rem;
+}
+
+.link-button-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.link-button {
+
+    font-family: 'Roboto', sans-serif;
+
+    background-color: var(--color-btn-bg);
+    border-color: var(--color-btn-border);
+    border-width: 2px;
+    border-style: solid;
+    color: var(--color-btn-text);
+
+    border-radius: 5px;
+
+    margin: 0;
+    padding: 0.5rem 1.5rem;
+}
+
+.link-button:hover {
+    background-color: var(--color-btn-hover-bg);
+    border-color: var(--color-btn-hover-border);
+}

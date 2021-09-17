@@ -1,0 +1,27 @@
+.text-object-wrapper {
+    margin: 1rem;
+    padding: 1rem;
+    min-width: 7rem;
+
+    max-width: 25rem;
+}
+
+.text-object-title {
+
+    text-align: center;
+
+    margin: 0;
+    margin-bottom: 0.5rem;
+
+    font-family: "Roboto", sans-serif;
+    font-size: 1.1rem;
+
+    color: var(--color-text);
+}
+
+.text-object-text {
+    text-align: center;
+    margin: 0;
+
+    overflow-wrap: break-word;
+}

@@ -1,10 +1,11 @@
 import React from 'react'
+import "./LinkObject.css"
 
 export default function LinkObject(props: PropsForComponent) {
     return (
-        <div className="ContentObjectContentWrapper">
+        <>
             {props.editMode ?
-                <div className="ButtonWrapper ButtonWrapperEditMode">
+                <div className="link-button-wrapper ButtonWrapperEditMode">
                     <div className="editModeField">
                         <label htmlFor="fieldOne" className="editLabel">Display text</label>
                         <input
@@ -26,13 +27,16 @@ export default function LinkObject(props: PropsForComponent) {
                         />
                     </div>
                 </div> :
-                <div className="ButtonWrapper">
-                    <a href={props.link} className="Button">
-                        {props.displayText}
+                
+                <div className="link-button-wrapper">
+                    <a className="link-button-link" href={props.link}>
+                        <p className="link-button">
+                            {props.displayText}
+                        </p>
                     </a>
                 </div>
             }
-        </div>
+        </>
     )
 }
 

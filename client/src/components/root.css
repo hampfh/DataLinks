@@ -28,6 +28,7 @@
 	--color-header-bg: var(--color-gray-1);
 	
 	--color-btn-bg: var(--color-gray-3);
+	--color-btn-hover-bg: var(--color-gray-4);
 	--color-btn-border: var(--color-gray-4);
 	--color-btn-hover-border: var(--color-gray-6);
 	--color-btn-text: var(--color-gray-8);
@@ -72,6 +73,10 @@ p {
 .default-box-container::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	background-color: var(--color-canvas-nested-layer);
+}
+.default-box-container::-webkit-scrollbar-button {
+	display: none;
+	background-color: transparent;
 }
 
 .default-nested-box-container {
