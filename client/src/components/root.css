@@ -63,6 +63,15 @@ p {
 	border-color: var(--color-border-default);
 	border-width: var(--default-border-width);
 	border-style: solid;
+	scrollbar-width: thin;
+}
+
+.default-box-container::-webkit-scrollbar {
+	background-color: transparent;
+}
+.default-box-container::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: var(--color-canvas-nested-layer);
 }
 
 .default-nested-box-container {

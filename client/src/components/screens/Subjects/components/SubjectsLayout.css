@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
 
+    --preview-box-height: 20rem;
     --box-container-text-height: 2.5rem;
     --box-container-text-underline-height: 4px;
     --margin-between-into-and-box: 1rem;
@@ -27,6 +28,7 @@
         "courses courses courses deadline";
 
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: var(--preview-box-height) 1fr;
 
     width: 80vw;
     max-height: calc(100vh - var(--default-header-height) - 2rem);
@@ -86,10 +88,19 @@
 }
 
 .subjects-layout-box-container-course {
+    overflow-y: auto;
+}
+
+.empty-preview-box-title-container {
+
+    width: 100%;
+    height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .empty-preview-box-title {
     margin: 0;
     font-style: italic;

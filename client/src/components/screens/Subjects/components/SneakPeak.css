@@ -7,13 +7,9 @@
 	margin: var(--sneakpeak-box-margin);
 
 	width: calc(100% - 2 * var(--sneakpeak-box-margin));
-	height: calc(100% - 2 * var(--sneakpeak-box-margin));
 
 	display: grid;
 	grid-template-columns: 1fr 2fr;
-}
-
-.sneakpeak-box-about-container {
 }
 
 .sneakpeak-box-code-title {
@@ -28,7 +24,6 @@
 
 .sneakpeak-box-description-text {
 	margin: 0;
-	height: max-content;
 }
 
 .sneakpeak-box-separator {
