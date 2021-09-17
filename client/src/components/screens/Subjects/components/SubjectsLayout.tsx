@@ -12,7 +12,8 @@ function SubjectsLayout(props: PropsForComponent) {
             <div className="subjects-layout-grid-container">
                 <div className="subjects-layout-preview-box">
                     <div className="subjects-layout-box-container-intro">
-                        <h3>Course preview</h3>
+                        <h3 className="subjects-layout-box-container-preview-title">Course preview</h3>
+                        <h2 className="subject-code-sneakpeak-mobile-title">{props.sneakPeak?.code}</h2>
                     </div>
                     <div className="default-box-container subjects-layout-box-container subjects-layout-box-container-course">
                         {props.sneakPeak == null ?

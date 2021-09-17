@@ -63,7 +63,9 @@
 }
 
 .subjects-layout-box-container-intro {
-       
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     height: var(--layout-box-container-intro-height);
 }
 
@@ -85,6 +87,18 @@
     background-color: var(--primary);
     width: 4rem;
     height: var(--box-container-text-underline-height);
+}
+
+@media (min-width: 950px) {
+    .subject-code-sneakpeak-mobile-title {
+        display: none;
+    }
+}
+
+@media (max-width: 460px) {
+    .subjects-layout-box-container-preview-title {
+        display: none;
+    }
 }
 
 .subjects-layout-box-container-course {

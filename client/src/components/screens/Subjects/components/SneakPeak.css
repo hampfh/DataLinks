@@ -13,6 +13,15 @@
 	grid-template-columns: 1fr 2fr;
 }
 
+@media (max-width: 950px) {
+	.sneakpeak-box-wrapper {
+		grid-template-columns: 1fr;
+	}
+	.sneakpeak-box-about-container {
+		display: none;
+	}
+}
+
 .sneakpeak-box-code-title {
 	color: var(--primary);
 	font-size: 3.5rem;
