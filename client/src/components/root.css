@@ -74,6 +74,7 @@ p {
 	border-radius: 10px;
 	background-color: var(--color-canvas-nested-layer);
 }
+.default-box-container::-webkit-scrollbar-corner,
 .default-box-container::-webkit-scrollbar-button {
 	display: none;
 	background-color: transparent;
