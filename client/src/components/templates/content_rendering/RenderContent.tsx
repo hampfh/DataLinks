@@ -20,23 +20,22 @@ function RenderContent(props: PropsForComponent) {
 
     return (
         <div className={`RenderContentContainer ${props.content.group ? "Group" : ""}`}>
-            {props.app.flags.editMode ?
+            {props.app.flags.editMode &&
                 <Draggable
                     cursor={props.cursor}
                     setInitialCursor={setInitialCursorObject}
                     setDragging={props.setDragging}
-                /> : null
+                />
             }
             {
                 props.content.group ?
-                    !props.ignoreGroups ?
+                    !props.ignoreGroups &&
                         <Group
                             key={props.content._id}
                             group={props.content.group}
                             updateSubjects={props.updateSubjects}
-                        /> :
-                        null :
-                    props.content.link || props.content.text || props.content.deadline ?
+                        />
+                    : (props.content.link || props.content.text || props.content.deadline) &&
                         <ContentObject
                             key={props.content._id}
                             type={
@@ -56,8 +55,7 @@ function RenderContent(props: PropsForComponent) {
                                         props.content.deadline!
                             }
                             updateSubjects={props.updateSubjects}
-                        /> :
-                        null
+                        />
             }
         </div>
     )
