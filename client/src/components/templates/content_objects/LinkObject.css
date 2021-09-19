@@ -24,9 +24,19 @@
 
     margin: 0;
     padding: 0.5rem 1.5rem;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
 }
 
 .link-button:hover {
     background-color: var(--color-btn-hover-bg);
     border-color: var(--color-btn-hover-border);
+}
+
+/* Mobile layout */
+@media (max-width: 550px) {
+    .link-button {
+        font-size: 0.8rem;
+    }
 }

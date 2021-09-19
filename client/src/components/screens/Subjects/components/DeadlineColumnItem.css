@@ -10,6 +10,15 @@
     transition-duration: 0.5s;
 }
 
+/* Mobile layout */
+@media (max-width: 550px) {
+    .deadline-column-item-container {
+        margin-top: 2rem;
+        grid-template-columns: 1fr;
+    }
+    
+}
+
 .deadline-column-item-content-container {
     display: flex;
     justify-content: center;
@@ -101,4 +110,12 @@
     font-size: 0.9rem;
     margin: 0;
     text-align: center;
+}
+
+/* Mobile layout */
+@media (max-width: 550px) {
+    .deadline-column-item-button {
+        margin-top: 1rem;
+    }
+    
 }

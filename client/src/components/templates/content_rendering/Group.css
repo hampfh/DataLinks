@@ -35,3 +35,11 @@
 	margin-right: 0 !important;
 	border: none !important;
 }
+
+/* Mobile layout */
+@media (max-width: 550px) {
+    .group-item-container {
+        flex-direction: column;
+		flex-wrap: nowrap;
+    }
+}

@@ -28,14 +28,6 @@ function SubjectsLayout(props: PropsForComponent) {
                         }
                     </div>
                 </div>
-                <div className="subjects-layout-deadline-box">
-                    <div className="subjects-layout-box-container-intro">
-                        <h3>Deadlines</h3>
-                    </div>
-                    <div className="default-box-container subjects-layout-box-container">
-                        <DeadlineColumn subjects={props.subjects} />
-                    </div>
-                </div>
                 <div className="subjects-layout-courses-box">
                     <div className="subjects-layout-box-container-intro">
                         <h3>Courses</h3>
@@ -44,6 +36,14 @@ function SubjectsLayout(props: PropsForComponent) {
                         <div className="subjects-layout-box-container-courses-container">
                             {props.subjects.map(current => !current.archived && <SubjectItem key={current._id} subject={current} updateSubjects={props.updateSubjects} />)}
                         </div>
+                    </div>
+                </div>
+                <div className="subjects-layout-deadline-box">
+                    <div className="subjects-layout-box-container-intro">
+                        <h3>Deadlines</h3>
+                    </div>
+                    <div className="default-box-container subjects-layout-box-container">
+                        <DeadlineColumn subjects={props.subjects} />
                     </div>
                 </div>
             </div>
