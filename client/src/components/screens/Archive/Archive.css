@@ -111,7 +111,7 @@
 }
 
 .archivedItem:hover p {
-    color: white;
+    color: var(--color-text);
 }
 
 .archivedItemCode {
