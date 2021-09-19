@@ -102,33 +102,32 @@ function Contributors(props: PropsForComponent) {
 
 	const [ first, second, third, ...otherContributors ] = contributors
 
-	if (!props.content.hasLoaded || !hasLoaded)
-		return null
-
 	return (
 		<>
 			{/* <SocketManager subscribeTo="contribution" callback={_onContribution} /> */}
 			<div>
 				<DefaultHeader menuSelect={1} pagePresenter="Contributors" />
-				<div className="contributors-content-container">
-					<h1 className="contributors-title">Top contributors</h1>
-					<div className="contributors-top-contributors-container">
-						<div className="contributors-top-contributor-container">
-							<TopContributor place={1} contributor={first} />
+				{props.content.hasLoaded && hasLoaded &&
+					<div className="contributors-content-container">
+						<h1 className="contributors-title">Top contributors</h1>
+						<div className="contributors-top-contributors-container">
+							<div className="contributors-top-contributor-container">
+								<TopContributor place={1} contributor={first} />
+							</div>
+							<div className="contributors-second-contributor-container">
+								<TopContributor place={2} contributor={second} />
+							</div>
+							<div className="contributors-thrid-contributor-container">
+								<TopContributor place={3} contributor={third} />
+							</div>
 						</div>
-						<div className="contributors-second-contributor-container">
-							<TopContributor place={2} contributor={second} />
-						</div>
-						<div className="contributors-thrid-contributor-container">
-							<TopContributor place={3} contributor={third} />
+						<div className="contributors-rest-container">
+							{
+								otherContributors.filter(current => current.contributionCount > 0).map((current, index) => <Contributor key={current.identifier[0]} place={index + 4} contributor={current} />)
+							}
 						</div>
 					</div>
-					<div className="contributors-rest-container">
-						{
-							otherContributors.filter(current => current.contributionCount > 0).map((current, index) => <Contributor key={current.identifier[0]} place={index + 4} contributor={current} />)
-						}
-					</div>
-				</div>
+				}
 			</div>
 			{/* <section className="contributorsWrapper">
 				<div className="contributorsContainer">
