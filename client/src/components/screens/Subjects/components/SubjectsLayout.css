@@ -175,6 +175,8 @@
     min-width: 420px;
     width: calc(100% - 2 * var(--default-border-width));
     height: calc(100% - 2 * var(--default-border-width));
+
+    margin-bottom: 5rem;
 }
 .subjects-layout-courses-box {
     grid-area: courses;
@@ -187,6 +189,15 @@
     min-height: 12rem;
 
     overflow-y: auto;
+}
+
+@media (max-width: 1200px) {
+    .subjects-layout-deadline-box .subjects-layout-box-container {
+        height: min-content;
+    }
+    .deadline-column-item-wrapper {
+        margin-bottom: 2rem;
+    }
 }
 
 /* Mobile layout */

@@ -31,7 +31,7 @@ function DeadlineColumn(props: PropsForComponent) {
     }
 
     return (
-        <div>
+        <div className="deadline-column-item-wrapper">
             {deadlines.filter(filterCompletedDeadlines).reduce(selectDeadlineField, []).map(current => 
                 <DeadlineColumnItem key={current._id} completeDeadline={removeDeadline} deadlineObject={current} />
             )}
