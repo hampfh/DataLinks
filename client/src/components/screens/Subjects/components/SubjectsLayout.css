@@ -49,7 +49,7 @@
     }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1100px), (max-height: 800px) {
     .subjects-layout-grid-container {
         grid-template-areas: 
             "preview"
@@ -166,4 +166,6 @@
 .subjects-layout-box-container {
     height: calc(100% - 2 * var(--default-border-width) - var(--box-container-text-height) - var(--box-container-text-underline-height) - var(--margin-between-into-and-box));
     min-height: 12rem;
+
+    overflow-y: auto;
 }
