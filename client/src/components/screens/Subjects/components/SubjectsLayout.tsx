@@ -5,6 +5,7 @@ import SubjectItem from './SubjectItem'
 import SubjectSneakPeak from "components/screens/Subjects/components/SneakPeak"
 import { connect } from "react-redux"
 import { IReduxRootState } from 'state/reducers'
+import DeadlineColumn from './DeadlineColumn'
 
 function SubjectsLayout(props: PropsForComponent) {
     return (
@@ -31,7 +32,9 @@ function SubjectsLayout(props: PropsForComponent) {
                     <div className="subjects-layout-box-container-intro">
                         <h3>Deadlines</h3>
                     </div>
-                    <div className="default-box-container subjects-layout-box-container"></div>
+                    <div className="default-box-container subjects-layout-box-container">
+                        <DeadlineColumn subjects={props.subjects} />
+                    </div>
                 </div>
                 <div className="subjects-layout-courses-box">
                     <div className="subjects-layout-box-container-intro">

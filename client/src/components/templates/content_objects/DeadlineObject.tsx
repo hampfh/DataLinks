@@ -16,6 +16,7 @@ import { IDeadlineState } from "state/reducers/deadlines"
 import { ISetReplaceCountdownWithDateFlag, setReplaceCountdownWithDateFlag } from 'state/actions/app'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { appendsIfPlural } from 'functions/string_formatting'
 
 class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
 
@@ -140,13 +141,13 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 							{!this.firstRowIsEmpty() &&
 								<div className="date-countdown-container">
 									{this.state.countdown.months != null && this.state.countdown.months > 0 &&
-										<p>{`${this.state.countdown.months} Month${this.state.countdown.months > 1 ? "s" : ""}`}</p>
+										<p>{appendsIfPlural("Month", this.state.countdown.months)}</p>
 									}
 									{this.state.countdown.weeks != null && this.state.countdown.weeks > 0 &&
-										<p>{`${this.state.countdown.weeks} Week${this.state.countdown.weeks > 1 ? "s" : ""}`}</p>
+										<p>{appendsIfPlural("Week", this.state.countdown.weeks)}</p>
 									}
 									{this.state.countdown.days != null && this.state.countdown.days > 0 &&
-										<p>{`${this.state.countdown.days} Day${this.state.countdown.days > 1 ? "s" : ""}`}</p>
+										<p>{appendsIfPlural("Day", this.state.countdown.days)}</p>
 									}
 								</div>
 							}

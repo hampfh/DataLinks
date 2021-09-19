@@ -14,7 +14,7 @@
     transition-duration: var(--default-transition-duration);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .subjects-layout-container {
         margin-top: 2rem;
     }
@@ -49,7 +49,7 @@
     }
 }
 
-@media (max-width: 1100px), (max-height: 800px) {
+@media (max-width: 1200px), (max-height: 800px) {
     .subjects-layout-grid-container {
         grid-template-areas: 
             "preview"
@@ -141,7 +141,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: stretch;
 
     margin: 1rem;
@@ -154,6 +154,8 @@
 }
 .subjects-layout-deadline-box {
     grid-area: deadline;
+
+    min-width: 420px;
     width: calc(100% - 2 * var(--default-border-width));
     height: calc(100% - 2 * var(--default-border-width));
 }
