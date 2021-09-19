@@ -38,20 +38,26 @@ class Contributor extends Component<PropsForComponent> {
 						}
 					</p>
 					<p className="score">{this.props.contributor.contributionCount}</p>
-					<p className="date">{this.displayDate()}</p>
+					<p title="Last contribution" className="date">{this.displayDate()}</p>
 				</div>
 				<div className="editSummeryBar">
-					{createsWidth > 0 ? 
-						<div className="creates segment" style={{ width: createsWidth }} /> : 
-						null
+					{createsWidth > 0 &&
+						<div 
+							title={`${this.props.contributor.contributions.operations.creates} creates`}
+							className="creates segment" style={{ width: createsWidth }} 
+						/>
 					}
-					{updatesWidth > 0 ? 
-						<div className="updates segment" style={{ width: updatesWidth }} /> :
-						null
+					{updatesWidth > 0 &&
+						<div
+							title={`${this.props.contributor.contributions.operations.updates} updates`} 
+							className="updates segment" style={{ width: updatesWidth }} 
+						/>
 					}
-					{deletesWidth > 0 ?
-						<div className="deletes segment" style={{ width: deletesWidth }} /> :
-						null
+					{deletesWidth > 0 &&
+						<div
+							title={`${this.props.contributor.contributions.operations.deletes} deletes`} 
+							className="deletes segment" style={{ width: deletesWidth }} 
+						/>
 					}
 				</div>
 			</div>

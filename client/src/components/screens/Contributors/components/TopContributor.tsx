@@ -14,7 +14,13 @@ export default function TopContributor(props: PropsForComponent) {
     return (
         <div className="top-contributor-container">
             <h4 className="top-contributor-name">#{props.place} {props.contributor.name ?? "Anonymous"}</h4>
-            <p className="top-contributor-updated-at-text">{moment(props.contributor.updatedAt).diff(moment(), "days") > 365 ? moment(props.contributor.updatedAt).format("HH:mm D/M/YYYY") : moment(props.contributor.updatedAt).format("HH:mm D/M")}</p>
+            <p 
+                title="Last contribution" 
+                className="top-contributor-updated-at-text">
+                {
+                    moment(props.contributor.updatedAt).diff(moment(), "days") > 365 ? moment(props.contributor.updatedAt).format("HH:mm D/M/YYYY") : moment(props.contributor.updatedAt).format("HH:mm D/M")
+                }
+            </p>
             <div className="editSummeryBar">
                 {createsWidth > 0 &&
                     <div 
