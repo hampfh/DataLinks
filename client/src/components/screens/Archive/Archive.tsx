@@ -4,6 +4,7 @@ import { SubjectData } from '../Subjects/Subjects'
 import "./Archive.css"
 import logoutIcon from "assets/icons/close.svg"
 import { DataLoader } from 'functions/DataLoader'
+import DefaultHeader from 'components/templates/headers/DefaultHeader'
 
 export default function Archive(props: PropsForComponent) {
     const [search, setSearch] = useState<string>()
@@ -38,39 +39,35 @@ export default function Archive(props: PropsForComponent) {
     }
 
     return (
-        <div className="pageWrapper">
-            <div className="archiveContainer">
-                <div className="exitButtonContainer">
-                    <Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}`}>
-                        <div className="archiveLogoutIconBackground">
-                            <img className="archiveLogoutIcon" alt="Exit view" src={logoutIcon} />
-                        </div>
-                    </Link>
-                </div>
-                <h1>Course archive</h1>
-                <h3>Here are all completed courses for {DataLoader.getActiveProgram()?.name ?? "the data program"}</h3>
-                <div>
-                    <input className="searchInput" placeholder="Search course code" onChange={onSearchChange}/>
-                </div>
-                <div className={"courseList"}>
-                    {props.subjects.map(current => {
-                        if (!matchesSearch(current) || !current.archived) {
-                            return null
-                        }
-                        return (
-                            <div key={current.code}>
-                                <Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${current.code}`} className="archivedLink">
-                                    <div className="archivedItem">
-                                        <p className="archivedItemCode">{current.code}</p>
-                                        <p className="archivedItemName">{current.name}</p>
-                                    </div>
-                                </Link>
-                            </div>
-                        )
-                    })}
+        <>
+            <DefaultHeader menuSelect={2} pagePresenter="Archives" />
+            <div className="pageWrapper">
+                <div className="archiveContainer">
+                    <h1>Course archive</h1>
+                    <h3>Here are all completed courses for {DataLoader.getActiveProgram()?.name ?? "the data program"}</h3>
+                    <div>
+                        <input className="searchInput" placeholder="Search course code" onChange={onSearchChange}/>
+                    </div>
+                    <div className={"courseList"}>
+                        {props.subjects.map(current => {
+                            if (!matchesSearch(current) || !current.archived) {
+                                return null
+                            }
+                            return (
+                                <div key={current.code}>
+                                    <Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${current.code}`} className="archivedLink">
+                                        <div className="archivedItem">
+                                            <p className="archivedItemCode">{current.code}</p>
+                                            <p className="archivedItemName">{current.name}</p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
