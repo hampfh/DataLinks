@@ -154,7 +154,7 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 								justifySelf: this.firstRowIsEmpty() ? "center" : "start"
 							}}>
 								<CircularProgressbar 
-									value={this.state.bar.value}
+									value={this.state.bar.max - this.state.bar.value}
 									maxValue={this.state.bar.max}
 									text={
 										deadlineReached ?
