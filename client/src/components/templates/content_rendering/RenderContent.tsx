@@ -29,13 +29,13 @@ function RenderContent(props: PropsForComponent) {
             }
             {
                 props.content.group ?
-                    !props.ignoreGroups &&
-                        <Group
-                            key={props.content._id}
-                            group={props.content.group}
-                            updateSubjects={props.updateSubjects}
-                        />
-                    : (props.content.link || props.content.text || props.content.deadline) &&
+                    <Group
+                        key={props.content._id}
+                        group={props.content.group}
+                        updateSubjects={props.updateSubjects}
+                        contentFilter={props.contentFilter}
+                    /> : 
+                    (props.content.link || props.content.text || props.content.deadline) &&
                         <ContentObject
                             key={props.content._id}
                             type={
@@ -62,7 +62,8 @@ function RenderContent(props: PropsForComponent) {
 }
 
 interface PropsForComponent {
-    ignoreGroups?: boolean
+    contentFilter?: (value: ContentObject, index: number, array: ContentObject[]) => boolean
+
     content: ContentObject,
     parentGroup: string,
     depth?: number,

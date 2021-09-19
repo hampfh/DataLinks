@@ -116,6 +116,12 @@ function Group(props: PropsForComponent) {
         }
     }
 
+    function propFilter(value: ContentObject, index: number, array: ContentObject[]) {
+        if (props.contentFilter)
+            return props.contentFilter(value, index, array)
+        return true
+    }
+
     return (
         <div
             className={`GroupContainer${props.group.column ? " Column" : ""}
@@ -135,7 +141,7 @@ function Group(props: PropsForComponent) {
 
             <div className={`group-item-container ${props.group.column ? "Column" : ""}`}>
                 { // Generate all elements in group
-                    content.map((contentElement) => {
+                    content.filter(propFilter).map((contentElement) => {
                         // Dummy element
                         if (contentElement._id.toString().length <= 0)
                             return <Dummy key={uuid()} />
@@ -147,7 +153,6 @@ function Group(props: PropsForComponent) {
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
                             updateSubjects={props.updateSubjects}
                             resetLocalContent={resetContent}
-                            ignoreGroups={props.ignoreGroups}
 
                             setDragging={setDragging}
                             cursor={cursor}
@@ -210,7 +215,7 @@ function Group(props: PropsForComponent) {
                 }
             </div>
             { // Control panel for group
-                props.app.flags.editMode ? 
+                props.app.flags.editMode && 
                     <GroupButtonPanel 
                         group={props.group}
                         newGroup={newGroup}
@@ -218,13 +223,14 @@ function Group(props: PropsForComponent) {
                         setNewGroup={setNewGroup}
                         setNewElement={setNewElement}
                         fingerprint={props.app.fingerprint!}
-                    /> : null
+                    />
             }
         </div>
     )
 }
 
 interface PropsForComponent {
+    contentFilter?: (value: ContentObject, index: number, array: ContentObject[]) => boolean
     ignoreGroups?: boolean
     group: Group,
     app: IAppState,

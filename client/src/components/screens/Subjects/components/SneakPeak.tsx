@@ -9,6 +9,10 @@ export default function SneakPeak(props: PropsForComponent) {
 		return null;
 	}
 
+	function filterAllGroupsAndDeadlines(value: ContentObject): boolean {
+		return value.group == null && value.deadline == null
+	}
+
 	return (
 		<div className="sneakpeak-box-wrapper">
 			<div className="sneakpeak-box-about-container">
@@ -21,6 +25,7 @@ export default function SneakPeak(props: PropsForComponent) {
 				ignoreGroups
 				updateSubjects={props.updateSubjects}
 				group={(props.sneakPeakSubject as SubjectData).group}
+				contentFilter={filterAllGroupsAndDeadlines}
 			/>
 		</div>
 	)

@@ -47,6 +47,7 @@ function RenderData(props: PropsForComponent) {
 				group={props.group}
 				ignoreGroups={props.ignoreGroups}
 				updateSubjects={fetchUpdatedSubjects}
+				contentFilter={props.contentFilter}
 			/>
 			{!props.ignoreGroups &&
 				<GroupForm 
@@ -67,6 +68,8 @@ function RenderData(props: PropsForComponent) {
 
 interface PropsForComponent {
 	ignoreGroups?: boolean
+	contentFilter?: (value: ContentObject, index: number, array: ContentObject[]) => boolean
+	
 	app: IAppState
 	group: Group
 	local: ILocalState
