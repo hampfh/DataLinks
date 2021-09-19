@@ -1,0 +1,29 @@
+.top-contributor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-contributor-name {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.top-contributor-updated-at-text {
+    font-size: 1.2rem;
+    margin: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.top-contributor-contribution-count-text {
+    font-size: 2rem;
+    margin: 0;
+    margin-top: 0.5rem;
+}
+
+.top-contributor-container .editSummeryBar .creates,
+.top-contributor-container .editSummeryBar .updates,
+.top-contributor-container .editSummeryBar .deletes {
+    height: 1rem;
+}

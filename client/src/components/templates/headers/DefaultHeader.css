@@ -9,6 +9,11 @@
     align-items: center;
 }
 
+.default-header-page-presenter-container {
+    grid-area: HeaderPagePresenter;
+    width: 15rem;
+}
+
 @media (max-width: 700px) {
     .default-header-container {
         display: grid;
@@ -28,6 +33,12 @@
 .default-header-version-container {
     grid-area: Version;
     height: 100%;
+}
+
+@media(min-width: 850px) {
+    .default-header-version-container {
+        min-width: 15rem;
+    }
 }
 
 .default-header-version-number {

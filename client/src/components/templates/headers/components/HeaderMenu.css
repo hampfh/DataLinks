@@ -14,17 +14,22 @@
 }
 
 .header-menu-item-text {
+    position: relative;
     margin: 0;
 
     transition-property: font-size;
     transition-duration: var(--default-transition-duration);
 }
 
+.header-menu-item-container a {
+    text-decoration: none;
+}
+
 .header-menu-item-text.selected::after {
-    position: relative;
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 0.25rem;
+    bottom: -0.5rem;
 
     display: block;
     content: "";

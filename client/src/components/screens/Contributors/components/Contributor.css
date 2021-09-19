@@ -5,9 +5,6 @@
 	border-bottom-style: solid;
 	border-bottom-width: 3px;
 	border-bottom-color: white;
-
-	animation-name: fadeIn;
-	animation-duration: 1s;
 }
 
 @media (prefers-color-scheme: light) {
@@ -54,15 +51,6 @@ h3.date {
 @media (prefers-color-scheme: light) {
 	.contributor {
 		border-bottom-color: var(--primary);
-	}
-}
-
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
 	}
 }
 

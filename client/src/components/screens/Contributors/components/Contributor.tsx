@@ -4,30 +4,7 @@ import "./Contributor.css"
 import { IReduxRootState } from 'state/reducers'
 import { connect } from "react-redux"
 
-class Contributor extends Component<PropsForComponent, StateForComponent> {
-
-	fadeIn?: NodeJS.Timeout
-	timeout?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props)
-
-		this.state = {
-			hidden: true
-		}
-	}
-
-	componentDidMount = () => {
-		this.timeout = setTimeout(() => {
-			let newState = { ...this.state }
-			newState.hidden = false
-			this.setState(newState)
-		}, this.props.place * 100)
-	}
-
-	componentWillUnmount() {
-		if (this.timeout)
-			clearTimeout(this.timeout)
-	}
+class Contributor extends Component<PropsForComponent> {
 
 	displayDate() {
 		// Is the edit today?
@@ -52,7 +29,7 @@ class Contributor extends Component<PropsForComponent, StateForComponent> {
 		const deletesWidth = containerWidth * (this.props.contributor.contributions.operations.deletes / totalEdits)
 
 		return (
-			<div className={`${this.state.hidden ? "hidden" : "contributorElementWrapper"}`}>
+			<div className="contributorElementWrapper">
 				<div className="contributor">
 					<p className={`name`}>
 						{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span>
@@ -100,10 +77,6 @@ interface PropsForComponent {
 	place: number,
 	contributor: IContributor,
 	fingerprint?: string
-}
-
-interface StateForComponent {
-	hidden: boolean
 }
 
 const reduxSelect = (state: IReduxRootState) => ({

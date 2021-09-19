@@ -1,80 +1,50 @@
-.contributorsWrapper h1, 
-.contributorsWrapper h2, 
-.contributorsWrapper h3, 
-.contributorsWrapper p {
-	color: white;
+
+.contributors-top-contributors-container {
+	display: grid;
+	grid-template-areas: 
+	"topContributor topContributor"
+	"secondContributor thirdContributor";
+
+	column-gap: 15rem;
+	row-gap: 2rem;
+
+	margin-top: 2rem;
 }
 
-.contributorsWrapper h1 {
-	text-align: center;
+@media (max-width: 800px) {
+	.contributors-top-contributors-container {
+		grid-template-areas: 
+		"topContributor"
+		"secondContributor"
+		"thirdContributor";
+	}
 }
 
-.contributorsWrapper {
-	width: 100%;
+.contributors-top-contributor-container {
+	grid-area: topContributor;
+}
+
+.contributors-second-contributor-container {
+	grid-area: secondContributor;
+}
+
+.contributors-third-contributor-container {
+	grid-area: thirdContributor;
+}
+
+.contributors-content-container {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 }
 
-.contributorsContainer {
-	width: 35rem;
-	height: 100vh;
-	overflow-y: auto;
-	scrollbar-width: thin;
-}
-
-.contributorsContainer::-webkit-scrollbar {
-	width: 0.4rem;
-	border-radius: 5px;
-}
-
-.contributorsContainer::-webkit-scrollbar-thumb {
-	background-color: var(--primary);
-	border-radius: 5px;
-}
-
-.contributorList {
-	margin: 2rem;
-}
-
-/* Light theme colors */
-@media (prefers-color-scheme: light) {
-	.contributorsWrapper h1, 
-	.contributorsWrapper h2, 
-	.contributorsWrapper h3, 
-	.contributorsWrapper p {
-		color: var(--primary);
-	}
-}
-
-.contributorsWrapper .logoutIcon {
-	top: 1.5rem;
-	left: 1rem;
-	padding: 0.5rem;
-	background-color: var(--primary);
-}
-
-.contributorAsideNote {
-	display: none;
-	font-style: italic;
-}
-
-.contributorIsSelf {
-	background-color: var(--primary);
-	border-radius: 4px;
+.contributors-title {
 	text-align: center;
-	color: white;
-	margin-left: 0.5rem;
-	padding: 0.3rem 0.5rem;
 }
 
-@media(min-width: 85rem) {
-	.contributorAsideNote {
-		display: block;
-		position: absolute;
-		width: 15rem;
-		top: 50%;
-		right: 10%;
-		transform: translateY(-50%);
-	}
+.contributors-rest-container {
+	margin-top: 5rem;
+	margin-bottom: 5rem;
+	max-width: 40rem;
 }

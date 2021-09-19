@@ -21,7 +21,7 @@ export default function HeaderMenu({ selected }: PropsForComponent) {
                 
                 <div key={current.name} className="header-menu-item-container">
                     <Link to={current.path}>
-                        <h3 className={`header-menu-item-text ${selected === index && "selected"}`}>{current.name}</h3>
+                        <h3 className={`header-menu-item-text ${selected === index ? "selected" : ""}`}>{current.name}</h3>
                     </Link>
                 </div>
             
