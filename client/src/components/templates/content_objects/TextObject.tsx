@@ -28,12 +28,18 @@ export default function TextObject(props: PropsForComponent) {
                     </div>
                 </div> :
 
-                <div className="text-object-wrapper default-nested-box-container">
+                <div className="text-object-wrapper default-nested-box-container" style={{
+                    maxWidth: props.text.length > 150 ? "25rem" : "15rem"
+                }}>
                     {props.title === undefined ? null :
                         <h5 className="text-object-title">{props.title}</h5>
                     }
                     {props.text === undefined ? null :
-                        <p className="text-object-text">{props.text}</p>
+                        <p className="text-object-text"
+                            style={{
+                                textAlign: props.text.length > 61 ? "start" : "center"
+                            }}
+                        >{props.text}</p>
                     }
                 </div>
             }
