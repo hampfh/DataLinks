@@ -12,6 +12,7 @@ import { DataLoader } from 'functions/DataLoader'
 import { IContentState } from 'state/reducers/content'
 import NotFoundPage from '../404/404'
 import CourseHeader from './components/CourseHeader'
+import CoursePresentationBox from './components/CoursePresentationBox'
 
 function SubjectView(props: PropsForComponent) {
 
@@ -67,11 +68,18 @@ function SubjectView(props: PropsForComponent) {
 
 	return (
 		<section className="subject-container">
-			<CourseHeader isArchived={subject.archived}  />
-			<RenderData 
-				updateSubjects={props.updateSubjects}
-				group={subject.group}
-			/>
+			<CourseHeader isArchived={subject.archived} />
+			<div className="subject-content-container">
+				<CoursePresentationBox 
+					courseName={subject.name}
+					courseCode={subject.code}
+					courseDescription={subject.description}
+				/>
+				<RenderData 
+					updateSubjects={props.updateSubjects}
+					group={subject.group}
+				/>
+			</div>
 		</section>
 	)
 }
