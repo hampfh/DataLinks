@@ -19,6 +19,10 @@
 	margin-bottom: 2rem;
 }
 
+.group-item-container.Column {
+	flex-direction: column;
+}
+
 .RenderContentContainer.Group {
 	width: 100%;
 }
