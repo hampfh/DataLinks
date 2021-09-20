@@ -36,6 +36,10 @@ function Subject(props: PropsForComponent) {
 
 	function onClick() {
 		history.push(`/${DataLoader.getActiveProgram()?.name ?? 404}/course/${props.subject.code}`)
+		if (props.app.sneakPeak?._id !== props.subject._id) {
+			props.hideSneakPeak()
+			props.showSneakPeak(props.subject)
+		}
 	}
 
 	function mouseEnter() {
