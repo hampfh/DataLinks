@@ -23,7 +23,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--color-gray-3);
   -webkit-transition: .2s;
   transition: .2s;
 }
@@ -35,13 +35,13 @@
   width: 18px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: var(--color-gray-5);
   -webkit-transition: .2s;
   transition: .2s;
 }
 
 input:checked + .slider {
-  background-color: var(--primary);
+  background-color: var(--color-gray-7);
 }
 
 input:checked + .slider:before {
