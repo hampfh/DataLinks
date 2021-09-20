@@ -122,11 +122,18 @@ function Group(props: PropsForComponent) {
         return true
     }
 
+    function populateCssClasses() {
+        let string = "dynamic-content-group-container"
+        if (props.group.column) string += " column"
+        if (props.group.depth <= 1) string += " dynamic-content-group-root-container"
+        if (!props.group.split) string += " header-border"
+        if (props.app.flags.editMode) string += " border"
+        return string
+    }
+
     return (
         <div
-            className={`GroupContainer${props.group.column ? " Column" : ""}
-					${props.group.depth !== undefined && props.group.depth > 0 ? " Nested" : ""}
-                    ${!props.group.split && !!!props.app.flags.editMode ? " NoBorder" : ""}`}
+            className={populateCssClasses()}
             style={props.app.flags.editMode ? {
                 margin: "1rem",
                 borderStyle: "solid",
@@ -135,7 +142,7 @@ function Group(props: PropsForComponent) {
             } : undefined}
         >
             {props.group.name ? 
-                <h4 className="textObjectTitle">{props.group.name}</h4> : // Display group name
+                <h4 className="group-item-title">{props.group.name}</h4> : // Display group name
                 null
             }
 
