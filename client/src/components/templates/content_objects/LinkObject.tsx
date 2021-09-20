@@ -5,7 +5,7 @@ export default function LinkObject(props: PropsForComponent) {
     return (
         <>
             {props.editMode ?
-                <div className="link-button-wrapper ButtonWrapperEditMode">
+                <div className="link-button-wrapper default-nested-box-container editmode">
                     <div className="editModeField">
                         <label htmlFor="fieldOne" className="editLabel">Display text</label>
                         <input

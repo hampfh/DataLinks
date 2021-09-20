@@ -3,6 +3,12 @@
     min-width: 2rem;
 
     margin: 1rem;
+
+    font-family: "Roboto", sans-serif;
+}
+
+.link-button-wrapper.editmode {
+    padding: 1rem;
 }
 
 .link-button-link {

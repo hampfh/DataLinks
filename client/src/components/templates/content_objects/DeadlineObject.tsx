@@ -103,7 +103,7 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 			<>
 				{this.props.editMode && !!!this.props.noEditMode ? 
 					// Edit mode
-					<div className="ButtonWrapper ButtonWrapperEditMode">
+					<div className="default-nested-box-container editmode">
 						<div className="editModeField">
 							<label htmlFor="fieldOne" className="editLabel">Deadline description</label>
 							<input

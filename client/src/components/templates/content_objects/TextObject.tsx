@@ -5,7 +5,7 @@ export default function TextObject(props: PropsForComponent) {
     return (
         <>
             {props.editMode ? 
-                <div className="text-object-wrapper ButtonWrapperEditMode">
+                <div className="text-object-wrapper default-nested-box-container">
                     <div className="editModeField">
                         <label htmlFor="fieldOne" className="editLabel">Title</label>
                         <input

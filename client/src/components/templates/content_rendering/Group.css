@@ -23,6 +23,11 @@
 	width: 100%;
 }
 
+.RenderContentContainer.editmode {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 .border,
 .header-border {
 	border-color: var(--color-text);

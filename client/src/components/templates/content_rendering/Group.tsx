@@ -126,7 +126,7 @@ function Group(props: PropsForComponent) {
         let string = "dynamic-content-group-container"
         if (props.group.column) string += " column"
         if (props.group.depth <= 1) string += " dynamic-content-group-root-container"
-        if (!props.group.split) string += " header-border"
+        if (props.group.split) string += " header-border"
         if (props.app.flags.editMode) string += " border"
         return string
     }

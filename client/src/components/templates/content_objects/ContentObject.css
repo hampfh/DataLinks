@@ -22,6 +22,10 @@
 	display: grid;
 }
 
+.editModeField:not(.editModeField:nth-child(1)) {
+	margin-top: 1rem;
+}
+
 .editLabel {
 	color: white;
 }
@@ -36,5 +40,7 @@
 	padding: 0.25rem;
 	color: white;
 	border: none;
-	background-color: var(--complementary);
+	background-color: var(--color-gray-3);
+	padding: 0.75rem;
+	margin-top: 0.5rem;
 }

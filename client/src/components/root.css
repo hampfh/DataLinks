@@ -88,6 +88,12 @@ p {
 	border-style: solid;
 }
 
+.default-nested-box-container.editmode {
+	font-family: "Roboto", sans-serif;
+	padding: 1rem;
+	margin: 1rem;
+}
+
 .default-nested-box-container-hover:hover {
 	cursor: pointer;
 	background-color: var(--color-gray-2);

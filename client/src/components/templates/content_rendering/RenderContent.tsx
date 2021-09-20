@@ -19,7 +19,7 @@ function RenderContent(props: PropsForComponent) {
     }
 
     return (
-        <div className={`RenderContentContainer ${props.content.group ? "Group" : ""}`}>
+        <div className={`RenderContentContainer ${props.content.group ? "Group" : ""} ${props.app.flags.editMode ? "editmode" : ""}`}>
             {props.app.flags.editMode &&
                 <Draggable
                     cursor={props.cursor}
