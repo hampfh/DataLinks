@@ -141,13 +141,13 @@ class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent>
 							{!this.firstRowIsEmpty() &&
 								<div className="date-countdown-container">
 									{this.state.countdown.months != null && this.state.countdown.months > 0 &&
-										<p>{appendsIfPlural("Month", this.state.countdown.months)}</p>
+										<p>{this.state.countdown.months} {appendsIfPlural("Month", this.state.countdown.months)}</p>
 									}
 									{this.state.countdown.weeks != null && this.state.countdown.weeks > 0 &&
-										<p>{appendsIfPlural("Week", this.state.countdown.weeks)}</p>
+										<p>{this.state.countdown.weeks} {appendsIfPlural("Week", this.state.countdown.weeks)}</p>
 									}
 									{this.state.countdown.days != null && this.state.countdown.days > 0 &&
-										<p>{appendsIfPlural("Day", this.state.countdown.days)}</p>
+										<p>{this.state.countdown.days} {appendsIfPlural("Day", this.state.countdown.days)}</p>
 									}
 								</div>
 							}
