@@ -9,6 +9,16 @@
 	row-gap: 2rem;
 
 	margin-top: 2rem;
+
+	transition-property: column-gap;
+    transition-duration: var(--default-transition-duration);
+}
+
+
+@media (max-width: 1100px) {
+	.contributors-top-contributors-container {
+		column-gap: 7rem;
+	}
 }
 
 @media (max-width: 800px) {

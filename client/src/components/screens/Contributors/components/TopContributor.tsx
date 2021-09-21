@@ -5,11 +5,9 @@ import "./TopContributor.css"
 
 export default function TopContributor(props: PropsForComponent) {
 
-    const containerWidth = 300		
-
-    const createsWidth = containerWidth * (props.contributor.contributions.operations.creates / props.contributor.contributionCount)
-    const updatesWidth = containerWidth * (props.contributor.contributions.operations.updates / props.contributor.contributionCount)
-    const deletesWidth = containerWidth * (props.contributor.contributions.operations.deletes / props.contributor.contributionCount)
+    const createsWidth = (props.contributor.contributions.operations.creates / props.contributor.contributionCount)
+    const updatesWidth = (props.contributor.contributions.operations.updates / props.contributor.contributionCount)
+    const deletesWidth = (props.contributor.contributions.operations.deletes / props.contributor.contributionCount)
 
     return (
         <div className="top-contributor-container">
@@ -26,21 +24,21 @@ export default function TopContributor(props: PropsForComponent) {
                     <div 
                         title={`${props.contributor.contributions.operations.creates} creates`}
                         className="creates segment" 
-                        style={{ width: createsWidth }} 
+                        style={{ width: `${createsWidth * 100}%` }} 
                     />
                 }
                 {updatesWidth > 0 &&
                     <div 
                         title={`${props.contributor.contributions.operations.updates} updates`}
                         className="updates segment" 
-                        style={{ width: updatesWidth }} 
+                        style={{ width: `${updatesWidth * 100}%` }} 
                     />
                 }
                 {deletesWidth > 0 &&
                     <div 
                         title={`${props.contributor.contributions.operations.deletes} deletes`}
                         className="deletes segment" 
-                        style={{ width: deletesWidth }} 
+                        style={{ width: `${deletesWidth * 100}%` }} 
                     />
                 }
             </div>
