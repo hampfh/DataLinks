@@ -29,6 +29,11 @@ function Subjects(props: PropsForComponent) {
 
 	useEffect(() => {
 		DataLoader.manageProgramContentData(program)
+
+		// We do not allow edit mode in preview
+		if (props.app.flags.editMode) {
+			props.disableEditModeFlag()
+		}
 	})
 
 	if (props.content.hasLoaded && props.content.activeProgramId == null)
