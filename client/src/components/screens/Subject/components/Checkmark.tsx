@@ -1,77 +1,34 @@
-import React, { Component } from 'react'
 import "./Checkmark.css"
 import { connect } from "react-redux"
 import { IReduxRootState } from "state/reducers"
-import { IDeadlineState } from "state/reducers/deadlines"
-import { 
-	hasAnimatedDeadline, 
-	IHasAnimatedDeadline, 
-	IResetAnimatedDeadline, 
-	resetAnimatedDeadline 
-} from "state/actions/deadlines"
+import { IDeadlineState } from 'state/reducers/deadlines'
+import { useState } from "react"
 
-class Checkmark extends Component<PropsForComponent, StateForComponent> {
+function Checkmark(props: PropsForComponent) {
 
-	timeout?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props)
+	const [animated, ] = useState(false)
 
-		this.state = {
-			hasAnimated: this.props.deadlines.hasAnimated.find((hash) => hash === this.props.hash) != null
-		}
-	}
-
-	componentDidMount() {
-		if (this.props.deadlines.hasAnimated.find((target) => target === this.props.hash) == null)
-			this.props.hasAnimatedDeadline(this.props.hash)
-	}
-
-	componentWillUnmount() {
-		if (this.timeout)
-			clearTimeout(this.timeout)
-	}
-
-	render() {
-		return (
-			<div 
-				onClick={this.props.unCompleteThisDeadline}
-				className="centerCheckmarkAligner"
+	return (
+		<div 
+			className="centerCheckmarkAligner"
+		>
+			<svg 
+				className={`checkmark ${animated ? "" : "animate"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"
 			>
-				<svg 
-					onClick={this.props.unCompleteThisDeadline}
-					className={`checkmark ${this.state.hasAnimated ? "" : "animate"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"
-				>
-					<circle className={`checkmark__circle ${this.state.hasAnimated ? "" : "animate"}`} cx="26" cy="26" r="25" fill="none" />
-					<path className={`checkmark__check ${this.state.hasAnimated ? "" : "animate"}`} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-				</svg>
-			</div>
-		)
-	}
+				<circle className={`checkmark__circle ${animated ? "" : "animate"}`} cx="26" cy="26" r="25" fill="none" />
+				<path className={`checkmark__check ${animated ? "" : "animate"}`} fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+			</svg>
+		</div>
+	)
 }
 
 interface PropsForComponent {
-	hash: string,
-	deadlines: IDeadlineState,
-	unCompleteThisDeadline: () => void,
-	hasAnimatedDeadline: IHasAnimatedDeadline,
-	resetAnimatedDeadline: IResetAnimatedDeadline
+	deadlineId: string
+	deadlines: IDeadlineState
 }
 
-interface StateForComponent {
-	hasAnimated: boolean
-}
+const reduxSelect = (state: IReduxRootState) => ({
+	deadlines: state.deadlines
+})
 
-const reduxSelect = (state: IReduxRootState) => {
-	return {
-		deadlines: state.deadlines
-	}
-}
-
-const reduxDispatch = () => {
-	return {
-		hasAnimatedDeadline,
-		resetAnimatedDeadline
-	}
-}
-
-export default connect(reduxSelect, reduxDispatch())(Checkmark)
+export default connect(reduxSelect)(Checkmark)

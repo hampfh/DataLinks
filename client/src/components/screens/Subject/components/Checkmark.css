@@ -1,15 +1,10 @@
-.centerCheckmarkAligner {
-    position: absolute;
-    left: 50%;
-    top: -50%;
-}
 
 .checkmark__circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
     stroke-width: 2;
     stroke-miterlimit: 10;
-    stroke: #7ac142;
+    stroke: var(--primary);
     fill: none;
     animation: stroke 0s cubic-bezier(0.65, 0, 0.45, 1) forwards;
     -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.75);
@@ -23,10 +18,9 @@
 
 .checkmark {
     position: relative;
-    left: -50%;
-    top: 50%;
-    width: 28px;
-    height: 28px;
+    margin: auto;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: block;
     stroke-width: 4;
@@ -68,6 +62,6 @@
 
 @keyframes fill {
     100% {
-        box-shadow: inset 0px 0px 0px 30px #7ac142;
+        box-shadow: inset 0px 0px 0px 30px var(--primary);
     }
 }
