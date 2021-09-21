@@ -12,7 +12,7 @@ function DeadlineColumnItem(props: PropsForComponent) {
     const wrapper = useRef<HTMLDivElement>(null)
 
     const animationDuration = 0.5
-    const [completeAnimation, setCompleteAnimation] = useState(false)
+    const [completeAnimation, setCompleteAnimation] = useState(props.completed.find(current => current === props.id) != null)
     let animationTimeout: NodeJS.Timeout | undefined
 
     const [remaining, setRemaining] = useState<{
@@ -80,7 +80,7 @@ function DeadlineColumnItem(props: PropsForComponent) {
             <div className="deadline-column-item-checkmark-container">
                 <button
                     className="deadline-column-item-button" 
-                    onClick={() => markDeadlineAsCompleted(props.deadlineObject._id)} 
+                    onClick={() => markDeadlineAsCompleted(props.id)} 
                 >
                     <p>Complete</p>
                 </button>
@@ -90,6 +90,7 @@ function DeadlineColumnItem(props: PropsForComponent) {
 }
 
 interface PropsForComponent {
+    id: string
     deadlineObject: IDeadline
     completed: string[]
     addCompleteDeadline: IAddCompleteDeadline

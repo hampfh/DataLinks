@@ -22,18 +22,13 @@ function DeadlineColumn(props: PropsForComponent) {
     }
 
     function filterCompletedDeadlines(deadlines: ContentObject): boolean {
-        return props.completed.find(current => current === deadlines.deadline!._id) == null
-    }
-
-    function selectDeadlineField(total: IDeadline[], current: ContentObject): IDeadline[] {
-        total.push(current.deadline!)
-        return total
+        return props.completed.find(current => current === deadlines._id) == null
     }
 
     return (
         <div className="deadline-column-item-wrapper">
-            {deadlines.filter(filterCompletedDeadlines).reduce(selectDeadlineField, []).map(current => 
-                <DeadlineColumnItem key={current._id} completeDeadline={removeDeadline} deadlineObject={current} />
+            {deadlines.filter(filterCompletedDeadlines).map(current => 
+                <DeadlineColumnItem key={current._id} completeDeadline={removeDeadline} id={current._id} deadlineObject={current.deadline!} />
             )}
         </div>
     )
