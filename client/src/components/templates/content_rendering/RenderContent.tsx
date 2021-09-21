@@ -1,6 +1,5 @@
 import ContentObject from "components/templates/content_objects/ContentObject"
 import { ContentType } from "components/utilities/contentTypes"
-import React from "react"
 import { connect } from "react-redux"
 import { IReduxRootState } from "state/reducers"
 import { IAppState } from "state/reducers/app"

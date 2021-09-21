@@ -1,15 +1,20 @@
-import { CONTENT_OBJECT_HEIGHT, CONTENT_OBJECT_WIDTH } from "../content_rendering/RenderContent";
-
 /**
  * The dummy is the blockelement that is projected between elements
  * while the main element is beeing dragged around
  */
 
-export default function Dummy() {
+export default function Dummy(props: PropsForComponent) {
     return (
-        <div className={"ButtonWrapper ButtonWrapperEditMode"} style={{
-            width: CONTENT_OBJECT_WIDTH,
-            height: CONTENT_OBJECT_HEIGHT
+        <div className={"ButtonWrapper ButtonWrapperEditMode dummy-element"} style={{
+            width: props.size.width,
+            height: props.size.height
         }} />
     )
+}
+
+interface PropsForComponent {
+    size: {
+        width: number
+        height: number
+    }
 }

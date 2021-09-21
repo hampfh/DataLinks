@@ -42,7 +42,7 @@ function ContentObject(props: PropsForComponent) {
 
 	function _updateContent() {
 
-		if (!!!fieldTwoValid)
+		if (!fieldTwoValid)
 			return
 
 		setPrevFieldOne(fieldOne)
@@ -77,7 +77,7 @@ function ContentObject(props: PropsForComponent) {
 						noEditMode={props.noEditMode ?? false}
 					/>
 			}
-			{props.app.flags.editMode && !!!props.noEditMode ?
+			{props.app.flags.editMode && !props.noEditMode ?
 				<div className="buttonContainerEditMode">
 					{props.id.toString().length !== 0 && (
 						prevFieldOne !== fieldOne ||

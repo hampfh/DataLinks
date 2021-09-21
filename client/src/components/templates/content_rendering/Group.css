@@ -1,3 +1,5 @@
+@import "/src/components/root.css";
+
 .group-item-container {
 	display: flex;
 	justify-content: center;
@@ -55,4 +57,8 @@
         flex-direction: column;
 		flex-wrap: nowrap;
     }
+}
+
+.dummy-element {
+	background-color: var(--color-canvas-layer);
 }
