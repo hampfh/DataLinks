@@ -19,7 +19,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use("/api/v1", apiRoute)
 app.use("/", apiPublic)
 
-app.use(express.static(path.join(path.resolve(), "client/build")))
+app.use(express.static(path.join(path.resolve(), "../client/dist")))
 
 // Redirect www to non-www
 app.use(function (req: Request, res: Response, next: express.NextFunction) {

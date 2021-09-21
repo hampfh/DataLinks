@@ -28,7 +28,7 @@ export default class MetaTagPopulator {
 	}
 
 	static loadIndexFile = (res: express.Response, callback: (htmlData: string) => void): void => {
-		fs.readFile(path.join(path.resolve() + "/client/build/index.html"), {
+		fs.readFile(path.join(path.resolve() + "../../client/dist/index.html"), {
 			encoding: "utf-8"
 		}, (err, htmlData) => {
 			if (err) {
