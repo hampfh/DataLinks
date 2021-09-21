@@ -1,5 +1,5 @@
 @import "../../root.css";
-@import url("https://fonts.googleapis.com/css2?family=Quantico&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Quantico:wght@400;700&display=swap');
 
 .deadline-container {
     position: relative;
@@ -19,7 +19,7 @@
 }
 
 .deadline-container.animated {
-    transform: rotateY(90deg);
+    transform: rotateY(90deg) scaleZ(0);
 }
 
 .deadline-content-container {
@@ -69,4 +69,11 @@
 
     width: 6.4rem;
     height: 6.4rem;
+}
+
+.CircularProgressbar-text {
+    font-weight: 700;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    transform: scaleZ(0);
 }

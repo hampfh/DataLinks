@@ -39,7 +39,7 @@ function DeadlineColumnItem(props: PropsForComponent) {
         setCompleteAnimation(true)
         animationTimeout = setTimeout(() => {
             props.addCompleteDeadline(id)
-            props.completeDeadline(id)
+            //props.completeDeadline(id)
         }, 1000 * animationDuration)
     }
 

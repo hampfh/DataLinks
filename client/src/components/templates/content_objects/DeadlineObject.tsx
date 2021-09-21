@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from "functions/date_calculations"
@@ -7,210 +7,192 @@ import {
 	addCompleteDeadline, 
 	IAddCompleteDeadline, 
 	IRemoveCompleteDeadline, 
+	loadCompletedDeadlines, 
 	removeCompleteDeadline,
-	saveCompletedDeadlines,
 } from "state/actions/deadlines"
 import { IReduxRootState } from "state/reducers"
-import { IDeadlineState } from "state/reducers/deadlines"
 import { ISetReplaceCountdownWithDateFlag, setReplaceCountdownWithDateFlag } from 'state/actions/app'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { appendsIfPlural } from 'functions/string_formatting'
 import Checkmark from 'components/screens/Subject/components/Checkmark'
 
-class DeadlineObject extends PureComponent<PropsForComponent, StateForComponent> {
+function DeadlineObject(props: PropsForComponent) {
 
-	animationTimeout?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props);
+	const id = props.id.toString()
+	const [animationTimeout, setAnimationTimeout] = useState<NodeJS.Timeout>()
+	
+	const [animatedFlip, setAnimatedFlip] = useState(0)
+	const [completed, setCompleted] = useState(loadCompletedDeadlines().find(current => current === id) != null)
+	const [remaining, setRemaining] = useState<{
+        months: number
+        weeks: number
+        days: number
+        hours: number
+        minutes: number
+        seconds: number
+    }>(calcTimeLeft(props.deadline))
+	const [progress, setProgress] = useState<{
+		max: number
+		value: number
+	}>(calcDeadlinePercentage(props.start, props.deadline))
 
-		const hash = this.props.id.toString()
-
-		this.state = {
-			hash: hash,
-			animatedFlip: 0,
-			complete: this.props.deadlines.completed.find((currentHash) => currentHash === hash) != null,
-			countdown: {
-				months: 0,
-				weeks: 0,
-				days: 0,
-				hours: 0,
-				minutes: 0,
-				seconds: 0
-			},
-			bar: { // Progress bar values
-				max: 0,
-				value: 0
-			},
-			mounted: false,	// Mounted is used to determine if it's ok to start updating the clock every second
-			interval: setInterval(() => { // Timer
-				if (this.state.mounted) {
-					let newState = { ...this.state }
-					newState.countdown = calcTimeLeft(this.props.deadline)
-					newState.bar = calcDeadlinePercentage(this.props.start, this.props.deadline)
-					this.setState(newState)
-				}
-			}, 1000)
+	useEffect(() => {
+		return () => {
+			if (animationTimeout)
+				clearTimeout(animationTimeout)
 		}
+	}, [animationTimeout])
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setRemaining(calcTimeLeft(props.deadline))
+			setProgress(calcDeadlinePercentage(props.start, props.deadline))
+		}, 1000)
+		return () => {
+			clearInterval(interval)	
+		}
+	}, [props.deadline, props.start])
+
+	function firstRowIsEmpty() {
+		return !!!remaining.months && !!!remaining.weeks && !!!remaining.days
 	}
 
-	componentDidMount() {
-		let newState = { ...this.state }
-		newState.countdown = calcTimeLeft(this.props.deadline)
-		newState.bar = calcDeadlinePercentage(this.props.start, this.props.deadline)
-		newState.mounted = true
-		this.setState(newState)
+	function clickCard() {
 		
-		if (this.animationTimeout)
-			clearTimeout(this.animationTimeout)
-		this.animationTimeout = setTimeout(() => {
-			const newState = { ...this.state }
-			newState.animatedFlip = 0
-			this.setState(newState)
-		})
-	}
+		setAnimatedFlip(1)		
 
-	componentWillUnmount() {
-		if (this.state.interval)
-			clearInterval(this.state.interval)
-		if (this.animationTimeout)
-			clearTimeout(this.animationTimeout)
-	}
-
-	firstRowIsEmpty() {
-		return !!!this.state.countdown.months && !!!this.state.countdown.weeks && !!!this.state.countdown.days
-	}
-
-	_clickCard = () => {
-		
-		const newState = { ...this.state }
-		newState.animatedFlip = 1
-		this.setState(newState)
+		if (animationTimeout)
+			clearTimeout(animationTimeout)
 
 		// Wait for first rotation
-		this.animationTimeout = setTimeout(() => {
-
-			const newState = { ...this.state }
-			newState.animatedFlip = 0
-			newState.complete = !newState.complete
-			this.setState(newState)
-		}, 250)
+		setAnimationTimeout(setTimeout(() => {
+			setCompleted(!completed)
+			setAnimatedFlip(0)
+			setAnimationTimeout(setTimeout(() => {
+				if (completed)
+					props.removeCompleteDeadline(id)
+				else
+					props.addCompleteDeadline(id)
+			}, 250))
+		}, 250))
 	}
 	
-	_toggleDeadlineContent = () => {
-		this.props.setReplaceCountdownWithDateFlag(!this.props.replaceCountdownWithDate)
-	}
+	/* function toggleDeadlineContent() {
+		props.setReplaceCountdownWithDateFlag(!props.replaceCountdownWithDate)
+	} */
 
-	render() {
-		
-		const deadlineReached = this.state.countdown.months === 0 &&
-			this.state.countdown.weeks === 0 &&
-			this.state.countdown.days === 0 &&
-			this.state.countdown.hours === 0 &&
-			this.state.countdown.minutes === 0 &&
-			this.state.countdown.seconds === 0
-
+	function deadlineReached() {
 		return (
-			<>
-				{this.props.editMode && !!!this.props.noEditMode ? 
-					// Edit mode
-					<div className="default-nested-box-container editmode">
-						<div className="editModeField">
-							<label htmlFor="fieldOne" className="editLabel">Deadline description</label>
-							<input
-								className="editModeInputField"
-								disabled={this.props.id.toString().length === 0}
-								name="fieldOne"
-								value={this.props.displayText}
-								onChange={(event) => this.props.updateElement(event, "first")}
-							/>
-						</div>
-						<div className="editModeField">
-							<p style={{
-								color: this.props.fieldTwoValid ? "transparent" : "#fff",
-								textDecoration: "underline",
-								marginTop: "0",
-								marginBottom: "0.1rem"
-							}}>Deadline is not formatted correctly</p>
-							<label htmlFor="fieldTwo" className="editLabel">Deadline (YYYY-MM-DD HH:mm)</label>
-							<input
-								className="editModeInputField"
-								disabled={this.props.id.toString().length === 0}
-								name="fieldTwo"
-								value={this.props.deadline}
-								onChange={(event) => this.props.updateElement(event, "second")}
-								placeholder={"YYYY-MM-DD HH:mm"}
-							/>
-						</div>
-					</div> :
-					// Non-edit mode 
-					<div 
-						title={`${this.state.complete ? "Mark uncompleted" : "Mark completed"}`}
-						onClick={this._clickCard}
-						className={`default-nested-box-container deadline-container ${this.state.animatedFlip === 1 ? "animated" : ""}`}
-					>
-						{this.props.displayText &&
-							<p className="deadline-title-text">{this.props.displayText}</p>
-						}
-						{this.state.complete ? 
-							<div className="deadline-content-container completed">
-								<Checkmark deadlineId={this.state.hash} />
-								<p className="deadline-content-complete-text">Completed!</p>
-							</div> :
-							<div className={`deadline-content-container ${this.firstRowIsEmpty() ? "deadline-content-container-no-date" : ""}`}>
-								{!this.firstRowIsEmpty() &&
-									<div className="date-countdown-container">
-										{this.state.countdown.months != null && this.state.countdown.months > 0 &&
-											<p>{this.state.countdown.months} {appendsIfPlural("Month", this.state.countdown.months)}</p>
-										}
-										{this.state.countdown.weeks != null && this.state.countdown.weeks > 0 &&
-											<p>{this.state.countdown.weeks} {appendsIfPlural("Week", this.state.countdown.weeks)}</p>
-										}
-										{this.state.countdown.days != null && this.state.countdown.days > 0 &&
-											<p>{this.state.countdown.days} {appendsIfPlural("Day", this.state.countdown.days)}</p>
-										}
-									</div>
-								}
-								<div 
-									className="progress-wheel-container" 
-									style={{
-										justifySelf: this.firstRowIsEmpty() ? "center" : "start"
-									}}
-								>
-									<CircularProgressbar 
-										value={this.state.bar.max - this.state.bar.value}
-										maxValue={this.state.bar.max}
-										text={
-											deadlineReached ?
-											"Reached" :
-											`${formatNumberToClock(this.state.countdown.hours)} : ${formatNumberToClock(this.state.countdown.minutes)} : ${formatNumberToClock(this.state.countdown.seconds)}`
-										}
-										styles={{
-											background: {
-												backgroundColor: "transparent",
-												fill: "transparent"
-											},
-											text: {
-												fontSize: "0.7rem",
-												fontFamily: "'Quantico', sans-serif",
-												fill: "#E83D84"
-											},
-											path: {
-												stroke: "#E83D84"
-											},
-											trail: {
-												stroke: "transparent"
-											}
-										}}
-									/>
-								</div>
-							</div>
-						}
-					</div>
-				}
-			</>
+			remaining.months === 0 &&
+			remaining.weeks === 0 &&
+			remaining.days === 0 &&
+			remaining.hours === 0 &&
+			remaining.minutes === 0 &&
+			remaining.seconds === 0
 		)
-	}
+	} 
+
+	return (
+		<>
+			{props.editMode && !props.noEditMode ? 
+				// Edit mode
+				<div className="default-nested-box-container editmode">
+					<div className="editModeField">
+						<label htmlFor="fieldOne" className="editLabel">Deadline description</label>
+						<input
+							className="editModeInputField"
+							disabled={props.id.toString().length === 0}
+							name="fieldOne"
+							value={props.displayText}
+							onChange={(event) => props.updateElement(event, "first")}
+						/>
+					</div>
+					<div className="editModeField">
+						<p style={{
+							color: props.fieldTwoValid ? "transparent" : "#fff",
+							textDecoration: "underline",
+							marginTop: "0",
+							marginBottom: "0.1rem"
+						}}>Deadline is not formatted correctly</p>
+						<label htmlFor="fieldTwo" className="editLabel">Deadline (YYYY-MM-DD HH:mm)</label>
+						<input
+							className="editModeInputField"
+							disabled={props.id.toString().length === 0}
+							name="fieldTwo"
+							value={props.deadline}
+							onChange={(event) => props.updateElement(event, "second")}
+							placeholder={"YYYY-MM-DD HH:mm"}
+						/>
+					</div>
+				</div> :
+				// Non-edit mode 
+				<div 
+					title={`${completed ? "Mark uncompleted" : "Mark completed"}`}
+					onClick={clickCard}
+					className={`default-nested-box-container deadline-container ${animatedFlip === 1 ? "animated" : ""}`}
+				>
+					{props.displayText &&
+						<p className="deadline-title-text">{props.displayText}</p>
+					}
+					{completed ? 
+						<div className="deadline-content-container completed">
+							<Checkmark animate={completed} />
+							<p className="deadline-content-complete-text">Completed!</p>
+						</div> :
+						<div className={`deadline-content-container ${firstRowIsEmpty() ? "deadline-content-container-no-date" : ""}`}>
+							{!firstRowIsEmpty() &&
+								<div className="date-countdown-container">
+									{remaining.months != null && remaining.months > 0 &&
+										<p>{remaining.months} {appendsIfPlural("Month", remaining.months)}</p>
+									}
+									{remaining.weeks != null && remaining.weeks > 0 &&
+										<p>{remaining.weeks} {appendsIfPlural("Week", remaining.weeks)}</p>
+									}
+									{remaining.days != null && remaining.days > 0 &&
+										<p>{remaining.days} {appendsIfPlural("Day", remaining.days)}</p>
+									}
+								</div>
+							}
+							<div 
+								className="progress-wheel-container" 
+								style={{
+									justifySelf: firstRowIsEmpty() ? "center" : "start"
+								}}
+							>
+								<CircularProgressbar 
+									value={progress.max - progress.value}
+									maxValue={progress.max}
+									text={
+										deadlineReached() ?
+										"Reached" :
+										`${formatNumberToClock(remaining.hours)} : ${formatNumberToClock(remaining.minutes)} : ${formatNumberToClock(remaining.seconds)}`
+									}
+									styles={{
+										background: {
+											backgroundColor: "transparent",
+											fill: "transparent"
+										},
+										text: {
+											fontSize: "0.7rem",
+											fontFamily: "'Quantico', sans-serif",
+											fill: "#E83D84"
+										},
+										path: {
+											stroke: "#E83D84"
+										},
+										trail: {
+											stroke: "transparent"
+										}
+									}}
+								/>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		</>
+	)
 }
 
 interface PropsForComponent {
@@ -219,7 +201,6 @@ interface PropsForComponent {
 	deadline: string
 	start: string
 	accent?: boolean
-	deadlines: IDeadlineState
 	editMode: boolean
 	fieldTwoValid: boolean
 	noEditMode: boolean
@@ -230,28 +211,7 @@ interface PropsForComponent {
 	updateElement: (event: React.ChangeEvent<HTMLInputElement>, fieldNum: "first" | "second" | "third") => void
 }
 
-interface StateForComponent {
-	hash: string
-	animatedFlip: number
-	complete: boolean
-	countdown: {
-		months: number
-		weeks: number
-		days: number
-		hours: number
-		minutes: number
-		seconds: number
-	}, 
-	bar: {
-		max: number,
-		value: number
-	},
-	interval?: NodeJS.Timeout,
-	mounted: boolean
-}
-
 const reduxSelect = (state: IReduxRootState) => ({
-	deadlines: state.deadlines,
 	editMode: state.app.flags.editMode,
 	replaceCountdownWithDate: state.app.flags.replaceCountdownWithDate
 })

@@ -154,7 +154,7 @@ function Group(props: PropsForComponent) {
                             return <Dummy key={uuid()} />
                         return <RenderContent 
                             // ? Optimization possibility here detect if field changes instead of using uuid (and forcibly updating every time)
-                            key={uuid()}
+                            key={props.app.flags.editMode ? uuid() : contentElement._id}
                             parentGroup={props.group._id} 
                             content={contentElement} 
                             depth={props.group.depth ? props.group.depth + 1 : 1} 
