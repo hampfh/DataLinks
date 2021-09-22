@@ -131,6 +131,8 @@ export async function deleteGroup(id: string, fingerprint: string) {
     if (response.status !== 200) {
         if (window.confirm("An error occured, would you like to reload the site?"))
             window.location.reload()
+    } else {
+        window.location.reload()
     }
 }
 
