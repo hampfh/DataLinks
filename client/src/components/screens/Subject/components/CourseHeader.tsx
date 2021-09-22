@@ -35,7 +35,7 @@ function CourseHeader(props: PropsForComponent) {
 					<div className="course-header-edit-mode-switch-container">
 						<p>Default mode</p>
 						<label className="course-header-edit-mode-switch switch">
-							<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive ?? props.editMode} type="checkbox" />
+							<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive && props.editMode} type="checkbox" />
 							<span className="slider round"></span>
 						</label>
 						<p>Edit mode</p>

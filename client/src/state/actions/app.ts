@@ -19,7 +19,7 @@ function agreeBehavior (): boolean {
 	if (localStorage.getItem("agreeBehavior") === "true")
 		return true
 	else {
-		if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user\n\nAlso note that this is an experimental feature thus bug reports are very much appreciated")) {
+		if (window.confirm("By entering edit mode you promise to make changes that benefit the site and the people using it. \nThis feature is trust-based and may be disabled if misused\n\nPlease note that all changes made are logged, thus inappropriate changes can be traced back to the user")) {
 			localStorage.setItem("agreeBehavior", "true")
 			return true
 		}
