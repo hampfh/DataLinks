@@ -2,17 +2,17 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import "./HeaderMenu.css"
 
-export default function HeaderMenu({ selected }: PropsForComponent) {
+export default function HeaderMenu({ selected, program }: PropsForComponent) {
 
     const paths = [{
         name: "Workspace",
-        path: `/${"D20"}`
+        path: `/${program}`
     },{
         name: "Contributors",
-        path: `/${"D20"}/contributors`
+        path: `/${program}/contributors`
     },{
         name: "Archive",
-        path: `/${"D20"}/archive`
+        path: `/${program}/archive`
     }]
 
     return (
@@ -31,5 +31,6 @@ export default function HeaderMenu({ selected }: PropsForComponent) {
 }
 
 interface PropsForComponent {
+    program: string
     selected: number
 }

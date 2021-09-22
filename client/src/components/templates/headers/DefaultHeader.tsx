@@ -9,10 +9,10 @@ export default function DefaultHeader(props: PropsForComponent) {
     return (
         <div className="default-header-container">
             <div className="default-header-page-presenter-container">
-                <HeaderPagePresenter pagePresenter={props.pagePresenter} />
+                <HeaderPagePresenter program={props.program} pagePresenter={props.pagePresenter} />
             </div>
             <div className="default-header-menu">
-                <HeaderMenu selected={props.menuSelect} />
+                <HeaderMenu program={props.program} selected={props.menuSelect} />
             </div>
             <div className="default-header-version-container">
                 <p className="default-header-version-number">v{version}</p>
@@ -22,6 +22,7 @@ export default function DefaultHeader(props: PropsForComponent) {
 }
 
 interface PropsForComponent {
+    program: string
     menuSelect: number
     pagePresenter: string
 }

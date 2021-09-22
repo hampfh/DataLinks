@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { SubjectData } from '../Subjects/Subjects'
 import "./Archive.css"
-import logoutIcon from "assets/icons/close.svg"
 import { DataLoader } from 'functions/DataLoader'
 import DefaultHeader from 'components/templates/headers/DefaultHeader'
 
@@ -40,7 +39,7 @@ export default function Archive(props: PropsForComponent) {
 
     return (
         <>
-            <DefaultHeader menuSelect={2} pagePresenter="Archives" />
+            <DefaultHeader program={program} menuSelect={2} pagePresenter="Archives" />
             <div className="pageWrapper">
                 <div className="archiveContainer">
                     <h1>Course archive</h1>

@@ -41,7 +41,7 @@ function Subjects(props: PropsForComponent) {
 
 	return (
 		<div>
-			<DefaultHeader menuSelect={0} pagePresenter="Workspace" />
+			<DefaultHeader program={program} menuSelect={0} pagePresenter="Workspace" />
 			<SubjectsLayout subjects={props.content.activeProgramSubjects} updateSubjects={props.updateSubjects} />
 		</div>
 	)
