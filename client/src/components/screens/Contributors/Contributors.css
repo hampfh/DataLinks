@@ -2,8 +2,8 @@
 .contributors-top-contributors-container {
 	display: grid;
 	grid-template-areas: 
-	"topContributor topContributor"
-	"secondContributor thirdContributor";
+	". topContributor topContributor ."
+	"secondContributor secondContributor thirdContributor thirdContributor";
 
 	column-gap: 15rem;
 	row-gap: 2rem;
@@ -40,6 +40,11 @@
 
 .contributors-third-contributor-container {
 	grid-area: thirdContributor;
+}
+
+.info-duplicates {
+	width: 20rem;
+	margin-bottom: 5rem;
 }
 
 .contributors-content-container {

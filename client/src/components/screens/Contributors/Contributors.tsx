@@ -122,7 +122,7 @@ function Contributors(props: PropsForComponent) {
 								</div>
 							}
 							{third &&
-								<div className="contributors-thrid-contributor-container">
+								<div className="contributors-third-contributor-container">
 									<TopContributor place={3} contributor={third} />
 								</div>
 							}
@@ -131,6 +131,10 @@ function Contributors(props: PropsForComponent) {
 							{
 								otherContributors.filter(current => current.contributionCount > 0).map((current, index) => <Contributor key={current.identifier[0]} place={index + 4} contributor={current} />)
 							}
+						</div>
+						<div className="info-duplicates">
+							<p>Do you have duplicates users?</p>
+							<p>That's because one "user" is tailored to the browser, if you change browser you are technically a new user. If you want to merge two accounts you can do so by contacting me on discord: Chain#4341</p>
 						</div>
 					</div>
 				}
