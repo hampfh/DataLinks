@@ -19,7 +19,7 @@ export default function Background() {
     
     const canvasRef = useRef(null)
     
-    const [dots, setDots] = useState<Array<Array<number>>>(getDotArray())
+    const [dots, ] = useState<Array<Array<number>>>(getDotArray())
 
     useEffect(() => {
 
@@ -55,7 +55,6 @@ export default function Background() {
             setWindowWidth(window.innerWidth - dotMargin)
             setWindowHeight(window.innerHeight - dotMargin)
 
-            //setDots(getDotArray())
             setTimeout(draw)
         }, debounceDelay)
     }

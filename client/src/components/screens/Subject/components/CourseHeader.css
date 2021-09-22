@@ -1,0 +1,29 @@
+.course-header-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-header-bg);
+    height: 5rem;
+}
+
+.course-header-edit-mode-switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.course-header-edit-mode-switch {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.course-header-backbutton {
+    margin: 1rem;
+    margin-left: 2rem;
+}
+
+.course-header-backbutton a:hover svg g rect,
+.course-header-backbutton a:hover svg g path {
+    fill: var(--color-gray-5);
+}

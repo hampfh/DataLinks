@@ -1,0 +1,56 @@
+@import "/src/components/root.css";
+
+.header-menu-container {
+    display: flex;
+}
+
+.header-menu-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 1rem;
+}
+
+.header-menu-item-text {
+    position: relative;
+    margin: 0;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
+}
+
+.header-menu-item-container a {
+    text-decoration: none;
+}
+
+.header-menu-item-text.selected::after {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -0.5rem;
+
+    display: block;
+    content: "";
+    background-color: var(--color-text);
+    width: 3rem;
+    height: 4px;
+
+    border-radius: 5px;
+
+    transition-property: width, height;
+    transition-duration: var(--default-transition-duration);
+}
+
+/* Mobile layout */
+@media (max-width: 550px) {
+    .header-menu-item-text {
+        font-size: 0.9rem;
+    }
+
+    .header-menu-item-text.selected:after {
+        width: 1.5rem;
+        height: 2px;
+    }
+}

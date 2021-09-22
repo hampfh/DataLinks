@@ -3,12 +3,10 @@
 /* The draggable wrapper is only applied when
     user initiates a dragging gesture 
 */
-.DraggableWrapper {
+.draggable-wrapper {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
 }
 
 .ButtonWrapperEditMode {
@@ -20,6 +18,10 @@
 
 .editModeField {
 	display: grid;
+}
+
+.editModeField:not(.editModeField:nth-child(1)) {
+	margin-top: 1rem;
 }
 
 .editLabel {
@@ -36,27 +38,7 @@
 	padding: 0.25rem;
 	color: white;
 	border: none;
-	background-color: var(--complementary);
-}
-
-.textObjectWrapper {
-	justify-self: center;
-
-	display: grid;
-	flex-direction: column;
-	align-items: center;
-	align-content: center;
-	text-align: center;
-	max-width: 20rem;
-	margin: 1rem;
-	margin-bottom: 2rem;
-}
-
-.Column > .textObjectWrapper {
-	margin-bottom: 0.5rem;
-}
-
-.ContentObjectContentWrapper {
-	display: flex;
-	justify-content: center;
+	background-color: var(--color-gray-3);
+	padding: 0.75rem;
+	margin-top: 0.5rem;
 }

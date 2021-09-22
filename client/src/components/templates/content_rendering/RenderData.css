@@ -1,17 +1,9 @@
 @import "../../root.css";
 
-.DataRendererWrapper {
-	width: 100%;
-}
+.group-content-wrapper {
+	display: flex;
+	flex-direction: column;
 
-.ContentObject {
-	margin-top: 1rem;
-}
-
-.RenderContentContainer {
-	margin-bottom: 1rem;
-}
-
-.RenderContentContainer.Group {
-	width: 100%;
+	justify-content: center;
+	align-items: center;
 }

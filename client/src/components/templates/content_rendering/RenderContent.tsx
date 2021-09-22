@@ -1,6 +1,5 @@
 import ContentObject from "components/templates/content_objects/ContentObject"
 import { ContentType } from "components/utilities/contentTypes"
-import React from "react"
 import { connect } from "react-redux"
 import { IReduxRootState } from "state/reducers"
 import { IAppState } from "state/reducers/app"
@@ -19,13 +18,13 @@ function RenderContent(props: PropsForComponent) {
     }
 
     return (
-        <div className={`RenderContentContainer ${props.content.group ? "Group" : ""}`}>
-            {props.app.flags.editMode ?
+        <div className={`RenderContentContainer ${props.content.group ? "Group" : ""} ${props.app.flags.editMode ? "editmode" : ""}`}>
+            {props.app.flags.editMode &&
                 <Draggable
                     cursor={props.cursor}
                     setInitialCursor={setInitialCursorObject}
                     setDragging={props.setDragging}
-                /> : null
+                />
             }
             {
                 props.content.group ?
@@ -33,37 +32,39 @@ function RenderContent(props: PropsForComponent) {
                         key={props.content._id}
                         group={props.content.group}
                         updateSubjects={props.updateSubjects}
-                    /> :
-                props.content.link || props.content.text || props.content.deadline ?
-                    <ContentObject
-                        key={props.content._id}
-                        type={
-                            props.content.link ?
-                                ContentType.LINK :
-                                props.content.text ?
-                                    ContentType.TEXT :
-                                    ContentType.DEADLINE
-                        }
-                        parentId={props.parentGroup}
-                        id={props.content._id}
-                        contentObject={
-                            props.content.link ?
-                                props.content.link :
-                                props.content.text ?
-                                    props.content.text :
-                                    props.content.deadline!
-                        }
-                        updateSubjects={props.updateSubjects}
-                    /> :
-                    null
+                        contentFilter={props.contentFilter}
+                    /> : 
+                    (props.content.link || props.content.text || props.content.deadline) &&
+                        <ContentObject
+                            key={props.content._id}
+                            type={
+                                props.content.link ?
+                                    ContentType.LINK :
+                                    props.content.text ?
+                                        ContentType.TEXT :
+                                        ContentType.DEADLINE
+                            }
+                            parentId={props.parentGroup}
+                            id={props.content._id}
+                            contentObject={
+                                props.content.link ?
+                                    props.content.link :
+                                    props.content.text ?
+                                        props.content.text :
+                                        props.content.deadline!
+                            }
+                            updateSubjects={props.updateSubjects}
+                        />
             }
         </div>
     )
 }
 
 interface PropsForComponent {
-    content: ContentObject, 
-    parentGroup: string, 
+    contentFilter?: (value: ContentObject, index: number, array: ContentObject[]) => boolean
+
+    content: ContentObject,
+    parentGroup: string,
     depth?: number,
     app: IAppState,
     updateSubjects: () => void,

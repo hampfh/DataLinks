@@ -49,14 +49,17 @@
 }
 
 .searchInput {
-    color: var(--primary);
+    color: var(--color-text);
     background-color: transparent;
     border: none;
 }
 
 .searchInput::placeholder {
-    color: var(--primary);
+    color: var(--color-text);
     opacity: 0.75;
+
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
 }
 
 .searchInput,
@@ -73,6 +76,7 @@
 
 .courseList {
     width: 100%;
+    margin-top: 3rem;
     margin-bottom: 5rem;
 }
 
@@ -87,6 +91,8 @@
     justify-content: space-between;
 
     margin-top: 1rem;
+
+    background-color: var(--color-canvas-layer);
     
     transition-property: background-color;
     transition-duration: 0.25s;
@@ -95,7 +101,7 @@
 }
 
 .archivedItem:hover {
-    background-color: var(--dark);
+    background-color: var(--color-canvas-nested-layer);
 }
 
 .archivedItem p {
@@ -105,7 +111,7 @@
 }
 
 .archivedItem:hover p {
-    color: white;
+    color: var(--color-text);
 }
 
 .archivedItemCode {

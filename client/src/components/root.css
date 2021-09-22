@@ -1,29 +1,105 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
 :root {
-	/* Please use official Datasektionen colours :P https://datasektionen.se/organisation/grafisk-profil */
-	--primary: #EE2A7B;
-	--complementary: #EC5F99;
-	--dark: #E83D84;
+	--primary: #E83D84;
+	--primary-light: #EC5F99;
+	--primary-strong: #EE2A7B;
 
+	/* Gray palette */
+	--color-gray-0: #22272e;
+	--color-gray-1: #2d333b;
+	--color-gray-2: #373e47;
+	--color-gray-3: #444c56;
+	--color-gray-4: #545d68;
+	--color-gray-5: #636e7b;
+	--color-gray-6: #768390;
+	--color-gray-7: #909dab;
+	--color-gray-8: #adbac7;
+	--color-gray-9: #cdd9e5;
+
+	/* Element specific variables */
+	--color-text: var(--color-gray-8);
+
+	--color-canvas-default: #1c2128;
+	--color-canvas-layer: var(--color-gray-0);
+	--color-canvas-nested-layer: var(--color-gray-1);
+
+	--color-border-default: var(--color-gray-3);
+	--color-border-nested: var(--color-gray-5);
+	--color-header-bg: var(--color-gray-1);
+	
+	--color-btn-bg: var(--color-gray-3);
+	--color-btn-hover-bg: var(--color-gray-4);
+	--color-btn-border: var(--color-gray-4);
+	--color-btn-hover-border: var(--color-gray-6);
+	--color-btn-text: var(--color-gray-8);
+
+	/* Contribution action colors */
 	--addition: #FCDA04;
 	--modification: #64b5f6;
 	--deletion: #e57373;
+
+	/* Size values */
+	--default-header-height: 10rem;
+	--default-border-width: 1px;
+
+	--default-transition-duration: 0.5s;
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		--primary-background: #F7F7F7;
-		--accent-background: #EC5F99;
-	}
+body {
+	background-color: var(--color-canvas-default);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--primary-background: #330019;
-		background-color: var(--primary-background);
-	}
-	body {
-		--primary-background: #330019;
-		background-color: var(--primary-background);
-	}
+h1,
+h2,
+h3,
+h4,
+p {
+	font-family: 'Roboto', sans-serif;
+	color: var(--color-text);
+}
+
+.default-box-container {
+	background-color: var(--color-canvas-layer);
+	border-radius: 10px;
+	border-color: var(--color-border-default);
+	border-width: var(--default-border-width);
+	border-style: solid;
+	scrollbar-width: thin;
+}
+
+.default-box-container::-webkit-scrollbar {
+	background-color: transparent;
+}
+.default-box-container::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: var(--color-canvas-nested-layer);
+}
+.default-box-container::-webkit-scrollbar-corner,
+.default-box-container::-webkit-scrollbar-button {
+	display: none;
+	background-color: transparent;
+}
+
+.default-nested-box-container {
+	background-color: var(--color-canvas-nested-layer);
+	border-radius: 10px;
+	border-color: var(--color-border-nested);
+	border-width: var(--default-border-width);
+	border-style: solid;
+}
+
+.default-nested-box-container.editmode {
+	font-family: "Roboto", sans-serif;
+	padding: 1rem;
+	margin: 1rem;
+}
+
+.default-nested-box-container-hover:hover {
+	cursor: pointer;
+	background-color: var(--color-gray-2);
+}
+
+.default-expanded {
+	width: 100%;
+	height: 100%;
 }

@@ -1,80 +1,71 @@
-.contributorsWrapper h1, 
-.contributorsWrapper h2, 
-.contributorsWrapper h3, 
-.contributorsWrapper p {
-	color: white;
+
+.contributors-top-contributors-container {
+	display: grid;
+	grid-template-areas: 
+	". topContributor topContributor ."
+	"secondContributor secondContributor thirdContributor thirdContributor";
+
+	column-gap: 15rem;
+	row-gap: 2rem;
+
+	margin-top: 2rem;
+
+	transition-property: column-gap;
+    transition-duration: var(--default-transition-duration);
 }
 
-.contributorsWrapper h1 {
-	text-align: center;
-}
 
-.contributorsWrapper {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-}
-
-.contributorsContainer {
-	width: 35rem;
-	height: 100vh;
-	overflow-y: auto;
-	scrollbar-width: thin;
-}
-
-.contributorsContainer::-webkit-scrollbar {
-	width: 0.4rem;
-	border-radius: 5px;
-}
-
-.contributorsContainer::-webkit-scrollbar-thumb {
-	background-color: var(--primary);
-	border-radius: 5px;
-}
-
-.contributorList {
-	margin: 2rem;
-}
-
-/* Light theme colors */
-@media (prefers-color-scheme: light) {
-	.contributorsWrapper h1, 
-	.contributorsWrapper h2, 
-	.contributorsWrapper h3, 
-	.contributorsWrapper p {
-		color: var(--primary);
+@media (max-width: 1100px) {
+	.contributors-top-contributors-container {
+		column-gap: 7rem;
 	}
 }
 
-.contributorsWrapper .logoutIcon {
-	top: 1.5rem;
-	left: 1rem;
-	padding: 0.5rem;
-	background-color: var(--primary);
+@media (max-width: 800px) {
+	.contributors-top-contributors-container {
+		grid-template-areas: 
+		"topContributor"
+		"secondContributor"
+		"thirdContributor";
+	}
 }
 
-.contributorAsideNote {
-	display: none;
-	font-style: italic;
+.contributors-top-contributor-container {
+	grid-area: topContributor;
 }
 
-.contributorIsSelf {
-	background-color: var(--primary);
-	border-radius: 4px;
+.contributors-second-contributor-container {
+	grid-area: secondContributor;
+}
+
+.contributors-third-contributor-container {
+	grid-area: thirdContributor;
+}
+
+.info-duplicates {
+	width: 20rem;
+	margin-bottom: 5rem;
+}
+
+.contributors-content-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.contributors-title {
 	text-align: center;
-	color: white;
-	margin-left: 0.5rem;
-	padding: 0.3rem 0.5rem;
 }
 
-@media(min-width: 85rem) {
-	.contributorAsideNote {
-		display: block;
-		position: absolute;
-		width: 15rem;
-		top: 50%;
-		right: 10%;
-		transform: translateY(-50%);
+.contributors-rest-container {
+	margin-top: 5rem;
+	margin-bottom: 5rem;
+	max-width: 40rem;
+}
+
+@media (min-width: 1000px) {
+	.contributors-rest-container {
+		width: 30rem;
 	}
 }

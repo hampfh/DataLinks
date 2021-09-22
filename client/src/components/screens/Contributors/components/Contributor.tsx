@@ -4,30 +4,7 @@ import "./Contributor.css"
 import { IReduxRootState } from 'state/reducers'
 import { connect } from "react-redux"
 
-class Contributor extends Component<PropsForComponent, StateForComponent> {
-
-	fadeIn?: NodeJS.Timeout
-	timeout?: NodeJS.Timeout
-	constructor(props: PropsForComponent) {
-		super(props)
-
-		this.state = {
-			hidden: true
-		}
-	}
-
-	componentDidMount = () => {
-		this.timeout = setTimeout(() => {
-			let newState = { ...this.state }
-			newState.hidden = false
-			this.setState(newState)
-		}, this.props.place * 100)
-	}
-
-	componentWillUnmount() {
-		if (this.timeout)
-			clearTimeout(this.timeout)
-	}
+class Contributor extends Component<PropsForComponent> {
 
 	displayDate() {
 		// Is the edit today?
@@ -52,29 +29,35 @@ class Contributor extends Component<PropsForComponent, StateForComponent> {
 		const deletesWidth = containerWidth * (this.props.contributor.contributions.operations.deletes / totalEdits)
 
 		return (
-			<div className={`${this.state.hidden ? "hidden" : "contributorElementWrapper"}`}>
+			<div className="contributorElementWrapper">
 				<div className="contributor">
 					<p className={`name`}>
 						{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span>
 						{this.props.contributor.identifier.findIndex((current) => current === this.props.fingerprint) >= 0 ?
-							<span className="contributorIsSelf">You</span> : null
+							<span className="contributor-is-self">You</span> : null
 						}
 					</p>
 					<p className="score">{this.props.contributor.contributionCount}</p>
-					<p className="date">{this.displayDate()}</p>
+					<p title="Last contribution" className="date">{this.displayDate()}</p>
 				</div>
 				<div className="editSummeryBar">
-					{createsWidth > 0 ? 
-						<div className="creates segment" style={{ width: createsWidth }} /> : 
-						null
+					{createsWidth > 0 &&
+						<div 
+							title={`${this.props.contributor.contributions.operations.creates} creates`}
+							className="creates segment" style={{ width: createsWidth }} 
+						/>
 					}
-					{updatesWidth > 0 ? 
-						<div className="updates segment" style={{ width: updatesWidth }} /> :
-						null
+					{updatesWidth > 0 &&
+						<div
+							title={`${this.props.contributor.contributions.operations.updates} updates`} 
+							className="updates segment" style={{ width: updatesWidth }} 
+						/>
 					}
-					{deletesWidth > 0 ?
-						<div className="deletes segment" style={{ width: deletesWidth }} /> :
-						null
+					{deletesWidth > 0 &&
+						<div
+							title={`${this.props.contributor.contributions.operations.deletes} deletes`} 
+							className="deletes segment" style={{ width: deletesWidth }} 
+						/>
 					}
 				</div>
 			</div>
@@ -100,10 +83,6 @@ interface PropsForComponent {
 	place: number,
 	contributor: IContributor,
 	fingerprint?: string
-}
-
-interface StateForComponent {
-	hidden: boolean
 }
 
 const reduxSelect = (state: IReduxRootState) => ({

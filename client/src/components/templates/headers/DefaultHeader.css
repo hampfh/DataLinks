@@ -1,0 +1,52 @@
+@import "../../root.css";
+
+.default-header-container {
+    width: 100%;
+    height: var(--default-header-height);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.default-header-page-presenter-container {
+    grid-area: HeaderPagePresenter;
+    width: 15rem;
+}
+
+@media (max-width: 700px) {
+    .default-header-container {
+        display: grid;
+        grid-template-areas: 
+        "HeaderPagePresenter Version"
+        "NavMenu NavMenu";
+    }
+}
+
+.default-header-menu {
+    grid-area: NavMenu;
+
+    display: flex;
+    justify-content: center;
+}
+
+.default-header-version-container {
+    grid-area: Version;
+    height: 100%;
+}
+
+@media(min-width: 850px) {
+    .default-header-version-container {
+        min-width: 15rem;
+    }
+}
+
+.default-header-version-number {
+    font-size: 1.3rem;
+
+    text-align: right;
+
+    font-weight: 100;
+    margin: 2rem;
+    color: var(--primary);
+}

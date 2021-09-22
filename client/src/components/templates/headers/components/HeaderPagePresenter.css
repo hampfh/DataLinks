@@ -1,0 +1,41 @@
+@import "/src/components/root.css";
+
+.header-page-presenter-container {
+    margin-left: 2rem;
+    margin-top: 1rem;
+    height: calc(100% - 3rem);
+}
+
+.header-page-presenter-primary {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--primary);
+
+    margin: 0;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
+}
+
+.header-page-presenter-secondary {
+    font-size: 2rem;
+    font-weight: 100;
+    color: var(--primary);
+    margin: 0;
+
+   
+}
+
+@media (max-width: 700px) {
+    .header-page-presenter-container {
+        height: calc(50% - 3rem);
+    }
+
+    .header-page-presenter-primary {
+        font-size: 1.5rem;
+    }
+    
+    .header-page-presenter-secondary {
+        font-size: 1rem;
+    }
+}

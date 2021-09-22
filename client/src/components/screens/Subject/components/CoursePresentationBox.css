@@ -1,0 +1,49 @@
+.course-presentation-box-container {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 3rem;
+    padding: 2.5rem;
+    width: 80vw;
+    max-width: 50rem;
+
+    transition-property: padding;
+    transition-duration: var(--default-transition-duration);
+}
+
+.course-presentation-box-title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 0;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
+}
+
+.course-presentation-box-coursecode {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.course-presentation-box-coursedescription {
+    text-align: center;
+}
+
+.course-presentation-box-separator {
+    width: 5rem;
+    height: 4px;
+    background-color: var(--color-text);
+    border-radius: 5px;
+}
+
+@media (max-width: 650px) {
+    .course-presentation-box-container {
+        padding: 1rem
+    }
+    .course-presentation-box-title {
+        font-size: 1rem;
+    }
+}

@@ -1,7 +1,7 @@
 export const COMPLETED_DEADLINES_KEY = "completedDeadlines"
 export type LOCALSTORAGE_OPERATION = "ADD" | "REMOVE"
 
-function saveCompletedDeadlines(operation: LOCALSTORAGE_OPERATION, hash: string) {
+export function saveCompletedDeadlines(operation: LOCALSTORAGE_OPERATION, hash: string) {
 
 	function initializeDeadlineStorage(hash: string) {
 		localStorage.setItem(COMPLETED_DEADLINES_KEY, JSON.stringify([
@@ -74,26 +74,6 @@ export const removeCompleteDeadline = (hash: string) => {
 	saveCompletedDeadlines("REMOVE", hash)
 	return {
 		type: "UN_COMPLETE_DEADLINE",
-		payload: {
-			hash
-		}
-	}
-}
-
-export interface IHasAnimatedDeadline { (hash: string): void }
-export const hasAnimatedDeadline = (hash: string) => {
-	return {
-		type: "HAS_ANIMATED",
-		payload: {
-			hash
-		}
-	}
-}
-
-export interface IResetAnimatedDeadline { (hash: string): void }
-export const resetAnimatedDeadline = (hash: string) => {
-	return {
-		type: "RESET_ANIMATED",
 		payload: {
 			hash
 		}

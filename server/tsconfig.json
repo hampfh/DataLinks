@@ -67,6 +67,6 @@
 		"emitDecoratorMetadata": true
 	},
 	"include": [
-		"app"
+		"src"
 	]
 }

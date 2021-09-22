@@ -1,29 +1,64 @@
-.GroupContainer {
-	display: block;
-    padding: 0.25rem;
-    border-top-style: solid;
-    border-top-color: white;
-    border-top-width: 3px;
-}
+@import "/src/components/root.css";
 
-.GroupContainer:not(.Nested) {
-	align-self: flex-start;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	flex-direction: row;
+.group-item-container {
+	display: flex;
 	justify-content: center;
-	margin: 1rem;
-	min-width: 15rem;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
 
-	border-top-style: solid;
-	border-top-color: white;
-	border-top-width: 2px;
-	padding-top: 1rem;
+	max-width: 50rem;
 }
 
-.NoBorder {
-	padding-top: 0 !important;
-	margin-left: 0 !important;
-	margin-right: 0 !important;
-	border: none !important;
+.dynamic-content-group-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.group-item-container.Column {
+	flex-direction: column;
+}
+
+.RenderContentContainer.Group {
+	width: 100%;
+}
+
+.RenderContentContainer.editmode {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.border,
+.header-border {
+	border-color: var(--color-text);
+	border-width: 2px;
+	border-style: solid;
+}
+
+.header-border {
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+}
+
+.group-item-title {
+	font-size: 1.25rem;
+}
+
+/* Mobile layout */
+@media (max-width: 550px) {
+    .group-item-container {
+        flex-direction: column;
+		flex-wrap: nowrap;
+    }
+}
+
+.dummy-element {
+	background-color: var(--color-canvas-layer);
 }

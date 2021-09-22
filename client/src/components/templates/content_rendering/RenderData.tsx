@@ -42,34 +42,41 @@ function RenderData(props: PropsForComponent) {
 	} | undefined>(undefined)
 
 	return (
-		<div className="DataRendererWrapper">
+		<div className="group-content-wrapper">
 			<Group 
 				group={props.group}
+				ignoreGroups={props.ignoreGroups}
 				updateSubjects={fetchUpdatedSubjects}
+				contentFilter={props.contentFilter}
 			/>
-			<GroupForm 
-				forRoot
-				parentId={props.group._id}
-				newGroup={newGroup}
-				createGroup={(isSubGroup: boolean) => setNewGroup({
-					name: "",
-					parentGroup: props.group._id,
-					isSubGroup
-				})}
-				submitGroup={(name: string) => onSubmitGroup(name, newGroup!, props.app.fingerprint!)}
-			/>
+			{!props.ignoreGroups &&
+				<GroupForm 
+					forRoot
+					parentId={props.group._id}
+					newGroup={newGroup}
+					createGroup={(isSubGroup: boolean) => setNewGroup({
+						name: "",
+						parentGroup: props.group._id,
+						isSubGroup
+					})}
+					submitGroup={(name: string) => onSubmitGroup(name, newGroup!, props.app.fingerprint!)}
+				/>
+			}
 		</div>
 	)
 }
 
 interface PropsForComponent {
-	app: IAppState,
-	group: Group,
-	local: ILocalState,
-	deleteLocally: IDeleteLocally,
+	ignoreGroups?: boolean
+	contentFilter?: (value: ContentObject, index: number, array: ContentObject[]) => boolean
+	
+	app: IAppState
+	group: Group
+	local: ILocalState
+	deleteLocally: IDeleteLocally
 	addLocal: IAddLocal
-	editLocal: IEditLocal,
-	updateSubjects: () => void,
+	editLocal: IEditLocal
+	updateSubjects: () => void
 }
 
 

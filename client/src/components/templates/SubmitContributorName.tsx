@@ -68,7 +68,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 			<div className="contributorOverlayWrapper">
 				<div className="contributorContentContainer">
 					<h3>Contributor</h3>
-					<p>Hi! Thank you for contributing to DataLinks. As a contributor, all your changes are associated with you and for each edit you increase your contribution score. Enter your preferred display name as a contributor (leave empty for anonymous)</p>
+					<p>Hi! Thank you for contributing to DataLinks. As a contributor, all your changes are associated with you and for each edit, you increase your contribution score. Enter your preferred display name as a contributor or leave it empty to appear anonymous</p>
 					<p>Note that a contributor is related to the browser, if you change device and/or browser you're considered another contributor. It is possible to link together multiple browsers to act as one contributor, however this is a manual task and therefore requires you to contact the page administrator on discord: Chain#4341</p>
 					<div className="contributorInteractive">
 						<input onChange={this.inputChange} placeholder="Display name" value={this.state.nameInput} />
