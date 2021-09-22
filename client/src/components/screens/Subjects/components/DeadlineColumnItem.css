@@ -4,6 +4,7 @@
     column-gap: 1rem;
 
     margin: 1rem;
+    margin-top: 2rem;
     margin-bottom: 0;
 
     transition-property: opacity, transform, margin-top, margin-bottom;
@@ -28,7 +29,16 @@
 .deadline-column-item-displayText {
     font-size: 1.2rem;
     margin: 0;
+    margin-bottom: 0.1rem;
     color: var(--primary);
+}
+
+.deadline-column-item-displayText.small {
+    font-size: 0.8rem;
+}
+
+.deadline-column-item-description-container {
+    margin-bottom: 0.5rem;
 }
 
 .deadline-column-item-passed-text-container p {
@@ -52,7 +62,6 @@
 }
 
 .deadline-column-item-datetime-container {
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -97,6 +106,8 @@
     border-style: solid;
 
     border-radius: 5px;
+
+    user-select: none;
 }
 
 .deadline-column-item-button:hover {

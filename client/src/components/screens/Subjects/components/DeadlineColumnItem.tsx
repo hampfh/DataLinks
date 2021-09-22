@@ -43,18 +43,43 @@ function DeadlineColumnItem(props: PropsForComponent) {
         }, 1000 * animationDuration)
     }
 
+    function extractFirstWord(string: string): { first: string, second: string | undefined } {
+        let partOne = ""
+        let partTwo = ""
+
+        const splits = string.split(" ")
+        partOne = splits[0]
+
+        if (splits.length < 2) {
+            return { first: partOne, second: undefined }
+        }
+
+        for (let i = 1; i < splits.length; i++) {
+            partTwo += `${splits[i]} `
+        }
+
+        return { first: partOne, second: partTwo }
+    }
+
+    const { first, second } = extractFirstWord(props.deadlineObject.displayText)
+
     return (
         <div 
             title="Mark this deadline as done"
             ref={wrapper} 
             className="deadline-column-item-container" 
             style={{
-                marginBottom: completeAnimation && wrapper.current != null ? `calc(${-wrapper.current.clientHeight}px - 1rem)` : 0,
+                marginBottom: completeAnimation && wrapper.current != null ? `calc(${-wrapper.current.clientHeight}px - 2rem)` : 0,
                 opacity: completeAnimation ? 0 : 1
             }
         }>
             <div className="deadline-column-item-content-container">
-                <h4 className="deadline-column-item-displayText">{props.deadlineObject.displayText}</h4>
+                <div className="deadline-column-item-description-container">
+                    <h4 className="deadline-column-item-displayText">{first}</h4>
+                    {second &&
+                        <h4 className="deadline-column-item-displayText small">{second}</h4>
+                    }
+                </div>
                 {remaining.months + remaining.weeks + remaining.days + remaining.hours + remaining.minutes + remaining.seconds <= 0 ?
                     <div className="deadline-column-item-passed-text-container">
                         <p>Passed</p>
