@@ -111,15 +111,21 @@ function Contributors(props: PropsForComponent) {
 					<div className="contributors-content-container">
 						<h1 className="contributors-title">Top contributors</h1>
 						<div className="contributors-top-contributors-container">
-							<div className="contributors-top-contributor-container">
-								<TopContributor place={1} contributor={first} />
-							</div>
-							<div className="contributors-second-contributor-container">
-								<TopContributor place={2} contributor={second} />
-							</div>
-							<div className="contributors-thrid-contributor-container">
-								<TopContributor place={3} contributor={third} />
-							</div>
+							{first &&
+								<div className="contributors-top-contributor-container">
+									<TopContributor place={1} contributor={first} />
+								</div>
+							}
+							{second && 
+								<div className="contributors-second-contributor-container">
+									<TopContributor place={2} contributor={second} />
+								</div>
+							}
+							{third &&
+								<div className="contributors-thrid-contributor-container">
+									<TopContributor place={3} contributor={third} />
+								</div>
+							}
 						</div>
 						<div className="contributors-rest-container">
 							{
@@ -129,27 +135,6 @@ function Contributors(props: PropsForComponent) {
 					</div>
 				}
 			</div>
-			{/* <section className="contributorsWrapper">
-				<div className="contributorsContainer">
-					<Link to={`/${DataLoader.getActiveProgram()?.name ?? 404}`}>
-						<img className="logoutIcon" alt="Exit view" src={logoutIcon} />
-					</Link>
-					<h1>Top contributors</h1>
-					<section className="contributorList">
-						<div className="contributor header">
-							<h3 className="name">Name</h3>
-							<h3 className="score">Contributions</h3>
-							<h3 className="date">Last edit</h3>
-						</div>
-						{contributors.map((contributor, index) => 
-							// Only show contributor if it is yourself OR you have more than 0 contributions
-							(contributor.contributionCount > 0 || contributor.identifier.findIndex((current) => current === props.app.fingerprint) >= 0) &&
-								<Contributor key={contributor.identifier[0]} place={index + 1} contributor={contributor} />
-							)
-						}
-					</section>
-				</div>
-			</section> */}
 		</>
 	)
 }
