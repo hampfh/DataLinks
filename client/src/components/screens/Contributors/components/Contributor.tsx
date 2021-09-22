@@ -34,7 +34,7 @@ class Contributor extends Component<PropsForComponent> {
 					<p className={`name`}>
 						{this.props.place}. <span>{this.props.contributor.name ?? "Anonymous"}</span>
 						{this.props.contributor.identifier.findIndex((current) => current === this.props.fingerprint) >= 0 ?
-							<span className="contributorIsSelf">You</span> : null
+							<span className="contributor-is-self">You</span> : null
 						}
 					</p>
 					<p className="score">{this.props.contributor.contributionCount}</p>

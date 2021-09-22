@@ -58,3 +58,9 @@
 	margin-bottom: 5rem;
 	max-width: 40rem;
 }
+
+@media (min-width: 1000px) {
+	.contributors-rest-container {
+		width: 30rem;
+	}
+}

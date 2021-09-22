@@ -19,6 +19,13 @@
 	height: 3rem;
 }
 
+@media (max-width: 400px) {
+	.contributor {
+		height: fit-content;
+		margin-bottom: 1rem;
+	}
+}
+
 .hidden {
 	display: none;
 }
@@ -96,4 +103,11 @@ h3.date {
 .segment:nth-last-child(1) {
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
+}
+
+.contributor-is-self {
+	border-radius: 10px;
+	margin: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background-color: var(--color-canvas-nested-layer);
 }
