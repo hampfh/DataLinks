@@ -1,6 +1,6 @@
 import { DataLoader } from 'functions/DataLoader'
 import isMobile from 'functions/isMobile'
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from 'state/actions/app'
@@ -10,13 +10,10 @@ import "./CourseHeader.css"
 
 function CourseHeader(props: PropsForComponent) {
 
-    const [editModeSwitchActive, setEditModeSwitchActive] = useState<boolean | undefined>(undefined)
 
     function _flickEditMode(event: React.ChangeEvent<HTMLInputElement>) {
 
 		const checked = event.target.checked
-
-		setEditModeSwitchActive(!props.editMode)
 
 		if (checked)
 			props.enableEditMode()
@@ -35,7 +32,7 @@ function CourseHeader(props: PropsForComponent) {
 					<div className="course-header-edit-mode-switch-container">
 						<p>Default mode</p>
 						<label className="course-header-edit-mode-switch switch">
-							<input onChange={(event) => _flickEditMode(event)} checked={editModeSwitchActive && props.editMode} type="checkbox" />
+							<input onChange={(event) => _flickEditMode(event)} checked={props.editMode} type="checkbox" />
 							<span className="slider round"></span>
 						</label>
 						<p>Edit mode</p>
