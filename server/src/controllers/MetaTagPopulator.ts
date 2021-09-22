@@ -99,4 +99,34 @@ export default class MetaTagPopulator {
 			res.send(htmlData)
 		})
 	}
+
+	populateContributors = (req: express.Request, res: express.Response): void => {
+		MetaTagPopulator.loadIndexFile(res, (htmlData) => {	
+			const program = req.params.program
+			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
+				title: "DataLinks - Contributions",
+				description: "Contribution leaderboard for DataLinks",
+				thumbnail: MetaTagPopulator.getDisplayLogo("PNG", program),
+				favicon: MetaTagPopulator.getDisplayLogo("ICO", program)
+			})
+	
+			res.send(htmlData)
+		})
+	}
+
+	populateArchives = (req: express.Request, res: express.Response): void => {
+		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
+			
+			const program = req.params.program
+	
+			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
+				title: `DataLinks - ${program} - Archive`,
+				description: `Course archive for ${program}`,
+				thumbnail: MetaTagPopulator.getDisplayLogo("PNG", program),
+				favicon: MetaTagPopulator.getDisplayLogo("ICO", program)
+			})
+	
+			res.send(htmlData)
+		})
+	}
 }
