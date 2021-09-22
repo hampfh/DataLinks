@@ -13,10 +13,6 @@ function DeadlineColumn(props: PropsForComponent) {
         setDeadlines(sortDeadlines(getDeadlines(props.subjects)))
     }, [props.subjects])
 
-    useEffect(() => {
-        console.log("UPDATE")
-    })
-
     function removeDeadline(id: string) {
         setDeadlines(deadlines.filter((current) => current._id !== id))
     }
