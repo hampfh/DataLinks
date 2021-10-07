@@ -78,6 +78,7 @@ export default class TemporaryFields extends Component<PropsForComponent, StateF
 						value={this.state.fieldTwo}
 					/>
 					<button onClick={this._submitFields}>Submit content</button>
+					<button onClick={this.props.onCancel}>Cancel</button>
 				</div>
 			</div>
 		)
@@ -88,6 +89,7 @@ interface PropsForComponent {
 	parentId: string,
 	type: ContentType,
 	onSubmitElement: (newElement: StateForComponent, isGroup?: boolean | undefined) => Promise<void>
+	onCancel: () => void
 }
 
 export interface StateForComponent {

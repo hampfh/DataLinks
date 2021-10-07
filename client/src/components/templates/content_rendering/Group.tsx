@@ -159,7 +159,31 @@ function Group(props: PropsForComponent) {
                 <h4 className="group-item-title">{props.group.name}</h4> // Display group name
             }
 
+            { // Control panel for group
+                props.app.flags.editMode && 
+                    <GroupButtonPanel 
+                        group={props.group}
+                        newGroup={newGroup}
+                        updateGroup={updateGroup}
+                        setNewGroup={setNewGroup}
+                        setNewElement={setNewElement}
+                        fingerprint={props.app.fingerprint!}
+                    />
+            }
+
             <div className={`group-item-container ${dragging ? "dragging" : ""} ${props.group.column ? "Column" : ""}`}>
+                { // Generate temporary elements
+                    newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
+                    <TemporaryFields 
+                        onSubmitElement={async (temporaryElement: NewElement) => {
+                            if (await onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) === 0)
+                                setNewElement(undefined)
+                        }}
+                        onCancel={() => setNewElement(undefined)}
+                        type={newElement?.type}
+                        parentId={props.group._id}
+                    />
+                }
                 { // Generate all elements in group
                     content.filter(propFilter).map((contentElement) => {
                         // Dummy element
@@ -227,30 +251,7 @@ function Group(props: PropsForComponent) {
                         </div>
                     </div>
                 }
-
-                { // Generate temporary elements
-                    newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
-                    <TemporaryFields 
-                        onSubmitElement={async (temporaryElement: NewElement) => {
-                            if (await onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) === 0)
-                                setNewElement(undefined)
-                        }}
-                        type={newElement?.type}
-                        parentId={props.group._id}
-                    />
-                }
             </div>
-            { // Control panel for group
-                props.app.flags.editMode && 
-                    <GroupButtonPanel 
-                        group={props.group}
-                        newGroup={newGroup}
-                        updateGroup={updateGroup}
-                        setNewGroup={setNewGroup}
-                        setNewElement={setNewElement}
-                        fingerprint={props.app.fingerprint!}
-                    />
-            }
         </div>
     )
 }
