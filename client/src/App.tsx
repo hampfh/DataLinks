@@ -102,9 +102,9 @@ function App(props: PropsForComponent) {
 		else if (version !== lastVersion) {
 			if (incomingVersionIsNewer(lastVersion, "4.0.0")) {
 				window.alert(`UPDATE!!!\nWelcome datalinks version 4.0.0\n\nThis version is a massive redesign of the whole site aiming to embrace the dark theme and reduce the vibrant colors but also the program flow and UX\n\nI want to address the chaos in this version to make it easier to find your content and easier to get an overview. I hope you find this update helpful`)
-				localStorage.setItem("version", version)
-				dispatch({ type: "SET_LAST_VERSION", payload: { version: lastVersion }})
 			}
+			localStorage.setItem("version", version)
+			dispatch({ type: "SET_LAST_VERSION", payload: { version: lastVersion }})
 		}
 	}
 	

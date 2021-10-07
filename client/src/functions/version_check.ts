@@ -34,5 +34,5 @@ export function incomingVersionIsNewer(currentVersion: string, incomingVersion: 
         return true
     else if (incomingSplit[2] < currentSplit[2])
         return false
-    return true
+    return false
 }
