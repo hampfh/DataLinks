@@ -96,7 +96,7 @@ function Group(props: PropsForComponent) {
         })
     }
 
-    useDebounce(() => mouseGestureMoveSettled(cursor), 200, [cursor])
+    useDebounce(() => mouseGestureMoveSettled(cursor), 300, [cursor])
 
     function mouseGestureMoveSettled(cursor: IPosition) {
         if (!dragging)
@@ -114,7 +114,7 @@ function Group(props: PropsForComponent) {
         // if an index is set and that index
         // ins't the one we started at
         const index = getTarget(cursor, groupContent)
-        if (index >= 0 && index !== initialIndex) {
+        if (index >= 0 && index !== content.findIndex(current => current._id === "DUMMY")) {
             newContent.splice(index, 0, { _id: "DUMMY"})
             setContent(newContent)
         }
