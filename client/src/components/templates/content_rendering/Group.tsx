@@ -114,7 +114,7 @@ function Group(props: PropsForComponent) {
         // if an index is set and that index
         // ins't the one we started at
         const index = getTarget(cursor, groupContent)
-        if (index >= 0 && index !== content.findIndex(current => current._id === "DUMMY")) {
+        if (index >= 0) {
             newContent.splice(index, 0, { _id: "DUMMY"})
             setContent(newContent)
         }
