@@ -42,17 +42,27 @@ export default class GroupController extends CrudController {
 		const newGroup = new GroupModel(object)
 
 		// Assign group to parent
-		await GroupModel.updateOne({
-			_id: req.body.parentGroup
-		}, {
-			$push: {
-				content: {
-					_id: new Mongoose.Types.ObjectId().toHexString(),
-					placement: req.body.placement ?? 0,
-					group: newGroup._id
+		try {
+			await GroupModel.updateOne({
+				_id: req.body.parentGroup
+			}, {
+				$push: {
+					content: {
+						$each: [{
+							_id: new Mongoose.Types.ObjectId().toHexString(),
+							placement: req.body.placement ?? 0,
+							group: newGroup._id
+						}],
+						$position: req.body.placement
+					}
 				}
-			}
-		})
+			})
+		} catch (error) {
+			res.status(400).json({
+				message: "The action could not be performed, probably because the positional argument exceeds the object count"
+			})
+			return
+		}
 
 		await newGroup.save().catch(() => {
 			res.status(500).json({

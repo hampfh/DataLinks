@@ -28,17 +28,26 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		const result = await GroupModel.updateOne({
-			_id: req.body.parentGroup
-		}, {
-			$push: {
-				content: appendObject
+		try {
+			const result = await GroupModel.updateOne({
+				_id: req.body.parentGroup
+			}, {
+				$push: {
+					content: {
+						$each: [appendObject],
+						$position: req.body.placement
+					}
+				}
+			})
+			if (result.nModified <= 0) {
+				res.status(404).json({
+					message: "Parent group doesn't exist"
+				})
+				return
 			}
-		})
-
-		if (result.nModified <= 0) {
-			res.status(404).json({
-				message: "Parent group doesn't exist"
+		} catch (error) {
+			res.status(400).json({
+				message: "The action could not be performed, probably because the positional argument exceeds the object count"
 			})
 			return
 		}
@@ -84,18 +93,26 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		
-		const result = await GroupModel.updateOne({
-			_id: req.body.parentGroup
-		}, {
-			$push: {
-				content: appendObject
+		try {
+			const result = await GroupModel.updateOne({
+				_id: req.body.parentGroup
+			}, {
+				$push: {
+					content: {
+						$each: [appendObject],
+						$position: req.body.placement
+					}
+				}
+			})
+			if (result.nModified <= 0) {
+				res.status(404).json({
+					message: "Parent group doesn't exist"
+				})
+				return
 			}
-		})
-
-		if (result.nModified <= 0) {
-			res.status(404).json({
-				message: "Parent group doesn't exist"
+		} catch (error) {
+			res.status(400).json({
+				message: "The action could not be performed, probably because the positional argument exceeds the object count"
 			})
 			return
 		}
@@ -142,17 +159,26 @@ export default class ContentController extends CrudController {
 			}
 		}
 
-		const result = await GroupModel.updateOne({
-			_id: req.body.parentGroup
-		}, {
-			$push: {
-				content: appendObject
+		try {
+			const result = await GroupModel.updateOne({
+				_id: req.body.parentGroup
+			}, {
+				$push: {
+					content: {
+						$each: [appendObject],
+						$position: req.body.placement
+					}
+				}
+			})
+			if (result.nModified <= 0) {
+				res.status(404).json({
+					message: "Parent group doesn't exist"
+				})
+				return
 			}
-		})
-
-		if (result.nModified <= 0) {
-			res.status(404).json({
-				message: "Parent group doesn't exist"
+		} catch (error) {
+			res.status(400).json({
+				message: "The action could not be performed, probably because the positional argument exceeds the object count"
 			})
 			return
 		}
