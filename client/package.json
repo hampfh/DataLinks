@@ -1,6 +1,6 @@
 {
   "name": "datalinks-client",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "private": true,
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.3.0",

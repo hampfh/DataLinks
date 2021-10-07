@@ -78,10 +78,7 @@ function Group(props: PropsForComponent) {
                     .draggable-wrapper > .ContentObject > .RenderContentContainer > .dynamic-content-group-container
                 `)
                 if (draggableContainer) {
-                    console.log({
-                        width: draggableContainer?.clientWidth,
-                        height: draggableContainer?.clientHeight
-                    })
+
                     setDraggableElementSize({
                         width: draggableContainer?.clientWidth,
                         height: draggableContainer?.clientHeight
