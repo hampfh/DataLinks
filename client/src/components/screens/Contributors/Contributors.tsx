@@ -29,7 +29,6 @@ function Contributors(props: PropsForComponent) {
 					method: "GET"
 				})
 
-				console.log("GET CONTRIBUTORS")
 				setContributors(response.contributors)
 				setHasLoaded(true)
 			}
