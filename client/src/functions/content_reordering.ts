@@ -57,12 +57,16 @@ export function isWithinBoundaries(
         position.y > target.y && position.y < target.y + target.height
 }
 
-export function getTarget(cursor: React.MouseEvent<HTMLDivElement, MouseEvent>, elements: NodeListOf<Element>): number {
+/**
+ * Go through all elements in the subject
+ * and check if the cursor is hovering over it
+ */
+export function getTarget(cursor: IPosition, elements: NodeListOf<Element>): number {
 
     for (let i = 0; i < elements.length; i++) {
         if (isWithinBoundaries({
-            x: cursor.clientX,
-            y: cursor.clientY
+            x: cursor.x,
+            y: cursor.y
         }, {
             x: elements[i].getBoundingClientRect().left,
             y: elements[i].getBoundingClientRect().top,

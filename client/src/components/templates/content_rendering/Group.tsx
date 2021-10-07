@@ -14,6 +14,7 @@ import "./Group.css"
 import Dummy from '../content_objects/Dummy'
 import { calculateIndexFromRelative, getTarget, insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
 import GroupButtonPanel from './GroupButtonPanel'
+import useDebounce from 'functions/hooks/useDebouncer'
 
 const MAX_EDIT_ELEMENTS_PER_ROW = 3
 
@@ -89,6 +90,15 @@ function Group(props: PropsForComponent) {
     }
 
     function grapGestureMove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        setCursor({
+            x: event.clientX,
+            y: event.clientY + window.scrollY
+        })
+    }
+
+    useDebounce(() => mouseGestureMoveSettled(cursor), 200, [cursor])
+
+    function mouseGestureMoveSettled(cursor: IPosition) {
         if (!dragging)
             return
 
@@ -99,19 +109,18 @@ function Group(props: PropsForComponent) {
             .group-item-container.dragging > .RenderContentContainer > .dynamic-content-group-container, 
             .dummy-element
         `)
-        const index = getTarget(event, groupContent)
-        if (index >= 0) {
+
+        // Only update the content state
+        // if an index is set and that index
+        // ins't the one we started at
+        const index = getTarget(cursor, groupContent)
+        if (index >= 0 && index !== initialIndex) {
             newContent.splice(index, 0, { _id: "DUMMY"})
             setContent(newContent)
         }
-
-        setCursor({
-            x: event.clientX,
-            y: event.clientY + window.scrollY
-        })
     }
 
-    function grapGestureEnd(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    function grapGestureEnd() {
         if (draggableElement) {
             setDragging(false)
             setInitialIndex(0)
@@ -131,7 +140,7 @@ function Group(props: PropsForComponent) {
     }
 
     function propFilter(value: ContentObject, index: number, array: ContentObject[]) {
-        if (props.contentFilter)
+        if (props.contentFilter != null)
             return props.contentFilter(value, index, array)
         return true
     }
