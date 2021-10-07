@@ -14,9 +14,13 @@ export enum SearchStatus {
  * @param newElement 
  * @param parentGroup 
  */
-export const addElement = (subjects: SubjectData[], newElement: ContentObject, parentGroup: string) => {
+export const addElement = (subjects: SubjectData[], newElement: ContentObject, parentGroup: string, position?: number) => {
 	for (let i = 0; i < subjects.length; i++) {
 		if (recursiveSearchElement(subjects[i], { _id: parentGroup }, (contentObject, searchObject) => {
+			if (position != null) {
+				contentObject.group?.content.splice(position, 0, newElement)
+				return { status: SearchStatus.ALL_OK }
+			} 
 			// Add newElement to group
 			contentObject.group?.content.push(newElement)
 			return { status: SearchStatus.ALL_OK }

@@ -8,13 +8,13 @@ import moment from "moment"
 import { SubjectData } from 'components/screens/Subjects/Subjects'
 
 interface ISocketNewElement {
-	parent: string,
-	id: string,
-	nestedId: string,
-	placement: number,
-	fieldOne: string,
-	fieldTwo: string,
-	fieldThree?: string,
+	parent: string
+	id: string
+	nestedId: string
+	placement: string
+	fieldOne: string
+	fieldTwo: string
+	fieldThree?: string
 	type: ContentType
 }
 
@@ -41,7 +41,7 @@ function Subscriptions(props: PropsForComponent) {
 									displayText: data.fieldOne,
 									link: data.fieldTwo,
 								}
-							}, data.parent)
+							}, data.parent, parseInt(data.placement, 10))
 							break
 						case ContentType.TEXT:
 							addElement(newSubjects, {
@@ -51,7 +51,7 @@ function Subscriptions(props: PropsForComponent) {
 									title: data.fieldOne,
 									text: data.fieldTwo,
 								}
-							}, data.parent)
+							}, data.parent, parseInt(data.placement, 10))
 							break
 						case ContentType.DEADLINE:
 							addElement(newSubjects, {
@@ -62,7 +62,7 @@ function Subscriptions(props: PropsForComponent) {
 									deadline: data.fieldTwo,
 									start: data.fieldThree ?? moment().toString()
 								}
-							}, data.parent)
+							}, data.parent, parseInt(data.placement, 10))
 							break
 					}
 					dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
