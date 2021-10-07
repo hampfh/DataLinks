@@ -96,7 +96,7 @@ function Group(props: PropsForComponent) {
         })
     }
 
-    useDebounce(() => mouseGestureMoveSettled(cursor), 300, [cursor])
+    useDebounce(() => mouseGestureMoveSettled(cursor), 250, [cursor])
 
     function mouseGestureMoveSettled(cursor: IPosition) {
         if (!dragging)
