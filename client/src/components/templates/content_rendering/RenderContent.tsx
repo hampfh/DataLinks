@@ -12,6 +12,7 @@ export const CONTENT_OBJECT_HEIGHT = 120 // Each rem is one 16 pixels
 function RenderContent(props: PropsForComponent) {
 
     function setInitialCursorObject(position: IPosition) {
+        position.y += window.scrollY
         props.setInitialCursor({ ...position })
         props.setCursor({ ...position })
         props.setDraggableElement(props.content)

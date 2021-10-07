@@ -110,7 +110,7 @@ function Group(props: PropsForComponent) {
 
         setCursor({
             x: event.clientX,
-            y: event.clientY
+            y: event.clientY + window.scrollY
         })
     }
 
