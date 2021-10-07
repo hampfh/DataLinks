@@ -1,6 +1,6 @@
 import "./Draggable.css"
 
-export default function Dragable(props: PropsForComponent) {
+export default function Draggable(props: PropsForComponent) {
 
     function grapGestureStart(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         props.setDragging(true)

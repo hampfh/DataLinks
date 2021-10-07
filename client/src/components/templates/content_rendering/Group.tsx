@@ -89,10 +89,10 @@ function Group(props: PropsForComponent) {
         })
     }
 
-    function grapGestureMove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    function grabGestureMove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         setCursor({
             x: event.clientX,
-            y: event.clientY + window.scrollY
+            y: event.clientY
         })
     }
 
@@ -227,7 +227,7 @@ function Group(props: PropsForComponent) {
                     */
                     <div className="draggable-wrapper"
                         onMouseUp={grapGestureEnd}
-                        onMouseMove={grapGestureMove}
+                        onMouseMove={grabGestureMove}
                     > 
                         <div
                             className="ContentObject"
