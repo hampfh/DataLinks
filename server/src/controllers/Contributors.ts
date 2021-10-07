@@ -4,7 +4,6 @@ import { ContentType, OperationType } from "../models/log.model"
 import { getContributors, mergeContributors, nameContributor } from "./schemas"
 import RealTime from "../RealTime"
 import ProgramModel from "../models/program.model"
-import { mongoose } from "@typegoose/typegoose"
 
 export default class Contributors {
 
@@ -109,7 +108,7 @@ export default class Contributors {
 			return await ProgramModel.aggregate([
 				{
 					"$match": {
-						"_id": mongoose.Types.ObjectId(req.query.program as string)
+						"_id": req.query.program
 					}
 				}, {
 					"$lookup": {

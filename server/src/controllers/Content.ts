@@ -39,7 +39,7 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
-			if (result.nModified <= 0) {
+			if (result.modifiedCount <= 0) {
 				res.status(404).json({
 					message: "Parent group doesn't exist"
 				})
@@ -104,7 +104,7 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
-			if (result.nModified <= 0) {
+			if (result.modifiedCount <= 0) {
 				res.status(404).json({
 					message: "Parent group doesn't exist"
 				})
@@ -170,7 +170,7 @@ export default class ContentController extends CrudController {
 					}
 				}
 			})
-			if (result.nModified <= 0) {
+			if (result.modifiedCount <= 0) {
 				res.status(404).json({
 					message: "Parent group doesn't exist"
 				})
