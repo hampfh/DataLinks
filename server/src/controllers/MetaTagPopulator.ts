@@ -114,6 +114,20 @@ export default class MetaTagPopulator {
 		})
 	}
 
+	populateDeadlines = (req: express.Request, res: express.Response): void => {
+		MetaTagPopulator.loadIndexFile(res, (htmlData) => {	
+			const program = req.params.program
+			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
+				title: `DataLinks - ${program} - Deadlines`,
+				description: `All the current deadlines for ${program}`,
+				thumbnail: MetaTagPopulator.getDisplayLogo("PNG", program),
+				favicon: MetaTagPopulator.getDisplayLogo("ICO", program)
+			})
+	
+			res.send(htmlData)
+		})
+	}
+
 	populateArchives = (req: express.Request, res: express.Response): void => {
 		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
 			
