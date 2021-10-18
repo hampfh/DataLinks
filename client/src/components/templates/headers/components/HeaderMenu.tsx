@@ -8,6 +8,9 @@ export default function HeaderMenu({ selected, program }: PropsForComponent) {
         name: "Workspace",
         path: `/${program}`
     },{
+        name: "Deadlines",
+        path: `/${program}/deadlines`
+    },{
         name: "Contributors",
         path: `/${program}/contributors`
     },{

@@ -8,16 +8,22 @@ export function sortDeadlines(deadlines: ContentObject[]) {
     return deadlines
 }
 
-export function getDeadlines(subjects: SubjectData[]): ContentObject[] {
+export function getDeadlines(subjects: SubjectData[], predicate?: (subject: SubjectData, deadline: ContentObject) => boolean): ContentObject[] {
     let deadlines: ContentObject[] = []
     // Itterate through all subjects
     for (let i = 0; i < subjects.length; i++) {
-        const strippedDeadlines = recursivlyGetDeadlines(subjects[i].group)
+        let strippedDeadlines = recursivlyGetDeadlines(subjects[i].group)
+
+        // If predicate is defined we filter through all deadlines
+        if (predicate != null)
+            strippedDeadlines = strippedDeadlines.filter(deadline => predicate(subjects[i], deadline))
+
         if (deadlines.length <= 0)
             deadlines = strippedDeadlines
         else
             deadlines = deadlines.concat(strippedDeadlines)	
     }
+
     return deadlines
 }
 

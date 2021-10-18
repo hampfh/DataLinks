@@ -1,0 +1,239 @@
+@import url("/src/components/root.css");
+
+.deadlines-layout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    --preview-box-height: 20rem;
+    --box-container-text-height: 2.5rem;
+    --box-container-text-underline-height: 4px;
+    --margin-between-into-and-box: 1rem;
+
+    transition-property: margin-top;
+    transition-duration: var(--default-transition-duration);
+}
+
+@media (max-width: 1200px) {
+    .deadlines-layout-container {
+        margin-top: 2rem;
+    }
+}
+
+.deadlines-layout-grid-container {
+    display: grid;
+    grid-template-areas: 
+        "header header"
+        "deadlines deadlines"
+        "deadlines deadlines";
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: min-content var(--preview-box-height) 1fr;
+
+    width: 80vw;
+    max-height: calc(100vh - var(--default-header-height) - 2rem);
+    height: 80vh;
+
+    column-gap: 3rem;
+    row-gap: 3rem;
+}
+
+@media (max-width: 1200px), (max-height: 800px) {
+    .deadlines-layout-grid-container {
+
+        grid-template-columns: 1fr;
+
+        min-height: 80vh;
+    }
+}
+
+.deadliens-selection-container-title {
+    text-align: center;
+    margin-bottom: 0;
+
+    font-size: 1.2rem;
+}
+
+.deadlines-selection-list {
+    margin-bottom: var(--margin-between-into-and-box);
+    max-width: 50%;
+    min-width: 20rem;
+
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.deadlines-selection-list > div {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+}
+
+.deadlines-selection-list > div::-webkit-scrollbar {
+	height: 0.4rem;
+	border-radius: 5px;
+	background-color: transparent;
+}
+
+.deadlines-selection-list > div::-webkit-scrollbar-thumb {
+    background-color: var(--color-canvas-nested-layer);
+	border-radius: 5px;
+}
+
+@media (max-width: 50rem) {
+    .deadlines-selection-list {
+        display: none;
+    }
+}
+
+.deadlines-layout-grid-selection-active {
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 
+        "header header"
+        "selection selection"
+        "deadlines deadlines";
+}
+
+@media (min-width: 100rem) {
+    .deadlines-layout-grid-selection-active {
+        grid-template-areas: 
+            "header header"
+            "deadlines selection"
+            "deadlines selection";
+    }
+}
+
+.deadlines-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 1rem;
+}
+
+.deadlines-container .deadline-container {
+    flex: 1 1;
+    max-width: 30rem;
+
+    margin: 0.5rem;
+}
+
+.deadlines-deadline-layout-box {
+    grid-area: deadlines;
+
+    overflow-y: auto;
+    height: 100%;
+}
+
+.deadlines-selection-layout-box {
+    grid-area: selection;
+
+    overflow-y: auto;
+}
+
+.deadlines-layout-box-container-intro {
+    grid-area: header;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.deadlines-layout-box-container-intro h3 {
+    font-size: var(--box-container-text-height);
+    line-height: var(--box-container-text-height);
+    margin: 0;
+    margin-bottom: calc(var(--margin-between-into-and-box));
+    color: var(--primary);
+    font-weight: 400;
+
+    transition-property: font-size;
+    transition-duration: var(--default-transition-duration);
+}
+
+.deadlines-layout-box-container-intro h3::after {
+    position: relative;
+    top: 0.25rem;
+
+    display: block;
+    content: "";
+    background-color: var(--primary);
+    width: 4rem;
+    height: var(--box-container-text-underline-height);
+}
+
+.deadlines-select-button {
+    width: 9rem;
+    height: 2rem;
+    background-color: var(--color-btn-bg);
+    border-color: var(--color-btn-border);
+    border-width: var(--default-border-width);
+    border-style: solid;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: var(--margin-between-into-and-box);
+}
+
+.deadlines-select-button:hover {
+    cursor: pointer;
+    background-color: var(--color-btn-hover-bg);
+    border-color: var(--color-btn-hover-border);
+}
+
+.deadlines-select-button p {
+    text-align: center;
+    margin: 0;
+}
+
+.tag-element {
+    border-radius: 25px;
+    background-color: #2d333b;
+    margin: 1rem 0.5rem;
+    padding: 0 1.5rem;
+}
+
+.deadlines-selection-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 1rem;
+
+    user-select: none;
+}
+
+.deadlines-selection-row-label-container {
+    display: grid;
+    margin-left: 1rem;
+}
+
+.deadlines-selection-row input {
+    transform: scale(1.5);
+}
+
+.deadlines-selection-row input:hover {
+    cursor: pointer;
+}
+
+.deadlines-select-checkbox-label:nth-child(1) {
+    font-size: 1.2rem;
+}
+
+.deadline-selection-description {
+    text-align: center;
+    margin: 2rem 1rem;
+}
+
+.deadlines-toggle-switch-container {
+    margin: 0 1rem;
+}

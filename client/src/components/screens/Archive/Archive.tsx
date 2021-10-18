@@ -39,7 +39,7 @@ export default function Archive(props: PropsForComponent) {
 
     return (
         <>
-            <DefaultHeader program={program} menuSelect={2} pagePresenter="Archives" />
+            <DefaultHeader program={program} menuSelect={3} pagePresenter="Archives" />
             <div className="pageWrapper">
                 <div className="archiveContainer">
                     <h1>Course archive</h1>

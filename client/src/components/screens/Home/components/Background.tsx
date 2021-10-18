@@ -51,7 +51,6 @@ export default function Background() {
             clearTimeout(debouncer)
         
         debouncer = setTimeout(() => {
-            console.log(window.innerWidth, window.innerHeight)
             setWindowWidth(window.innerWidth - dotMargin)
             setWindowHeight(window.innerHeight - dotMargin)
 

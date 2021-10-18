@@ -42,7 +42,7 @@ function Contributors(props: PropsForComponent) {
 
 	return (
 		<div>
-			<DefaultHeader program={programName} menuSelect={1} pagePresenter="Contributors" />
+			<DefaultHeader program={programName} menuSelect={2} pagePresenter="Contributors" />
 			{props.content.hasLoaded && hasLoaded &&
 				<div className="contributors-content-container">
 					<h1 className="contributors-title">Top contributors</h1>

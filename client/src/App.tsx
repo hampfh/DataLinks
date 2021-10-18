@@ -40,6 +40,7 @@ import Archive from 'components/screens/Archive/Archive';
 import Home from 'components/screens/Home/Home';
 import NotFoundPage from 'components/screens/404/404';
 import { incomingVersionIsNewer } from 'functions/version_check';
+import Deadlines from 'components/screens/Deadlines/Deadlines';
 
 export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 
@@ -128,6 +129,9 @@ function App(props: PropsForComponent) {
 					<Subjects 
 						updateSubjects={fetchUpdatedSubjects}
 					/>
+				</Route>
+				<Route exact path="/:program/deadlines">
+					<Deadlines />
 				</Route>
 				<Route exact path="/:program/contributors">
 					<Contributors />
