@@ -123,7 +123,7 @@ export default function DeadlinesLayoutContainer() {
                 {selectionActive &&
                     <div className="default-box-container deadlines-selection-layout-box">
                         <div>
-                            <p className="deadline-selection-description">Filter which deadlines you are intrested in</p>
+                            <p className="deadline-selection-description">Filter which deadlines you are interested in</p>
                         </div>
                         <div className="course-header-edit-mode-switch-container deadlines-toggle-switch-container">
                             <p>View completed deadlines</p>
