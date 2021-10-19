@@ -105,8 +105,8 @@ export default function DeadlinesLayoutContainer() {
                     <div className="deadlines-container">
                         {deadlines
                             .filter(current => 
-                                !completedDeadlinesVisible || 
-                                (completedDeadlinesVisible && completedDeadlines.findIndex(completed => completed === current._id) < 0))
+                                completedDeadlinesVisible || 
+                                (!completedDeadlinesVisible && completedDeadlines.findIndex(completed => completed === current._id) < 0))
                             .map(current => 
                                 <ContentObject
                                     key={current._id}
