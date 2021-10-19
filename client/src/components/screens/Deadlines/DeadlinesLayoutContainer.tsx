@@ -98,7 +98,7 @@ export default function DeadlinesLayoutContainer() {
                         </div>
                     </div>
                     <div className="deadlines-select-button" onClick={() => setSelectionActive(!selectionActive)}>
-                        <p>{selectionActive ? "Cancel" : "Customize"}</p>
+                        <p>{selectionActive ? "Close" : "Customize"}</p>
                     </div>
                 </div>
                 <div className="default-box-container deadlines-deadline-layout-box">
