@@ -65,7 +65,6 @@
 
 .deadlines-selection-list > div {
     display: flex;
-    justify-content: center;
     overflow-x: auto;
 
     scrollbar-width: thin;
