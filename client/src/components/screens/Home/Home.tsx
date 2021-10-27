@@ -86,11 +86,12 @@ export default function Home() {
                         <p><a className="footer-link" href="https://github.com/Hampfh/DataLinks">View the source code</a></p>
                         <p><a className="footer-link" href="https://github.com/Hampfh/DataLinks/issues">Report a bug</a></p>
                     </div>
-                    <div>
+{/*                     <div>
                         <h3>Reach out</h3>
                         <hr />
+                        <p>This site is unofficial as of now, the official site is:</p>
                         <p><a className="footer-link" href="https://datasektionen.se/">datasektionen.se</a></p>
-                    </div>
+                    </div> */}
                 </div>
             </footer>
         </section>
