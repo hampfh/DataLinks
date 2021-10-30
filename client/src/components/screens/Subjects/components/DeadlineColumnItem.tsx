@@ -1,4 +1,4 @@
-import { calcTimeLeft, formatNumberToClock } from 'functions/date_calculations'
+import { calcTimeLeft, formatDate, formatNumberToClock } from 'functions/date_calculations'
 import { appendsIfPlural } from 'functions/string_formatting'
 import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
@@ -6,6 +6,7 @@ import { IReduxRootState } from 'state/reducers'
 
 import "./DeadlineColumnItem.css"
 import { addCompleteDeadline, IAddCompleteDeadline } from 'state/actions/deadlines'
+import moment from 'moment'
 
 function DeadlineColumnItem(props: PropsForComponent) {
 
@@ -109,6 +110,7 @@ function DeadlineColumnItem(props: PropsForComponent) {
                 >
                     <p>Complete</p>
                 </button>
+                <p className="deadline-date-text">{formatDate(props.deadlineObject.deadline)} {moment(props.deadlineObject.deadline).format("HH:mm")}</p>
             </div>
         </div>
     )

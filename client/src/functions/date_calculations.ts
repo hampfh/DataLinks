@@ -1,3 +1,4 @@
+import moment from "moment";
 import Moment from "moment";
 
 export function calcDeadlinePercentage(startDate: string, endDate: string): { max: number, value: number } {
@@ -58,4 +59,24 @@ export function calcTimeLeft(endDate: string): { months: number, weeks: number, 
  */
 export function formatNumberToClock(number: number) {
 	return number < 10 ? `0${number}` : number
+}
+
+export function formatDate(date: string) {
+	let formattedDateString = ""
+	const deadline = moment(date)
+	const year = deadline.year()
+	if (moment().year() !== year)
+		formattedDateString += year + " "
+
+	if (moment().startOf("week").isAfter(deadline) || moment().endOf("isoWeek").isBefore(deadline)) {
+		formattedDateString += deadline.format("D/M")
+	} else if (moment().date() === deadline.date()) {
+		formattedDateString += "Today"
+	} else if (moment().add(1, "day").date() === deadline.date()) {
+		formattedDateString += "Tomorrow"
+	} else {
+		formattedDateString += deadline.format("dddd")
+	}
+
+	return formattedDateString
 }

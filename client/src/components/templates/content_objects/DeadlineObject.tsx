@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import { calcDeadlinePercentage, calcTimeLeft, formatNumberToClock } from "functions/date_calculations"
+import { calcDeadlinePercentage, calcTimeLeft, formatDate, formatNumberToClock } from "functions/date_calculations"
 import "./Deadline.css"
 import { 
 	addCompleteDeadline, 
@@ -16,6 +16,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { appendsIfPlural } from 'functions/string_formatting'
 import Checkmark from 'components/screens/Subject/components/Checkmark'
+import moment from 'moment'
 
 function DeadlineObject(props: PropsForComponent) {
 
@@ -92,6 +93,8 @@ function DeadlineObject(props: PropsForComponent) {
 			remaining.seconds === 0
 		)
 	} 
+
+	
 
 	return (
 		<>
@@ -189,6 +192,10 @@ function DeadlineObject(props: PropsForComponent) {
 							</div>
 						</div>
 					}
+					<div className="date-display-container">
+						<p className="date-display-text">{formatDate(props.deadline)}</p>
+						<p className="date-display-text-time">{moment(props.deadline).format("HH:mm")}</p>
+					</div>
 				</div>
 			}
 		</>

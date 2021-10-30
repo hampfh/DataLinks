@@ -26,6 +26,7 @@
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   column-gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .deadline-content-container.completed {
@@ -78,4 +79,20 @@
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     transform: scaleZ(0);
+}
+
+.date-display-container {
+    display: flex;
+    justify-content: center;
+}
+
+.date-display-text {
+    text-align: center;
+    margin: 0;
+}
+
+.date-display-text-time {
+    text-align: center;
+    margin: 0;
+    margin-left: 0.5rem;
 }
