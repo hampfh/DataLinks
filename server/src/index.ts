@@ -5,7 +5,7 @@
 import debug from "debug"
 import http from "http"
 import RealTime from "./RealTime"
-import app from "./app"
+import configuredApp from "./app"
 
 import { connectDB } from "./models/index.model"
 
@@ -28,11 +28,11 @@ const normalizePort = (val: string) => {
  * Get port from environment and store in Express.
  */
 const port = normalizePort(process.env.PORT || "8084")
-app.set("port", port)
+configuredApp.set("port", port)
 /**
  * Create HTTP server.
  */
-const server = http.createServer(app)
+const server = http.createServer(configuredApp)
 RealTime.attach(server)
 /**
  * Event listener for HTTP server "error" event.

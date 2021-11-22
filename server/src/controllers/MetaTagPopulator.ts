@@ -28,7 +28,7 @@ export default class MetaTagPopulator {
 	}
 
 	static loadIndexFile = (res: express.Response, callback: (htmlData: string) => void): void => {
-		fs.readFile(path.join(path.resolve() + "../../client/dist/index.html"), {
+		fs.readFile(path.join(path.resolve() + "../../client/build/index.html"), {
 			encoding: "utf-8"
 		}, (err, htmlData) => {
 			if (err) {
@@ -138,6 +138,20 @@ export default class MetaTagPopulator {
 				description: `Course archive for ${program}`,
 				thumbnail: MetaTagPopulator.getDisplayLogo("PNG", program),
 				favicon: MetaTagPopulator.getDisplayLogo("ICO", program)
+			})
+	
+			res.send(htmlData)
+		})
+	}
+
+	populateAccount = (req: express.Request, res: express.Response): void => {
+		MetaTagPopulator.loadIndexFile(res, (htmlData) => {
+			
+			htmlData = MetaTagPopulator.injectMetaTags(htmlData, {
+				title: "DataLinks - Account",
+				description: "Your account on datalinks",
+				thumbnail: MetaTagPopulator.getDisplayLogo("PNG"),
+				favicon: MetaTagPopulator.getDisplayLogo("ICO")
 			})
 	
 			res.send(htmlData)

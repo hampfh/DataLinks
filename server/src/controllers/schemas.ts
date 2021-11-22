@@ -149,3 +149,12 @@ export const mergeContributors = Joi.object({
 export const getContributors = Joi.object({
 	program: Joi.string().optional()
 })
+
+export const getUserSchema = Joi.object({
+	id: Joi.string(),
+	kthId: Joi.string()
+}).xor("id", "kthId")
+
+export const loginSchema = Joi.object({
+	redirect: Joi.string()
+}).unknown(false)

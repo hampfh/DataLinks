@@ -19,7 +19,7 @@ export const indexify = <T extends { placement: number }>(array: T[]): T[] => {
  * @param target 
  * @param newPosition 
  */
-export const rebaseInArray = <T extends { placement: number, _id: mongoose.Schema.Types.ObjectId | string }>(array: T[], target: mongoose.Schema.Types.ObjectId | string, newPosition: number): T[] => {
+export const rebaseInArray = <T extends { placement: number, _id: mongoose.Schema.Types.ObjectId | string }>(array: T[], target: mongoose.Schema.Types.ObjectId | string, newPosition: number): number => {
 	const movableIndex = array.findIndex((current) => current._id.toString() === target.toString())
 	if (movableIndex < 0)
 		throw Error("There is no such element in the array")
@@ -30,5 +30,5 @@ export const rebaseInArray = <T extends { placement: number, _id: mongoose.Schem
 		array.push(movable)
 	else // Rebase target into new position
 		array.splice(newPosition, 0, movable)
-	return array
+	return movableIndex
 }

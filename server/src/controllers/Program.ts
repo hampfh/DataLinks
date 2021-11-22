@@ -31,11 +31,13 @@ export default class ProgramController extends CrudController {
 		}
 
 		await Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.PROGRAM,
-			[newProgram._id, req.body.name],
-			["", ""]
+			[
+				newProgram._id, 
+				req.body.name
+			]
 		)
 
 		res.status(201).json({
@@ -68,18 +70,15 @@ export default class ProgramController extends CrudController {
 			const programs = await ProgramModel.find(queryObject)
 			res.status(200).json({
 				message: "Successfully fetched programs",
-				programs: programs.reduce<Array<
-				{ 
+				programs: programs.reduce<Array<{ 
 					id: string, 
 					name: string, 
 					subjects: unknown[], 
-					contributors: unknown[] 
 				}>>((prev, current) => {
 					prev.push({
 						id: current.id,
 						name: current.name,
-						subjects: current.subjects,
-						contributors: current.contributors
+						subjects: current.subjects
 					})
 					return prev
 				}, [])
@@ -142,11 +141,14 @@ export default class ProgramController extends CrudController {
 		}
 
 		await Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			ContentType.PROGRAM,
-			[req.body.id, req.body.subject],
-			["", ""]
+			[
+				"New Subject",
+				req.body.id, 
+				req.body.subject
+			]
 		)
 
 		res.status(201).json({
@@ -184,13 +186,6 @@ export default class ProgramController extends CrudController {
 			return
 		}
 
-		if (program.contributors.find(current => current?.toString() === contributorId)) {
-			res.status(400).json({
-				message: "This contributor is already a part of this program"
-			})
-			return
-		}
-
 		try {
 			await ProgramModel.updateOne({
 				_id: req.body.id
@@ -208,11 +203,14 @@ export default class ProgramController extends CrudController {
 		}
 
 		await Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			ContentType.PROGRAM,
-			[req.body.id, req.body.contributor],
-			["", ""]
+			[
+				"New contributor",
+				req.body.id, 
+				req.body.contributor
+			]
 		)
 
 		res.status(201).json({

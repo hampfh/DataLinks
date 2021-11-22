@@ -31,7 +31,7 @@ class Target {
 }
 
 @modelOptions({ schemaOptions: { _id: false }})
-class Contribution {
+export class Contribution {
 	@prop({ required: true })
 	public operations!: Operation
 

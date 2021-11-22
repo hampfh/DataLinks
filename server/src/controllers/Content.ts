@@ -8,6 +8,7 @@ import { ContentType, OperationType } from "../models/log.model"
 import Moment from "moment"
 import RealTime from "../RealTime"
 import { indexify, rebaseInArray } from "../utilities/placement"
+import moment from "moment"
 
 export default class ContentController extends CrudController {
 
@@ -18,11 +19,13 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		const outerId = new Mongoose.Types.ObjectId().toHexString()
+		const innerId = new Mongoose.Types.ObjectId().toHexString()
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId().toHexString(),
+			_id: outerId, 
 			placement: req.body.placement ?? 0,
 			link: {
-				_id: new Mongoose.Types.ObjectId().toHexString(),
+				_id: innerId,
 				displayText: req.body.displayText,
 				link: req.body.link
 			}
@@ -53,10 +56,16 @@ export default class ContentController extends CrudController {
 		}
 
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.LINK,
-			[req.body.displayText, req.body.link]
+			[
+				req.body.parentGroup,
+				outerId,
+				innerId,
+				req.body.displayText, 
+				req.body.link
+			]
 		)
 
 		RealTime.emitToSockets("newElement", {
@@ -83,11 +92,14 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		const outerId = new Mongoose.Types.ObjectId().toHexString()
+		const innerId = new Mongoose.Types.ObjectId().toHexString()
+
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId().toHexString(),
+			_id: outerId,
 			placement: req.body.placement ?? 0,
 			text: {
-				_id: new Mongoose.Types.ObjectId().toHexString(),
+				_id: innerId,
 				title: req.body.title ?? "",
 				text: req.body.text
 			}
@@ -118,10 +130,16 @@ export default class ContentController extends CrudController {
 		}
 
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.TEXT,
-			[req.body.title ?? "", req.body.text]
+			[
+				req.body.parentGroup,
+				outerId,
+				innerId,
+				req.body.title ?? "", 
+				req.body.text
+			]
 		)
 
 		RealTime.emitToSockets("newElement", {
@@ -148,11 +166,14 @@ export default class ContentController extends CrudController {
 			return
 		}
 
+		const outerId = new Mongoose.Types.ObjectId().toHexString()
+		const innerId = new Mongoose.Types.ObjectId().toHexString()
+
 		const appendObject = {
-			_id: new Mongoose.Types.ObjectId().toHexString(),
+			_id: outerId,
 			placement: req.body.placement ?? 0,
 			deadline: {
-				_id: new Mongoose.Types.ObjectId().toHexString(),
+				_id: innerId,
 				displayText: req.body.displayText ?? "",
 				deadline: req.body.deadline,
 				start: req.body.start ?? Moment().toDate()
@@ -184,10 +205,17 @@ export default class ContentController extends CrudController {
 		}
 
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.DEADLINE,
-			[req.body.displayText ?? "", req.body.deadline, req.body.start]
+			[
+				req.body.parentGroup,
+				outerId,
+				innerId,
+				req.body.displayText ?? "", 
+				req.body.deadline, 
+				req.body.start
+			]
 		)
 
 		RealTime.emitToSockets("newElement", {
@@ -291,11 +319,21 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			ContentType.LINK,
-			[req.body.displayText, req.body.link],
-			[group.content[0].link?.displayText as string, group.content[0].link?.link as string]
+			[
+				req.body.parentGroup,
+				req.body.id,
+				req.body.displayText, 
+				req.body.link
+			],
+			[
+				req.body.parentGroup,
+				req.body.id,
+				group.content[0].link?.displayText as string, 
+				group.content[0].link?.link as string
+			]
 		)
 
 		RealTime.emitToSockets("updateElement", {
@@ -365,11 +403,21 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			ContentType.TEXT,
-			[req.body.title, req.body.text],
-			[group.content[0].text?.title as string, group.content[0].text?.text as string]
+			[
+				req.body.parentGroup,
+				req.body.id,
+				req.body.title, 
+				req.body.text
+			],
+			[
+				req.body.parentGroup,
+				req.body.id,
+				group.content[0].text?.title as string, 
+				group.content[0].text?.text as string
+			]
 		)
 
 		RealTime.emitToSockets("updateElement", {
@@ -431,11 +479,23 @@ export default class ContentController extends CrudController {
 
 			// Notify logg			
 			Log(
-				req.body.fingerprint,
+				req.user!.id,
 				OperationType.UPDATE,
-				ContentType.TEXT,
-				[req.body.displayText, req.body.deadline],
-				[group.content[0].deadline?.displayText as string, (group.content[0].deadline?.deadline as Date).toString()]
+				ContentType.DEADLINE,
+				[
+					req.body.parentGroup,
+					req.body.id,
+					req.body.displayText, 
+					moment(req.body.deadline).toISOString(),
+					moment().toISOString()
+				],
+				[
+					req.body.parentGroup,
+					req.body.id,
+					group.content[0].deadline?.displayText as string, 
+					moment(group.content[0].deadline?.deadline).toISOString(),
+					moment(group.content[0].deadline?.start).toISOString()
+				]
 			)
 		} catch (error) {
 			console.warn(error)
@@ -486,8 +546,9 @@ export default class ContentController extends CrudController {
 		// Sort group content (ASC)
 		group.content.sort((a, b) => a.placement - b.placement)
 
+		let oldIndex = 0
 		try {
-			rebaseInArray(group.content, req.body.id, req.body.position)
+			oldIndex = rebaseInArray(group.content, req.body.id, req.body.position)
 		} catch(error) {
 			res.status(404).json({
 				message: "The specified element doesn't exist within the group"
@@ -513,18 +574,28 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			content?.text ? ContentType.TEXT : 
 				content?.link ? ContentType.LINK :
 					content?.deadline ? ContentType.DEADLINE :
 						content?.group ? ContentType.GROUP : ContentType.NONE,		
-			["New position", `${req.body.position}`],
-			["", ""]
+			[
+				"New position",
+				req.body.parentGroup,
+				req.body.id,
+				req.body.position
+			],
+			[
+				"Old position",
+				req.body.parentGroup,
+				req.body.id,
+				oldIndex
+			]
 		)
 
 		RealTime.emitToSockets("updatePosition", {
-			parent: req.body.parentGroupId,
+			parent: req.body.parentGroup,
 			id: req.body.id,
 			position: req.body.position
 		})
@@ -592,11 +663,21 @@ export default class ContentController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.DELETE,
 			type,
-			["", ""],
-			[fieldOne, fieldTwo]
+			[
+				req.body.parentGroupId,
+				req.body.id,
+				"<Deleted>",
+				"<Deleted>"
+			],
+			[
+				req.body.parentGroupId,
+				req.body.id,
+				fieldOne, 
+				fieldTwo
+			]
 		)
 
 		RealTime.emitToSockets("deleteElement", {

@@ -47,11 +47,14 @@ export default class SubjectController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.SUBJECT,
-			[newSubject._id, newSubject.name, newSubject.description],
-			["", "", ""]
+			[
+				newSubject._id, 
+				newSubject.name, 
+				newSubject.description
+			]
 		)
 		
 		if (!res.headersSent)
@@ -210,11 +213,15 @@ export default class SubjectController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.DELETE,
 			ContentType.SUBJECT,
 			["", "", ""],
-			[subject._id, subject.name, subject.description]
+			[
+				subject._id, 
+				subject.name, 
+				subject.description
+			]
 		)
 
 		res.json({

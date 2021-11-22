@@ -1,4 +1,7 @@
-import { prop, getModelForClass, modelOptions } from "@typegoose/typegoose"
+import { prop, getModelForClass, modelOptions, Ref } from "@typegoose/typegoose"
+import { Schema } from "mongoose"
+import { Content, Group } from "./group.model"
+import { User } from "./user.model"
 
 export enum OperationType {
 	CREATE = "CREATE",
@@ -18,8 +21,8 @@ export enum ContentType {
 
 @modelOptions({ schemaOptions: { timestamps: true }})
 class Log {
-	@prop({ required: true })
-	public user!: string
+	@prop({ required: true, ref: () => User, type: Schema.Types.ObjectId })
+	public user!: Ref<User>
 
 	@prop({ required: true })
 	public operation!: OperationType

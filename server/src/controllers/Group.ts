@@ -42,6 +42,7 @@ export default class GroupController extends CrudController {
 		const newGroup = new GroupModel(object)
 
 		// Assign group to parent
+		const groupId = new Mongoose.Types.ObjectId().toHexString()
 		try {
 			await GroupModel.updateOne({
 				_id: req.body.parentGroup
@@ -49,7 +50,7 @@ export default class GroupController extends CrudController {
 				$push: {
 					content: {
 						$each: [{
-							_id: new Mongoose.Types.ObjectId().toHexString(),
+							_id: groupId,
 							placement: req.body.placement ?? 0,
 							group: newGroup._id
 						}],
@@ -72,11 +73,19 @@ export default class GroupController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.CREATE,
 			ContentType.GROUP,
-			[""],
-			["GROUP: " + newGroup.name]
+			[
+				req.body.parentGroup,
+				groupId,
+				req.body.name
+			],
+			[
+				req.body.parentGroup,
+				"",
+				""
+			]
 		)
 
 		if (!res.headersSent)
@@ -142,11 +151,25 @@ export default class GroupController extends CrudController {
 
 		// Notify logg			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.UPDATE,
 			ContentType.GROUP,
-			[""],
-			["GROUP: " + req.body.id]
+			[
+				"",
+				req.body.id,
+				req.body.name ?? "",
+				req.body.column ?? "",
+				req.body.split ?? "",
+				req.body.placement ?? ""
+			],
+			[
+				"",
+				req.body.id,
+				"",
+				"",
+				"",
+				""
+			]
 		)
 
 		res.status(200).json({
@@ -188,11 +211,17 @@ export default class GroupController extends CrudController {
 
 		// Notify log			
 		Log(
-			req.body.fingerprint,
+			req.user!.id,
 			OperationType.DELETE,
 			ContentType.GROUP,
-			[""],
-			["GROUP: " + req.body.id]
+			[
+				"",
+				req.body.id
+			],
+			[
+				"",
+				req.body.id
+			]
 		)
 
 		res.status(200).json({

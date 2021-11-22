@@ -2,10 +2,9 @@ import logger from "morgan"
 import express, { Request, Response } from "express"
 import cookieParser from "cookie-parser"
 import path from "path"
-import apiRoute from "./routes/api"
+import app from "./express_init"
+import apiRouteV1 from "./routes/apiv1"
 import apiPublic from "./routes/public"
-
-const app = express()
 
 if (process.env.NODE_ENV === "production")
 	app.use(logger("common"))
@@ -16,10 +15,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
-app.use("/api/v1", apiRoute)
+app.use("/api/v1", apiRouteV1)
 app.use("/", apiPublic)
 
-app.use(express.static(path.join(path.resolve(), "../client/dist")))
+app.use(express.static(path.join(path.resolve(), "../client/build")))
 
 // Redirect www to non-www
 app.use(function (req: Request, res: Response, next: express.NextFunction) {

@@ -28,7 +28,7 @@ class Deadline {
 	public start!: Date
 }
 
-class Content {
+export class Content {
 	@prop({ required: true, type: Schema.Types.ObjectId })
 	public _id!: string
 
