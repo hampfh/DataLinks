@@ -36,6 +36,5 @@ declare module "@kth/kth-node-passport-oidc" {
 		login(req: express.Request, res: express.Response, next: express.NextFunction)
 		silentLogin(req: express.Request, res: express.Response, next: express.NextFunction)
 		logout(req: express.Request, res: express.Response, next: express.NextFunction)
-
 	}
 }

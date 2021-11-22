@@ -3,6 +3,8 @@ import express from "express"
 import session from "express-session"
 import { kthNodePassportUidcUser } from "@kth/kth-node-passport-oidc"
 import UserModel from "../models/user.model"
+import mongoose from "../models/index.model"
+import { User } from "controllers"
 
 type DoneFunction<T extends Express.User | kthNodePassportUidcUser> = (paramOne?: unknown, user?: T) => void
 
@@ -29,8 +31,11 @@ export async function initPassport(server: express.Application): Promise<void> {
 	server.use(
 		session({
 			secret: process.env.SESSION_SECRET as string,
-			resave: false,
-			saveUninitialized: true
+			resave: true,
+			saveUninitialized: false,
+			cookie: {
+				secure: process.env.NODE_ENV === "production"
+			}
 		})
 	)
 
@@ -50,6 +55,36 @@ export async function initPassport(server: express.Application): Promise<void> {
 
 		if (populatedUser)
 			done(null, populatedUser)
+
+		// ? User doesn't exist in database
+		else if (user) {
+			const dbUser = await User.createUser(user.username)
+
+			// Populate the express user with 
+			// the the db user
+			if (dbUser) {
+				done(null, {
+					id: dbUser._id,
+					privilege: dbUser.privilege,
+					settings: 0,
+					displayName: user.displayName,
+					username: user.username,
+					memberOf: user.memberOf
+				})
+			}
+			else {
+				// If we fail to create the user then
+				// we create a dummy session
+				done(null, {
+					id: new mongoose.Types.ObjectId(),
+					privilege: 0,
+					settings: 0,
+					displayName: user.displayName,
+					username: user.username,
+					memberOf: user.memberOf
+				})
+			}
+		}
 		else
 			done()
 	})

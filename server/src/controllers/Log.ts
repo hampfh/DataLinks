@@ -1,9 +1,9 @@
 import { User } from "../controllers"
-import { ObjectId } from "mongoose"
+import mongoose from "mongoose"
 import Log, { ContentType, OperationType } from "../models/log.model"
 
 const log = async (
-	userId: ObjectId,
+	userId: mongoose.Types.ObjectId,
 	operation: OperationType, 
 	type: ContentType, 
 	to: string[], 

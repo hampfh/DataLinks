@@ -65,7 +65,6 @@ export default class SubjectController extends CrudController {
 	}
 
 	public async read(req: Request, res: Response): Promise<void> {
-		console.log("PING")
 		const { error } = getUserSchema.validate(req.query)
 		if (error) {
 			res.status(400).json({
