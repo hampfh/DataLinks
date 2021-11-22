@@ -1,29 +1,12 @@
 import { BeAnObject, IObjectWithTypegooseFunction } from "@typegoose/typegoose/lib/types"
 import { Request, Response } from "express"
-import { isAuthorized } from "../middlewares/verify_auth"
 import { Document } from "mongoose"
 import RealTime from "../RealTime"
 import UserModel, { Privilege, User } from "../models/user.model"
 import { CrudController } from "./CrudController"
 import { getContributors, getUserSchema } from "./schemas"
 
-export default class SubjectController extends CrudController {
-
-	getAuthSession(req: Request, res: Response): void {
-		if (!isAuthorized(req)) {
-			res.status(401).json({
-				message: "No active session, not authorized"
-			})
-			return
-		}
-	
-		res.status(200).json({
-			message: "Successfully fetched active login session",
-			user: {
-				kthId: req.user?.username
-			}
-		})
-	}
+export default class UserController extends CrudController {
 
 	public async create(): Promise<void> {
 		throw new Error("Not implemented")
@@ -64,6 +47,11 @@ export default class SubjectController extends CrudController {
 		}
 	}
 
+	/** 
+	 * Fetch a specific user with either the id or the kthId
+	 * or fetch the current user associated with the active
+	 * session if it exists
+	 */
 	public async read(req: Request, res: Response): Promise<void> {
 		const { error } = getUserSchema.validate(req.query)
 		if (error) {
@@ -73,13 +61,22 @@ export default class SubjectController extends CrudController {
 			return
 		}
 
+		if (req.query.id == null && req.query.kthId == null && req.user == null) {
+			res.status(404).json({
+				message: "No such user, you must either be logged in or specify a specific user to fetch",
+				user: undefined
+			})
+			return
+		}
+
 		const object: {
 			_id?: string
 			kthId?: string
 		} = {}
 
-		if (req.query.id) object._id = req.query.id as string
-		else if (req.query.kthId) object.kthId = req.query.kthId as string
+		if (req.query.id) object._id = req.query.id.toString()
+		else if (req.query.kthId) object.kthId = req.query.kthId.toString()
+		else object._id = req.user!.id.toString()
 
 		const user = await UserModel.findOne(object)
 		if (!user) {

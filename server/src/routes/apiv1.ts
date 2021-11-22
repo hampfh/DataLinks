@@ -37,7 +37,6 @@ router.delete("/group/content", blockIfNotAuthorized, Content.delete)
 router.patch("/contributors/merge", Contributors.mergeContributors) */
 
 router.get("/user", User.read)
-router.get("/login", User.getAuthSession)
 router.get("/contributors", User.getContributors)
 
 export default router
