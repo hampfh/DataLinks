@@ -182,12 +182,15 @@ export const setReplaceCountdownWithDateFlag = (replace: boolean) => {
 	}
 }
 
-export interface ISetFingerPrint { (fingerprint: string): void }
-export const setFingerPrint = (fingerprint: string) => {
+export interface ISetAuth { (id: string, kthId: string): void }
+export const setAuth = (id: string, kthId: string) => {
 	return {
-		type: "SET_FINGERPRINT",
+		type: "SET_AUTH",
 		payload: {
-			fingerprint
+			auth: {
+				id, 
+				kthId			
+			}
 		}
 	}
 }

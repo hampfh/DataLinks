@@ -59,7 +59,7 @@ function RenderData(props: PropsForComponent) {
 						parentGroup: props.group._id,
 						isSubGroup
 					})}
-					submitGroup={(name: string) => onSubmitGroup(name, newGroup!, props.app.fingerprint!)}
+					submitGroup={(name: string) => onSubmitGroup(name, newGroup!)}
 				/>
 			}
 		</div>

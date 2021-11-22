@@ -37,8 +37,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 				url: "/api/v1/contributor/name",
 				method: "POST",
 				data: {
-					name: this.state.nameInput,
-					fingerprint: this.props.app.fingerprint
+					name: this.state.nameInput
 				}
 			})
 		}
@@ -49,8 +48,7 @@ class SubmitContributorName extends Component<PropsForComponent, StateForCompone
 				url: "/api/v1/program/contributor",
 				method: "POST",
 				data: {
-					id: content.activeProgramId,
-					fingerprint: this.props.app.fingerprint
+					id: content.activeProgramId
 				}
 			})
 		}

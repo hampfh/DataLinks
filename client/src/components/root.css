@@ -18,6 +18,7 @@
 
 	/* Element specific variables */
 	--color-text: var(--color-gray-8);
+	--link-hover: var(--color-gray-7);
 
 	--color-canvas-default: #1c2128;
 	--color-canvas-layer: var(--color-gray-0);

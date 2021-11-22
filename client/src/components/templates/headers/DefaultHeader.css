@@ -5,6 +5,7 @@
     height: var(--default-header-height);
 
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
@@ -12,6 +13,47 @@
 .default-header-page-presenter-container {
     grid-area: HeaderPagePresenter;
     width: 15rem;
+}
+
+.default-header-top-bar {
+    height: 2rem;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.default-header-logged-in-text {
+    margin: 0;
+    text-align: center;
+}
+
+.default-header-logged-in-logout-link {
+    margin-left: 1rem;
+    text-decoration: underline;
+    text-decoration-color: var(--color-text);
+}
+
+.default-header-logged-in-logout-link:hover {
+    color: var(--link-hover);
+    text-decoration-color: var(--link-hover);
+}
+
+.default-header-menu-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.default-header-menu-top-auth-container {
+    display: flex;
+}
+
+.default-header-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 @media (max-width: 700px) {
@@ -25,14 +67,14 @@
 
 .default-header-menu {
     grid-area: NavMenu;
-
-    display: flex;
-    justify-content: center;
 }
 
 .default-header-version-container {
     grid-area: Version;
     height: 100%;
+
+    display: flex;
+    justify-content: end;
 }
 
 @media(min-width: 850px) {

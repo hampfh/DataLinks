@@ -2,12 +2,17 @@ import { ActionType } from ".";
 import { SubjectData } from "components/screens/Subjects/Subjects";
 import { IFlagInterface } from "state/actions/app";
 
+export interface IAuthState {
+	id: string
+	kthId: string
+}
+
 export interface IAppState {
 	version: string
 	lastVersion?: string
 	sneakPeak?: SubjectData
 	contributor?: string
-	fingerprint?: string
+	auth?: IAuthState
 	flags: IFlagInterface
 }
 
@@ -49,8 +54,8 @@ const app = (state: IAppState = defaultState, action: ActionType<any>) => {
 		case "SET_REPLACE_COUNTDOWN_WITH_DATE_FLAG":
 			newState.flags.replaceCountdownWithDate = action.payload.value
 			return newState
-		case 'SET_FINGERPRINT':
-			newState.fingerprint = action.payload.fingerprint
+		case 'SET_AUTH':
+			newState.auth = action.payload.auth
 			return newState
 		case 'SET_VERSION':
 			newState.version = action.payload.version

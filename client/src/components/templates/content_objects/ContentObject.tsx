@@ -49,7 +49,7 @@ function ContentObject(props: PropsForComponent) {
 		setPrevFieldTwo(fieldTwo)
 		setPrevFieldThree(fieldThree)
 
-		remoteUpdateElement(props.parentId, props.id, props.type, fieldOne, fieldTwo, props.app.fingerprint!)
+		remoteUpdateElement(props.parentId, props.id, props.type, fieldOne, fieldTwo)
 	}
 
 	if (props.updateSubjects === undefined && (props.noEditMode === undefined || !!!props.noEditMode)) {
@@ -87,7 +87,7 @@ function ContentObject(props: PropsForComponent) {
 						: null
 					}
 					{props.id.toString().length === 0 ? null :
-						<button onClick={() => remoteDeleteElement(props.parentId, props.id, props.app.fingerprint!)}>Delete</button>
+						<button onClick={() => remoteDeleteElement(props.parentId, props.id)}>Delete</button>
 					}
 				</div> : null
 			}	

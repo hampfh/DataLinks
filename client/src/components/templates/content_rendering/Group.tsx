@@ -133,7 +133,7 @@ function Group(props: PropsForComponent) {
 
             // Only submit change if element has actually change position
             if (index !== initialIndex)
-                submitElementReorder(props.group._id, draggableElement._id, index, props.app.fingerprint!)
+                submitElementReorder(props.group._id, draggableElement._id, index)
         }
 
         setDraggableElementSize(undefined)
@@ -176,7 +176,6 @@ function Group(props: PropsForComponent) {
                         updateGroup={updateGroup}
                         setNewGroup={setNewGroup}
                         setNewElement={setNewElement}
-                        fingerprint={props.app.fingerprint!}
                     />
             }
 
@@ -185,7 +184,7 @@ function Group(props: PropsForComponent) {
                     newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
                     <TemporaryFields 
                         onSubmitElement={async (temporaryElement: NewElement) => {
-                            if (await onSubmitElement(temporaryElement, newElement, props.app.fingerprint!) === 0)
+                            if (await onSubmitElement(temporaryElement, newElement) === 0)
                                 setNewElement(undefined)
                         }}
                         onCancel={() => setNewElement(undefined)}

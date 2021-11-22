@@ -50,5 +50,4 @@ export default function TopContributor(props: PropsForComponent) {
 interface PropsForComponent {
 	place: number,
 	contributor: IContributor,
-	fingerprint?: string
 }

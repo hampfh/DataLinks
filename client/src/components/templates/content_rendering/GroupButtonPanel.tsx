@@ -22,7 +22,7 @@ export default function GroupButtonPanel(props: PropForComponent) {
                         name: "",
                         isSubGroup: isSubGroup
                     })}
-                    submitGroup={(name) => onSubmitGroup(name, props.newGroup, props.fingerprint)}
+                    submitGroup={(name) => onSubmitGroup(name, props.newGroup)}
                 />
             </div>
             <div className="GroupButtonContainerOptions">
@@ -30,20 +30,18 @@ export default function GroupButtonPanel(props: PropForComponent) {
                     updateGroup(
                         props.group._id, 
                         "split", 
-                        !props.group.split,
-                        props.fingerprint!)}
+                        !props.group.split)}
                     >{props.group.split ? "Disable" : "Enable"} split</button>
                 <button onClick={() => 
                     updateGroup(
                         props.group._id, 
                         "column", 
-                        !props.group.column, 
-                        props.fingerprint!)}
+                        !props.group.column)}
                     >{props.group.column ? "Disable" : "Enable"} column</button>
             </div>
             {props.group.depth > 1 ?
                 <div className="GroupButtonContainerDeleteGroup">
-                    <button onClick={() => deleteGroup(props.group._id, props.fingerprint)}>Delete this group</button>
+                    <button onClick={() => deleteGroup(props.group._id)}>Delete this group</button>
                 </div> : null
             }
         </div>
@@ -52,13 +50,12 @@ export default function GroupButtonPanel(props: PropForComponent) {
 
 interface PropForComponent {
     group: Group,
-    fingerprint: string,
     newGroup?: {
         parentGroup: string,
         name: string,
         isSubGroup: boolean
     },
-    updateGroup: (id: string, setting: "split" | "column" | "placement", value: number | boolean, fingerprint: string) => void,
+    updateGroup: (id: string, setting: "split" | "column" | "placement", value: number | boolean) => void,
     setNewElement: (data: {
         parentGroup: string,
         type: ContentType

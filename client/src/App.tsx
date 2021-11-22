@@ -18,10 +18,9 @@ import {
 	setContributor,
 	ISetContributor,
 	APP_CONTRIBUTOR_KEY,
-	setFingerPrint,
-	ISetFingerPrint,
 	setReplaceCountdownWithDateFlag,
-	ISetReplaceCountdownWithDateFlag
+	ISetReplaceCountdownWithDateFlag,
+	setAuth
 } from 'state/actions/app'
 import { 
 	ISetCompletedDeadlines, 
@@ -30,7 +29,6 @@ import {
 } from 'state/actions/deadlines';
 import Subscriptions from 'components/utilities/Subscriptions';
 import SubmitContributorName from 'components/templates/SubmitContributorName';
-import FingerPrint from '@fingerprintjs/fingerprintjs'
 import Contributors from 'components/screens/Contributors/Contributors';
 import { fetchUpdatedSubjects } from 'functions/updateSubjects';
 import { useDispatch } from "react-redux"
@@ -49,7 +47,7 @@ function App(props: PropsForComponent) {
 	const dispatch = useDispatch()
 	const [showContributionOverlay, setShowContributionOverlay] = useState(false)
 
-	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setFingerPrint, setReplaceCountdownWithDateFlag } = props
+	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setReplaceCountdownWithDateFlag } = props
 
 	useEffect(() => {
 		manageVersion()
@@ -77,11 +75,15 @@ function App(props: PropsForComponent) {
 			setContributor(contributor)
 		}
 
-		// Initialize fingerprint
+		// Fetch user session
 		(async () => {
-			const fp = await FingerPrint.load();
-			const result = await fp.get()
-			setFingerPrint(result.visitorId)
+			const currentSession = await fetch("/api/v1/user", {
+				method: "GET"
+			})
+			if (currentSession.status === 200) {
+				const { user } = await currentSession.json()
+				dispatch(setAuth(user.id, user.kthId))
+			}
 		})();
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,32 +125,32 @@ function App(props: PropsForComponent) {
 				<Route exact path="/">
 					<Home />
 				</Route>
-				<Route exact path="/:program">
+				<Route exact path="/:program([A-Z0-9]{3})">
 					<Subscriptions />
 					
 					<Subjects 
 						updateSubjects={fetchUpdatedSubjects}
 					/>
 				</Route>
-				<Route exact path="/:program/deadlines">
+				<Route exact path="/:program([A-Z0-9]{3})/deadlines">
 					<Deadlines />
 				</Route>
-				<Route exact path="/:program/contributors">
+				<Route exact path="/:program([A-Z0-9]{3})/contributors">
 					<Contributors />
 				</Route>
-				<Route exact path="/:program/archive">
+				<Route exact path="/:program([A-Z0-9]{3})/archive">
 					<Archive subjects={props.content.activeProgramSubjects} />
 				</Route>
-				<Route exact path={`/:program/course/:subjectCode`}>
+				<Route exact path={`/:program([A-Z0-9]{3})/course/:subjectCode`}>
 					<Subscriptions />
 					<SubjectView
 						updateSubjects={fetchUpdatedSubjects}
 					/>
 				</Route>
-				{props.content.hasLoaded ? 
+				{props.content.hasLoaded && 
 					<Route>
 						<NotFoundPage />
-					</Route> : null
+					</Route>
 				}
 			</Switch>
 		</Router>
@@ -164,7 +166,6 @@ export interface PropsForComponent {
 	setReplaceCountdownWithDateFlag: ISetReplaceCountdownWithDateFlag
 	setCompletedDeadlines: ISetCompletedDeadlines
 	setContributor: ISetContributor
-	setFingerPrint: ISetFingerPrint
 }
 
 const reduxSelect = (state: IReduxRootState) => ({
@@ -178,8 +179,7 @@ const reduxDispatch = () => ({
 	setDeadlineViewFlag,
 	setReplaceCountdownWithDateFlag,
 	setCompletedDeadlines,
-	setContributor,
-	setFingerPrint
+	setContributor
 })
 
 export default connect(reduxSelect, reduxDispatch())(App);

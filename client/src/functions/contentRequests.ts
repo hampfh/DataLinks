@@ -8,7 +8,7 @@ import { IEditLocalObject } from "state/actions/local"
 export async function onSubmitElement(newElementObject: NewElement, newElement: {
     parentGroup: string,
     type: ContentType
-}, fingerprint: string): Promise<number> {
+}): Promise<number> {
 
     let appendObject: {
         parentGroup: string,
@@ -61,10 +61,7 @@ export async function onSubmitElement(newElementObject: NewElement, newElement: 
     const response = await Http({
         url: "/api/v1/group" + urlSuffix,
         method: "POST",
-        data: {
-            ...appendObject,
-            fingerprint
-        }
+        data: appendObject
     })
 
     if (response.status === 404) {
@@ -83,7 +80,7 @@ export async function onSubmitGroup(name: string, newGroup: {
     parentGroup: string,
     name: string,
     isSubGroup: boolean
-} | undefined, fingerprint: string) {
+} | undefined) {
 
     if (!newGroup || !newGroup?.parentGroup)
         return
@@ -105,17 +102,14 @@ export async function onSubmitGroup(name: string, newGroup: {
     await Http({
         url: "/api/v1/group",
         method: "POST",
-        data: {
-            ...submitObject,
-            fingerprint
-        }
+        data: submitObject
     })
 
     // Force reload the site
     window.location.reload()
 }
 
-export async function deleteGroup(id: string, fingerprint: string) {
+export async function deleteGroup(id: string) {
     if (!!!window.confirm("Are you sure you want to delete this group, all it's children will also be deleted"))
         return
 
@@ -123,8 +117,7 @@ export async function deleteGroup(id: string, fingerprint: string) {
         url: "/api/v1/group",
         method: "DELETE",
         data: {
-            id,
-            fingerprint
+            id
         }
     })
 
@@ -136,7 +129,7 @@ export async function deleteGroup(id: string, fingerprint: string) {
     }
 }
 
-export async function updateGroup(id: string, setting: "split" | "column" | "placement", value: boolean | number, fingerprint: string) {
+export async function updateGroup(id: string, setting: "split" | "column" | "placement", value: boolean | number) {
 
     let updateObject: {
         id: string,
@@ -157,10 +150,7 @@ export async function updateGroup(id: string, setting: "split" | "column" | "pla
     await Http({
         url: "/api/v1/group",
         method: "PATCH",
-        data: {
-            ...updateObject,
-            fingerprint
-        }
+        data: updateObject
     })
 
     // TODO this should seemsly update
@@ -174,9 +164,8 @@ export async function updateGroup(id: string, setting: "split" | "column" | "pla
  * @param type 
  * @param fieldOne 
  * @param fieldTwo 
- * @param fingerprint 
  */
-export async function remoteUpdateElement(parentGroup: string, id: string, type: ContentType, fieldOne: string, fieldTwo: string, fingerprint: string) {
+export async function remoteUpdateElement(parentGroup: string, id: string, type: ContentType, fieldOne: string, fieldTwo: string) {
     let append: IEditLocalObject = {
         parentGroup: parentGroup.toString(),
         id,
@@ -204,10 +193,7 @@ export async function remoteUpdateElement(parentGroup: string, id: string, type:
     const response = await Http({
         url: `/api/v1/group/${urlPathPrefix}`,
         method: "PATCH",
-        data: {
-            ...append,
-            fingerprint: fingerprint
-        }
+        data: append
     })
 
     if (response.status !== 200) {
@@ -216,15 +202,14 @@ export async function remoteUpdateElement(parentGroup: string, id: string, type:
     }
 }
 
-export async function remoteDeleteElement(parentGroup: string, id: string, fingerprint: string) {
+export async function remoteDeleteElement(parentGroup: string, id: string) {
     if (window.confirm("Are you sure you want to delete this item?")) {
         const response = await Http({
             url: "/api/v1/group/content",
             method: "DELETE",
             data: {
                 parentGroupId: parentGroup,
-                id,
-                fingerprint
+                id
             }
         })
 

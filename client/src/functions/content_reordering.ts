@@ -1,6 +1,6 @@
 import Http from "functions/HttpRequest"
 
-export async function submitElementReorder(parentGroup: string, elementId: string, index: number, fingerprint: string) {
+export async function submitElementReorder(parentGroup: string, elementId: string, index: number) {
 
     await Http({
         url: "/api/v1/group/order",
@@ -8,8 +8,7 @@ export async function submitElementReorder(parentGroup: string, elementId: strin
         data: {
             parentGroup,
             id: elementId,
-            position: index,
-            fingerprint
+            position: index
         }
     })
 }
