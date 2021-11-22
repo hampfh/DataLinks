@@ -1,7 +1,6 @@
 import Joi from "joi"
 
 export const createProgram = Joi.object({
-	fingerprint: Joi.string().required(),
 	name: Joi.string().required()
 })
 
@@ -11,19 +10,16 @@ export const readProgram = Joi.object({
 }).xor("id", "name")
 
 export const addSubjectToProgram = Joi.object({
-	fingerprint: Joi.string().required(),
 	id: Joi.string().required(),
 	subject: Joi.string().required() 				// ? The id of the subject
 })
 
 export const addContributorToProgram = Joi.object({
-	fingerprint: Joi.string().required(),
 	id: Joi.string().required(),
 	contributor: Joi.string().optional() 			// ? The id of the contributor
 })
 
 export const createSubject = Joi.object({
-	fingerprint: Joi.string().required(),
 	name: Joi.string().required(),
 	code: Joi.string().required(),
 	description: Joi.string().required(),
@@ -37,7 +33,6 @@ export const readSubject = Joi.object({
 })
 
 export const updateSubject = Joi.object({
-	fingerprint: Joi.string().required(),
 	id: Joi.string().required(),
 	name: Joi.string(),
 	code: Joi.string(),
@@ -47,7 +42,6 @@ export const updateSubject = Joi.object({
 }).or("name", "code", "description", "logo", "color")
 
 export const createGroup = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string(),
 	name: Joi.string().optional(),
 	split: Joi.bool(),
@@ -56,7 +50,6 @@ export const createGroup = Joi.object({
 })
 
 export const updateGroup = Joi.object({
-	fingerprint: Joi.string().required(),
 	id: Joi.string().required(),
 	name: Joi.string().optional(),
 	split: Joi.bool(),
@@ -69,18 +62,15 @@ export const findElementWithId = Joi.object({
 })
 
 export const findElementWithIdFingerPrint = Joi.object({
-	fingerprint: Joi.string().required(),
 	id: Joi.string()
 })
 
 export const findGroupChildElementId = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroupId: Joi.string().required(),
 	id: Joi.string().required()
 })
 
 export const createLink = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string(),
 	displayText: Joi.string(),
 	link: Joi.string(),
@@ -88,7 +78,6 @@ export const createLink = Joi.object({
 })
 
 export const createText = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string(),
 	title: Joi.string().optional(),
 	text: Joi.string(),
@@ -96,7 +85,6 @@ export const createText = Joi.object({
 })
 
 export const createDeadline = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string(),
 	displayText: Joi.string().optional(),
 	deadline: Joi.date().required(),
@@ -105,7 +93,6 @@ export const createDeadline = Joi.object({
 })
 
 export const updateLink = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
 	displayText: Joi.string().min(0),
@@ -113,7 +100,6 @@ export const updateLink = Joi.object({
 }).or("displayText", "link")
 
 export const updateText = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
 	title: Joi.string().optional(),
@@ -121,7 +107,6 @@ export const updateText = Joi.object({
 }).or("title", "text")
 
 export const updateDeadline = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
 	displayText: Joi.string().min(0),
@@ -130,20 +115,13 @@ export const updateDeadline = Joi.object({
 }).or("displayText", "deadline", "start")
 
 export const nameContributor = Joi.object({
-	fingerprint: Joi.string().required(),
 	name: Joi.string()
 })
 
 export const updateContentPosition = Joi.object({
-	fingerprint: Joi.string().required(),
 	parentGroup: Joi.string().required(),
 	id: Joi.string().required(),
 	position: Joi.number().required().min(0)
-})
-
-export const mergeContributors = Joi.object({
-	fingerprint: Joi.string().required(),
-	otherFingerprint: Joi.string().required()
 })
 
 export const getContributors = Joi.object({
@@ -152,7 +130,7 @@ export const getContributors = Joi.object({
 export const getUserSchema = Joi.object({
 	id: Joi.string(),
 	kthId: Joi.string()
-}).xor("id", "kthId")
+}).oxor("id", "kthId")
 
 export const loginSchema = Joi.object({
 	redirect: Joi.string()
