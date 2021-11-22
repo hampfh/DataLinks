@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express"
 import UserModel from "../models/user.model"
-import { User } from "../controllers"
 import { loginSchema } from "../controllers/schemas"
 import moment from "moment"
 
