@@ -89,7 +89,7 @@ export default class ProgramController extends CrudController {
 		}
 	}
 
-	public async update() {
+	public update(): void {
 		throw new Error("Not implemented")
 	}
 
@@ -155,7 +155,7 @@ export default class ProgramController extends CrudController {
 		})
 	}
 
-	public async delete() {
+	public delete(): void {
 		throw new Error("Not implemented")
 	}
 }
