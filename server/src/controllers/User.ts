@@ -5,7 +5,7 @@ import { Document } from "mongoose"
 import RealTime from "../RealTime"
 import UserModel, { Privilege, User } from "../models/user.model"
 import { CrudController } from "./CrudController"
-import { getUserSchema } from "./schemas"
+import { getContributors, getUserSchema } from "./schemas"
 
 export default class SubjectController extends CrudController {
 
@@ -151,6 +151,57 @@ export default class SubjectController extends CrudController {
 			identifier: user._id,
 			operation,
 			type
+		})
+	}
+
+	async getContributors(req: Request, res: Response): Promise<void> {
+		const { error } = getContributors.validate(req.query)
+		if (error) {
+			res.status(400).json({
+				message: error.message
+			})
+			return
+		}
+
+		const contributors = await UserModel.aggregate([
+			{
+				"$project": {
+					kthId: 1,
+					contributions: 1,
+					updatedAt: 1
+				}
+			}, {
+				"$addFields": {
+					"contributionCount": {
+						$sum: [
+							"$contributions.operations.creates",
+							"$contributions.operations.updates",
+							"$contributions.operations.deletes"
+						]
+					}
+				}
+			}, {
+				"$project": {
+					_id: 0,
+					name: 1,
+					contributions: {
+						operations: 1
+					},
+					contributionsCount: 1,
+					updatedAt: 1
+				}
+			},{
+				"$sort": {
+					contributionsCount: -1
+				}
+			}, {
+				"$limit": 1000
+			}
+		])
+
+		res.json({
+			message: "Successfully fetched contributors",
+			contributors
 		})
 	}
 

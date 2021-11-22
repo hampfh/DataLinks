@@ -1,12 +1,11 @@
 import { mongoose } from "@typegoose/typegoose"
 import express from "express"
-import ContributorModel from "../models/contributions.model"
 import { ContentType, OperationType } from "../models/log.model"
 import ProgramModel from "../models/program.model"
 import SubjectModel from "../models/subjects.model"
 import { CrudController } from "./CrudController"
 import Log from "./Log"
-import { addContributorToProgram, addSubjectToProgram, createProgram, readProgram } from "./schemas"
+import { addSubjectToProgram, createProgram, readProgram } from "./schemas"
 
 export default class ProgramController extends CrudController {
 	public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -153,68 +152,6 @@ export default class ProgramController extends CrudController {
 
 		res.status(201).json({
 			message: "Successfully added subject to program"
-		})
-	}
-
-	public async addContributor(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-		const { error } = addContributorToProgram.validate(req.body)
-		if (error) {
-			super.fail(res, error.message, 400, next)
-			return 
-		}
-
-		const program = await ProgramModel.findOne({
-			_id: req.body.id
-		})
-
-		async function getContributorId(): Promise<string | undefined> {
-			if (req.body.contributor) {
-				return req.body.contributor as string
-			}
-
-			return (await ContributorModel.findOne({
-				identifier: req.body.fingerprint
-			}))?._id.toString()
-		} 
-
-		const contributorId = await getContributorId()
-
-		if (program == null || contributorId == null) {
-			res.status(404).json({
-				message: "Resource not found"
-			})
-			return
-		}
-
-		try {
-			await ProgramModel.updateOne({
-				_id: req.body.id
-			}, {
-				$push: {
-					contributors: contributorId
-				}
-			})
-		} catch (error) {
-			console.warn("Internal server error when adding subject to program", error)
-			res.status(500).json({
-				message: "Internal server error"
-			})
-			return
-		}
-
-		await Log(
-			req.user!.id,
-			OperationType.UPDATE,
-			ContentType.PROGRAM,
-			[
-				"New contributor",
-				req.body.id, 
-				req.body.contributor
-			]
-		)
-
-		res.status(201).json({
-			message: "Successfully added contributor to program"
 		})
 	}
 

@@ -147,7 +147,6 @@ export const mergeContributors = Joi.object({
 })
 
 export const getContributors = Joi.object({
-	program: Joi.string().optional()
 })
 
 export const getUserSchema = Joi.object({

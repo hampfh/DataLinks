@@ -4,7 +4,7 @@ import session from "express-session"
 import { kthNodePassportUidcUser } from "@kth/kth-node-passport-oidc"
 import UserModel from "../models/user.model"
 import mongoose from "../models/index.model"
-import { User } from "controllers"
+import { User } from "../controllers"
 
 type DoneFunction<T extends Express.User | kthNodePassportUidcUser> = (paramOne?: unknown, user?: T) => void
 

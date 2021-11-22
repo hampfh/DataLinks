@@ -1,6 +1,6 @@
 import express from "express"
-import { Content, Group, Subject, Contributors, Program, User } from "../controllers"
-import { blockIfNotAuthorized, requiresAdminEditToken, requiresModeratorPrivilege } from "../middlewares/verify_auth"
+import { Content, Group, Subject, Program, User } from "../controllers"
+import { blockIfNotAuthorized, requiresAdminEditToken } from "../middlewares/verify_auth"
 
 const router = express.Router({
 	strict: true
@@ -15,7 +15,6 @@ router.all("/", (req: express.Request, res: express.Response) => {
 router.post("/program", requiresAdminEditToken, Program.create)
 router.get("/program", Program.read)
 router.post("/program/subject", requiresAdminEditToken, Program.addSubject)
-router.post("/program/contributor", requiresAdminEditToken, Program.addContributor)
 router.post("/subject", requiresAdminEditToken, Subject.create)
 router.get("/subject", Subject.read)
 router.patch("/subject", requiresAdminEditToken, Subject.update)
@@ -39,6 +38,6 @@ router.patch("/contributors/merge", Contributors.mergeContributors) */
 
 router.get("/user", User.read)
 router.get("/login", User.getAuthSession)
-router.get("/contributors", Contributors.getContributors)
+router.get("/contributors", User.getContributors)
 
 export default router
