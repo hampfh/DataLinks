@@ -5,6 +5,8 @@ import { kthNodePassportUidcUser } from "@kth/kth-node-passport-oidc"
 import UserModel from "../models/user.model"
 import mongoose from "../models/index.model"
 import { User } from "../controllers"
+import Redis from "redis"
+import connectRedis from "connect-redis"
 
 type DoneFunction<T extends Express.User | kthNodePassportUidcUser> = (paramOne?: unknown, user?: T) => void
 
@@ -27,17 +29,43 @@ async function populateUserFromDB(user: kthNodePassportUidcUser): Promise<Expres
 }
 
 export async function initPassport(server: express.Application): Promise<void> {
-	server.set("trust proxy", 1) // trust first proxy
-	server.use(
-		session({
-			secret: process.env.SESSION_SECRET as string,
-			resave: true,
-			saveUninitialized: false,
-			cookie: {
-				secure: process.env.NODE_ENV === "production"
-			}
+
+	if (process.env.NODE_ENV === "production") {
+		const RedisStore = connectRedis(session)
+
+		// Configure redis client
+		const redisClient = Redis.createClient()
+
+		redisClient.on("error", error => {
+			console.warn(`Redis connection error: ${error}`)
 		})
-	)
+		redisClient.on("connection", () => {
+			console.log("Connected to redis successfully")
+		})
+
+		server.set("trust proxy", 1) // trust first proxy
+		server.use(
+			session({
+				store: new RedisStore({ client: redisClient }),
+				secret: process.env.SESSION_SECRET as string,
+				resave: false,
+				saveUninitialized: false,
+				cookie: {
+					httpOnly: true,
+					secure: process.env.NODE_ENV === "production",
+					maxAge: 2419200000 // One month 1000 * 60 * 60 * 24 * 7 * 4
+				}
+			})
+		)
+	} else {
+		server.use(
+			session({
+				secret: "secret",
+				resave: false,
+				saveUninitialized: false
+			})
+		)
+	}
 
 	server.use(passport.initialize())
 	server.use(passport.session())

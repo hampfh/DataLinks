@@ -30,11 +30,8 @@ router.patch("/group/textcontent", blockIfNotAuthorized, Content.updateText)
 router.patch("/group/linkcontent", blockIfNotAuthorized, Content.updateLink)
 router.patch("/group/deadlinecontent", blockIfNotAuthorized, Content.updateDeadline)
 router.patch("/group/order", blockIfNotAuthorized, Content.updateContentPosition)
-//router.post("/group/groupcontent", Content.createGroup)
 router.get("/group/content", Content.read)
 router.delete("/group/content", blockIfNotAuthorized, Content.delete)
-/* router.post("/contributor/name", Contributors.nameContributor)
-router.patch("/contributors/merge", Contributors.mergeContributors) */
 
 router.get("/user", User.read)
 router.get("/contributors", User.getContributors)

@@ -19,12 +19,14 @@
 	},
 	"homepage": "https://github.com/Hampfh/DataLinks#readme",
 	"devDependencies": {
+		"@types/connect-redis": "^0.0.17",
 		"@types/cookie-parser": "^1.4.2",
 		"@types/debug": "^4.1.5",
 		"@types/express": "^4.17.9",
 		"@types/express-session": "^1.17.4",
 		"@types/morgan": "^1.9.2",
 		"@types/passport": "^1.0.7",
+		"@types/redis": "^2.8.32",
 		"@typescript-eslint/eslint-plugin": "^4.14.1",
 		"@typescript-eslint/parser": "^4.14.1",
 		"eslint": "^7.18.0",
@@ -34,6 +36,7 @@
 	"dependencies": {
 		"@kth/kth-node-passport-oidc": "^4.1.4",
 		"@typegoose/typegoose": "^9.1.0",
+		"connect-redis": "^6.0.0",
 		"cookie-parser": "^1.4.5",
 		"debug": "^4.3.1",
 		"dotenv": "^10.0.0",
@@ -44,6 +47,7 @@
 		"mongoose": "^6.0.9",
 		"morgan": "^1.10.0",
 		"passport": "^0.5.0",
+		"redis": "^3.1.2",
 		"socket.io": "^4.2.0"
 	}
 }
