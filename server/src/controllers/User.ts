@@ -184,12 +184,12 @@ export default class UserController extends CrudController {
 					contributions: {
 						operations: 1
 					},
-					contributionsCount: 1,
+					contributionCount: 1,
 					updatedAt: 1
 				}
 			},{
 				"$sort": {
-					contributionsCount: -1
+					contributionCount: -1
 				}
 			}, {
 				"$limit": 1000
