@@ -32,6 +32,10 @@ function Contributors(props: PropsForComponent) {
 				if (response.status === 200)
 					setContributors(response.contributors)
 				setHasLoaded(true)
+				
+				if (window.localStorage.getItem("new-login-migration-reminder") == null && window.confirm("DataLinks has a new login system using KTH's login service, if you want to keep your old data dm me on discord (Chain#4341) with your old name and your kthId. \nYou must have logged in at least once with the new system before doing this")) {
+					window.localStorage.setItem("new-login-migration-reminder", "true")
+				}
 			}
 		)
 	}, [programName])

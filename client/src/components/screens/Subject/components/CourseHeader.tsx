@@ -36,7 +36,7 @@ export default function CourseHeader(props: PropsForComponent) {
             </div>
             {!isMobile() && !props.isArchived &&
 					<div className="course-header-edit-mode-switch-container">
-						{!auth && 
+						{auth && 
 							<>
 								<p>Default mode</p>
 								<label className="course-header-edit-mode-switch switch">
