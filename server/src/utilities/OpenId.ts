@@ -7,7 +7,7 @@ export class OpenId {
 
 	constructor() {
 		const host = process.env.HOST as string
-		const port = process.env.PORT as string
+		const port = process.env.NODE_ENV === "production" ? 443 : process.env.PORT as string
 		const config: kthConnectConfig = {
 			configurationUrl: process.env.KTH_LOGIN_CONFIGURATION_URL as string,
 			clientId: process.env.KTH_LOGIN_ID as string,

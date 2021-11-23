@@ -39,7 +39,7 @@ export async function initPassport(server: express.Application): Promise<void> {
 		redisClient.on("error", error => {
 			console.warn(`Redis connection error: ${error}`)
 		})
-		redisClient.on("connection", () => {
+		redisClient.on("connect", () => {
 			console.log("Connected to redis successfully")
 		})
 
@@ -52,7 +52,9 @@ export async function initPassport(server: express.Application): Promise<void> {
 				saveUninitialized: false,
 				cookie: {
 					httpOnly: true,
-					secure: process.env.NODE_ENV === "production",
+					// ? For the cookie to be readable by KTH server
+					// ? it cannot be secure
+					secure: false,
 					maxAge: 2419200000 // One month 1000 * 60 * 60 * 24 * 7 * 4
 				}
 			})
@@ -91,6 +93,7 @@ export async function initPassport(server: express.Application): Promise<void> {
 			// Populate the express user with 
 			// the the db user
 			if (dbUser) {
+				dbUser.save()
 				done(null, {
 					id: dbUser._id,
 					privilege: dbUser.privilege,

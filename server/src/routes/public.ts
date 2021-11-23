@@ -15,7 +15,10 @@ router.get("/:program([\\dA-Za-z]{3})/deadlines", MetaTagPopulator.populateDeadl
 router.get("/:program([\\dA-Za-z]{3})/contributors", MetaTagPopulator.populateContributors)
 router.get("/:program([\\dA-Za-z]{3})/archive", MetaTagPopulator.populateArchives)
 router.get("/login", oidc.login, updateLoginStats, paramRedirect)
-router.get("/logout", oidc.logout, paramRedirect)
+router.get("/logout", (_, res, next) => {
+	res.clearCookie("connect.sid")
+	next()
+}, oidc.logout)
 
 
 export default router
