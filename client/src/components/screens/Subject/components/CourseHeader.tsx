@@ -1,24 +1,30 @@
 import { DataLoader } from 'functions/DataLoader'
 import isMobile from 'functions/isMobile'
 import React from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { disableEditModeFlag, enableEditMode, IDisableEditModeFlag, IEnableEditMode } from 'state/actions/app'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
+import { disableEditModeFlag, enableEditMode } from 'state/actions/app'
 import { IReduxRootState } from 'state/reducers'
 import { ReactComponent as BackButton } from "assets/svgs/illustrations/Backbutton.svg"
 import "./CourseHeader.css"
+import { IAuthState } from 'state/reducers/app'
 
-function CourseHeader(props: PropsForComponent) {
+export default function CourseHeader(props: PropsForComponent) {
 
+	const dispatch = useDispatch()
+	const location = useLocation()
+
+	const editMode = useSelector<IReduxRootState, boolean>(state => state.app.flags.editMode)
+	const auth = useSelector<IReduxRootState, IAuthState | undefined>(state => state.app.auth)
 
     function _flickEditMode(event: React.ChangeEvent<HTMLInputElement>) {
 
 		const checked = event.target.checked
 
-		if (checked)
-			props.enableEditMode()
+		if (checked/*  && auth */)
+			dispatch(enableEditMode())
 		else
-			props.disableEditModeFlag()
+			dispatch(disableEditModeFlag())
 	}
 
     return (
@@ -30,33 +36,25 @@ function CourseHeader(props: PropsForComponent) {
             </div>
             {!isMobile() && !props.isArchived &&
 					<div className="course-header-edit-mode-switch-container">
-						<p>Default mode</p>
-						<label className="course-header-edit-mode-switch switch">
-							<input onChange={(event) => _flickEditMode(event)} checked={props.editMode} type="checkbox" />
-							<span className="slider round"></span>
-						</label>
-						<p>Edit mode</p>
+						{!auth && 
+							<>
+								<p>Default mode</p>
+								<label className="course-header-edit-mode-switch switch">
+									<input onChange={(event) => _flickEditMode(event)} checked={editMode} type="checkbox" />
+									<span className="slider round"></span>
+								</label>
+								<p>Edit mode</p>
+							</>
+						}
+						{!auth &&
+							<a href={`/login?redirect=${location.pathname}`}><p className="default-header-logged-in-text default-header-logged-in-logout-link">Login to KTH to start editing</p></a>
+						}
 					</div>
-				}
+			}
         </div>
     )
 }
 
 interface PropsForComponent {
     isArchived: boolean
-    editMode: boolean
-    enableEditMode: IEnableEditMode
-	disableEditModeFlag: IDisableEditModeFlag
 }
-
-const reduxSelect = (state: IReduxRootState) => ({
-	content: state.content,
-	editMode: state.app.flags.editMode
-})
-
-const reduxDispatch = () => ({
-	enableEditMode,
-	disableEditModeFlag
-})
-
-export default connect(reduxSelect, reduxDispatch())(CourseHeader)

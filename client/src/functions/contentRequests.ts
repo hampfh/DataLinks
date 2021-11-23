@@ -1,11 +1,11 @@
-import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
-import { ContentType } from "components/utilities/contentTypes"
+import { INewElement } from "components/templates/content_rendering/TemporaryFields"
+import { ContentType } from "components/utilities/content_type"
 import Moment from "moment"
 import Http from "functions/HttpRequest"
 import { IEditLocalObject } from "state/actions/local"
 
 // Take the virtual new element from the state and submit it to the database
-export async function onSubmitElement(newElementObject: NewElement, newElement: {
+export async function onSubmitElement(newElementObject: INewElement, newElement: {
     parentGroup: string,
     type: ContentType
 }): Promise<number> {
@@ -64,26 +64,17 @@ export async function onSubmitElement(newElementObject: NewElement, newElement: 
         data: appendObject
     })
 
-    if (response.status === 404) {
-        if (window.confirm("You tried to edit a deleted resource, reload the page to renew the content"))
-            window.location.reload()
-    }
-    else if (response.status !== 201 && response.status !== 200) {
-        if (window.confirm("The site encountered an error, reload the site?"))
-            window.location.reload()
-    }
-
-    return 0
+    return response.status
 }
 
 export async function onSubmitGroup(name: string, newGroup: {
     parentGroup: string,
     name: string,
     isSubGroup: boolean
-} | undefined) {
+} | undefined): Promise<number> {
 
     if (!newGroup || !newGroup?.parentGroup)
-        return
+        return 0
 
     let submitObject: {
         name?: string,
@@ -99,19 +90,18 @@ export async function onSubmitGroup(name: string, newGroup: {
     if (name != null && name.length !== 0)
         submitObject.name = name
 
-    await Http({
+    const response = await Http({
         url: "/api/v1/group",
         method: "POST",
         data: submitObject
     })
 
-    // Force reload the site
-    window.location.reload()
+    return response.status
 }
 
-export async function deleteGroup(id: string) {
+export async function deleteGroup(id: string): Promise<number> {
     if (!!!window.confirm("Are you sure you want to delete this group, all it's children will also be deleted"))
-        return
+        return 0
 
     const response = await Http({
         url: "/api/v1/group",
@@ -121,15 +111,10 @@ export async function deleteGroup(id: string) {
         }
     })
 
-    if (response.status !== 200) {
-        if (window.confirm("An error occured, would you like to reload the site?"))
-            window.location.reload()
-    } else {
-        window.location.reload()
-    }
+    return response.status
 }
 
-export async function updateGroup(id: string, setting: "split" | "column" | "placement", value: boolean | number) {
+export async function updateGroup(id: string, setting: "split" | "column" | "placement", value: boolean | number): Promise<number> {
 
     let updateObject: {
         id: string,
@@ -147,14 +132,13 @@ export async function updateGroup(id: string, setting: "split" | "column" | "pla
     else if (setting === "placement")
         updateObject.placement = value as number
 
-    await Http({
+    const response = await Http({
         url: "/api/v1/group",
         method: "PATCH",
         data: updateObject
     })
 
-    // TODO this should seemsly update
-    window.location.reload()
+    return response.status
 }
 
 /**
@@ -165,7 +149,7 @@ export async function updateGroup(id: string, setting: "split" | "column" | "pla
  * @param fieldOne 
  * @param fieldTwo 
  */
-export async function remoteUpdateElement(parentGroup: string, id: string, type: ContentType, fieldOne: string, fieldTwo: string) {
+export async function remoteUpdateElement(parentGroup: string, id: string, type: ContentType, fieldOne: string, fieldTwo: string): Promise<number> {
     let append: IEditLocalObject = {
         parentGroup: parentGroup.toString(),
         id,
@@ -196,13 +180,10 @@ export async function remoteUpdateElement(parentGroup: string, id: string, type:
         data: append
     })
 
-    if (response.status !== 200) {
-        if (window.confirm("The site encountered an error, reload the site?"))
-            window.location.reload()
-    }
+    return response.status
 }
 
-export async function remoteDeleteElement(parentGroup: string, id: string) {
+export async function remoteDeleteElement(parentGroup: string, id: string): Promise<number> {
     if (window.confirm("Are you sure you want to delete this item?")) {
         const response = await Http({
             url: "/api/v1/group/content",
@@ -213,12 +194,7 @@ export async function remoteDeleteElement(parentGroup: string, id: string) {
             }
         })
 
-        if (response.status !== 200) {
-            if (window.confirm("The site encountered an error, reload the site?"))
-                window.location.reload()
-        }
-
-        // Deletion is made with sockets
-        //this.props.deleteLocally(this.props.id)
+        return response.status
     }
+    return 0
 }

@@ -8,17 +8,21 @@ import RenderContent from './RenderContent'
 import TemporaryFields from './TemporaryFields'
 import { v4 as uuid } from "uuid"
 import { onSubmitElement, updateGroup } from "functions/contentRequests"
-import { StateForComponent as NewElement } from "components/templates/content_rendering/TemporaryFields"
+import { INewElement } from "components/templates/content_rendering/TemporaryFields"
 import "./RenderData.css"
 import "./Group.css"
 import Dummy from '../content_objects/Dummy'
 import { calculateIndexFromRelative, getTarget, insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
 import GroupButtonPanel from './GroupButtonPanel'
 import useDebounce from 'functions/hooks/useDebouncer'
+import { statusCodeOk } from 'components/utilities/response_code_utilities'
+import { useLocation } from 'react-router'
 
 const MAX_EDIT_ELEMENTS_PER_ROW = 3
 
 function Group(props: PropsForComponent) {
+
+    const location = useLocation()
 
     const [newElement, setNewElement] = useState<{
         parentGroup: string,
@@ -183,9 +187,9 @@ function Group(props: PropsForComponent) {
                 { // Generate temporary elements
                     newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
                     <TemporaryFields 
-                        onSubmitElement={async (temporaryElement: NewElement) => {
+                        onSubmitElement={async (temporaryElement: INewElement) => {
                             const statusCode = await onSubmitElement(temporaryElement, newElement)
-                            if (statusCode === 200 || statusCode === 201)
+                            if (statusCodeOk(statusCode, location.pathname))
                                 setNewElement(undefined)
                         }}
                         onCancel={() => setNewElement(undefined)}

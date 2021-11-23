@@ -2,10 +2,25 @@ import React from 'react'
 import GroupForm from './GroupForm'
 import { v4 as uuid } from "uuid"
 import { deleteGroup, onSubmitGroup, updateGroup } from 'functions/contentRequests'
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 import "./GroupButtonPanel.css"
+import { statusCodeOk } from 'components/utilities/response_code_utilities'
+import { useLocation } from 'react-router'
 
 export default function GroupButtonPanel(props: PropForComponent) {
+
+    const location = useLocation()
+
+    async function update(method: "split" | "column" | "placement") {
+        const statusCode = await updateGroup(
+            props.group._id, 
+            method, 
+            !props.group.split)
+
+        if (statusCodeOk(statusCode, location.pathname))
+            window.location.reload()
+    }
+
     return (
         <div className="GroupButtonContainer">
             <div className="GroupButtonContainerNewContent">
@@ -22,26 +37,24 @@ export default function GroupButtonPanel(props: PropForComponent) {
                         name: "",
                         isSubGroup: isSubGroup
                     })}
-                    submitGroup={(name) => onSubmitGroup(name, props.newGroup)}
+                    submitGroup={async (name) => {
+                        const statusCode = await onSubmitGroup(name, props.newGroup)
+                        if (statusCodeOk(statusCode, location.pathname))
+                            window.location.reload()
+                    }}
                 />
             </div>
             <div className="GroupButtonContainerOptions">
-                <button onClick={() => 
-                    updateGroup(
-                        props.group._id, 
-                        "split", 
-                        !props.group.split)}
-                    >{props.group.split ? "Disable" : "Enable"} split</button>
-                <button onClick={() => 
-                    updateGroup(
-                        props.group._id, 
-                        "column", 
-                        !props.group.column)}
-                    >{props.group.column ? "Disable" : "Enable"} column</button>
+                <button onClick={async () => update("split")}>{props.group.split ? "Disable" : "Enable"} split</button>
+                <button onClick={() => update("column")}>{props.group.column ? "Disable" : "Enable"} column</button>
             </div>
             {props.group.depth > 1 ?
                 <div className="GroupButtonContainerDeleteGroup">
-                    <button onClick={() => deleteGroup(props.group._id)}>Delete this group</button>
+                    <button onClick={async () => {
+                        const statusCode = await deleteGroup(props.group._id)
+                        if (statusCodeOk(statusCode, location.pathname))
+                            window.location.reload()
+                    }}>Delete this group</button>
                 </div> : null
             }
         </div>

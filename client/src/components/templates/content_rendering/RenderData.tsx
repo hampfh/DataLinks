@@ -32,8 +32,12 @@ import { IAppState } from "state/reducers/app"
 import { onSubmitGroup } from 'functions/contentRequests'
 import Group from './Group'
 import { fetchUpdatedSubjects } from 'functions/updateSubjects'
+import { statusCodeOk } from 'components/utilities/response_code_utilities'
+import { useLocation } from 'react-router'
 
 function RenderData(props: PropsForComponent) {
+
+	const location = useLocation()
 
 	const [newGroup, setNewGroup] = useState<{
 		parentGroup: string,
@@ -59,7 +63,11 @@ function RenderData(props: PropsForComponent) {
 						parentGroup: props.group._id,
 						isSubGroup
 					})}
-					submitGroup={(name: string) => onSubmitGroup(name, newGroup!)}
+					submitGroup={async (name: string) => {
+						const statusCode = await onSubmitGroup(name, newGroup!)
+						if (statusCodeOk(statusCode, location.pathname))
+							window.location.reload()
+					}}
 				/>
 			}
 		</div>
