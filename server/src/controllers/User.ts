@@ -160,6 +160,11 @@ export default class UserController extends CrudController {
 			return
 		}
 
+		/*
+			Fetch all users that have contributed
+			with something, aka have more than
+			0 contributions
+		 */
 		const contributors = await UserModel.aggregate([
 			{
 				"$project": {
@@ -169,7 +174,7 @@ export default class UserController extends CrudController {
 				}
 			}, {
 				"$addFields": {
-					"contributionCount": {
+					contributionCount: {
 						$sum: [
 							"$contributions.operations.creates",
 							"$contributions.operations.updates",
@@ -177,6 +182,8 @@ export default class UserController extends CrudController {
 						]
 					}
 				}
+			}, {
+				contributionCount: { $gt: 0 }
 			}, {
 				"$project": {
 					_id: 0,
