@@ -180,7 +180,7 @@ export default class UserController extends CrudController {
 			}, {
 				"$project": {
 					_id: 0,
-					name: 1,
+					kthId: 1,
 					contributions: {
 						operations: 1
 					},
