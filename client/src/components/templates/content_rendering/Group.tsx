@@ -15,14 +15,13 @@ import Dummy from '../content_objects/Dummy'
 import { calculateIndexFromRelative, getTarget, insertDummyPositionIntoContent, submitElementReorder } from 'functions/content_reordering'
 import GroupButtonPanel from './GroupButtonPanel'
 import useDebounce from 'functions/hooks/useDebouncer'
-import { statusCodeOk } from 'components/utilities/response_code_utilities'
-import { useLocation } from 'react-router'
+import useStatusCodeEvaluator from 'functions/hooks/useStatusCodeEvaluator'
 
 const MAX_EDIT_ELEMENTS_PER_ROW = 3
 
 function Group(props: PropsForComponent) {
 
-    const location = useLocation()
+    const { actOnFailedRequest } = useStatusCodeEvaluator()
 
     const [newElement, setNewElement] = useState<{
         parentGroup: string,
@@ -187,11 +186,7 @@ function Group(props: PropsForComponent) {
                 { // Generate temporary elements
                     newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
                     <TemporaryFields 
-                        onSubmitElement={async (temporaryElement: INewElement) => {
-                            const statusCode = await onSubmitElement(temporaryElement, newElement)
-                            if (statusCodeOk(statusCode, location.pathname))
-                                setNewElement(undefined)
-                        }}
+                        onSubmitElement={async (temporaryElement: INewElement) => actOnFailedRequest(await onSubmitElement(temporaryElement, newElement))}
                         onCancel={() => setNewElement(undefined)}
                         type={newElement?.type}
                         parentId={props.group._id}

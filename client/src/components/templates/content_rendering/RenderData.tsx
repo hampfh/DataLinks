@@ -32,18 +32,22 @@ import { IAppState } from "state/reducers/app"
 import { onSubmitGroup } from 'functions/contentRequests'
 import Group from './Group'
 import { fetchUpdatedSubjects } from 'functions/updateSubjects'
-import { statusCodeOk } from 'components/utilities/response_code_utilities'
-import { useLocation } from 'react-router'
+import useStatusCodeEvaluator from 'functions/hooks/useStatusCodeEvaluator'
 
 function RenderData(props: PropsForComponent) {
 
-	const location = useLocation()
+	const { actOnFailedRequest } = useStatusCodeEvaluator()
 
 	const [newGroup, setNewGroup] = useState<{
 		parentGroup: string,
 		name: string,
 		isSubGroup: boolean
 	} | undefined>(undefined)
+
+	async function submitGroup(name: string) {
+		actOnFailedRequest(await onSubmitGroup(name, newGroup!))
+		window.location.reload()
+	}
 
 	return (
 		<div className="group-content-wrapper">
@@ -63,11 +67,7 @@ function RenderData(props: PropsForComponent) {
 						parentGroup: props.group._id,
 						isSubGroup
 					})}
-					submitGroup={async (name: string) => {
-						const statusCode = await onSubmitGroup(name, newGroup!)
-						if (statusCodeOk(statusCode, location.pathname))
-							window.location.reload()
-					}}
+					submitGroup={submitGroup}
 				/>
 			}
 		</div>

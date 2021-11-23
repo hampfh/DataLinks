@@ -1,24 +1,32 @@
-import React from 'react'
 import GroupForm from './GroupForm'
 import { v4 as uuid } from "uuid"
-import { deleteGroup, onSubmitGroup, updateGroup } from 'functions/contentRequests'
+import { deleteGroup as onDeleteGroup, onSubmitGroup, updateGroup as onUpdateGroup } from 'functions/contentRequests'
 import { ContentType } from 'components/utilities/content_type'
 import "./GroupButtonPanel.css"
-import { statusCodeOk } from 'components/utilities/response_code_utilities'
-import { useLocation } from 'react-router'
+import useStatusCodeEvaluator from 'functions/hooks/useStatusCodeEvaluator'
 
 export default function GroupButtonPanel(props: PropForComponent) {
 
-    const location = useLocation()
+    const { actOnFailedRequest } = useStatusCodeEvaluator()
 
-    async function update(method: "split" | "column" | "placement") {
-        const statusCode = await updateGroup(
+    async function submitGroup(name: string) {
+        actOnFailedRequest(await onSubmitGroup(name, props.newGroup))
+        window.location.reload()
+    }
+
+    async function updateGroup(method: "split" | "column" | "placement") {
+        actOnFailedRequest(await onUpdateGroup(
             props.group._id, 
             method, 
             !props.group.split)
+        )
+        
+        window.location.reload()
+    }
 
-        if (statusCodeOk(statusCode, location.pathname))
-            window.location.reload()
+    async function deleteGroup() {
+        actOnFailedRequest(await onDeleteGroup(props.group._id))
+        window.location.reload()
     }
 
     return (
@@ -37,24 +45,16 @@ export default function GroupButtonPanel(props: PropForComponent) {
                         name: "",
                         isSubGroup: isSubGroup
                     })}
-                    submitGroup={async (name) => {
-                        const statusCode = await onSubmitGroup(name, props.newGroup)
-                        if (statusCodeOk(statusCode, location.pathname))
-                            window.location.reload()
-                    }}
+                    submitGroup={async (name) => submitGroup(name)}
                 />
             </div>
             <div className="GroupButtonContainerOptions">
-                <button onClick={async () => update("split")}>{props.group.split ? "Disable" : "Enable"} split</button>
-                <button onClick={() => update("column")}>{props.group.column ? "Disable" : "Enable"} column</button>
+                <button onClick={async () => updateGroup("split")}>{props.group.split ? "Disable" : "Enable"} split</button>
+                <button onClick={() => updateGroup("column")}>{props.group.column ? "Disable" : "Enable"} column</button>
             </div>
             {props.group.depth > 1 ?
                 <div className="GroupButtonContainerDeleteGroup">
-                    <button onClick={async () => {
-                        const statusCode = await deleteGroup(props.group._id)
-                        if (statusCodeOk(statusCode, location.pathname))
-                            window.location.reload()
-                    }}>Delete this group</button>
+                    <button onClick={deleteGroup}>Delete this group</button>
                 </div> : null
             }
         </div>

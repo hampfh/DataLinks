@@ -12,12 +12,11 @@ import { ContentType } from 'components/utilities/content_type'
 import { remoteDeleteElement, remoteUpdateElement } from 'functions/contentRequests'
 import LinkObject from 'components/templates/content_objects/LinkObject'
 import TextObject from 'components/templates/content_objects/TextObject'
-import { statusCodeOk } from 'components/utilities/response_code_utilities'
-import { useLocation } from 'react-router'
+import useStatusCodeEvaluator from 'functions/hooks/useStatusCodeEvaluator'
 
 function ContentObject(props: PropsForComponent) {
 
-	const location = useLocation()
+	const { actOnFailedRequest } = useStatusCodeEvaluator()
 
 	const [prevFieldOne, setPrevFieldOne] = useState<string>((props.contentObject as IText).title ?? (props.contentObject as IDeadline).displayText ?? "")
 	const [prevFieldTwo, setPrevFieldTwo] = useState<string>((props.contentObject as IText).text ?? (props.contentObject as IDeadline).deadline ?? (props.contentObject as ILink).link ?? "")
@@ -44,6 +43,7 @@ function ContentObject(props: PropsForComponent) {
 			setFieldThree(event.target.value)
 	}
 
+
 	async function _updateContent() {
 
 		if (!fieldTwoValid)
@@ -53,11 +53,7 @@ function ContentObject(props: PropsForComponent) {
 		setPrevFieldTwo(fieldTwo)
 		setPrevFieldThree(fieldThree)
 
-		const statusCode = await remoteUpdateElement(props.parentId, props.id, props.type, fieldOne, fieldTwo)
-		if (!statusCodeOk(statusCode, location.pathname)) {
-			console.log("PING")
-			window.location.reload()
-		}
+		actOnFailedRequest(await remoteUpdateElement(props.parentId, props.id, props.type, fieldOne, fieldTwo))
 	}
 
 	if (props.updateSubjects === undefined && (props.noEditMode === undefined || !!!props.noEditMode)) {
@@ -95,11 +91,7 @@ function ContentObject(props: PropsForComponent) {
 						: null
 					}
 					{props.id.toString().length === 0 ? null :
-						<button onClick={async () => {
-							const statusCode = await remoteDeleteElement(props.parentId, props.id)
-							if (!statusCodeOk(statusCode, location.pathname))
-								window.location.reload()
-						}}>Delete</button>
+						<button onClick={async () => actOnFailedRequest(await remoteDeleteElement(props.parentId, props.id))}>Delete</button>
 					}
 				</div> : null
 			}	

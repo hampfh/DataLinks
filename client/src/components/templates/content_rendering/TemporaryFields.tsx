@@ -78,7 +78,7 @@ export default function TemporaryField({ parentId, type, onSubmitElement, onCanc
 interface PropsForComponent {
 	parentId: string,
 	type: ContentType,
-	onSubmitElement: (newElement: INewElement, isGroup?: boolean | undefined) => Promise<void>
+	onSubmitElement: (newElement: INewElement, isGroup?: boolean | undefined) => Promise<boolean>
 	onCancel: () => void
 }
 
