@@ -1,5 +1,4 @@
 import moment from 'moment'
-import React from 'react'
 import { IContributor } from './Contributor'
 import "./TopContributor.css"
 
@@ -11,7 +10,7 @@ export default function TopContributor(props: PropsForComponent) {
 
     return (
         <div className="top-contributor-container">
-            <h4 className="top-contributor-name">#{props.place} {props.contributor.name ?? "Anonymous"}</h4>
+            <h4 className="top-contributor-name">#{props.place} {props.contributor.kthId}</h4>
             <p 
                 title="Last contribution" 
                 className="top-contributor-updated-at-text">

@@ -33,7 +33,7 @@ export default function Contributor({ contributor, place }: PropsForComponent) {
 		<div className="contributorElementWrapper">
 			<div className="contributor">
 				<p className={`name`}>
-					{place}. <span>{contributor.name ?? "Anonymous"}</span>
+					{place}. <span>{contributor.kthId}</span>
 					{contributor.identifier.findIndex((current) => current === authSession?.kthId) >= 0 ?
 						<span className="contributor-is-self">You</span> : null
 					}
@@ -66,7 +66,7 @@ export default function Contributor({ contributor, place }: PropsForComponent) {
 }
 
 export interface IContributor {
-	name?: string,
+	kthId: string,
 	contributions: {
 		operations: {
 			creates: number,

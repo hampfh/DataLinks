@@ -29,7 +29,8 @@ function Contributors(props: PropsForComponent) {
 					method: "GET"
 				})
 
-				setContributors(response.contributors)
+				if (response.status === 200)
+					setContributors(response.contributors)
 				setHasLoaded(true)
 			}
 		)
