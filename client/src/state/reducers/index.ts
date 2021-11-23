@@ -29,6 +29,10 @@ const rootReducer = combineReducers({
 	animations
 });
 
+// ? Redux type declaration
+declare global {interface Window {__REDUX_DEVTOOLS_EXTENSION__: any;}}
+
+// We only expose redux devtools when in development
 export const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer) : createStore(rootReducer,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )

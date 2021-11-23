@@ -6,7 +6,7 @@ import { IContentState } from 'state/reducers/content'
 import { getDeadlines, sortDeadlines } from 'components/utilities/deadline_computations'
 import { SubjectData } from '../Subjects/Subjects'
 import ContentObject from 'components/templates/content_objects/ContentObject'
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 import { IDeadlineState } from 'state/reducers/deadlines'
 import { json_replacer, json_reviver } from 'functions/json_serialization'
 

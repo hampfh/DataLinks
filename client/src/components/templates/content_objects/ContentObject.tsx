@@ -8,7 +8,7 @@ import { deleteLocally, editLocal, IDeleteLocally, IEditLocal } from "state/acti
 import { IReduxRootState } from "state/reducers"
 import { ILocalState } from "state/reducers/local"
 import { IAppState } from "state/reducers/app"
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 import { remoteDeleteElement, remoteUpdateElement } from 'functions/contentRequests'
 import LinkObject from 'components/templates/content_objects/LinkObject'
 import TextObject from 'components/templates/content_objects/TextObject'

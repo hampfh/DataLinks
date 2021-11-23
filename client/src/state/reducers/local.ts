@@ -1,4 +1,4 @@
-import { ContentType } from "components/utilities/contentTypes"
+import { ContentType } from "components/utilities/content_type"
 import { IEditLocalObject } from "state/actions/local"
 import { ActionType } from "./"
 

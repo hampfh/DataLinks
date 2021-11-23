@@ -1,4 +1,4 @@
-import { ContentType } from "components/utilities/contentTypes"
+import { ContentType } from "components/utilities/content_type"
 
 export interface IAddLocal { (parentId: string, fieldOne: string, fieldTwo: string, fieldThree: string, type: ContentType, id?: string): void }
 export const addLocal = (parentId: string, fieldOne: string, fieldTwo: string, fieldThree: string, type: ContentType, id?: string) => {

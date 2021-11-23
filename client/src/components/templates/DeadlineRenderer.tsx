@@ -7,7 +7,7 @@ import { SubjectData } from "components/screens/Subjects/Subjects"
 import "./DeadlineRenderer.css"
 import { IReduxRootState } from "state/reducers"
 import { IDimensionState } from "state/reducers/dimensions"
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 
 /**
  * This is the deadline renderer for the homepage, 

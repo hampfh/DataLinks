@@ -1,7 +1,7 @@
 import { IReduxRootState } from 'state/reducers'
 import { connect, useDispatch } from "react-redux"
 import Socket from "components/utilities/SocketManager"
-import { ContentType } from './contentTypes'
+import { ContentType } from './content_type'
 import { addElement, deleteElement, reOrderElement, updateElement } from 'functions/updateElement'
 import { IContentState } from 'state/reducers/content'
 import moment from "moment"

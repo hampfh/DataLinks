@@ -1,4 +1,4 @@
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 import React, { useState } from 'react'
 import { connect } from "react-redux"
 import { IReduxRootState } from 'state/reducers'
@@ -184,7 +184,8 @@ function Group(props: PropsForComponent) {
                     newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
                     <TemporaryFields 
                         onSubmitElement={async (temporaryElement: NewElement) => {
-                            if (await onSubmitElement(temporaryElement, newElement) === 0)
+                            const statusCode = await onSubmitElement(temporaryElement, newElement)
+                            if (statusCode === 200 || statusCode === 201)
                                 setNewElement(undefined)
                         }}
                         onCancel={() => setNewElement(undefined)}

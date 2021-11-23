@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Moment from "moment"
-import { ContentType } from 'components/utilities/contentTypes'
+import { ContentType } from 'components/utilities/content_type'
 import "./TemporaryFields.css"
 
 export default class TemporaryFields extends Component<PropsForComponent, StateForComponent> {
