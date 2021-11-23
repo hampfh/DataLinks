@@ -132,6 +132,6 @@ export const getUserSchema = Joi.object({
 	kthId: Joi.string()
 }).oxor("id", "kthId")
 
-export const loginSchema = Joi.object({
+export const redirectSchema = Joi.object({
 	redirect: Joi.string()
 }).unknown(false)

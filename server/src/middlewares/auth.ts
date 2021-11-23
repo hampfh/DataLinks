@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import UserModel from "../models/user.model"
-import { loginSchema } from "../controllers/schemas"
+import { redirectSchema } from "../controllers/schemas"
 import moment from "moment"
 
 export async function updateLoginStats(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -22,8 +22,8 @@ export async function updateLoginStats(req: Request, res: Response, next: NextFu
 	next()
 }
 
-export async function loginRedirect(req: Request, res: Response): Promise<void> {
-	const { error } = loginSchema.validate(req.query)
+export async function paramRedirect(req: Request, res: Response): Promise<void> {
+	const { error } = redirectSchema.validate(req.query)
 	if (error) {
 		res.status(400).json({
 			message: error.message
