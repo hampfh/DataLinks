@@ -2,6 +2,7 @@
 
 .header-menu-container {
     display: flex;
+    justify-content: center;
 }
 
 .header-menu-item-container {
@@ -11,6 +12,9 @@
     flex-direction: column;
 
     margin: 1rem;
+
+    transition-property: margin;
+    transition-duration: var(--default-transition-duration);
 }
 
 .header-menu-item-text {
@@ -52,5 +56,20 @@
     .header-menu-item-text.selected:after {
         width: 1.5rem;
         height: 2px;
+    }
+}
+
+@media (max-width: 450px) {
+    .header-menu-item-text {
+        font-size: 0.8rem;
+    }
+
+    .header-menu-item-text.selected:after {
+        width: 1rem;
+        height: 2px;
+    }
+    
+    .header-menu-item-container {
+        margin: 0.5rem;
     }
 }
