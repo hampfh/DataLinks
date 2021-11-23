@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Subjects from "components/screens/Subjects/Subjects"
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -28,7 +28,6 @@ import {
 	setCompletedDeadlines 
 } from 'state/actions/deadlines';
 import Subscriptions from 'components/utilities/Subscriptions';
-import SubmitContributorName from 'components/templates/SubmitContributorName';
 import Contributors from 'components/screens/Contributors/Contributors';
 import { fetchUpdatedSubjects } from 'functions/updateSubjects';
 import { useDispatch } from "react-redux"
@@ -45,7 +44,6 @@ export type OperationType = "CREATE" | "UPDATE" | "DELETE"
 function App(props: PropsForComponent) {
 
 	const dispatch = useDispatch()
-	const [showContributionOverlay, setShowContributionOverlay] = useState(false)
 
 	const { enableEditMode, setExtendViewFlag, setDeadlineViewFlag, setCompletedDeadlines, setContributor, setReplaceCountdownWithDateFlag } = props
 
@@ -55,8 +53,6 @@ function App(props: PropsForComponent) {
 		// Load setting flags from localstorage
 		const flags = loadFlags()
 		if (flags) {
-			if (flags.editMode)
-				enableEditMode()
 			if (flags.extendedView)
 				setExtendViewFlag(true)
 			if (flags.deadlineView)
@@ -83,16 +79,16 @@ function App(props: PropsForComponent) {
 			if (currentSession.status === 200) {
 				const { user } = await currentSession.json()
 				dispatch(setAuth(user.id, user.kthId))
+
+				// ? We only enable edit mode if
+				// ? we have an active session
+				if (flags && flags.editMode)
+					enableEditMode()
 			}
 		})();
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
-	useEffect(() => {
-		if (props.app.flags.editMode && localStorage.getItem(APP_CONTRIBUTOR_KEY) == null && !!!showContributionOverlay)
-			setShowContributionOverlay(true)
-	}, [props.app.flags.editMode, showContributionOverlay])
 
 	function manageVersion() {
 		// Set current version
@@ -110,10 +106,6 @@ function App(props: PropsForComponent) {
 			dispatch({ type: "SET_LAST_VERSION", payload: { version: lastVersion }})
 		}
 	}
-	
-	// Render contribution form if contributor isn't set
-	if (showContributionOverlay && props.app.flags.editMode)
-		return <SubmitContributorName toggleView={setShowContributionOverlay} />
 
 	// ? When no content is provided we don't show a site at all
 	if (props.content.hasLoaded && props.content.activeProgramSubjects.length <= 0)
