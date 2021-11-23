@@ -1,98 +1,88 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Moment from "moment"
 import { ContentType } from 'components/utilities/content_type'
 import "./TemporaryFields.css"
 
-export default class TemporaryFields extends Component<PropsForComponent, StateForComponent> {
+export default function TemporaryField({ parentId, type, onSubmitElement, onCancel }: PropsForComponent) {
 
-	constructor(props: PropsForComponent) {
-		super(props)
+	const [fieldOne, setFieldOne] = useState("")
+	const [fieldTwo, setFieldTwo] = useState("")
+	const [fieldTwoCorrect, setFieldTwoCorrect] = useState(true)
 
-		this.state = {
-			parentId: this.props.parentId,
-			fieldOne: "",
-			fieldTwo: "",
-			fieldTwoCorrect: true,
-			fieldThree: "",
-			type: this.props.type
-		}
-	}
-
-	_checkTemporaryField = (event: React.ChangeEvent<HTMLInputElement>, field: "first" | "second") => {
-
-		let newState = { ...this.state }
+	function _checkTemporaryField(event: React.ChangeEvent<HTMLInputElement>, field: "first" | "second") {
 
 		const validDate = Moment(event.currentTarget.value).isValid()
 
-		if (newState.type === "DEADLINE" && field === "second" &&
-			validDate !== this.state.fieldTwoCorrect) {
+		if (type === "DEADLINE" && field === "second" && validDate !== fieldTwoCorrect) {
 			// Invert field
-			newState.fieldTwoCorrect = validDate;
+			setFieldTwoCorrect(validDate)
 		}
 
 		// Update field
 		if (field === "first")
-			newState.fieldOne = event.target.value
+			setFieldOne(event.target.value)
 		else if (field === "second")
-			newState.fieldTwo = event.target.value
-
-		this.setState(newState)
+			setFieldTwo(event.target.value)
 	}
 
-	_submitFields = () => {
-		if (this.state.fieldTwoCorrect && this.state.fieldTwo.length > 0)
-			this.props.onSubmitElement(this.state)
-		else {
-			let newState = { ...this.state }
-			newState.fieldTwoCorrect = false;
-			this.setState(newState)
+	function _submitFields() {
+		if (fieldTwoCorrect && fieldTwo.length > 0) {
+			onSubmitElement({
+				parentId,
+				fieldOne,
+				fieldTwo,
+				fieldTwoCorrect,
+				fieldThree: "",
+				type
+			})
+			return
 		}
+		
+		setFieldTwoCorrect(false)
 	}
 
-	render() {
-		return (
-			<div className="tempNewFieldsWrapper">
-				<div className="tempNewFieldsContainer">
-					<label className="temporaryLabel" htmlFor="fieldOne">{this.state.type === "TEXT" ? "Title" : this.state.type === "LINK" ? "Link" : "Text"}</label>
-					<input
-						className="editModeInputField temporaryField"
-						name="fieldOne"
-						placeholder={this.state.type === "TEXT" ? "New title" : "New display text"}
-						onChange={(event) => this._checkTemporaryField(event, "first")}
-						value={this.state.fieldOne}
-					/>
+	return (
+		<div className="tempNewFieldsWrapper">
+			<div className="tempNewFieldsContainer">
+				<label className="temporaryLabel" htmlFor="fieldOne">{type === "TEXT" ? "Title" : type === "LINK" ? "Link" : "Text"}</label>
+				<input
+					className="editModeInputField temporaryField"
+					name="fieldOne"
+					placeholder={type === "TEXT" ? "New title" : "New display text"}
+					onChange={(event) => _checkTemporaryField(event, "first")}
+					value={fieldOne}
+				/>
 
-					{this.state.type === "DEADLINE" ?
-						<p style={{
-							color: this.state.fieldTwoCorrect ? "transparent" : "#fff",
-							textDecoration: "underline",
-							marginBottom: "0.1rem"
-						}}>Deadline is not formatted correctly</p>
-						: null
-					}
-					<label className="temporaryLabel" htmlFor="fieldTwo">{this.state.type === "TEXT" ? "Text" : this.state.type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
-					<input
-						className="editModeInputField temporaryField"
-						name="fieldTwo" placeholder={this.state.type === "TEXT" ? "New text" : this.state.type === "LINK" ? "New link" : "YYYY-MM-DD HH:mm"}
-						onChange={(event) => this._checkTemporaryField(event, "second")}
-						value={this.state.fieldTwo}
-					/>
-					<button onClick={this._submitFields}>Submit content</button>
-					<button onClick={this.props.onCancel}>Cancel</button>
-				</div>
+				{type === "DEADLINE" ?
+					<p style={{
+						color: fieldTwoCorrect ? "transparent" : "#fff",
+						textDecoration: "underline",
+						marginBottom: "0.1rem"
+					}}>Deadline is not formatted correctly</p>
+					: null
+				}
+				<label className="temporaryLabel" htmlFor="fieldTwo">{type === "TEXT" ? "Text" : type === "LINK" ? "Link" : "Deadline (YYYY-MM-DD HH:mm)"}</label>
+				<input
+					className="editModeInputField temporaryField"
+					name="fieldTwo" placeholder={type === "TEXT" ? "New text" : type === "LINK" ? "New link" : "YYYY-MM-DD HH:mm"}
+					onChange={(event) => _checkTemporaryField(event, "second")}
+					value={fieldTwo}
+				/>
+				<button onClick={_submitFields}>Submit content</button>
+				<button onClick={onCancel}>Cancel</button>
 			</div>
-		)
-	}
+		</div>
+	)
 }
 
 interface PropsForComponent {
 	parentId: string,
 	type: ContentType,
-	onSubmitElement: (newElement: StateForComponent, isGroup?: boolean | undefined) => Promise<void>
+	onSubmitElement: (newElement: INewElement, isGroup?: boolean | undefined) => Promise<void>
 	onCancel: () => void
 }
 
-export interface StateForComponent {
+export interface INewElement {
 	parentId: string,
 	fieldOne: string,
 	fieldTwo: string,
