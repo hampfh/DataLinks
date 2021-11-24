@@ -183,7 +183,9 @@ export default class UserController extends CrudController {
 					}
 				}
 			}, {
-				contributionCount: { $gt: 0 }
+				"$match": {
+					contributionCount: { $gt: 0 }
+				}
 			}, {
 				"$project": {
 					_id: 0,
