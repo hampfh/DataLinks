@@ -70,7 +70,10 @@ function Contributors(props: PropsForComponent) {
 					</div>
 					<div className="contributors-rest-container">
 						{
-							otherContributors.filter(current => current.contributionCount > 0).map((current, index) => <Contributor key={current.identifier[0]} place={index + 4} contributor={current} />)
+							otherContributors.filter(current => {
+								console.log(current)
+								return current.contributionCount > 0
+							}).map((current, index) => <Contributor key={current.kthId} place={index + 4} contributor={current} />)
 						}
 					</div>
 				</div>

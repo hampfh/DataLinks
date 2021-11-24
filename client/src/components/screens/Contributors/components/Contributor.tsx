@@ -34,8 +34,9 @@ export default function Contributor({ contributor, place }: PropsForComponent) {
 			<div className="contributor">
 				<p className={`name`}>
 					{place}. <span>{contributor.kthId}</span>
-					{contributor.identifier.findIndex((current) => current === authSession?.kthId) >= 0 ?
-						<span className="contributor-is-self">You</span> : null
+					{
+						contributor.kthId === authSession?.kthId &&
+						<span className="contributor-is-self">You</span>
 					}
 				</p>
 				<p className="score">{contributor.contributionCount}</p>
