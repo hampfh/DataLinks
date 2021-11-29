@@ -44,5 +44,11 @@ export function requiresAdminEditToken(req: Request, res: Response, next: NextFu
 		return
 	}
 
+	// Since we use joi
+	// each validator won't allow additional
+	// attributes, we therefore remove it
+	// here
+	delete req.body.adminEditToken
+
 	next()
 }
