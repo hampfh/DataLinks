@@ -29,7 +29,8 @@ export default class ProgramController extends CrudController {
 			return
 		}
 
-		await Log(
+		/* This is a manual request and thus isn't logged since we don't have a user id
+			await Log(
 			req.user!.id,
 			OperationType.CREATE,
 			ContentType.PROGRAM,
@@ -37,7 +38,7 @@ export default class ProgramController extends CrudController {
 				newProgram._id, 
 				req.body.name
 			]
-		)
+		) */
 
 		res.status(201).json({
 			message: "Successfully created program",
@@ -139,6 +140,7 @@ export default class ProgramController extends CrudController {
 			return
 		}
 
+		/* This is a manual request and thus isn't logged since we don't have a user id
 		await Log(
 			req.user!.id,
 			OperationType.UPDATE,
@@ -148,7 +150,7 @@ export default class ProgramController extends CrudController {
 				req.body.id, 
 				req.body.subject
 			]
-		)
+		) */
 
 		res.status(201).json({
 			message: "Successfully added subject to program"

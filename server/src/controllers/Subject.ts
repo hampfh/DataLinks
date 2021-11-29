@@ -46,6 +46,7 @@ export default class SubjectController extends CrudController {
 		}
 
 		// Notify logg			
+		/* This is a manual request and thus isn't logged since we don't have a user id 
 		Log(
 			req.user!.id,
 			OperationType.CREATE,
@@ -55,7 +56,7 @@ export default class SubjectController extends CrudController {
 				newSubject.name, 
 				newSubject.description
 			]
-		)
+		) */
 		
 		if (!res.headersSent)
 			res.status(201).json(newSubject)
@@ -212,6 +213,7 @@ export default class SubjectController extends CrudController {
 		})
 
 		// Notify logg			
+		/* This is a manual request and thus isn't logged since we don't have a user id
 		Log(
 			req.user!.id,
 			OperationType.DELETE,
@@ -222,7 +224,7 @@ export default class SubjectController extends CrudController {
 				subject.name, 
 				subject.description
 			]
-		)
+		) */
 
 		res.json({
 			message: "Successfully deleted subject"
