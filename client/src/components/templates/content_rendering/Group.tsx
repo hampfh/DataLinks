@@ -132,9 +132,9 @@ function Group(props: PropsForComponent) {
             if (index >= 0) {
                 content.splice(index, 1, draggableElement)
                 setContent(content)
-            }
+            } else return
 
-            // Only submit change if element has actually change position
+            // Only submit change if element has actually changed position
             if (index !== initialIndex)
                 submitElementReorder(props.group._id, draggableElement._id, index)
         }

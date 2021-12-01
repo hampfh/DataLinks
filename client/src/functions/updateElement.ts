@@ -69,6 +69,15 @@ export const deleteElement = (subjects: SubjectData[], id: string) => {
 	}
 }
 
+/**
+ * Call the utility function "recursiveSearchElement"
+ * to find the specified element and when we find it
+ * we perform a position update on it
+ * @param subjects 
+ * @param id 
+ * @param newPosition 
+ * @returns 
+ */
 export const reOrderElement = (subjects: SubjectData[], id: string, newPosition: number) => {
 	for (let i = 0; i < subjects.length; i++) {
 		if (recursiveSearchElement(subjects[i], { _id: id }, () => {
@@ -112,7 +121,7 @@ export const recursiveSearchElement = (
 					contentObject.group.content.splice(i, 1)
 					return { status: SearchStatus.ALL_OK }
 				case SearchStatus.UPDATE_POSITION:
-					if (!result.value)
+					if (result.value == null)
 						throw Error("Value must be defined for position update")
 						
 					const reOrderElement = contentObject.group.content.splice(i, 1)[0]

@@ -2,10 +2,9 @@ import { IReduxRootState } from 'state/reducers'
 import { connect, useDispatch } from "react-redux"
 import Socket from "components/utilities/SocketManager"
 import { ContentType } from './content_type'
-import { addElement, deleteElement, reOrderElement, updateElement } from 'functions/updateElement'
+import { addElement, deleteElement, updateElement } from 'functions/updateElement'
 import { IContentState } from 'state/reducers/content'
 import moment from "moment"
-import { SubjectData } from 'components/screens/Subjects/Subjects'
 
 interface ISocketNewElement {
 	parent: string
@@ -118,6 +117,11 @@ function Subscriptions(props: PropsForComponent) {
 				}}
 			/>
 
+			{/* 
+			// ? Due to implications the reordering functionality has been disabled
+			// ? we are currently migrating from from realtime as this is a feature that
+			// ? provide very little benefits and cause a lot of problems
+
 			<Socket subscribeTo="updatePosition" callback={(data: {
 				parentGroup: string,
 				id: string,
@@ -127,9 +131,13 @@ function Subscriptions(props: PropsForComponent) {
 
 				// TODO optiize to directly find the correct parent group instead
 				// TODO of brute-forcing over all subjects until the correct element is found
-				reOrderElement(newSubjects, data.id, data.position)	
+
+				// ? All parameters are incoming as strings, thus we need to convert the position into an int
+				data.position = parseInt(data.position as unknown as string)
+
+				reOrderElement(newSubjects, data.id, data.position)
 				dispatch({ type: "SET_ALL_SUBJECTS", payload: { subjects: newSubjects }})
-			}} />
+			}} /> */}
 		</>
 	)
 }
