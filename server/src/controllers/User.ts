@@ -61,7 +61,7 @@ export default class UserController extends CrudController {
 			return
 		}
 
-		if (req.query.id == null && req.query.kthId == null && req.user == null) {
+		if ((req.query.id == null || req.query.kthId == null) && req.user == null) {
 			res.status(404).json({
 				message: "No such user, you must either be logged in or specify a specific user to fetch",
 				user: undefined
