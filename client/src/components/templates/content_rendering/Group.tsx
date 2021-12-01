@@ -157,6 +157,13 @@ function Group(props: PropsForComponent) {
         return string
     }
 
+    async function onTemporaryFieldsSubmit(temporaryElement: INewElement) {
+        if (newElement != null)
+            actOnFailedRequest(await onSubmitElement(temporaryElement, newElement))
+        setNewElement(undefined)
+        return true
+    }
+
     return (
         <div
             className={populateCssClasses()}
@@ -184,9 +191,9 @@ function Group(props: PropsForComponent) {
 
             <div className={`group-item-container ${dragging ? "dragging" : ""} ${props.group.column ? "Column" : ""}`}>
                 { // Generate temporary elements
-                    newElement && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
+                    newElement != null && props.group._id.toString() === newElement.parentGroup.toString() && props.app.flags.editMode &&
                     <TemporaryFields 
-                        onSubmitElement={async (temporaryElement: INewElement) => actOnFailedRequest(await onSubmitElement(temporaryElement, newElement))}
+                        onSubmitElement={(temporaryElement) => onTemporaryFieldsSubmit(temporaryElement)}
                         onCancel={() => setNewElement(undefined)}
                         type={newElement?.type}
                         parentId={props.group._id}

@@ -46,8 +46,8 @@ export async function onSubmitElement(newElementObject: INewElement, newElement:
             return 1
 
         appendObject.displayText = newElementObject.fieldOne
-        appendObject.deadline = Moment(newElementObject.fieldTwo).toDate().toString()
-        appendObject.start = Moment().toDate().toString()
+        appendObject.deadline = Moment(newElementObject.fieldTwo).toISOString()
+        appendObject.start = Moment().toISOString()
     }
 
     let urlSuffix: string = ""
