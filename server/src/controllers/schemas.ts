@@ -135,3 +135,7 @@ export const getUserSchema = Joi.object({
 export const redirectSchema = Joi.object({
 	redirect: Joi.string()
 }).unknown(false)
+
+export const getFilesSchema = Joi.object({
+	path: Joi.string()
+})

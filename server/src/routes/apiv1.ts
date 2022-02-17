@@ -1,3 +1,4 @@
+import { Files } from "controllers/Files"
 import express from "express"
 import { Content, Group, Subject, Program, User } from "../controllers"
 import { blockIfNotAuthorized, requiresAdminEditToken } from "../middlewares/verify_auth"
@@ -19,6 +20,7 @@ router.post("/subject", requiresAdminEditToken, Subject.create)
 router.get("/subject", Subject.read)
 router.patch("/subject", requiresAdminEditToken, Subject.update)
 router.delete("/subject", requiresAdminEditToken, Subject.delete)
+router.get("/subject/files", Files.read)
 router.post("/group", blockIfNotAuthorized, Group.create)
 router.get("/group", Group.read)
 router.patch("/group", blockIfNotAuthorized, Group.update)

@@ -1,6 +1,15 @@
 import { prop, getModelForClass, modelOptions, Ref } from "@typegoose/typegoose"
 import { Schema } from "mongoose"
+import { File } from "./file.model"
 import { Group } from "./group.model"
+
+class FileStructure {
+	@prop({ required: true })
+	folders!: FileStructure[]
+
+	@prop({ required: true, ref: () => File, type: Schema.Types.ObjectId })
+	files!: Ref<File>[]
+}
 
 @modelOptions({ schemaOptions: { timestamps: true }})
 export class Subject {
@@ -24,6 +33,9 @@ export class Subject {
 
 	@prop({ required: true })
 	public archived!: boolean
+
+	@prop({ required: true })
+	public files!: FileStructure
 }
 
 export default getModelForClass(Subject)
